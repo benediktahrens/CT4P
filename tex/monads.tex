@@ -1,0 +1,119 @@
+
+\section{Monads and Effects}
+\label{sec:monads}
+Recall that a monad (as defined, e.g., in Haskell) is a function |m :: * -> *| together with the additional data of a function |pure: a -> m a| (for each type |a|) and a function |(>>=) :: m a -> (a -> m b) -> m b| (for types |a| and |b|).
+
+The operations |pure| and |(>>=)| are expected to satisfy the following laws:
+such that they satisfy the following properties:
+\begin{enumerate}
+\item |t >>= pure == t| %$\bind(X, pure) = X$.
+\item |pure(x) >>= f == f x| %$bind(pure(X), f) = f(X)$.
+\item |(t >>= f) >>= g == t >>= (\x -> f x >>= g)|% $bind(bind(X,f), g) = bind(X, \lambda x. bind(f(x), g)$.
+\end{enumerate}
+However, these laws cannot be enforced in Haskell, since Haskell does not have any infrastructure for logic.
+
+In a category, however, we can define monads including the monad laws.
+We will actually give two different definitions of monad;
+one called ``Kleisli triple'' (\cref{def:kleisli-triple}), which corresponds to what is called ``monad'' in Haskell,
+and one called ``monad'' (\cref{def:monad}). 
+The formulation of monads uses that the arguments to |(>>=)| can be reordered.
+
+\begin{dfn}\label{def:kleisli-triple}
+  A \textbf{Kleisli triple} over a category $\CC$ is  consisting of the following data:
+\begin{itemize}
+\item A function $T: \Ob{\CC}\to \Ob{\CC}$.
+\item For each $X\in\Ob{\CC}$, a morphism $\eta_X \in \CHom{\CC}{X}{T(X)}$.
+\item For each $f\in\CHom{\CC}{X}{T(Y)}$, a morphism $f^{*} \in \CHom{\CC}{T(X)}{T(Y)}$.
+\end{itemize}
+such that the following properties holds:
+\begin{enumerate}
+\item For each $X \in \Ob\CC$, we have $\eta_X^{*} = \Id[T(X)]$.
+\item For each $f\in\CHom{\CC}{X}{T(Y)}$, the following diagram commutes:
+\begin{center}
+\begin{tikzcd}
+X \arrow[r, "{\eta_X}"] \arrow[rd,swap,"f"] & T(X) \arrow[d, "f^{*}"] \\
+& T(Y)
+\end{tikzcd}
+\end{center}
+\item For each $f\in\CHom{\CC}{X}{T(Y)}$ and $g\in\CHom{\CC}{Y}{T(Z)}$, the following diagram commutes:
+\begin{center}
+\begin{tikzcd}
+T(X) \arrow[r, "f^{*}"] \arrow[rd,swap,"{(\co{f}{g^{*}})^{*}}"] & T(Y) \arrow[d, "g^{*}"] \\
+& T(Z)
+\end{tikzcd}
+\end{center}
+\end{enumerate}
+We denote a Kleisli triple as $(T,\eta, (-)^{*})$.
+\end{dfn}
+
+\begin{exer}
+  Convince yourself that the operations and laws of a Kleisli triple correspond, in the category $\HASK$, to the operations and properties of a monad in Haskell.
+\end{exer}
+
+
+\begin{exer}\label{exer:examples-kleisli-triples}
+  Show how each one of the following assignments induces a Kleisli triple over the category $\SET$: 
+\begin{enumerate}
+\item \textbf{List monad}: $X\mapsto \List(X)$.
+\item \textbf{Tree monad}: $X\mapsto \BinTree(X)$, where $\BinTree(X)$ is the set of binary trees labelled with elements from $X$ at the leaves.
+\item \textbf{Maybe/partiality monad}: $X\mapsto \Maybe(X) := X + \mathbf{1}$ 
+\item \textbf{Exception monad}: Let $E$ be a set (considered as a set of \textit{exceptions}), $X\mapsto (X + E)$.
+\item \textbf{Monad of nondeterminism}: $X\mapsto \mathbb{P}_{fin}(X) := \left\{Y\subseteq X \mid  Y \text{ is finite}\right\}$.
+\item \textbf{Continuation monad}: Let $R$ be a set (considered as a set of \textit{results}), $X\mapsto (X \to R) \to R$.
+\item \textbf{Monad of families of elements}: Let $R$ be a set, consider $X \mapsto R \to X$.
+\end{enumerate}
+\end{exer}
+
+
+
+The notion of a Kleisli triple can equivalently be described  as follows:
+\begin{dfn}\label{def:monad}
+A \textbf{monad} over a category $\CC$ consists of the following data:
+\begin{itemize}
+\item A (endo)functor $T:\CC\to\CC$.
+\item A natural transformation $\NatTrans{\eta}{\Id[\CC]}{T}$.
+\item A natural transformation (``multiplication'') $\NatTrans{\mu}{\co{T}{T}}{T}$.
+\end{itemize}
+such that for each $X\in\Ob{\CC}$ the following diagrams commute:
+\begin{center}
+\begin{tikzcd}
+T^3(X) \arrow[r, "\mu_{T(X)}"] \arrow[d,swap, "T(\mu_X)"] & T^2(X) \arrow[d, "\mu_X"] \\
+T^2(X) \arrow[r,swap, "\mu_X"] & T(X)
+\end{tikzcd}
+\quad
+\begin{tikzcd} 
+T(X) \arrow[r, "{\eta_{T(X)}}"] \arrow[rd,swap, "{\Id[T(X)]}"] 
+& T^2(X) \arrow[d,"{\mu_X}"] & T(X) \arrow[l,swap,"{T(\mu_X)}"] \arrow[ld, "{\Id[T(X)]}"] \\
+& T(X) &
+\end{tikzcd}
+
+\end{center}
+where we denote $T^2 := \co{T}{T}$ and $T^3 := \co{T}{\co{T}{T}}$.
+\end{dfn}
+
+\begin{exer} Given a monad, construct a Kleisli triple from it.
+Conversely, given a Kleisli triple, construct a monad from it.
+\end{exer}
+
+\begin{exer}
+  For each of the Kleisli triples of \cref{exer:examples-kleisli-triples}, describe the monad multiplication $\mu$ obtained from it.
+\end{exer}
+
+Every Kleisli triple induces a category:
+\begin{dfn} Let $(T,\eta, (-)^{*})$ be a Kleisli triple over $\CC$. The \textbf{Kleisli category}, denoted by $\CC_{T}$, is the category defined by the following data:
+\begin{itemize}
+\item $\Ob{(\CC_T)} := \Ob{\CC}$.
+\item For each $X,Y\in\Ob{(\CC_T)}$, $\CHom{\CC_T}{X}{Y} := \CHom{\CC}{X}{TY}$.
+\item The identity on $X\in\Ob{(\CC_T)}$ is $\eta_X$.
+\item The composition of $f\in \CHom{\CC_T}{X}{Y}$ and $f\in \CHom{\CC_T}{Y}{Z}$ is $\co{f}{g^{*}}$.
+\end{itemize}
+\end{dfn}
+
+\begin{exer} Show that for every Kleisli triple, its Kleisli category satisfies the properties of a category.
+\end{exer}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "cats-for-programmers"
+%%% End:

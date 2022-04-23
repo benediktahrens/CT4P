@@ -1,0 +1,228 @@
+
+\section{Initial Algebras and Inductive Datatypes}
+\label{sec:initial-algs}
+
+\begin{reading*}
+  This chapter is strongly inspired by Varmo Vene's Ph.D.\ thesis \cite[Chapter 2]{vene_phd}.
+\end{reading*}
+
+In this section we introduce (initial) algebras which allows us to define inductive data types.
+
+\begin{dfn} Let $F:\CC\to \CC$ be an endofunctor. An \textbf{$F$-algebra} consists of the following data:
+\begin{enumerate}
+\item An object $C\in \CC$.
+\item A morphism $\phi \in \CHom{\CC}{F(C)}{C}$.
+\end{enumerate}
+\end{dfn}
+
+\begin{intu} An algebra is loosely speaking a set with some \textit{algebraic} operations like multiplication. A simple example is that of a monoid. The following example shows that (the data of) monoids correspond precisely with algebras over a fixed endofunctor.
+\end{intu}
+
+\begin{exa}\label{example:algebra_of_monoids} Let $F$ be the endofunctor induced by:
+\[
+F: \SET \to \SET: X \mapsto 1\sqcup (X\times X).
+\]
+An $F$-algebra consists of a set $X\in\SET$ together with a function $\phi:\CHom{\SET}{1\sqcup (X\times X)}{X}$. Since $\phi$ is function from the disjoint union, we have that $\phi$ is corresponds (uniquely) with two functions:
+\[
+e: 1\to X,\quad m:X\times X\to X.
+\]
+This is precisely the data needed which a monoid has.\\
+Conversely, if $(M,m,e)$ is a monoid, then this induces a function
+\[
+1 \sqcup (M\times M) \xrightarrow{\phi} M,
+\]
+which is defined by 
+\begin{eqnarray*}
+\phi\vert_{1} &: 1\to M: &\star\mapsto e,\\
+\phi\vert_{M\times M} &: M\times M\to M: &(x,y)\mapsto m(x,y),
+\end{eqnarray*}
+which is an $F$-algebra by definition.
+
+\end{exa}
+
+\begin{dfn} Let $F:\CC\to \CC$ be an endofunctor and $(C,\phi)$ and $(D,\psi)$ be $F$-algebras. A \textbf{($F$-algebra) homomorphism} from $(C,\phi)$ to $(D,\psi)$ is a morphism $f\in \CHom{\CC}{C}{D}$ such that the following diagram commutes:
+\begin{center}
+\begin{tikzcd}
+F(C) 
+\arrow[r, "\phi"] 
+\arrow[d,swap, "F(f)"]
+& C 
+\arrow[d, "f"] 
+\\
+F(D) 
+\arrow[r, swap, "\psi"] 
+& D
+\end{tikzcd}
+\end{center}
+\end{dfn}
+
+
+\begin{exer} Let $F$ be the endofunctor defined as in \cref{example:algebra_of_monoids}, i.e. the endofunctor whose algebras corresponds with monoids. Characterize the $F$-algebra homomorphisms.
+\end{exer}
+
+\begin{dfn}\label{definition:category_of_Falgebras} Let $F:\CC\to \CC$ be an endofunctor. The \textbf{category of $F$-algebras}, denoted by $\ALG{F}$, is defined by the following data:
+\begin{itemize}
+\item The objects are the $F$-algebras.
+\item The morphisms are the $F$-algebra homomorphisms.
+\item The identity on $(C,\phi)$ is given by the identity $\Id[C]$ in $\CC$.
+\item The composition is given by the composition of morphisms in $\CC$.
+\end{itemize}
+\end{dfn}
+
+\begin{exer} Show that $\ALG{F}$ satisfies the properties of a category.
+\end{exer}
+
+\begin{dfn} Let $F:\CC\to\CC$ be an endofunctor. The \textbf{initial $F$-algebra} (if it exists), is the initial object in $\ALG{F}$, i.e. it is an $F$-algebra $(\mu F, in)$ such that for any $F$-algebra $(C,\phi)$, there exists a unique morphism $\catam{\phi} \in \CHom{\CC}{\mu F}{C}$ such that the following diagram commutes:
+\begin{center}
+\begin{tikzcd}
+{F(\mu F)} 
+\arrow[r, "in"] 
+\arrow[d,swap, "F(\catam{\phi})"]
+& {\mu F} 
+\arrow[d, "\catam{\phi}"] 
+\\
+F(C) 
+\arrow[r, swap, "\phi"] 
+& C
+\end{tikzcd}
+\end{center}
+A morphism of the form $\catam{\phi}$ is called a \textit{catamorphism}.
+\end{dfn}
+
+\begin{exer} Let $F:\CC\to\CC$ be an endofunctor and assume that the initial algebra $(\mu F, in)$ exists. Show that the following properties holds:
+\begin{enumerate}
+\item $\Id = \catam{in}$.
+\item For $F$-algebras $(C,\phi)$ and $(D,\psi)$ and $f\in\CHom{\CC}{C}{D}$, we have 
+\[
+\phi\Comp f = F(f)\Comp \psi \implies \catam{\phi}\Comp f = \catam{\psi}.
+\]
+\end{enumerate} 
+\end{exer}
+
+\begin{exer} (\textbf{Lambek's theorem}) Let $F:\CC\to\CC$ be an endofunctor and assume that the initial algebra $(\mu F, in)$ exists. Then is $in$ an isomorphism whose inverse is given by $\Inv{in} = \catam{F(in)}$.
+\end{exer}
+
+\begin{exer}\label{exercise:initialalg_for_idfun_with_initialob} Let $\CC$ be a category with an initial object $\bot$. Show that $(\bot, \Id[\bot])$ is the initial algebra for the identity (endo)functor on $\CC$.
+\end{exer}
+
+\begin{exer} Let $F$ be the functor induced by 
+\[
+F:\SET\to\SET : X\mapsto 1 \sqcup X.
+\]
+Show that the initial $F$-algebra is given by the set $\mathbb{N}$ of natural numbers.
+\end{exer}
+
+\begin{exer}\label{exercise:initialalg_for_list} Let $A$ be a set and define $F$ to be the functor induced by 
+\[
+F_A:\SET\to\SET : X\mapsto 1 \sqcup (A\times X).
+\]
+Show that the initial $F_A$-algebra is given by the set $List(A)$. of $A$-valued lists.
+\end{exer}
+
+\begin{exer}\label{exercise:initialalg_for_btree} Let $A$ be a set and define $F$ to be the functor induced by 
+\[
+F_A:\SET\to\SET : X\mapsto A \sqcup (X\times X).
+\]
+Show that the initial $F_A$-algebra is given by the set $BTree(A)$ of $A$-valued binary trees.
+\end{exer}
+
+\begin{rem} Notice that in \cref{exercise:initialalg_for_list} and \cref{exercise:initialalg_for_btree}, we can consider the functor $F_A$ as a bifunctor where we vary $A$, i.e.
+\[
+F: \SET\to \SET\to \SET: (A,X)\mapsto F_A(X).
+\]
+In particular, under the assumption that for every $A\in\SET$ the initial $F_A$-algebra exists, we can wonder if the assignment 
+\[
+\Ob{\SET} \to \Ob{\SET} : A\mapsto \mu F_A ,
+\]
+can be extended to a functor. The following exercise answers this question positively for arbitrary categories.
+\end{rem}
+
+\begin{exer} Let $F:\CC\to\CC\to\CC$ be a bifunctor such that for any object $A\in\CC$, the initial algebra for the functor induced by 
+\[
+F_A : \CC\to\CC : X\mapsto F(A,X),
+\]
+exists. Show how
+\[
+\Ob{\CC} \to \Ob{\CC} : A\mapsto \mu F_A ,
+\]
+induces a functor.
+\end{exer}
+
+
+\section{Terminal Coalgebras and Coinductive Datatypes}
+In this section we introduce (terminal) coalgebras which allows us to define coinductive data types.
+
+\begin{dfn} Let $F:\CC\to \CC$ be an endofunctor. An \textbf{$F$-coalgebra} consists of the following data:
+\begin{itemize}
+\item An object $C\in \CC$.
+\item A morphism $\phi \in \CHom{\CC}{C}{F(C)}$.
+\end{itemize}
+\end{dfn}
+Notice that an $F$-algebra consists of a morphism $F(C)\to C$, while an $F$-coalgebra consists of a morphism $C\to F(C)$ in the other direction.
+
+\begin{dfn} Let $F:\CC\to \CC$ be an endofunctor and $(C,\phi)$ and $(D,\psi)$ be $F$-coalgebras. A \textbf{($F$-algebra) homomorphism} from $(C,\phi)$ to $(D,\psi)$ is a morphism $f\in \CHom{\CC}{C}{D}$ such that the following diagram commutes:
+\begin{center}
+\begin{tikzcd}
+C 
+\arrow[r, "\phi"] 
+\arrow[d,swap, "f"]
+& F(C) 
+\arrow[d, "F(f)"] 
+\\
+D
+\arrow[r, swap, "\psi"] 
+& F(D) 
+\end{tikzcd}
+\end{center}
+\end{dfn}
+
+\begin{exer} Define the category $\COALG{F}$ of $F$-coalgebras analogously to the category $\ALG{F}$ of $F$-algebras (as in \cref{definition:category_of_Falgebras}).
+\end{exer}
+
+\begin{dfn} Let $F$ be an endofunctor on $\CC$. The \textbf{terminal $F$-coalgebra} is the terminal object in $\COALG{F}$ which we denote by $(\nu F, out)$.\\
+For $(C,\phi)$ an arbitrary $F$-coalgebra, we denote the unique morphism $C\to \nu F$ by $\anam{\phi}$. and we call a morphism of this form an \textit{anamorphism} (instead of a catamorphism).
+\end{dfn}
+
+\begin{exer} Spell out what it means for a coalgebra to be the terminal coalgebra.
+\end{exer}
+
+\begin{exer} Let $F:\CC\to\CC$ be an endofunctor and assume that the terminal coalgebra $(\nu F, out)$ exists. Show that the following properties holds:
+\begin{enumerate}
+\item $\Id = \anam{out}$.
+\item For $F$-algebras $(C,\phi)$ and $(D,\psi)$ and $f\in\CHom{\CC}{C}{D}$, we have 
+\[
+f\Comp\psi  = \phi\Comp F(f) \implies f\Comp\anam{\psi} = anam{\phi}.
+\]
+\end{enumerate} 
+\end{exer}
+
+\begin{exer} (\textbf{Dual Lambek's theorem}) Let $F:\CC\to\CC$ be an endofunctor and assume that the terminal coalgebra $(\nu F, out)$ exists. Then is $out$ an isomorphism whose inverse is given by $\Inv{out} = \anam{F(out)}$.
+\end{exer}
+
+\begin{exer}\label{exercise:terminalalg_for_idfun_with_terminalob} Let $\CC$ be a category with an terminal object $\top$. Then is $(\top, \Id[\top])$ the terminal coalgebra for the identity (endo)functor on $\CC$.
+\end{exer}
+
+\begin{exer} Let $F$ be the functor induced by 
+\[
+F:\SET\to\SET : X\mapsto 1 \sqcup X.
+\]
+Show that the terminal $F$-coalgebra is given by the following data:
+\begin{itemize}
+\item The underlying object is given by the set $\mathbb{N} \sqcup \{\infty\}$ of natural numbers with infinity.
+\item The underlying function is given by the predecessor defined as follows: 
+\begin{align*}
+\mathbb{N} \sqcup \{\infty\} &\to 1 \sqcup \mathbb{N} \sqcup \{\infty\},\\
+0 &\mapsto \star,\\
+s(n) &\mapsto n,\\
+\infty &\mapsto \infty,
+\end{align*}
+where $\star$ is the unique element of $1$.
+\end{itemize}
+\end{exer}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "cats-for-programmers"
+%%% End:

@@ -1,0 +1,1562 @@
+\documentclass[a4paper,10pt]{scrartcl}
+\usepackage[utf8]{inputenc}
+
+\usepackage{tikz-cd}
+\usepackage{xcolor}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{stmaryrd} % texlive-science
+\usepackage{verbatim}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\onlydraft}[1]{} % DON'T CHANGE THIS LINE
+
+\renewcommand{\onlydraft}[1]{#1}  % Toggle this line to show/hide todo-notes, table of contents, etc.
+
+
+
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}%to do list and comments
+
+\newcommand{\plan}[1]{}
+\newcommand{\BA}[1]{}
+\newcommand{\KW}[1]{}
+\onlydraft{
+   \renewcommand{\plan}[1]{{\color{blue}{#1}}\PackageWarning{TODO}{Plan: #1}}
+   \renewcommand{\BA}[1]{\todo[color=orange!30]{BA: #1} \PackageWarning{TODO}{BA: #1}}
+   \renewcommand{\KW}[1]{\todo[color=green!30]{KW: #1}\PackageWarning{TODO}{KW: #1}}
+}
+
+\newcommand{\issue}[1]{\href{https://github.com/benediktahrens/cats-for-programmers/issues/#1}{Issue #1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[style=numeric,backend=biber]{biblatex}
+\addbibresource{literature.bib}
+
+\usepackage{listings}
+\lstMakeShortInline|
+\lstset{% general command to set parameter(s)
+basicstyle=\small\sffamily,
+% print whole listing small
+keywordstyle=\color{black}\bfseries\underbar,
+% underlined bold black keywords
+identifierstyle=,
+% nothing happens
+commentstyle=\color{white}, % white comments
+stringstyle=\ttfamily,
+% typewriter type for strings
+showstringspaces=false,
+,
+literate={→ }{\ARROW}1
+         {∃}{\EX}1
+         {∀}{\FORALL}1
+         {∧}{\AND}1
+         {∨}{\OR}1
+         {¬}{\NOT}1
+         {⊢}{\TURNSTYLE}1
+         {×}{\TIMES}1
+         {λ}{\LAMBDA}1
+}
+% no special string spaces
+
+% \begin{comment}
+% \def\lstlanguagefiles{lstlean.tex}
+% \lstset{language=lean}
+% \lstdefinestyle{leannocolor}{
+%    basicstyle={\ttfamily},
+%    identifierstyle={\ttfamily},
+%    keywordstyle=[1]{\ttfamily},
+%    keywordstyle=[2]{\ttfamily},
+%    keywordstyle=[3]{\ttfamily},
+%    stringstyle={\ttfamily},
+%    commentstyle={\ttfamily}
+% }
+% \end{comment}
+
+
+\protected\def\ARROW{\ensuremath{\to}}
+\DeclareUnicodeCharacter{2192}{\ARROW}
+\protected\def\EX{\ensuremath{\exists}}
+\DeclareUnicodeCharacter{2203}{\EX}
+\protected\def\FORALL{\ensuremath{\forall}}
+\DeclareUnicodeCharacter{2200}{\FORALL}
+\protected\def\AND{\ensuremath{\wedge}}
+\DeclareUnicodeCharacter{2227}{\AND}
+\protected\def\OR{\ensuremath{\vee}}
+\DeclareUnicodeCharacter{2228}{\OR}
+\protected\def\NOT{\ensuremath{\neg}}
+\DeclareUnicodeCharacter{00AC}{\NOT}
+\protected\def\TURNSTYLE{\ensuremath{\vdash}}
+\DeclareUnicodeCharacter{22A2}{\TURNSTYLE}
+\protected\def\TIMES{\ensuremath{\times}}
+\DeclareUnicodeCharacter{00D7}{\TIMES}
+\protected\def\LAMBDA{\ensuremath{\lambda}}
+\DeclareUnicodeCharacter{03BB}{\LAMBDA}
+
+% \usepackage{listings}
+% \lstset{
+%   basicstyle=\footnotesize\ttfamily,
+%   breaklines=true,
+%   escapechar=!,
+%   literate={→ }{\ARROW}1
+%            {∃}{\EX}1
+%            {∀}{\FORALL}1
+%            {∧}{\AND}1
+%            {∨}{\OR}1
+%            {¬}{\NOT}1
+%            {⊢}{\TURNSTYLE}1
+%            {×}{\TIMES}1
+%            {λ}{\LAMBDA}1
+%            ,
+%   morekeywords=[1]{example, check, reduce},
+%   keywordstyle=[1]{\bfseries\color{dkviolet}},
+%   morekeywords=[3]{Type,Prop, variable, variables},
+%   keywordstyle=[3]{\bfseries\color{dkgreen}},
+%   morekeywords=[2]{assume, reduce, variable},
+%   keywordstyle=[2]{\ttfamily\color{red}},
+%   keywordstyle=[4]{\bfseries\color{dkblue}},
+%   morekeywords=[4]{theorem, inductive,structure,def},
+
+
+\usepackage{hyperref}
+\usepackage[capitalize]{cleveref}
+
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{lemma}[thm]{Lemma}
+
+\newtheorem*{reading*}{Further Reading}
+
+\theoremstyle{definition}
+\newtheorem{rem}[thm]{Remark}
+\newtheorem{dfn}[thm]{Definition}
+\newtheorem{que}[thm]{Question}
+\newtheorem{exa}[thm]{Example}
+\newtheorem{exer}[thm]{Exercise}
+\newtheorem{app}[thm]{Application}
+\newtheorem{intu}[thm]{Intuition}
+
+\newtheorem{nota}[thm]{Notation}
+\newtheorem{proposal}[thm]{Proposal}
+\newtheorem{goal}[thm]{Goal}
+\newtheorem{constr}[thm]{Construction}
+\newtheorem{solution}[thm]{Solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\cfont}[1]{\ensuremath{\mathsf{#1}}}
+\newcommand{\Cat}[1]{\mathcal{#1}}
+\newcommand{\CC}{\Cat{C}}
+\newcommand{\DD}{\Cat{D}}
+\newcommand{\EE}{\Cat{E}}
+\newcommand{\Catb}[1]{\mathbf{#1}}
+\newcommand{\List}{\Catb{List}}
+\newcommand{\BinTree}{\Catb{BinTree}}
+\newcommand{\Maybe}{\Catb{Maybe}}
+\newcommand{\SET}{\Catb{Set}}
+\newcommand{\FINSET}{\Catb{FinSet}}
+\newcommand{\CAT}{\Catb{Cat}}
+\newcommand{\POS}{\Catb{Pos}}
+\newcommand{\PRE}{\Catb{Pre}}
+\newcommand{\MON}{\Catb{Monoid}}
+\newcommand{\HASK}{\Catb{Hask}}
+\newcommand{\LEAN}{\Catb{LEAN}}
+\newcommand{\ALG}[1]{\Cat{A}lg(#1)}
+\newcommand{\COALG}[1]{\Cat{C}o\Cat{A}lg(#1)}
+\newcommand{\Ob}[1]{{#1}_0}
+\newcommand{\Hom}[3][]{\cfont{hom}_{#1}(#2,#3)}
+\newcommand{\CHom}[3]{{#1}(#2,#3)}
+\newcommand{\Id}[1][]{\cfont{Id}_{#1}}
+\newcommand{\Comp}{\cdot}
+\newcommand{\NatTrans}[3]{#1 : #2 \Rightarrow #3}
+\newcommand{\op}[1]{\ensuremath{{#1}^\text{op}}}
+\newcommand{\inl}{\ensuremath{\iota_l}}
+\newcommand{\inr}{\ensuremath{\iota_r}}
+\newcommand{\projl}{\ensuremath{\pi_l}}
+\newcommand{\projr}{\ensuremath{\pi_r}}
+
+
+\newcommand{\Inv}[1]{#1 ^{-1}}
+\newcommand{\catam}[1]{\llparenthesis #1 \rrparenthesis}
+\newcommand{\anam}[1]{\llbracket #1 \rrbracket} % Different notation for anamorphisms which the author of the thesis uses, but I can't find the symbol which he uses. Actually it looks like he hardcoded [( )] which doesn't look nice. But this comes close to the notation I think.
+
+\newcommand{\co}[2]{\ensuremath{#2 \circ #1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%opening
+\title{Category Theory for Programmers}
+\author{Benedikt Ahrens \and Kobe Wullaert}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\end{abstract}
+
+\tableofcontents
+
+
+\section{Introduction}
+
+Category theory is a framework which allows one to formally describe and relate mathematical structures. By a mathematical structure, we mean, informally, a collection of \textit{things} (like types, sets, etc.) and something which transforms one \textit{thing} to another \textit{thing} (like a program, function, etc.).
+
+This framework started as a mathematical theory, but has now proven itself useful also in the world of Computer Science (and beyond). In this course we will introduce the necessary concepts from \textit{category theory} with the goal of understanding its applications in the \textit{realm} of programming.
+
+
+\subsection{About These Notes}
+
+These notes are not meant to give an exhaustive introduction to category theory.
+Instead, the aim is to develop just as much category theory as is necessary to discuss some interesting applications of category theory to computing, specifically, to programming.
+
+Throughout these notes, pointers to other sources, such as textbooks and research articles, are given;
+it is highly recommended to consult these sources.
+
+\subsection{About Category Theory}
+%\label{sec:about-cats}
+
+\emph{Category theory} is a mathematical area of endeavour and language developed to reconcile and unify mathematical phenomena from different disciplines.
+It was developed from the 1940s on, in particular by Samuel Eilenberg and Saunders Mac Lane.
+
+\emph{Computer science} is\ldots well, you know what it is.
+
+In this course, we learn about some fundamental applications of category theory to computer science, specifically, to programming.
+The power of category theory arises from \textbf{abstraction}:
+by boiling down constructions to their essence, analogous situations can be formally identified using category theory.
+One crucial concept provided by category theory to this end is that of \emph{universal property};
+we study some universal properties in \cref{sec:universal}.
+An application of universal properties to the theory of datatypes and structural recursion is studied in \cref{sec:initial-algs}.
+
+Another categorical concept that has proved particularly useful in programming is that of a \textbf{monad}.
+We study monads and their use in programming in \cref{sec:monads}.
+
+
+
+
+\subsection{Learning Material on Category Theory}
+\label{sec:material}
+
+The scientific literature on category theory in computer science is vast.
+%We will only point to a few books, papers, and articles, for instance to this gem~\cite{goguen_thatcher_wagner_wright_1973}.
+We list some learning material on category theory.
+
+Pierce's book \cite{pierce} (available for free) gives a brief introduction to category theory with some applications to computing.
+
+Leinster's book \cite{leinster} (available for free online, under a free license) gives a concise introduction to category theory.
+It is a good resource for the basic concepts, but does not feature many examples from computer science.
+
+The rather substantial textbook by Barr and Wells \cite{barr-wells} (available for free online) covers a lot more than we are going to discuss in these notes.
+
+The Catsters \cite{catsters} provide a lecture series on category theory on YouTube.
+
+
+
+\subsection{Notations}
+\label{sec:notation}
+
+A list of notations which we use throughout these lectures notes.
+\begin{itemize}
+\item If $X$ is a set and $x$ is an element of $X$, we write $x \in X$.
+\item If $X$ is a set and $P$ and $Q$ are properties dependent over the elements of $X$, we write $P\implies Q$ to express that if $P(x)$ holds for an element $x\in X$, then also $Q(x)$ should hold for the element $x$. Moreover, we write $P \iff Q$ if $P\implies Q$ and $Q\implies P$.
+\item If $X$ is a set and $P$ is a property dependent over the elements of $X$, we write:
+\begin{itemize}
+\item[(*)] $\forall x\in X: P(x)$ to express that for every element in $X$, the property $P$ holds.
+\item[(*)] $\exists x\in X: P(x)$ to express that there exists at least one element in $X$ for which the property holds.
+\item[(*)] $\exists! x\in X: P(x)$ to express that there exists a unique element in $X$ for which the property holds.
+\end{itemize}
+\item Let $X$ and $Y$ be sets. We denote:
+\begin{itemize}
+\item[(*)] $X\times Y$ for the (cartesian) product of $X$ and $Y$.
+\item[(*)] $X\sqcup Y$ for the disjoint union of $X$ and $Y$.
+\end{itemize}
+\end{itemize}
+
+
+
+\section{Categories}
+\label{sec:categories}
+
+\begin{reading*}
+The definition of categories is also given in \cite[\S 2.1]{barr-wells}. Plenty of examples of categories are given in \cite[\S\S 2.3--2.5]{barr-wells}.
+
+  The definition of categories is also given in \cite[\S 1.1]{leinster}, together with some examples.
+  There, also isomorphisms are discussed, which we define in \cref{sec:isos}.
+
+  The tutorial \cite{pierce} features the definition of categories in \cite[\S 2.1]{pierce}.
+  It also introduces the notion of ``diagram'', which we do not use in the present notes.
+\end{reading*}
+
+\begin{dfn} A \textbf{category} $\CC$ consists of the following data:
+\begin{enumerate}
+\item A collection of objects, denoted by $\Ob{\CC}$.
+\item For any given objects $X,Y \in \Ob{\CC}$, a collection of morphisms from $X$ to $Y$, denoted by $\Hom[\CC]{X}{Y}$ (or $\Hom{X}{Y}$ when the category $\CC$ is clear, or $\CHom \CC X Y$ or $X \to Y$) and which is called a \textit{hom-set}.
+\item For each object $X\in \Ob{\CC}$, a morphism $\Id[X] \in \Hom[C]{X}{Y}$, called the \textit{identity morphism} on $X$.
+\item A binary operation
+\[
+(\co{}{})_{X,Y,Z} : \Hom{Y}{Z} \to \Hom X Y \to \Hom X Z,
+\]
+called the \textit{composition operator}, and written infix without the indices $X,Y,Z$ as in $\co{f}{g}$.
+\end{enumerate}
+Moreover, this data should satisfy the following properties:
+\begin{enumerate}
+\item (\textbf{Left unit law}) For any morphism $f \in \Hom X Y$, we have 
+\[
+ \co{\Id[X]} {f} = f.
+\]
+\item (\textbf{Right unit law}) For any morphism $f \in \Hom X Y$, we have 
+\[
+  \co f {\Id[Y]} = f.
+\]
+\item (\textbf{Associative law}) For any morphisms $f\in \Hom X Y$, $g\in \Hom Y Z$ and $h\in \Hom Z W$, we have
+\[
+     \co {(\co f g)}{h} =  \co f {(\co g  h)}.
+\]
+\end{enumerate}
+\end{dfn}
+
+\begin{intu} So what does a category represent? There are (at least) $3$ possible ways how one can think about this definition:
+\begin{enumerate}
+\item A category represents a type system in the sense that the objects are the types and each hom-set is the type\footnote{In this case, each hom-set is a type, so isn't each hom-set an object again? Categories which satisfy such a property are called \textit{cartesian closed}.} of functions. See (\cref{example:hask}).
+\item A category represents a \textit{bag} of instances of a particular mathematical structure (e.g. sets with a notion of addition). The objects are then instances of such a mathematical theory (e.g. $(\mathbb{N},+)$) and the morphisms are structure preserving functions (e.g. functions $f$ which satisfy $f(x+y) = f(x) + f(y)$). See \cref{example:set}, \cref{example:poset} and \cref{monoidcategory}.
+\item A category represents a directed graph in the sense that an object is a vertex and a morphism is an edge.
+\item Anything (almost at least) can be seen as a category in some exotic way. 
+\end{enumerate}
+\end{intu}
+
+\begin{nota} Let $\CC$ be a category.
+\begin{itemize}
+\item We write $X\in\CC$ instead of $X\in \Ob{\CC}$. 
+\item Let $X,Y\in \CC$ be objects. A morphism $f\in\CHom{\CC}{X}{Y}$ can be visualized as \[ X \xrightarrow{f} Y. \]
+\item Let $X,Y, Z \in \Ob{\CC}$ objects in $\CC$ and consider the following morphisms:
+\[
+f\in\CHom{C}{X}{Y}, \quad g\in\CHom{C}{Y}{Z}, \quad h\in\CHom{C}{X}{Z}.
+\]
+These morphisms can be visualized as a triangle:
+\[
+\begin{tikzcd}
+X \arrow[r, "f"] \arrow[dr,swap, "h"] & Y \arrow[d, "g"] \\
+& Z
+\end{tikzcd}
+\]
+We say that such a triangle \textbf{commutes} if $h = \co{f}{g}$.
+\item Let $X,Y_1,Y_2, Z \in \Ob{\CC}$ objects in $\CC$ and consider the following morphisms:
+\[
+f_1\in\CHom{C}{X}{Y_1}, \quad f_2\in\CHom{C}{X}{Y_2}, \quad g_1\in\CHom{C}{Y_1}{Z}, \quad g_2\in\CHom{C}{Y_2}{Z}.
+\]
+These morphisms can be visualized as a square:
+\[
+\begin{tikzcd}
+X \arrow[r, "f_2"] \arrow[d,swap, "f_1"] & Y_2 \arrow[d, "g_2"] \\
+Y_1 \arrow[r, swap, "g_1"] & Z 
+\end{tikzcd}
+\]
+We say that such a square \textbf{commutes} if $\co{f_1}{g_1} = \co{f_2}{g_2}$.
+\end{itemize}
+\end{nota}
+
+
+\begin{exa}\label{example:set} The \textbf{Category of sets}, denoted by $\SET$, is the category specified by the following data:
+\begin{itemize}
+\item An object is a set.
+\item If $X$ and $Y$ are sets, then is $\CHom \SET X Y$ the set of all functions from $X$ to $Y$.
+\item The identity morphism $\Id[X]$ (on $X\in\Ob{\SET}$) is the identity function on $X$, i.e.
+\[
+\Id[X] : X\to X: x \mapsto x.
+\]
+\item The composition of functions is given by the usual composition of functions, i.e. for $f\in \CHom \SET X Y$ and $g\in \CHom \SET Y Z$, the composition of $f$ and $g$ is:
+$$g \circ f : X\to Z: x\mapsto g(f(x)).$$
+\end{itemize}
+\end{exa}
+\begin{lemma} The data of $\SET$ satisfies the properties of a category, hence $\SET$ is indeed a category.
+\begin{proof}
+We first show that the left unit law holds. Let $X,Y\in \mathbf{Set}$ be sets and $f\in \CHom \SET X Y$ a function. We have to show that $\Id[X] \Comp f = f$, hence it suffices to show that they pointwise equal which holds by the following calculation:
+\[
+\forall x\in X: (f\circ \Id[X])(x) = f\left(\Id[X](x)\right) = f(x),
+\]
+where the first (resp. second) equality holds by definition of the composition (resp. identity morphism).\\
+That the right unit law holds is analogous. To show that the associator law holds, let $X,Y,Z,W\in\mathbf{Set}$ and $f\in \CHom \SET X Y, g\in \CHom \SET Y Z$ and $h\in \CHom \SET Z W$. We have to show $h\circ (g\circ f) = (h\circ g)\circ f$, hence it suffices again to show that they are pointwise equal which holds by the following calculation:
+\begin{eqnarray*}
+\forall x\in X: \left(h\circ (g\circ f)\right)(x) &=& h\left((g\circ f)(x)\right), \\ 
+	&=& h(g(f(x))),\\ 
+	&=& (h\circ g)(f(x)),\\ 
+	&=& \left((h\circ g)\circ f\right)(x),
+\end{eqnarray*}
+where the first (resp. second, third, fourth) equality holds by definition of the composition of $h$ and $g\circ f$ (resp. composition of $g$ and $f$, composition of $h$ and $g$, composition of $h\circ g$ and $f$).
+\end{proof}
+\end{lemma}
+
+We are now going to describe the category whose collection of objects is given by collection of Lean types:
+\begin{exa}\label{exa:lean-cat}
+  Consider the following data: 
+\begin{itemize}
+\item An object is a Lean type (of some fixed universe).
+\item If $X$ and $Y$ are Lean types, then is $\CHom \LEAN X Y$ the function type $X\to Y$.
+\item The identity morphism $\Id[X]$ (on $X\in \Ob{\LEAN}$) is the identity function on $X$, i.e.
+\begin{lstlisting}
+def idfun (X : Type) : X → X := λ x, x.
+\end{lstlisting}
+\item The composition of functions is given by the composition of functions:
+\begin{lstlisting}
+def compfun {X Y Z} (f : X → Y) (g : Y → Z) : X → Z
+  := λ x, g (f x)
+\end{lstlisting}
+\end{itemize}
+  Try it out, e.g., on \url{https://leanprover.github.io/live/latest/}:
+\begin{lstlisting}
+#eval compfun (+1) (^3) 5
+\end{lstlisting}  
+(You can get a pre-filled Lean input field by clicking here: \href{https://leanprover.github.io/live/latest/#code=%0Adef%20idfun%20(X%20:%20Type)%20:%20X%20%E2%86%92%20X%20:=%20%CE%BB%20x,%20x.%0Adef%20compfun%20%7BX%20Y%20Z%7D%20(f%20:%20X%20%E2%86%92%20Y)%20(g%20:%20Y%20%E2%86%92%20Z%20)%20:%20X%20%E2%86%92%20Z%0A:=%20%CE%BB%20x%20,%20g%20(%20f%20x%20)%0A%0A#eval%20compfun%20(+1)%20(%5E3)%205}{\textbf{ClickMe}}.)
+\end{exa}
+
+\begin{exer}
+  Prove (on paper) that the data defined in \cref{exa:lean-cat} defines a category.
+  That is, show that it satisfies the axioms of a category.
+  You might need to use the \textbf{axiom of functional extensionality}:
+\begin{lstlisting}
+axiom funext_nondep : ∀ {A B : Type} (f g : A → B), 
+  (∀ x, f x = g x) → f = g
+\end{lstlisting}
+\end{exer}
+
+\begin{exa}
+  We repeat the definitions of \cref{exa:lean-cat} in Haskell instead of Lean.
+  Does this data satisfies the axioms of a category?
+
+  Due to Haskell allowing for the |undefined| value in each type, the situation is slighly more complicated; consider the following two functions:
+\begin{lstlisting}
+undef1 :: a -> a
+undef1 = undefined
+
+undef2 :: a -> a
+undef2 = \x -> undefined
+\end{lstlisting}
+These are not equal by definition, but we have $\Id \Comp$ |undef1| $=$ |undef2|.
+So by the right unit law, we must have that |undef1| = |undef2| (as morphisms in our sought category).
+\end{exa}
+
+% \begin{exer}
+%   Compose the functions |undef1| and |undef2| with some other functions of your choice, and see what happens.
+% \end{exer}
+
+\begin{exer}
+  Read the Haskell wiki page on the category $\HASK$ \cite{haskell-wiki-hask}.
+\end{exer}
+
+
+However, when considering functions to equal when they are \textbf{pointwise} equal, we can define a category of Haskell types:
+\begin{dfn}\label{example:hask} The \textbf{category of Haskell types}, denoted by $\HASK$, is the category specified by the following data:
+\begin{itemize}
+\item An object is a Haskell type.
+\item If $X$ and $Y$ are Haskell types, then is $\CHom \HASK X Y$ the collection of functions modulo the equivalence relation $\sim$ defined by identifying pointwise equal functions:
+\[
+f \sim g :\iff \forall x : X, f(x) = g(x).
+\]
+i.e. a morphism in $\HASK$ is an equivalence class of (Haskell) functions.
+\item The identity morphism $\Id[X]$ (on $X\in\HASK$) is the equivalence class of the identity function on $X$.
+\item The composition of (Haskell) functions is given by the equivalence class of the composition of functions, i.e., for $f\in \CHom \HASK X Y$ and $g\in \CHom \HASK Y Z$, the composition of $f$ and $g$ is the equivalence class of:
+\[g\circ f : X\to Z: \lambda x. g(f(x)).\]
+\end{itemize}
+\end{dfn}
+
+
+\begin{exa}\label{example:posetcategories}
+Recall that a \textit{preordered set} $(X,\leq)$ consists of a set $X$ together with a binary relation $(\leq)$ on $X$ which satisfies the following properties:
+\begin{itemize}
+\item \textbf{Reflexivity}: $\forall x\in X: x\leq x$.
+\item \textbf{Transitivity}: $\forall x,y,z\in X: \left(x\leq y \wedge y\leq z\right) \implies x\leq z$.
+\end{itemize}
+
+  Let $(X,\leq)$ be a preordered set. The following data induces a category $\PRE(X,\leq)$:
+\begin{itemize}
+\item The objects are the elements of $X$.
+\item Let $x,y \in X$ be elements. The hom-set $\Hom x y$ consists of a unique element if $x\leq y$ and is empty otherwise.
+\item  We need an identity morphism for each $x\in X$.
+  By reflexitivity (i.e., $x\leq x$), we have that $\Hom x x$ consists of a unique element, which we take to be the identity.
+\item We need to define for each $x,y,z\in X$, a composition operator:
+\[
+\Hom y z \to \Hom x y \to \Hom x z.
+\]
+By definition of the hom-sets, we only have to define it in case $x\leq y$ and $y\leq z$.
+But then, by transitivity (i.e. if $x\leq y$ and $y\leq z$, then $x\leq z$), we have that $\Hom x z$ consists of a unique element which we take to be the composition.
+\end{itemize}
+%
+We are now going to show that the axioms of a category holds.
+To show the right unit law, we have to show that for each $x,y\in X$ and $f\in \Hom x y$, we have $\co{\Id[x]}{f} = f$.
+This indeed holds since every hom-set has a unique element, but both $\co{\Id[x]}{f}$ and $f$ live in the same hom-set, hence they must be equal.
+The proof that left unit law and associator law hold are analogous.
+\end{exa}
+
+\begin{exer}
+  A \textbf{partially ordered set} (poset) is a preordered set $(X,\leq)$ satisfying the following additional axiom:
+  \begin{itemize}
+  \item \textbf{Antisymmetry}: $\forall x,y\in X: (x\leq y \wedge y\leq x) \implies x=y$.
+  \end{itemize}
+  What does this axiom say about $\PRE(X,\leq)$?
+\end{exer}
+
+\begin{rem}
+  To understand a definition in category theory, it is very helpful to think about what the definition means in a preordered set, viewed as a category. 
+\end{rem}
+
+\begin{exa}\label{example:poset} The category of posets, denoted by $\POS$, is the category specified by the following data:
+\begin{itemize}
+\item An object is a poset $(X,\leq)$.
+\item A morphism from a poset $(X,\leq_X)$ to $(Y,\leq_Y)$ consists of a function $f:X\to Y$ such that the following property holds:
+\[
+\forall x_1, x_2 \in X: x_1\leq_X x_2 \implies f(x_1)\leq_Y f(x_2).
+\]
+\item The identity morphism on $(X,\leq_X)$ is the identity function on $X$.
+\item The composition given by the composition of functions.
+\end{itemize}
+
+Before we can show that this data satisfies the axioms of a category, notice that the identity function is a morphism of posets and that the composition of poset morphisms is again a poset morphism, indeed: If $x_1\leq_X x_2$, then we also have $\Id[X](x_1) \leq_X \Id[X](x_2)$ because $\Id[X](x) = x$. If $f\in\CHom{\POS}{(X,\leq_X)}{(Y,\leq_Y)}$ and $g\in\CHom{\POS}{(Y,\leq_Y)} {(Z,\leq_Z)}$ are morphisms of posets, then we have 
+\[
+\forall x_1,x_2\in X: x_1\leq_X x_2 \implies f(x_1)\leq_Y f(x_2) \implies g(f(x_1))\leq_Z g(f(x_2)),
+\]
+where the first (resp. second) inequality holds by $f$ (resp. $g$) being a morphism of posets. So our data is indeed well-defined.\\
+That the axioms of a category are satisfied by this data, is exactly the same proof as showing that $\SET$ is a category because the identity and composition are defined in the same way.
+\end{exa}
+
+\begin{exer} Is $\POS$ a preorder-category itself? That is, is there at most one morphism between any two objects?
+\end{exer}
+
+\begin{que}\label{que:posetcatstoallcats} In \cref{example:poset}, we have shown that $\POS$ is a category. However, by \cref{example:posetcategories}, we know that any poset also is a category. So we have that $\POS$ is a category whose objects are certain categories. Can we also have some category whose collection of objects is the collection of all categories, and if so, what are the morphisms of categories? 
+\begin{proof}[Solution]
+\cref{sec:functors} is devoted completely to this answer.
+\end{proof}
+\end{que}
+
+\begin{lemma}\label{lemma:uniqueid} Let $\CC$ be a category. For any object $X\in\CC$, $\Id[X]$ is the unique morphism which satisfies the following property: For any $Y\in\CC$ and $f\in\CHom \CC X Y$, we have 
+\[
+\co{\Id[X]} f = f.
+\]
+\begin{proof}
+Assume $\tilde{\Id[X]}$ also satisfies this property, in particular we have $\co {\tilde{\Id[X]}} {\Id[X]} = \Id[X]$. However, by the right unit law, we also must have $\co{\tilde{\Id[X]}}{\Id[X]} = \tilde{\Id[X]}$. Hence, $\Id[X] = \tilde{\Id[X]}$.
+\end{proof}
+\end{lemma}
+
+\begin{exer}\label{monoidcategory}
+Recall that a monoid is a set $M$ equipped with binary operation $m : M \to M \to M$ which is associative, i.e. 
+$$\forall x,y,z\in M: m(x,m(y,z)) = m(m(x,y),z),$$
+and such that there is an identity element, i.e. 
+\[
+\exists e\in M: \forall x\in M: m(e,x)=x=m(x,e).
+\]
+Let $(M,m,e)$ be a monoid. The category $\MON(M,m,e)$ is defined by the following data:
+\begin{itemize}
+\item There is a unique object $\star$.
+\item The (only) hom-set is given by 
+\[
+\Hom{\star}{\star} = M.
+\]
+\item The identity morphism on $\star$ is the identity element $e$.
+\item The composition of morphisms $x$ and $y$ is given by $\co{x}{y} := m(x,y)$.
+\end{itemize}
+Show that $\MON(M,m,e)$ is indeed a category.
+\end{exer}
+
+\begin{rem} Notice that this category illustrates that there is no relation between the collection of objects and the hom-sets since there is now only one object and the collection of the hom-set can be as small or as large as possible.\\
+In fact, we can associate a different number of categories to a single monad. We can for example consider an arbitrary set of objects $I$ and the defining the hom-sets as follows:
+\[
+\Hom{i}{j} := 
+\begin{cases}
+M ,\quad \text{ if } i=j,\\
+\emptyset, \quad \text{ if } i\not=j.
+\end{cases}
+\]
+\end{rem}
+
+\begin{exa} Consider the monoid $(\mathbb{Q}, \times, 1)$ (where $\times$ is the usual multiplication of rational numbers). By definition of $\MON(M,m,e)$, we have that $\MON(\mathbb{Q},\times, 1)$ is the category which has a unique object and each morphism correspond with a rational number $q\in\mathbb{Q}$.
+\end{exa}
+
+\begin{exer}
+\begin{enumerate}
+\item When is a category $\CC$ of the form $\MON(M,m,e)$?
+\item Define a category $\MON$ whose objects are monoids, i.e. define a suitable notion of morphism between monoids and moreover show that this indeed defines a category.
+\end{enumerate}
+\end{exer}
+
+\begin{exer} Define a category $\CC$ whose objects are the natural numbers (i.e. $\Ob{\CC} = \mathbb{N}$) and whose hom-sets $\CHom{\CC}{n}{m}$ are given by the $(n\times m)$-matrices.
+\end{exer}
+
+\begin{exer}\label{exer:opposite}
+  Let $\CC$ be a category. Define a category $\op\CC$ such that
+  \begin{itemize}
+  \item the objects of $\op\CC$ are the same as those of $\CC$; and
+  \item the morphisms $\CHom {\op\CC} X Y$ are morphisms $\CHom \CC Y X$.
+  \end{itemize}
+  The category $\op\CC$ is called the \textbf{opposite (category)} of $\CC$.
+\end{exer}
+
+\begin{exer} Let $G$ be a directed graph. Then $G$ induces a category $\mathbf{Graph}(G)$ as follows:
+\begin{itemize}
+\item The collection of objects $\Ob{\mathbf{Graph}(G)}$ is the set of vertices of $G$. 
+\item The morphisms between object are the (directed) paths, that is, finite sequences of composible edges, between them.
+\item For each object $x$ (i.e. vertex), the identity morphism on $x$ is the \textit{identity path}.
+\item The composition of morphisms is the composition of paths.
+\end{itemize}
+We call $\mathbf{Graph}(G)$ the \textbf{category generated by $G$}. Show that $\mathbf{Graph}(G)$ is indeed a category.
+\end{exer}
+
+\begin{exer} Argue why the morphisms are chosen to be paths and it is not sufficient to just take the vertices. 
+\end{exer}
+
+\begin{exa}\label{exa:graph_terminalcat} Consider the following graph $G$:
+\[
+\begin{tikzcd}
+x
+\end{tikzcd}
+\]
+i.e. the graph with only object vertex and no edges. The category generated by $G$ is the category generated is the so-called \textit{terminal category}, that is, the category with a single object and a single morphism (the identity morphism of the unique object). 
+\end{exa}
+
+\begin{exa}\label{exa:graph_intervalcat} Consider the following graph $G$:
+\[
+\begin{tikzcd}
+x \arrow[r] & y
+\end{tikzcd}
+\]
+The category generated by $G$ is the category generated is the so-called \textit{interval category}, that is, the category with two objects and, besides the identity morphisms, a unique morphism (living in $\Hom{x}{y}$).
+\end{exa}
+
+In the following example we use the following notation: 
+\begin{itemize}
+\item If $f$ is a morphism in a category, we denote $f^{2} := \co{f}{f}, f^{3} := \co{f}{f^2}$, etc.
+\item We also label the edges in order to refer to them.
+\end{itemize}
+\begin{exa}\label{exa:graph_xy_yx} Consider the following graph $G$:
+\[
+\begin{tikzcd}
+x \arrow[r, "f", bend left] & y \arrow[l, "g", bend left]
+\end{tikzcd}
+\]
+The category generated by $G$ consists of the following data:
+\begin{itemize}
+\item The collection of objects is $\{x,y\}$.
+\item The hom-sets are given as follows:
+\begin{itemize}
+\item $\Hom{x}{x} = \left\{\Id{x}, \co{f}{g}, (\co{f}{g})^2, \co{f}{g}^3, \cdots\right\}$, 
+\item $\Hom{y}{y} = \left\{\Id{y}, \co{g}{f}, (\co{g}{f})^2, \co{g}{f}^3, \cdots\right\}$, 
+\item $\Hom{x}{y} = \left\{f, \co{f}{(\co{g}{f})}, \co{f}{(\co{g}{f})^2}, \co{f}{(\co{g}{f})^3}, \cdots\right\}$, 
+\item $\Hom{y}{x} = \left\{g, \co{g}{(\co{f}{g})}, \co{g}{(\co{f}{g})^2}, \co{g}{(\co{f}{g})^3}, \cdots\right\}$, 
+\end{itemize}
+\end{itemize}
+\end{exa}
+
+\begin{exa}\label{exa:graph_yx_yz_zw} Consider the following graph $G$:
+\[
+\begin{tikzcd}
+& w & \\
+x & & z \arrow[lu] \\
+& y \arrow[lu] \arrow[ru] &
+\end{tikzcd}
+\]
+The category generated by $G$ has four objects (namely $x,y,z,w$) and the hom-sets are: 
+\begin{itemize}
+\item $\Hom{y}{x}, \Hom{y}{z}$ and $\Hom{z}{w}$ are singleton sets, 
+\item $\Hom{x}{y}, \Hom{z}{y}, \Hom{x}{w}, \Hom{w}{x}$ and $\Hom{w}{z}$ are all empty. 
+\item $\Hom{y}{w}$ consists of the path $y\to z\to w$.
+\item For each vertex $v$, we have that $\Hom{v}{v}$ consists only of the identity path on $v$.
+\end{itemize}
+\end{exa}
+
+\begin{exer} 
+Describe the connection between the categories generated by graphs and the categories associated to preordered sets. What is the property of anti-symmetry translated under this connection with graphs?
+\end{exer}
+
+\begin{exer} Define a category $\Catb{Aut}$ whose objects are (deterministic finite) automata. 
+\end{exer}
+
+\subsection{Isomorphisms}
+\label{sec:isos}
+
+\begin{reading*}
+  In this section, we study properties of arrows in a category.
+  More information on this topic is given in \cite[\S 2.7]{barr-wells}.
+
+  Also, \cite[\S 2.2]{pierce} briefly discusses isomorphisms.
+\end{reading*}
+
+
+\begin{dfn}[Isomorphism]
+  Given a category $\CC$, objects $a,b \in \Ob{\CC}$ and a morphism $f : a \to b$ in $\CC$, we say that $f$ is an \textbf{isomorphism} when there is a morphism $g : b \to a$ (in the other direction!) such that $f \Comp g = \Id$ and $g \Comp f = \Id$.
+  We write $f : a \cong b$ for a morphism $f$ that is an isomorphism.
+
+  In this case, we call $g$ the \textbf{inverse} of $f$ and $f$ the inverse of $g$. (The latter is justified by \cref{exer:inverse-iso}.)
+\end{dfn}
+
+\begin{exer}\label{exer:inverse-iso}
+  Show that if $f : a \to b$ is an isomorphism with inverse $g : b \to a$, then $g$ is an isomorphism with inverse $f$.
+\end{exer}
+
+\begin{exer}
+  Show that a morphism $f : a \to b$ in $\CC$ is an isomorphism \textbf{in at most one way}, that is, show that its inverse is unique if it exists.
+\end{exer}
+
+\begin{exer}\label{exer:compofiso}
+  Show that the composition of two isomorphisms is an isomorphism.
+\end{exer}
+\begin{rem} 
+Since any identity morphism is an isomorphism (check this!), we conclude by \cref{exer:compofiso} that given any category $\CC$, we always get a new category $isos(\CC)$ by restricting the morphisms to be isomorphisms, i.e. \[
+\Ob{isos(\CC)} = \Ob{\CC}, \quad \CHom{isos(\CC)}{X}{Y} = \left\{f \in \CHom{\CC}{X}{Y} \mid f \text{ is an isomorphism}\right\}
+\] 
+and where the identity and composition is the same as in $\CC$.
+\end{rem}
+
+
+\begin{exer}\label{exer:iso-bool}
+  Consider the Haskell datatype
+\begin{lstlisting}
+data BW = Black | White
+\end{lstlisting}
+Construct two (different!) isomorphisms between |BW| and the type |Bool| of booleans.
+\end{exer}
+
+\begin{exer} Can you characterize the isomorphisms in $\SET$?
+\end{exer}
+
+\begin{exer} Can you characterize the isomorphisms in $\POS$?
+\end{exer}
+
+\begin{exer} Let $(X,\leq)$ be a poset. Can you characterize the isomorphisms in $\POS(X,\leq)$?
+\end{exer}
+
+\begin{exer} Can you characterize the isomorphisms in $\MON$?
+\end{exer}
+
+\begin{exer} Let $\mathcal{G}$ be the category generated by the following graph:
+\[
+\begin{tikzcd}
+& w & \\
+x & & z \arrow[lu, bend left] \arrow[lu,bend right] \\
+& y \arrow[lu] \arrow[ru] &
+\end{tikzcd}
+\]
+Show that the only isomorphisms in $\mathcal{G}$ are the identity morphisms (i.e. the identity paths).
+\end{exer}
+
+\subsection{Sections and Retractions}
+\label{sec:sections}
+
+There are weaker relations between objects of a category than isomorphism.
+For instance, a (Haskell) type |a| can be a ``subtype'' of another Haskell type |b|, in the sense that there is a ``copy'' of |a| in |b|.
+A simple example is that the type |Bool| has a copy inside the type |Int|:
+\begin{lstlisting}
+bool2Int :: Bool -> Int
+bool2Int False = 0
+bool2Int True  = 1
+\end{lstlisting}    
+
+Not only do we have a copy of |Bool| inside |Int|, but also we can go back, so that we get |False| and |True| from |0| and |1|:
+\begin{lstlisting}
+int2Bool :: Int -> Bool
+int2Bool n | n == 0    = False
+           | otherwise = True
+\end{lstlisting}
+However, notice that not only |1| is converted back to |True|, but also everything other than |0| is converted to |True|.
+
+We have
+\begin{lstlisting}
+   int2Bool (bool2Int y) = y
+\end{lstlisting}
+for every |y :: Bool|, but we don't have |bool2Int (int2Bool x) = x| for all |x :: Int|, as this fails for e.g. |x = 17| because |bool2Int (int2Bool 17)| is |1| rather than |17|.
+
+We can say that there is enough room in the type integers for it to host a copy of the type of booleans, but there isn't enough room in the type of booleans for it to host a copy of the type of integers.
+
+When there are functions
+\begin{lstlisting}
+f :: a -> b
+g :: b -> a
+\end{lstlisting}
+such that |f (g y) = y| for all |y :: b|, but not necessarily |g (f x) = x| for all |x :: a|, we say that the type |b| is a retract of the type |a|.
+
+Our discussion above shows that the type |Bool| is a retract of the type |Int|. This retraction is the same as that performed in the programming language C, where the integer |0| codes |False| and everything else codes |True|.
+
+But notice that there are other ways in which the type |Bool| lives inside the type |Int| as a retract: for example, we can send |False| to |13| and |True| to |17|, and then send back everything bigger than |15| to |True| and everything else to |False|.
+
+\begin{exer}
+ Show that the type |Maybe a| is a retract of the type |[a]|. 
+ 
+ Hint: The idea is that |Nothing| corresponds to the empty list |[]| and that |Just x| corresponds to the one-element list |[x]|. Make this idea precise by writing back and forth functions between these types so that they exhibit |Maybe a| as a retract of |[a]|¨. 
+\end{exer}
+
+\begin{dfn}[Section, Retraction]
+  A pair $(s,r)$ of morphisms $s : a \to b$ and $r : b \to a$ in $\CC$ is called a \textbf{section-retraction pair} if $\co{s}{r} = \Id[b]$.
+
+  In such a case, we call $s$ a section and $r$ a retraction.
+\end{dfn}
+
+\begin{rem}
+  Note that a morphism can be a retraction in more than one way, that is, there can be more than one section $s$ such that $\co{s}{r} = \Id$.
+\end{rem}
+
+\subsection{Monomorphisms and Epimorphisms}
+\label{sec:mono-epi}
+
+\begin{reading*}
+See also \cite[p. 134]{leinster} and \cite[\S\S 2.8--2.9]{barr-wells}.
+Also, \cite[\S 2.2]{pierce} briefly discusses monomorphisms and epimorphisms.
+\end{reading*}
+
+From undergraduate mathematics courses you know what injective and surjective functions between sets are.
+The definitions of ``injective'' and ``surjective'' do not carry over to any category (though they do for categories that are, in some sense, ``similar'' to the category of sets).
+In this section, we study two properties of morphisms in a category that, in the category of sets, are equivalent to ``injective'' and ``surjective'', respectively.
+
+
+
+\begin{dfn}[Monomorphism]
+  Let $f : a \to b$ be a morphism in $\CC$. We say that $f$ is a \textbf{monomorphism} if, for any two morphisms $g_1, g_2 : z \to a$, we have
+  \[ \co{g_1}{f} = \co{g_2}{f} \text{ implies } g_1 = g_2 .\]
+\end{dfn}
+
+\begin{exer}\label{ex:mono-inj}
+  In the category of sets, show that a morphism $f : X \to Y$ is a monomorphism if and only if it is injective.
+\end{exer}
+
+\begin{dfn}[Epi]
+  Let $f : a \to b$ be a morphism in $\CC$. We say that $f$ is an \textbf{epimorphism} if, for any two morphisms $g_1, g_2 : b \to z$, we have
+  \[ \co{f}{g_1} = \co{f}{g_2} \text{ implies } g_1 = g_2 .\]
+\end{dfn}
+
+\begin{exer}\label{ex:epi-surj}
+  In the category of sets, show that a morphism $f : X \to Y$ is an epimorphism if and only if it is surjective.
+\end{exer}
+
+
+\begin{exer}
+  In the category of sets, show that any section is injective.
+  Hint: you can use \cref{ex:mono-inj}.
+\end{exer}
+\begin{exer}
+  In the category of sets, show that any retraction is surjective.
+    Hint: you can use \cref{ex:epi-surj}.
+\end{exer}
+
+\begin{exer}\label{exer:iso_to_monoepi} Show that any isomorphism $f : a\cong b$ (in some arbitrary category $\CC$) is both a monomorphism and an epimorphism.
+\end{exer}
+
+\begin{exer} Show that the converse of \cref{exer:iso_to_monoepi} does not hold in general, i.e. give an example of a category where there exists a morphism which is both an epi- and a monomorphism, but which is not an isomorphism.\\
+Hint: Consider a preordered set.
+\end{exer}
+
+\begin{exer} Let $\mathcal{G}_1$ (resp. $\mathcal{G}_2$ and $\mathcal{G}_3$) be the category generated by the following graph:
+\[
+\begin{tikzcd}
+& w & \\
+x & & z \arrow[lu] \\
+& y \arrow[lu] \arrow[ru] &
+\end{tikzcd}
+\]
+resp.
+\[
+\begin{tikzcd}
+& w & \\
+x & & z \arrow[lu, bend left] \arrow[lu,bend right] \\
+& y \arrow[lu] \arrow[ru] &
+\end{tikzcd}
+\]
+resp.
+\[
+\begin{tikzcd}
+& w \arrow[rd,bend left] & \\
+x & & z \arrow[lu, bend left] \\
+& y \arrow[lu] \arrow[ru] &
+\end{tikzcd}
+\]
+
+Can you characterize the mono- and epimorphisms in these categories?
+\end{exer}
+
+\begin{exer} Can you characterize the monomorphisms, epimorphisms and isomorphisms in the category generated by the following graph:
+\[
+\begin{tikzcd}
+x \arrow[r] & y
+\end{tikzcd}
+\]
+\end{exer}
+
+\section{Universal Properties}\label{sec:universal}
+
+In this section, we discuss special objects in a category. 
+
+\begin{reading*}
+  On initial and terminal objects, see also \cite[\S 2.7.16]{barr-wells} and \cite[p. 48ff]{leinster}.
+
+  Products and coproducts, other special limits and colimits, and the general definition of limits and colimits, are discussed in \cite[\S\S 5.1, 5.2]{leinster}.
+
+  Pierce's tutorial discusses the (co)limits defined here in \cite[\S\S 2.3--2.4]{pierce}, and further (co)limits in  \cite[\S\S 2.5--2.7]{pierce}.
+
+  
+\end{reading*}
+
+\begin{dfn}
+  Let $\CC$ be a category. An object $A \in \Ob{\CC}$ is \textbf{initial} if there is exactly one morphism from $A$ to any object $B \in \Ob{\CC}$.
+\end{dfn}
+
+\begin{exer}
+  Identify an initial object in the category $\SET$ of sets.
+  Prove that it is indeed initial.
+\end{exer}
+
+\begin{exer}
+  Identify an initial object in the category $\LEAN$ of Lean types.
+  Prove that it is indeed initial.
+\end{exer}
+
+\begin{exer}
+  Let $(X,\leq)$ be a poset. Describe what an initial object looks like in  $\POS(X,\leq)$.
+\end{exer}
+
+\begin{exer}\label{exer:initial-unique}
+  Let $A$ and $A'$ be initial objects in $\CC$. Construct an isomorphism $i : A \cong A'$.
+\end{exer}
+
+\begin{exer}
+  Let $A$ be an initial object in $\CC$, and let $A'$ be isomorphic to $A$ (via an isomorphism $i : A \cong A'$).
+  Show that $A'$ is an initial object of $\CC$.
+\end{exer}
+
+\begin{rem}
+  \Cref{exer:initial-unique} shows that initial objects in a category $\CC$ are \textbf{essentially unique}, that is, they are \textbf{unique up to (unique) isomorphism}.
+
+  
+  This justifies using the determinate article: we will say that $A$ is \textbf{the} initial object of $\CC$.
+
+  
+  This is more generally the case for any object with a universal property, see, e.g., \cref{exer:terminal-unique} and \cref{exer:product-unique}.
+\end{rem}
+
+\begin{exer}\label{exer:cat-without-initial}
+  Construct a category that does not have an initial object.
+\end{exer}
+
+\begin{rem}
+  The concept of initial object seems trivial and boring in the categories considered above.
+  However, in complicated categories, initial objects can be complicated and exciting;
+  we will see this in \cref{sec:initial-algs}.
+\end{rem}
+
+\begin{dfn}
+  Let $\CC$ be a category. An object $B \in \Ob{\CC}$ is \textbf{terminal} (or \textbf{final}) if there is exactly one morphism to $B$ from any object $A \in \Ob{\CC}$.
+\end{dfn}
+
+\begin{exer}
+  Identify a terminal object in the category $\SET$ of sets.
+  Prove that it is indeed terminal.
+\end{exer}
+
+\begin{exer}
+  Identify an terminal object in the category $\LEAN$ of Lean types.
+  Prove that it is indeed terminal.
+\end{exer}
+
+\begin{exer}
+  Let $(X,\leq)$ be a poset. Describe what a terminal object looks like in  $\POS(X,\leq)$.
+\end{exer}
+
+\begin{exer}\label{exer:terminal-unique}
+  Let $B$ and $B'$ be terminal objects in $\CC$. Construct an isomorphism $i : B \cong B'$.
+\end{exer}
+
+\begin{exer}
+  Let $B$ be a terminal object in $\CC$, and let $B'$ be isomorphic to $B$ (via an isomorphism $i : B \cong B'$).
+  Show that $B'$ is a terminal object of $\CC$.
+\end{exer}
+
+\begin{exer}
+  Show that $\CC$ has a terminal object if and only if $\op\CC$ has an initial object.
+\end{exer}
+
+\begin{exer}
+  Construct a category that does not have an terminal object.
+\end{exer}
+
+
+\begin{dfn}
+  Let $\CC$ be a category and let $A,B \in \Ob\CC$ be objects of $\CC$.
+
+  A triple $(P,\projl : P \to A ,\projr : P \to B)$ is called a \textbf{product of $A$ and $B$} if for any triple $(Q,q_1 : Q \to A, q_2 : Q \to B)$ there is exactly one morphism $f : Q \to P$ such that the following diagram commutes:
+  \[
+    \begin{tikzcd}
+      &
+      Q \ar[ld, "q_1"'] \ar[rd, "q_2"] \ar[d, dashed, "f"]
+      &
+      \\
+      A
+      &
+      P \ar[l, "\projl"] \ar[r, "\projr"']
+      &
+      B
+    \end{tikzcd}
+  \]
+  If $A$ and $B$ have a specified product $(P,\projl : P \to A ,\projr : P \to B)$, then the object $P$ is often called $A \times B$.
+\end{dfn}
+
+
+\begin{exer}
+  Identify a product of sets $X$ and $Y$ in the category $\SET$ of sets.
+  Prove that it is indeed a product.
+\end{exer}
+
+\begin{exer}
+  Identify a product of types $A$ and $B$ in the category $\LEAN$ of Lean types.
+  Prove that it is indeed a product.
+\end{exer}
+
+\begin{exer}
+  Let $(X,\leq)$ be a poset. Describe what a product looks like in  $\POS(X,\leq)$.
+\end{exer}
+
+\begin{exer}\label{exer:product-unique}
+  Given two products of $A$ and $B$ in a category $\CC$, construct an isomorphism between them, that is, between their underlying objects.
+\end{exer}
+
+\begin{exer}
+  Given a product $(P,\projl : P \to A ,\projr : P \to B)$ of $A$ and $B$ in $\CC$, and an object $P'$ that is isomorphic to $P$ via an isomorphism $i : P \cong P'$, construct a product with object $P'$ of $A$ and $B$.
+\end{exer}
+
+\begin{dfn}
+   Let $\CC$ be a category and let $A,B \in \Ob\CC$ be objects of $\CC$.
+
+  A triple $(C,\inl : A \to C,\inr : B \to C)$ is called a \textbf{coproduct of $A$ and $B$} if for any triple $(D,i_l : A \to D, i_r : B \to D)$ there is exactly one morphism $f : C \to D$ such that the following diagram commutes:
+  \[
+    \begin{tikzcd}
+      A \ar[r, "\inl"] \ar[rd, "i_l"']
+      &
+      C  \ar[d, dashed, "f"]
+      &
+      B \ar[l, "\inr"'] \ar[ld, "i_r"]
+      \\
+      &
+      Q %\ar[ld, "q_1"'] \ar[rd, "q_2"] \ar[d, "f"]
+      &
+      \\
+    \end{tikzcd}
+  \]
+  If $A$ and $B$ have a specified coproduct $(C,\inl : A \to C,\inr : B \to C)$, then the object $P$ is often called $A + B$.
+\end{dfn}
+
+\begin{exer}
+  Write a sequence of suitable exercises about coproducts.
+\end{exer}
+
+\begin{rem}
+  Initial and terminal objects and products and coproducts are special cases of \textbf{limits and colimits}.
+  We are not studying, in these notes, the general notion of (co)limit.
+  However, the examples above should suffice for you to understand, in your own time, other (co)limits, such as
+  \begin{itemize}
+  \item pullbacks and pushouts;
+  \item products and coproducts of families of objects (not just of pairs of objects); and
+  \item equalizers and coequalizers.
+  \end{itemize}
+\end{rem}
+
+\begin{reading*}
+  We do not discuss here whether/when/how (co)limits can be transported along functors.
+  You can find some information on this in \cite[\S 5.3]{leinster}.
+\end{reading*}
+
+
+\section{Functors}\label{sec:functors}
+An important aspect in computer programming is the transformation of data. For example, if you have a data type $X$, then one can consider also the data type $\List(X)$ of lists with values in $X$. If one thinks of the objects in a category to be data types, then we can ask even more. If $f:X\to Y$ is a function (between the data types), then this also induces  a function from the $X$-valued lists to the $Y$-valued lists as follows:
+\begin{align}\label{eqn:function_on_list}
+  \List(f) : \List(X)&\to \List(Y)
+  \\
+  [x_1,\ldots x_n] &\mapsto [f(x_1),\ldots,f(x_n)]. \notag
+\end{align}
+
+\begin{rem}
+  The ``\ldots'' above are informal --- a formal definition would define $\List(f)$ by structural recursion on lists, of course.
+\end{rem}
+
+A \textit{functor} formalizes this phenomenon:
+\begin{dfn} Let $\CC$ and $\DD$ be categories. A \textbf{functor} $F$ from $\CC$ to $\DD$ consists of the following data:
+\begin{itemize}
+\item A function 
+\[
+\Ob{\CC} \to \Ob{\DD},
+\]
+written as $X\mapsto F(X)$.
+\item For each $X,Y\in \Ob{\CC}$, a function
+\[
+\CHom{\CC}{X}{Y} \to \CHom{\DD}{F(X)}{F(Y)},
+\]
+written as $f\mapsto F(f)$.
+\end{itemize}
+Moreover, this data should satisfy the following properties:
+\begin{itemize}
+\item (\textbf{Preserves composition}) For $f\in \Hom[\CC]{X}{Y}$ and $g\in \Hom[\CC]{Y}{Z}$, we have $F(\co f g) = \co {Ff}{Fg}$.
+\item (\textbf{Preserves identity}) For $X\in\CC$, we have $F(\Id[X]) = \Id[F(X)]$.
+\end{itemize}
+\end{dfn}
+
+\begin{exa} \label{example:functor_list} The \textbf{list-functor} (on sets), denoted by $\List$, is the functor from $\SET$ to $\SET$ defined by the following data:
+\begin{itemize}
+\item The function on objects is given by:
+\[
+\Ob{\SET}\to \Ob{\SET}: X\mapsto \List(X).
+\]
+\item For each $X,Y\in\SET$, the function on morphisms is given by
+\[
+\CHom{\SET}{X}{Y} \to \CHom{\SET}{\List(X)}{\List(Y)}: f\mapsto \List(f),
+\]
+where $\mathbf{List}(f)$ is given in \cref{eqn:function_on_list}.
+\end{itemize}
+
+
+\begin{comment}
+\begin{proof}
+The data is clearly well-defined since we work with \textit{mere} sets, i.e. no extra structure. That $\List$ would preserve the identity means that $\List(\Id[X]) = \Id[\List(X)]$, i.e. we have to show that for each $X$-valued list $\ell$, we have:
+\[
+\List(\Id[X])(\ell)) = \Id[\List(X)](A)(\ell).
+\] 
+The lefthand-side of the equation is given by:
+$$\mathbf{List}(\Id[X])(\{x_i\}_i) = \{\Id[X] (x_i)\}_i = \{x_i\}_i,$$
+where the first (resp. second) equality holds by definition of $\mathbf{List}$ on morphisms (resp. by definition of $\Id[X]$).\\
+The righthand-side of the equation is given by:
+$$\Id[\mathbf{List}(X)](A)(\{x_i\}_i) = \{x_i\}_i,$$
+by definition of the identity morphism in $\SET$. Hence, the left and right hand side are equal which shows that $\mathbf{List}$ indeed preserves the identity.\\
+We now show that $\mathbf{List}$ preserves composition. Let $f\in \CHom{\SET}{X}{Y}$ and $g\in \CHom{\SET}{Y}{Z}$ be functions. By definition of the composition in $\SET$ and by definition of $\mathbf{List}$ on morphisms, we have for each $X$-valued list $\{x_i\}_i$:
+\begin{eqnarray}\label{eqn:functor_list_comp1}
+\mathbf{List}(f\Comp g)(\{x_i\}_i) = \{(f\Comp g)(x_i)\}_i = \{g(f(x_i)\}_i.
+\end{eqnarray}
+Again by definition of the composition in $\SET$ and by definition of $\mathbf{List}$ on morphisms, we have for each $X$-valued list $\{x_i\}_i$:
+\begin{eqnarray}\label{eqn:functor_list_comp2}
+\left(\mathbf{List}(f)\Comp \mathbf{List}(g)\right)(\{x_i\}_i) = \mathbf{List}(g)\left(\{f(x_i)\}_i\right) = \{g(f(x_i)\}_i.
+\end{eqnarray}
+Hence, by combining \cref{eqn:functor_list_comp1, eqn:functor_list_comp2}, we conclude that for each $X$-valued list $\{x_i\}_i$ we have
+\[
+\mathbf{List}(f\Comp g)(\{x_i\}_i) = \left(\mathbf{List}(f)\Comp \mathbf{List}(g)\right)(\{x_i\}_i).
+\]
+Since this holds for every such list, we indeed have that the composition is preserved.
+\end{proof}
+\end{comment}
+\end{exa}
+
+\begin{exer}
+  Show that $\List$ is a  functor, that is, show that it preserves identity and composition of functions.
+  Hint: use structural induction on lists.
+\end{exer}
+
+If $X$ and $Y$ are types in Haskell, then one also has the product type, which we denote by $X\times Y$. Fixing (either) one of those arguments, induces a functor:
+\begin{exa}\label{example:functor_haskproduct} Let $Y$ be an object in $\HASK$. The \textbf{product-functor (w.r.t $Y$)} consists of the following data:
+\begin{itemize}
+\item The function on objects is given by:
+\[
+\Ob{\HASK} \to \Ob{\HASK}: X\mapsto X\times Y.
+\]
+\item Let $X_1,X_2 \in \HASK$. The function on morphisms is given by:
+\[
+ \CHom{\HASK}{X_1}{X_2} \to \CHom{\HASK}{X_1 \times Y}{X_2\times Y}: f\mapsto f\times \Id[Y].
+\]
+\end{itemize}
+\end{exa}
+
+\begin{exer} Show that the product functor, defined in \cref{example:functor_haskproduct}, satisfies the functor properties.
+\end{exer}
+
+\begin{exer} Show how the |Maybe| type constructor yields a functor on $\HASK$.
+\end{exer}
+
+
+
+
+\begin{exer}\label{ex:poset_functors} Let $(X,\leq_X)$ and $(Y,\leq_Y)$ be posets. Can you characterize/describe the functors from $\POS(X,\leq_X)$ to $\POS(Y,\leq_Y)$  ? Before writing out the definitions, what would you expect the answer to be?
+\end{exer}
+
+\begin{exer}\label{ex:monoid_functors} Let $(M,m,e)$ be a monad and let $\MON(M,m,e)$ be its corresponding category as defined in \cref{monoidcategory}. Can you characterize/describe the functors from $\MON(M,m,e)$ to $\SET$?
+\end{exer}
+
+\subsection{Category of categories}
+Notice that a functor is a function between categories which preserves the structure of a category. So by the \textit{philosophy} of category theory, this would define a category whose objects are categories and whose morphisms are functors. In order to make this precise, we would also need a \textit{identity functor} and we should have a \textit{composition of functors}.
+
+\begin{exa}\label{example:functor_id} Let $\CC$ be a category. The \textbf{identity functor on $\CC$}, denoted by $\Id[\CC]$, is the functor specified by the following data:
+\begin{itemize}
+\item The function on objects is given by
+\[
+\Ob{\CC}\to \Ob{\CC}: X\mapsto X.
+\]
+\item For each $X,Y\in\CC$, the function on morphisms is given by
+\[
+\CHom \CC X Y\to \CHom \CC X Y: f\mapsto f.
+\]
+\end{itemize}
+\end{exa}
+
+\begin{exer} Show that $\Id[\CC]$ (defined in \cref{example:functor_id}) satisfies the properties of a functor, i.e. $\Id[\CC]$ is indeed a functor.
+\end{exer}
+
+\begin{exa}\label{example:functor_comp} Let $\CC,\DD$ and $\EE$ be  categories and $F:\CC\to\DD$ and $G:\DD\to\EE$ functors. The \textbf{composition functor of $F$ with $G$}, denoted by $F\Comp G$, is the functor specified by the following data:
+\begin{itemize}
+\item The function on objects is given by
+\[
+\Ob{\CC}\to \Ob{\EE}: X\mapsto G(F(X)).
+\]
+\item For each $X,Y\in\CC$, the function on morphisms is given by
+\[
+\CHom \CC X Y\to \CHom{\EE}{G(F(X))}{G(F(Y))}: f\mapsto G(F(f)).
+\]
+\end{itemize}
+\end{exa}
+
+\begin{exer} Show that $F\Comp G$ (defined in \cref{example:functor_comp}) satisfies the properties of a functor, i.e. $F\Comp G$ is indeed a functor.
+\end{exer}
+
+\begin{dfn} The \textbf{Category of categories}, denoted by $\CAT$, is the category specified by the following data:
+\begin{itemize}
+\item An object is a category.
+\item If $\CC, \DD\in\CAT$ are categories, then is $\CHom \CAT \CC \DD$ the collection of all functors from $\CC$ to $\DD$.
+\item The identity morphism on a category $\CC$ is the identity functor on $\CC$ defined in \cref{example:functor_id}.
+\item The composition of morphisms, i.e. functors, is the composition of functors defined in \cref{example:functor_comp}.
+\end{itemize} 
+\end{dfn}
+
+\begin{exer} Show that $\CAT$ satisfies the property of a category, i.e. $\CAT$ is indeed a category.
+\end{exer}
+
+\subsection{Forgetful and free functors}
+A lot of (mathematical) structures are defined as some other kind of mathematical structure, but where extra structure is added. An example of this is the following:\\
+Recall that a monoid is a set $M$ together with a binary operation $m:M\to M\to M$ which is associative and such that there is an identity element $e$ (see \cref{monoidcategory}). In particular, any monoid has an underlying set and any morphism of monoids has an underlying function (between those sets). So forgetting the binary operation and identity element defines a functor from $\MON$ to $\SET$ which is called a \textit{forgetful functor}:
+\begin{exa}\label{example:forgetful_montoset} The \textbf{forgetful functor from $\MON$ to $\SET$} is the functor specified by the following data:
+\begin{itemize}
+\item The function on objects is given by 
+\[
+\Ob{\MON}\to \Ob{\SET}: (M,m,e)\mapsto M.
+\]
+\item The function on objects is given by
+\[
+\CHom{\MON}{(M_1,m_1,e_1)}{(M_2,m_2,e_2)} \to \CHom{\SET}{M_1}{M_2} : f\mapsto f.
+\]
+\end{itemize}
+\end{exa}
+Notice that if one defines a category whose objects are sets $M$ together with an associative binary operation $m:M\to M\to M$, then one could analoguously also define a forgetful functor from $\MON$ to this category by only forgetting the neutral element.
+
+\begin{lemma} The forgetful functor from $\MON$ to $\SET$ satisfies the properties of a functor.
+\begin{proof}
+We clearly have that everything is well-defined since the codomain is $\SET$.\\
+That the identity morphism is preserved holds by definition because the identity morphism of $(M,m,e)$ (in $\MON$) is given by the identity function and the identity morphism of $M$ (in $\SET$) is also given by the identity function.\\
+That the composition of morphisms is preserved also holds by definition because the composition of morphisms (in $\MON$) is given by the composition of the underlying functions which is also the composition in $\SET$.
+\end{proof}
+\end{lemma}
+
+The forgetful functor $Forget$ from $\MON$ to $\SET$ forgets the \textit{algebraic} structure of a monoid and since there are multiple monoid structures on the same set (given an example of this), hence we do not have that there exists some functor $G: \SET\to \MON$ such that $Forget\Comp G$ is the identity on $\MON$. However, to each set, one can define a monoid which satisfies an important property (this is \cref{prop:UVP_forget_montoset}). The associated monoid is called the \textit{free monoid}:
+\begin{exa} Let $X$ be a set. The \textbf{free monoid generated by $X$}, denoted by $Free(X)$, is specified by the following data:
+\begin{itemize}
+\item The underlying set consists of all finite sequences/strings of elements in $X$ (including the empty sequence).
+\item The multiplication is defined by concatenating the sequences, i.e. 
+$$m\left((x_1,\cdots,x_n),(y_1,\cdots,y_m)\right) := (x_1,\cdots,x_n,y_1,\cdots,y_m).$$
+\item The identity element is given by the empty sequence.
+\end{itemize}
+\end{exa}
+
+\begin{exa} The \textbf{free functor from $\SET$ to $\MON$} is specified by the following data:
+\begin{itemize}
+\item The function on objects is given by 
+\[
+\Ob{\SET}\to \Ob{\MON}: X\mapsto Free(X).
+\]
+\item The function on morphisms is given as follows: A morphism $f \in \CHom{\SET}{X}{Y}$ (i.e. a function) is mapped to the monoidal morphism which is given by pointwise application of $f$, i.e.
+\[
+Free(f)(x_1,\cdots,x_n) := (f(x_1),\cdots, f(x_n)).
+\]
+\end{itemize}
+\end{exa}
+
+\begin{exer} Show that $Free$ satisfies the properties of a functor.
+\end{exer}
+
+For any set $X$, we have the \textit{canonical function} 
+\[
+Free^{X}_{!}: X\to Free(X): x\mapsto (x).
+\]
+This function satisfies the property that any function from $X$ to an arbitrary monoid corresponds with a unique morphism (of monoids) from the free monoid generated by $X$ to that monoid:
+\begin{prop}\label{prop:UVP_forget_montoset} Let $(M,m,e)$ be a monoid and $X$ be a set. For any morphism $f \in \CHom{\SET}{X}{M}$ (i.e. a function), there exists a unique  morphism $\phi^{f} \in \CHom{\MON}{Free(X)}{(M,m,e)}$, such that $f = Free^{X}_{!}\Comp \phi^{f}$.
+\begin{proof}
+For elements $a,b\in M$, we denote their multiplication by $a\times b := m(a,b)$ (note that by associativity we have that $a_1\times a_2\times\cdots\times a_n)$ is well-defined). Let $f\in \CHom{\SET}{X}{M}$ be a function. Define 
+\[
+\phi^{f}: Free(X)\to (M,m,e): (x_1\cdots,x_n)\mapsto f(x_1) \times\cdots \times f(x_n),
+\] 
+We have to define separately what happens with the empty sequence. The empty sequence we map to the identity element $e$, so in particular we have that the identity element is preserved under $\phi^{f}$, so in order to conclude that $\phi^{f}$ is a morphism of monoids, it remains to show that it preserves the binary operation but this is clear by definition.\\
+That $f = Free^{X}_{!}\Comp \phi^{f}$ holds follows immediately by the definition of $Free^{X}_{!}$ and $\phi^{f}$, indeed:
+\[
+\left(Free^{X}_{!}\Comp \phi^{f}\right)(x) = \phi^{f}\left((x)\right) = f(x).
+\]
+So it only remains to show uniqueness. Assume that $\psi$ also satisfies $Free^{X}_{!}\Comp \psi = f$. The claim now follows because $\psi$ is a morphism of monoids, indeed: Since $\psi$ is morphism is monoids, we have that it preserves the multiplication, but the multiplication is given by concatenation, hence, we have that $\psi$ is uniquely determined by the images of the sequences of length $1$ (and length $0$, but this sequence of length $0$ should be mapped under $\psi$ to $e$). But a sequence of length $1$ is of the form $(x) = Free^{X}_{!}(x)$. So the claim indeed follows by the following computation: 
+\[
+\psi((x)) = \psi(Free^{X}_{!}(x)) = f(x) = \phi^{f}(Free^{X}_{!}(x)) = \phi^{f}((x)).
+\]
+\end{proof}
+\end{prop}
+
+The following exercise shows that there is a special connection between the forgetful functor $\mathit{forget}: \MON\to\SET$ and the free functor $\mathit{free}: \SET\to\MON$. This connection expresses that these form a so-called \textit{adjoint pair} (see \cref{sec:adjunctions}).
+\begin{exer}\label{exer:preadjunction_monset}
+Show that for any set $X$ and monoid $(M,m,e)$, there exist bijections between the hom-sets:
+\[
+\alpha_{X}^{(M,m,e)} : \CHom{\MON}{Free(X)}{(M,m,e)} \to \CHom{\SET}{X}{forget(M,m,e)}.
+\]
+Hint: use \cref{prop:UVP_forget_montoset}.
+\end{exer}
+
+\begin{exer} Define a forgetful functor from the category $\POS$ of posets (defined in \cref{example:poset}) to $\SET$ analoguous to the the forgetful functor from $\MON$ to $\SET$ (defined in \cref{example:forgetful_montoset}).
+\end{exer}
+\begin{rem} The story about free monoids can not be repeated for posets, i.e. there is no free poset structure on all sets. But in order to prove this one needs more machinery.
+\end{rem}
+
+
+\subsection{Contravariant functors}
+
+A variation on functors are \textbf{contravariant functors}.
+A contravariant functor consists of a map on objects just like a functor.
+However, the \textbf{map on morpisms turns the morphisms around}.
+We give the formal definition:
+
+\begin{dfn} Let $\CC$ and $\DD$ be categories. A \textbf{contravariant functor} $F$ from $\CC$ to $\DD$ consists of the following data:
+\begin{itemize}
+\item A function 
+\[
+\Ob{\CC} \to \Ob{\DD},
+\]
+written as $X\mapsto F(X)$.
+\item For each $X,Y\in \Ob{\CC}$, a function
+\[
+\CHom{\CC}{X}{Y} \to \CHom{\DD}{F(Y)}{F(X)},
+\]
+written as $f\mapsto F(f)$.
+\end{itemize}
+Moreover, this data should satisfy the following properties:
+\begin{itemize}
+\item (\textbf{Preserves composition}) For $f\in \Hom[\CC]{X}{Y}$ and $g\in \Hom[\CC]{Y}{Z}$, we have $F(\co f g) =  \co {F(g)}{F(f)}$.
+\item (\textbf{Preserves identity}) For $X\in\CC$, we have $F(\Id[X]) = \Id[F(X)]$.
+\end{itemize}
+\end{dfn}
+
+\begin{exer} Notice that the preservation of composition has now changed, why is this the case?
+\end{exer}
+
+An example of a contravariant functor is given by the powerset-functor:
+\begin{exa} \label{example:powersetfunctor} Recall that the powerset of a set $X$, denoted by $\mathbb{P}(X)$, is the set of all subsets of $X$, i.e. 
+\[
+\mathbb{P}(X) :=  \left\{A \mid A\subseteq X\right\}.
+\]
+The contravariant \textbf{powerset-functor}\footnote{Since a function is mapped to the inverse-image function, one also calls the powerset-functor, an inverse image-functor} (on sets), denoted by $\mathbb{P}$, is the functor from $\SET$ to $\SET$ defined by the following data:
+\begin{itemize}
+\item The function on objects is given by:
+\[
+\Ob{\SET}\to \Ob{\SET}: X\mapsto \mathbb{P}(X).
+\]
+\item For each $X,Y\in\SET$, the function on morphisms is given by
+\[
+\CHom{\SET}{X}{Y} \to \CHom{\SET}{\mathbb{P}(X)}{\mathbb{P}(Y)}: f\mapsto f^{-1},
+\]
+where $f^{-1}$ given by
+\[
+f^{-1}:\mathbb{P}(Y)\to \mathbb{P}(X): B\mapsto f^{-1}(B) := \left\{x\in X \mid f(x)\in B\right\}.
+\]
+\end{itemize}
+\end{exa}
+
+\begin{exer} Show that $\mathbb{P}$, defined in \cref{example:powersetfunctor} satisfies the properties of a contravariant functor.
+\end{exer}
+
+
+\section{Natural transformations}
+\label{sec:nat-trans}
+
+\begin{dfn} Let $F,G: \CC\to\DD$ be functors. A \textbf{natural transformation} $\alpha$ from $F$ to $G$ consists of the following data:
+\begin{itemize}
+\item For each $X\in \Ob{\CC}$, a morphism $\alpha_X \in \CHom{\DD}{F(X)}{G(X)}$.
+\end{itemize}
+Moreover, this data should satisfy the following \textit{naturality condition}:\\
+For each $f\in \CHom{\CC}{X}{Y}$, the following diagram should commute:
+\begin{center}
+\begin{tikzcd}
+F(X) \arrow[r, "\alpha_X"] \arrow[d,swap, "F(f)"] & G(X) \arrow[d, "G(f)"]\\
+F(Y) \arrow[r,swap, "\alpha_Y"] & G(Y)
+\end{tikzcd}
+\end{center}
+Moreover, we call $\alpha$ a \textbf{natural isomorphism} if for each $X\in\Ob{\CC}$, we have that $\alpha_X$ is an isomorphism in $\DD$.
+\end{dfn}
+
+\begin{nota} If $F,G:\CC\to\DD$ are functors. A natural transformation $\alpha$ from $F$ to $G$, is denoted as $\NatTrans{\alpha}{F}{G}$ or 
+\begin{center}
+\begin{tikzcd}[column sep=huge]
+\CC
+  \arrow[bend left=50]{r}[name=U,label=above:$\scriptstyle F$]{}
+  \arrow[bend right=50]{r}[name=D,label=below:$\scriptstyle U$]{} &
+\DD
+  \arrow[shorten <=5pt, Rightarrow,to path={(U) -- node[label=right:$\alpha$] {} (D)}]{}
+\end{tikzcd}
+\end{center}
+\end{nota}
+
+\begin{exa} (\textbf{Currying}) Let $X$ be a set. Let $\SET(X, -)\times X : \SET\to\SET$ be the functor induced by the following data (on objects):
+\[
+Y\mapsto \SET(X,Y)\times X.
+\]
+The evaluation defines a natural transformation $\NatTrans{ev}{F}{\Id[\SET]}$ as follows:
+\[
+ev_Y : \SET(X,Y) \times X \to Y : (f,x) \mapsto f(x).
+\]
+Show that this indeed satisfies the naturality condition.
+\end{exa}
+
+\subsection{Functor categories}
+\begin{dfn}\label{dfn:nattrans_id} Let $F:\CC\to\DD$ be a functor. The \textbf{identity natural transformation} $\Id[F]$ on $F$ is given by the following data:
+\[
+\forall X\in\Ob{\CC}: (\Id[F])_{X} := \Id[F(x)].
+\]
+\end{dfn}
+
+\begin{exer} Show that for any functor $F:\CC\to\DD$, the identity natural transformation $\Id[F]$ satisfies the properties of a natural transformation.
+\end{exer}
+
+\begin{dfn}\label{dfn:nattrans_comp} Let $F,G,H\CC\to\DD$ be functors and $\NatTrans{\alpha}{F}{G}$, $\NatTrans{\beta}{G}{H}$ be natural transformations. The \textbf{(vertical) composition} of $\alpha$ and $\beta$ is the natural transformation $\Comp{\alpha}{\beta}$ is given by the following data:
+\[
+\forall X\in\Ob{\CC}: (\co{\alpha}{\beta})_{X} := \co{\alpha_X}{\beta_X}.
+\]
+\end{dfn}
+
+\begin{exer} Show that for any functors $F,G,H\CC\to\DD$ and $\NatTrans{\alpha}{F}{G}$, $\NatTrans{\beta}{G}{H}$ natural transformations, the (vertical) composition of $\alpha$ and $\beta$ satisfies the properties of a natural transformation.
+\end{exer}
+
+\begin{dfn} Let $\CC,\DD$ be categories. The \textbf{category of functors} or the \textbf{functor category} from $\CC\to\DD$, denoted by $Fun(\CC,\DD)$ or $[\CC,\DD]$, is given by the following data:
+\begin{itemize}
+\item An object is a functor $F:\CC\to\DD$.
+\item A morphism from $F$ to $G$ is a natural transformation $\NatTrans{\alpha}{F}{G}$.
+\item The identity morphism on $F$ is given by the identity natural transformation $\Id[F]$ defined in \cref{dfn:nattrans_id}.
+\item The composition of $F$ and $G$ is given by the composition $\co{\alpha}{\beta}$ defined in \cref{dfn:nattrans_comp}.
+\end{itemize}
+\end{dfn}
+
+\begin{exer} Show that for any two categories $\CC$ and $\DD$, the functor category from $\CC$ to $\DD$ satisfies the properties of a category.
+\end{exer}
+
+\begin{dfn}\label{dfn:nattrans_horcomp} Let $F,G : \CC\to\DD$ and $\tilde{F},\tilde{G}:\DD\to\EE$ be functors and $\NatTrans{\alpha}{F}{G}, \NatTrans{\beta}{\tilde{F}}{\tilde{G}}$ be natural transformations. The \textbf{horizontal composition} (also called the \textbf{Godement product}) of $\alpha$ and $\beta$, denoted by $\beta \bullet \alpha$, is defined as:
+\begin{equation}\label{eqn:nattrans_horcomp}
+\forall X\in \Ob{\CC}: (\beta\bullet\alpha)_X := \co{\tilde{F}(\alpha_X)}{\beta_{G(X)}}.
+\end{equation}
+\end{dfn}
+
+\begin{exer} Show that $\alpha\bullet\beta$ (defined as in \cref{dfn:nattrans_horcomp}), is indeed a natural transformation.
+\end{exer}
+
+\begin{exer} Show the following property: 
+\[
+\forall X\in \Ob{\CC}: (\beta\bullet\alpha)_X = \co{\beta_{F(X)}}{\tilde{G}(\alpha_X)}.
+\]
+Hint: Write the equality as a (not-known commutative) square.
+\end{exer}
+
+\subsection{Examples}
+\begin{exa} Let $(M,m,e)$ be a monoid and let $\MON(M,m,e)$ be its corresponding category. Recall from \cref{ex:monoid_functors} that a functor from $\mathcal{M}$ to $\SET$ is a set $X$ together an action of $M$ on $X$, i.e. a function $\mu: M\times X\to X$ such that 
+\[
+\forall x\in X: \mu(e,x) = x, \quad \forall n_1,n_2\in M, x\in X: \mu(n_1, \mu(n_2,x)) = \mu(m(n_1,n_2), x).
+\]
+Characterize the natural transformations between $G$-sets.
+\end{exa}
+
+\begin{exa} Let $(X,\leq_X)$ and $(Y,\leq_Y)$ be posets. Recall from \cref{ex:poset_functors} that a functor between posets corresponds with an order-preserving function, i.e. $x_1 \leq_X x_2 \implies f(x_1) \leq_Y f(x_2)$. Characterize the natural transformations between order-preserving functions.
+\end{exa}
+
+\subsection{Equivalence of categories}
+Recall that objects $X,Y\in\Ob{\CC}$ are isomorphic if there exists morphisms $f\in\CHom{C}{X}{Y}$ and $g\in\CHom{C}{Y}{X}$ such that $\co{f}{g} = \Id[X]$ and $\co{g}{f} = \Id[Y]$. So in particular we have the notion of an isomorphism in the category $\CAT$ of categories. Spelled out, this means categories $\CC$ and $\DD$ are isomorphic if there exist functors $F:\CC\to\DD$ and $G:\CC\to\DD$ such that $\co{F}{G}= \Id[\CC]$ and $\co{G}{F} = \Id[\DD]$.\\
+However, the following exercise shows that isomorphism of categories is not the correct notion of \textit{equivalence/sameness} between categories:\\
+Let $\FINSET$ be the category whose objects are given by finite sets and whose morphisms are given by functions\footnote{Notice that the objects of $\FINSET$ form a subset of the objects of $\SET$, but given any two finite sets $X,Y in \Ob{\FINSET}$, we have $\CHom{FINSET}{X}{Y}$ = $\CHom{SET}{X}{Y}$. We say in this case that $\FINSET$ is a (full) subcategory of $\SET$.}. That this is a category follows since $\SET$ is a category.\\
+Let $\Catb{FinOrd}$ be the category whose objects are given by sets of the form 
+\[
+[n] := \left\{0,1,\cdots,n-1\right\},
+\]
+and whose morphisms are given by functions between these sets.\\
+Every finite set $X$ is always in bijection with a set of the form $[n]$ (where $n$ is the size $\vert X\vert$ of $X$). For each set $X$, we fix a bijection $\phi^X: X\to [\vert X\vert]$. Consequently, we have a functor:
+\begin{dfn} Let $U: \FINSET\to \Catb{FinOrd}$ be the functor specified by the following data:
+\begin{itemize}
+\item For $X\in \Ob{\FINSET}$, we define $U(X) := [\vert X\vert]$.
+\item For $f\in \CHom{\FINSET}{X}{Y}$, we define $U(f): [\vert X\vert]\to [\vert Y\vert]$ as the unique function such that the following diagram commutes:
+\begin{center}
+\begin{tikzcd}
+X \arrow[r, "\phi^X"] \arrow[d,swap, "f"] & {[\vert X\vert]} \arrow[d, "U(f)"] \\
+Y \arrow[r,swap, "\phi^Y"] & {[\vert Y\vert]}
+\end{tikzcd}
+\end{center}
+\end{itemize}
+\end{dfn}
+
+\begin{exer} Show that $U: \FINSET\to \Catb{FinOrd}$ is indeed a functor. In particular, you have to show that $U$ is well-defined on the morphisms.
+\end{exer}
+
+In order to show that $U$ is not an isomorphism, one can use the following lemma/exercise:
+\begin{exer} Show that a functor $F:\CC\to\DD$ is an isomorphism if and only if $F$ satisfies the following properties:
+\begin{itemize}
+\item $F$ is injective on objects, i.e. 
+\[
+\forall X,Y\in\Ob{\CC}: F(X) = F(Y) \implies X=Y.
+\]
+\item $F$ is surjective on objects, i.e. 
+\[
+\forall Y\in\Ob{\DD}: \exists X\in\Ob{\CC} : F(X) = Y.
+\]
+\item $F$ is faitful, i.e. the following functions are injective
+\[
+\forall X,Y\in\Ob{\CC}: \CHom{\CC}{X}{Y} \xrightarrow{F_{X,Y}} \CHom{\DD}{F(X)}{F(Y)} : f\mapsto F(f)
+\]
+\item $F$ is full, i.e. for all $X,Y\in \Ob{\CC}$, $F_{X,Y}$ is surjective.
+\end{itemize}
+\end{exer}
+
+\begin{exer} Show that $U$ is not an isomorphism, i.e. state which part of an isomorphism fails and give a concrete example that it fails.
+\end{exer}
+
+\begin{rem} So the problem with $U$ (in the sense that it is not an isomorphism) is that multiple (finite) sets are mapped to the same set. For this reason, a good notion of equivalence between categories should not be injective on objects. Also, which is not clear from this example, we should also weaken the condition of $F$ being surjective on objects. Instead, we need that $F$ is \textbf{essentially surjective on objects}:
+\[
+\forall Y\in\Ob{\DD}: \exists X\in\Ob{\CC} : F(X) \cong Y.
+\]
+\end{rem}
+So motivated by the remark, we define:
+\begin{dfn} Categories $\CC$ and $\DD$ are \textbf{equivalent} if there exists a pair of functors $(F:\CC\to\DD, G:\DD\to\CC)$ such that there exists natural isomorphisms 
+\[
+\co{F}{G} \to \Id[\CC], \quad \co{G}{F} \to \Id[\DD]
+\]
+\end{dfn}
+
+So although $U$ is not an isomorphism, it does induces an equivalence of categories:
+\begin{exer} Show that $U$ induces an equivalence of categories.
+\end{exer}
+
+\begin{exer} Let $\CC$ be the category whose objects are categories with a unique object and whose morphisms are functors between these one-object categories, i.e. $\CC$ is the (full) subcategory of $\CAT$ generated by the categories with a unique object. Show that $\CC$ is equivalent to the category $\MON$ of monoids. \\
+What happens if we do not consider $\CC$ to consist of those categories with a unique object, but with a unique object up to isomorphism, i.e. $\CC$ is the category whose objects are categories $\DD$ which satisfy the following property: 
+\[
+\forall X,Y \in \Ob{\DD}: X\cong Y.
+\]
+\end{exer}
+
+The following exercise gives a characterization of a functor being an equivalence. However, in order to show this, one has to use the axiom of choice which means (informally) that if the following property holds:
+\[ 
+\exists x: P(x),
+\]
+then we can fix some $x$ such that $P(x)$ holds.
+\begin{exer} Show that a functor $F:\CC\to\DD$ induces an equivalences of categories if and only if it is essentially surjective on objects and fully faithful.
+\end{exer}
+
+
+%\onlydraft{\input{adjunctions}}
+
+\onlydraft{\input{monads}}
+
+\onlydraft{\input{data}}
+
+
+
+
+\printbibliography
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
