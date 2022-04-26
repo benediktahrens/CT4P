@@ -18,30 +18,62 @@ In this section we introduce (initial) algebras which allows us to define induct
 \begin{intu} An algebra is loosely speaking a set with some \textit{algebraic} operations like multiplication. A simple example is that of a monoid. The following example shows that (the data of) monoids correspond precisely with algebras over a fixed endofunctor.
 \end{intu}
 
+
+\begin{exa}
+ Let $\Maybe : \SET \to \SET$ be the endofunctor given on objects by $\Maybe(X) := 1 + X$. 
+ A $\Maybe$-algebra is a pair $(X,\phi)$ of a set $X$ and a function $\phi : 1 + X \to X$.
+ By the universal property of the coproduct, $\phi$ is given, equivalently,
+ by two functions $z$ and $s$ as follows.
+ \begin{align*}
+    z : 1 &\to X
+    \\
+    s : X &\to X
+ \end{align*}
+Here, think of ``$z$'' standing for ``zero'', and ``$s$'' standing for ``successor''.
+\end{exa}
+
+
 \begin{exa}\label{example:algebra_of_monoids} Let $F$ be the endofunctor induced by:
 \[
-F: \SET \to \SET: X \mapsto 1\sqcup (X\times X).
+F: \SET \to \SET: X \mapsto 1 + (X\times X).
 \]
-An $F$-algebra consists of a set $X\in\SET$ together with a function $\phi:\CHom{\SET}{1\sqcup (X\times X)}{X}$. Since $\phi$ is function from the disjoint union, we have that $\phi$ is corresponds (uniquely) with two functions:
-\[
-e: 1\to X,\quad m:X\times X\to X.
-\]
-This is precisely the data needed which a monoid has.\\
+An $F$-algebra consists of a set $X\in\SET$ together with a function $\phi:\CHom{\SET}{1\sqcup (X\times X)}{X}$. Since $\phi$ is function from the disjoint union, we have that $\phi$ corresponds uniquely to two functions:
+\begin{align*}
+e &: 1\to X
+\\
+m &: X\times X\to X.
+\end{align*}
+This is precisely the data of a monoid.
+
 Conversely, if $(M,m,e)$ is a monoid, then this induces a function
 \[
-1 \sqcup (M\times M) \xrightarrow{\phi} M,
+1 + (M\times M) \xrightarrow{\phi} M,
 \]
 which is defined by 
-\begin{eqnarray*}
-\phi\vert_{1} &: 1\to M: &\star\mapsto e,\\
-\phi\vert_{M\times M} &: M\times M\to M: &(x,y)\mapsto m(x,y),
-\end{eqnarray*}
-which is an $F$-algebra by definition.
+\begin{align*}
+\phi\vert_{1} : 1 &\to M
+\\
+\star &\mapsto e
+\\
+\phi\vert_{M\times M} : M\times M &\to M 
+\\
+(x,y) &\mapsto m(x,y)
+\end{align*}
+The pair $(M, \phi)$ is an $F$-algebra.
 
 \end{exa}
 
-\begin{dfn} Let $F:\CC\to \CC$ be an endofunctor and $(C,\phi)$ and $(D,\psi)$ be $F$-algebras. A \textbf{($F$-algebra) homomorphism} from $(C,\phi)$ to $(D,\psi)$ is a morphism $f\in \CHom{\CC}{C}{D}$ such that the following diagram commutes:
-\begin{center}
+\begin{rem}
+ Note that a monoid $(M,m,e)$ also satisfies some laws.
+ The laws are not expressed in \cref{example:algebra_of_monoids}.
+ To incorporate the laws, one studies instead algebras of a monad.
+\end{rem}
+
+
+\begin{dfn}\label{dfn:alg-hom}
+Let $F:\CC\to \CC$ be an endofunctor and $(C,\phi)$ and $(D,\psi)$ be $F$-algebras. 
+A \textbf{($F$-algebra) homomorphism} from $(C,\phi)$ to $(D,\psi)$ is a morphism $f\in \CHom{\CC}{C}{D}$ such that the following diagram commutes:
+\[
 \begin{tikzcd}
 F(C) 
 \arrow[r, "\phi"] 
@@ -53,11 +85,15 @@ F(D)
 \arrow[r, swap, "\psi"] 
 & D
 \end{tikzcd}
-\end{center}
+\]
 \end{dfn}
 
 
-\begin{exer} Let $F$ be the endofunctor defined as in \cref{example:algebra_of_monoids}, i.e. the endofunctor whose algebras corresponds with monoids. Characterize the $F$-algebra homomorphisms.
+
+\begin{exer} 
+Let $F$ be the endofunctor defined as in \cref{example:algebra_of_monoids}, 
+i.e. the endofunctor whose algebras corresponds with monoids. 
+Characterize the $F$-algebra homomorphisms.
 \end{exer}
 
 \begin{dfn}\label{definition:category_of_Falgebras} Let $F:\CC\to \CC$ be an endofunctor. The \textbf{category of $F$-algebras}, denoted by $\ALG{F}$, is defined by the following data:
@@ -69,11 +105,33 @@ F(D)
 \end{itemize}
 \end{dfn}
 
-\begin{exer} Show that $\ALG{F}$ satisfies the properties of a category.
+\begin{exer} 
+Show that $\ALG{F}$ satisfies the properties of a category.
 \end{exer}
 
-\begin{dfn} Let $F:\CC\to\CC$ be an endofunctor. The \textbf{initial $F$-algebra} (if it exists), is the initial object in $\ALG{F}$, i.e. it is an $F$-algebra $(\mu F, in)$ such that for any $F$-algebra $(C,\phi)$, there exists a unique morphism $\catam{\phi} \in \CHom{\CC}{\mu F}{C}$ such that the following diagram commutes:
-\begin{center}
+We are interested in \textbf{initial objects of $\ALG{F}$}, if they exist.
+We call these ``initial $F$-algebras''.
+For a general endofunctor $F$, an initial $F$-algebra does not exist;
+but for many interesting choices of $F$, such an initial object does exist.
+Before coming to the general definition (see \cref{dfn:initial-alg}),
+we consider an example.
+
+
+\begin{exer} Consider the functor $\Maybe : \SET \to \SET$.
+Show that the initial $\Maybe$-algebra is given by the pair $(\NN, [\Zero,\Succ])$, 
+where $\NN$ is the set of natural numbers, and $\Zero : 1 \to \NN$ and $\Succ : \NN\to\NN$ 
+are the function picking out zero and the successor function, respectively.
+
+Given any other $\Maybe$-algebra $(X,[z,s])$, unpack what it means for the square of \cref{dfn:alg-hom} to commute.
+Compare it to a definition of a function $f : \NN \to X$ by pattern matching.
+
+\end{exer}
+
+
+
+\begin{dfn}\label{dfn:initial-alg}
+Let $F:\CC\to\CC$ be an endofunctor. The \textbf{initial $F$-algebra} (if it exists), is the initial object in $\ALG{F}$, i.e. it is an $F$-algebra $(\mu F, in)$ such that for any $F$-algebra $(C,\phi)$, there exists a unique morphism $\catam{\phi} \in \CHom{\CC}{\mu F}{C}$ such that the following diagram commutes:
+\[
 \begin{tikzcd}
 {F(\mu F)} 
 \arrow[r, "in"] 
@@ -85,9 +143,10 @@ F(C)
 \arrow[r, swap, "\phi"] 
 & C
 \end{tikzcd}
-\end{center}
+\]
 A morphism of the form $\catam{\phi}$ is called a \textit{catamorphism}.
 \end{dfn}
+
 
 \begin{exer} Let $F:\CC\to\CC$ be an endofunctor and assume that the initial algebra $(\mu F, in)$ exists. Show that the following properties holds:
 \begin{enumerate}
@@ -105,12 +164,6 @@ A morphism of the form $\catam{\phi}$ is called a \textit{catamorphism}.
 \begin{exer}\label{exercise:initialalg_for_idfun_with_initialob} Let $\CC$ be a category with an initial object $\bot$. Show that $(\bot, \Id[\bot])$ is the initial algebra for the identity (endo)functor on $\CC$.
 \end{exer}
 
-\begin{exer} Let $F$ be the functor induced by 
-\[
-F:\SET\to\SET : X\mapsto 1 \sqcup X.
-\]
-Show that the initial $F$-algebra is given by the set $\mathbb{N}$ of natural numbers.
-\end{exer}
 
 \begin{exer}\label{exercise:initialalg_for_list} Let $A$ be a set and define $F$ to be the functor induced by 
 \[
