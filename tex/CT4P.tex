@@ -782,7 +782,7 @@ But notice that there are other ways in which the type |Bool| lives inside the t
 \begin{exer}
  Show that the type |Maybe a| is a retract of the type |[a]|. 
  
- Hint: The idea is that |Nothing| corresponds to the empty list |[]| and that |Just x| corresponds to the one-element list |[x]|. Make this idea precise by writing back and forth functions between these types so that they exhibit |Maybe a| as a retract of |[a]|¨. 
+ Hint: The idea is that |Nothing| corresponds to the empty list |[]| and that |Just x| corresponds to the one-element list |[x]|. Make this idea precise by writing back and forth functions between these types so that they exhibit |Maybe a| as a retract of |[a]|. 
 \end{exer}
 
 \begin{dfn}[Section, Retraction]
@@ -810,7 +810,13 @@ In this section, we study two properties of morphisms in a category that, in the
 
 
 \begin{dfn}[Monomorphism]
-  Let $f : a \to b$ be a morphism in $\CC$. We say that $f$ is a \textbf{monomorphism} if, for any two morphisms $g_1, g_2 : z \to a$, we have
+  Let $f : a \to b$ be a morphism in $\CC$. We say that $f$ is a \textbf{monomorphism} if, for any two morphisms $g_1, g_2 : z \to a$, like in the following diagram,
+  \begin{center}
+    \begin{tikzcd}
+    z \arrow[r, "g_2"', shift right] \arrow[r, "g_1", shift left] & a \arrow[r, "f"] & b
+    \end{tikzcd}
+  \end{center}
+  we have
   \[ \co{g_1}{f} = \co{g_2}{f} \text{ implies } g_1 = g_2 .\]
 \end{dfn}
 
@@ -819,7 +825,13 @@ In this section, we study two properties of morphisms in a category that, in the
 \end{exer}
 
 \begin{dfn}[Epi]
-  Let $f : a \to b$ be a morphism in $\CC$. We say that $f$ is an \textbf{epimorphism} if, for any two morphisms $g_1, g_2 : b \to z$, we have
+  Let $f : a \to b$ be a morphism in $\CC$. We say that $f$ is an \textbf{epimorphism} if, for any two morphisms $g_1, g_2 : b \to z$, like in the following diagram,
+  \begin{center}
+    \begin{tikzcd}
+    a \arrow[r, "f"] & b \arrow[r, "g_2"', shift right] \arrow[r, "g_1", shift left] & z
+    \end{tikzcd}
+  \end{center}
+  we have
   \[ \co{f}{g_1} = \co{f}{g_2} \text{ implies } g_1 = g_2 .\]
 \end{dfn}
 
