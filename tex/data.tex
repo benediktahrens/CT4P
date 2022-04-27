@@ -4,6 +4,8 @@
 
 \begin{reading*}
   This chapter is strongly inspired by Varmo Vene's Ph.D.\ thesis \cite[Chapter 2]{vene_phd}.
+
+  A good explanation recursion on lists is given in Graham Hutton's tutorial paper \cite{DBLP:journals/jfp/Hutton99}.
 \end{reading*}
 
 In this section we introduce (initial) algebras which allows us to define inductive data types.
@@ -105,8 +107,11 @@ Characterize the $F$-algebra homomorphisms.
 \end{itemize}
 \end{dfn}
 
-\begin{exer} 
-Show that $\ALG{F}$ satisfies the properties of a category.
+\begin{exer}
+  \begin{enumerate}
+  \item Draw two diagrams to illustrate \cref{definition:category_of_Falgebras}.
+  \item Show that $\ALG{F}$ satisfies the properties of a category.
+  \end{enumerate}
 \end{exer}
 
 We are interested in \textbf{initial objects of $\ALG{F}$}, if they exist.
@@ -117,20 +122,22 @@ Before coming to the general definition (see \cref{dfn:initial-alg}),
 we consider an example.
 
 
-\begin{exer} Consider the functor $\Maybe : \SET \to \SET$.
-Show that the initial $\Maybe$-algebra is given by the pair $(\NN, [\Zero,\Succ])$, 
-where $\NN$ is the set of natural numbers, and $\Zero : 1 \to \NN$ and $\Succ : \NN\to\NN$ 
-are the function picking out zero and the successor function, respectively.
-
-Given any other $\Maybe$-algebra $(X,[z,s])$, unpack what it means for the square of \cref{dfn:alg-hom} to commute.
-Compare it to a definition of a function $f : \NN \to X$ by pattern matching.
-
+\begin{exer}
+  Consider the functor $\Maybe : \SET \to \SET$.
+  \begin{enumerate}
+  \item Show that the initial $\Maybe$-algebra is given by the pair $(\NN, [\Zero,\Succ])$, 
+    where $\NN$ is the set of natural numbers, and $\Zero : 1 \to \NN$ and $\Succ : \NN\to\NN$ 
+    are the function picking out zero and the successor function, respectively.
+  \item Given any other $\Maybe$-algebra $(X,[z,s])$, unpack what it means for the square of \cref{dfn:alg-hom} to commute.
+  \item Compare the data from the previous exercise to a definition of a function $f : \NN \to X$ by pattern matching (e.g., in Haskell).
+  \end{enumerate}
 \end{exer}
 
 
 
 \begin{dfn}\label{dfn:initial-alg}
-Let $F:\CC\to\CC$ be an endofunctor. The \textbf{initial $F$-algebra} (if it exists), is the initial object in $\ALG{F}$, i.e. it is an $F$-algebra $(\mu F, in)$ such that for any $F$-algebra $(C,\phi)$, there exists a unique morphism $\catam{\phi} \in \CHom{\CC}{\mu F}{C}$ such that the following diagram commutes:
+  Let $F:\CC\to\CC$ be an endofunctor. The \textbf{initial $F$-algebra} (if it exists), is the initial object in $\ALG{F}$.
+  Unfolding the definition, this means that it is an $F$-algebra $(\mu F, \In)$ such that for any $F$-algebra $(C,\phi)$, there exists a unique morphism $\catam{\phi} \in \CHom{\CC}{\mu F}{C}$ such that the following diagram commutes:
 \[
 \begin{tikzcd}
 {F(\mu F)} 
@@ -148,29 +155,44 @@ A morphism of the form $\catam{\phi}$ is called a \textit{catamorphism}.
 \end{dfn}
 
 
-\begin{exer} Let $F:\CC\to\CC$ be an endofunctor and assume that the initial algebra $(\mu F, in)$ exists. Show that the following properties holds:
+\begin{exer}
+  Let $F:\CC\to\CC$ be an endofunctor and let $(\mu F, \In)$ be an initial algebra. Show that the following properties holds:
 \begin{enumerate}
-\item $\Id = \catam{in}$.
+\item $\Id = \catam{\In}$.
 \item For $F$-algebras $(C,\phi)$ and $(D,\psi)$ and $f\in\CHom{\CC}{C}{D}$, we have 
 \[
-\phi\Comp f = F(f)\Comp \psi \implies \catam{\phi}\Comp f = \catam{\psi}.
+\co{f}{\phi} = \co{\psi}{F(f)} \implies \co{f}{\catam{\phi}} = \catam{\psi}.
 \]
 \end{enumerate} 
 \end{exer}
 
-\begin{exer} (\textbf{Lambek's theorem}) Let $F:\CC\to\CC$ be an endofunctor and assume that the initial algebra $(\mu F, in)$ exists. Then is $in$ an isomorphism whose inverse is given by $\Inv{in} = \catam{F(in)}$.
+\begin{exer}[\textbf{Lambek's theorem}] Let $F:\CC\to\CC$ be an endofunctor and let $(\mu F, \In)$ be an initial algebra.
+  Then $\In$ is an isomorphism whose inverse is given by $\Inv{\In} = \catam{F(\In)}$.
 \end{exer}
 
 \begin{exer}\label{exercise:initialalg_for_idfun_with_initialob} Let $\CC$ be a category with an initial object $\bot$. Show that $(\bot, \Id[\bot])$ is the initial algebra for the identity (endo)functor on $\CC$.
 \end{exer}
 
 
-\begin{exer}\label{exercise:initialalg_for_list} Let $A$ be a set and define $F$ to be the functor induced by 
-\[
-F_A:\SET\to\SET : X\mapsto 1 \sqcup (A\times X).
-\]
-Show that the initial $F_A$-algebra is given by the set $List(A)$. of $A$-valued lists.
+\begin{exer}\label{exercise:initialalg_for_list}
+  Let $A$ be a set and define $F$ to be the functor induced by 
+\begin{align*}
+  F_A:\SET &\to\SET
+\\
+  X &\mapsto 1 + (A\times X).
+\end{align*}
+
+\begin{enumerate}
+\item Show that an $F_A$-algebra consists of a triple $(X,n,c)$, where $X$ is a set, $n\in X$ is an element of $X$, and $c : A \times X \to X$ is a function.
+\item Show that the initial $F_A$-algebra is given by the set $\List(A)$ of $A$-valued lists, together with constants $\nil \in \List(A)$ and $\cons : A \times \List(A) \to \List(A)$.
+\item Given any other $F_A$-algebra $(X,n,c)$, unpack what it means for the square of \cref{dfn:alg-hom} to commute.
+Compare it to a definition of a function $f : \List(A) \to X$ by pattern matching.
+\end{enumerate}
+
 \end{exer}
+
+
+
 
 \begin{exer}\label{exercise:initialalg_for_btree} Let $A$ be a set and define $F$ to be the functor induced by 
 \[
@@ -277,5 +299,5 @@ where $\star$ is the unique element of $1$.
 
 %%% Local Variables:
 %%% mode: latex
-%%% TeX-master: "cats-for-programmers"
+%%% TeX-master: "CT4P"
 %%% End:

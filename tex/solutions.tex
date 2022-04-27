@@ -61,11 +61,11 @@ Before we show that this data satisfies the properties of a category, we first h
 The equalities holds because $\Id[M]$ is the identity function on $M$.
 \item That the composition of morphism of monoids is again a morphism of monoids follows by the following calculations:
 \begin{itemize}
-\item Composition preserves multiplication by:
+\item Composition preserves multiplication: for any $x,y \in M_1$, we have
 \begin{eqnarray*}
-\forall x,y\in M_1 : \co{f}{g}(m_1(x,y)) &=& g\left(f(m_1(x,y))\right)\\ 
-	&=& g\left(m_2(f(x),f(y)))\right) \quad \text{ since $f$ preserves multiplication} \\
-	&=& m_3(g(f(x)),g(f(y))) \quad \text{ since $g$ preserves multiplication}\\
+ \co{f}{g}(m_1(x,y)) &=& g\left(f(m_1(x,y))\right)\\ 
+	&=& g\left(m_2(f(x),f(y)))\right) \quad \text{ ($f$ preserves mult.)} \\
+	&=& m_3(g(f(x)),g(f(y))) \quad \text{ ($g$ preserves mult.)}\\
 	&=& m_3(\co{f}{g}(x),\co{f}{g}(y))
 \end{eqnarray*}
 Composition preserves identity element by:
