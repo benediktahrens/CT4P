@@ -183,7 +183,7 @@ A morphism of the form $\catam{\phi}$ is called a \textit{catamorphism}.
 \end{align*}
 
 \begin{enumerate}
-\item Show that an $F_A$-algebra consists of a triple $(X,n,c)$, where $X$ is a set, $n\in X$ is an element of $X$, and $c : A \times X \to X$ is a function.
+\item \label{enum:list-alg} Show that an $F_A$-algebra consists of a triple $(X,n,c)$, where $X$ is a set, $n\in X$ is an element of $X$, and $c : A \times X \to X$ is a function.
 \item Show that the initial $F_A$-algebra is given by the set $\List(A)$ of $A$-valued lists, together with constants $\nil \in \List(A)$ and $\cons : A \times \List(A) \to \List(A)$.
 \item Given any other $F_A$-algebra $(X,n,c)$, unpack what it means for the square of \cref{dfn:alg-hom} to commute.
 Compare it to a definition of a function $f : \List(A) \to X$ by pattern matching.
@@ -191,7 +191,32 @@ Compare it to a definition of a function $f : \List(A) \to X$ by pattern matchin
 
 \end{exer}
 
+\begin{rem}
+  In the case of lists, the operator $\catam{\_}$ is also known as |fold|, which in Haskell is defined as follows:
+  \begin{lstlisting}[haskell]
+    fold            :: (a → b → b) → b → ([a] → b)
+    fold f v   []   =  v
+    fold f v (x:xs) =  f x (fold f v xs)
+  \end{lstlisting}
+  Compare the input of |fold| to the data of an $F_A$-algebra given in \cref{enum:list-alg} of \cref{exercise:initialalg_for_list}.
+\end{rem}
 
+
+\begin{exer}
+  Define the following functions as a catamorphism, that is, using |fold|:
+  \begin{enumerate}
+  \item |sum :: [Int] →  Int|
+  \item |product :: [Int] →  Int|
+  \item |and :: [Bool ] →  Bool|
+  \item |or :: [Bool ] →  Bool|
+  \item |(++) :: [a] →  [a] →  [a]|
+  \item |length :: [a] →  Int|
+  \item |reverse :: [a] →  [a]|
+  \item |map :: (a →  b) →  ([a] →  [b])|
+  \item |filter :: (a →  Bool ) →  ([a] →  [a])|
+  \end{enumerate}
+  Solutions are given in \cite{DBLP:journals/jfp/Hutton99}.
+\end{exer}
 
 
 \begin{exer}\label{exercise:initialalg_for_btree} Let $A$ be a set and define $F$ to be the functor induced by 
