@@ -299,7 +299,7 @@ The definition of categories is also given in \cite[\S 2.1]{barr-wells}. Plenty 
 \begin{enumerate}
 \item A collection of objects, denoted by $\Ob{\CC}$.
 \item For any given objects $X,Y \in \Ob{\CC}$, a collection of morphisms from $X$ to $Y$, denoted by $\Hom[\CC]{X}{Y}$ (or $\Hom{X}{Y}$ when the category $\CC$ is clear, or $\CHom \CC X Y$ or $X \to Y$) and which is called a \textit{hom-set}.
-\item For each object $X\in \Ob{\CC}$, a morphism $\Id[X] \in \Hom[C]{X}{Y}$, called the \textit{identity morphism} on $X$.
+\item For each object $X\in \Ob{\CC}$, a morphism $\Id[X] \in \Hom[C]{X}{X}$, called the \textit{identity morphism} on $X$.
 \item A binary operation
 \[
 (\co{}{})_{X,Y,Z} : \Hom{Y}{Z} \to \Hom X Y \to \Hom X Z,
@@ -495,7 +495,7 @@ This indeed holds since every hom-set has a unique element, but both $\co{\Id[x]
 The proof that left unit law and associator law hold are analogous.
 \end{exa}
 
-\begin{exer}
+\begin{exer}\label{exer:post_antisymmetry}
   A \textbf{partially ordered set} (poset) is a preordered set $(X,\leq)$ satisfying the following additional axiom:
   \begin{itemize}
   \item \textbf{Antisymmetry}: $\forall x,y\in X: (x\leq y \wedge y\leq x) \implies x=y$.
@@ -526,7 +526,7 @@ where the first (resp. second) inequality holds by $f$ (resp. $g$) being a morph
 That the axioms of a category are satisfied by this data, is exactly the same proof as showing that $\SET$ is a category because the identity and composition are defined in the same way.
 \end{exa}
 
-\begin{exer} Is $\POS$ a preorder-category itself? That is, is there at most one morphism between any two objects?
+\begin{exer}\label{exer:POS_isnt_a_posetcat} Is $\POS$ a preorder-category itself? That is, is there at most one morphism between any two objects?
 \end{exer}
 
 \begin{que}\label{que:posetcatstoallcats} In \cref{example:poset}, we have shown that $\POS$ is a category. However, by \cref{example:posetcategories}, we know that any poset also is a category. So we have that $\POS$ is a category whose objects are certain categories. Can we also have some category whose collection of objects is the collection of all categories, and if so, what are the morphisms of categories? 
@@ -544,7 +544,24 @@ Assume $\tilde{\Id[X]}$ also satisfies this property, in particular we have $\co
 \end{proof}
 \end{lemma}
 
-\begin{exer}\label{monoidcategory}
+\begin{exa}\label{exa:monoidofrationalnumbers} In this example we are going to associate a category which captures the multiplication of the rational numbers. Let $\CC$ be the category defined by the following data:
+\begin{itemize}
+\item There is a unique object $\star$.
+\item The (only) hom-set is given by
+\[
+\Hom{\star}{\star} = \mathbb{Q},
+\]
+i.e. each morphism corresponds with a rational number.
+\item The composition is defined by the multiplication of rational numbers:
+\[
+\mathbb{Q} \to\mathbb{Q}\to\mathbb{Q} : (p,q)\mapsto p\cdot q.
+\]
+\item The identity morphism (of $\star$) is given by $1$.
+\end{itemize}
+That $\CC$ is indeed a category follows because for each $p\in\mathbb{Q}$, we have $p\cdot 1 = p = 1\cdot p$ (which shows the unit laws) and by associativity of multiplication, i.e. $(p\cdot q)\cdot h = p\cdot (h \cdot q)$ (which shows the associativity of the composition).
+\end{exa}
+The construction in \cref{exa:monoidofrationalnumbers} uses no specific properties of the rational numbers, only that it has a multiplication which is associative and such that there is a special element which does not change an element when it is multiplied with this special element. Hence, \cref{exa:monoidofrationalnumbers} can be generalized as follows:
+\begin{dfn}\label{monoidcategory}
 Recall that a monoid is a set $M$ equipped with binary operation $m : M \to M \to M$ which is associative, i.e. 
 $$\forall x,y,z\in M: m(x,m(y,z)) = m(m(x,y),z),$$
 and such that there is an identity element, i.e. 
@@ -561,11 +578,17 @@ Let $(M,m,e)$ be a monoid. The category $\MON(M,m,e)$ is defined by the followin
 \item The identity morphism on $\star$ is the identity element $e$.
 \item The composition of morphisms $x$ and $y$ is given by $\co{x}{y} := m(x,y)$.
 \end{itemize}
-Show that $\MON(M,m,e)$ is indeed a category.
-\end{exer}
+\end{dfn}
+
+That for each monoid $(M,m,e)$, $\MON(M,m,e)$ is indeed a category, follows directly by the properties of being a monoid. Indeed, the axioms of a category become precisely:
+\begin{enumerate}
+\item $\forall x\in M: m(x,e)=x$,
+\item $\forall x\in M: m(e,x)=x$,
+\item $\forall x,y,z\in M: m(m(x,y),z) = m(x,m(y,z))$.
+\end{enumerate}
 
 \begin{rem} Notice that this category illustrates that there is no relation between the collection of objects and the hom-sets since there is now only one object and the collection of the hom-set can be as small or as large as possible.\\
-In fact, we can associate a different number of categories to a single monad. We can for example consider an arbitrary set of objects $I$ and the defining the hom-sets as follows:
+In fact, we can associate a different number of categories to a single monoid. We can for example consider an arbitrary set of objects $I$ and the defining the hom-sets as follows:
 \[
 \Hom{i}{j} := 
 \begin{cases}
@@ -575,17 +598,13 @@ M ,\quad \text{ if } i=j,\\
 \]
 \end{rem}
 
-\begin{exa} Consider the monoid $(\mathbb{Q}, \times, 1)$ (where $\times$ is the usual multiplication of rational numbers). By definition of $\MON(M,m,e)$, we have that $\MON(\mathbb{Q},\times, 1)$ is the category which has a unique object and each morphism correspond with a rational number $q\in\mathbb{Q}$.
-\end{exa}
-
-\begin{exer}
-\begin{enumerate}
-\item When is a category $\CC$ of the form $\MON(M,m,e)$?
-\item Define a category $\MON$ whose objects are monoids, i.e. define a suitable notion of morphism between monoids and moreover show that this indeed defines a category.
-\end{enumerate}
+\begin{exer}\label{exer:categories_coming_from_monoids} Let $\CC$ be a category. When is $\CC$ of the form $\MON(M,m,e)$, i.e. does there exists a monoid $(M,m,e)$ such that $\CC =  \MON(M,m,e)$?
 \end{exer}
 
-\begin{exer} Define a category $\CC$ whose objects are the natural numbers (i.e. $\Ob{\CC} = \mathbb{N}$) and whose hom-sets $\CHom{\CC}{n}{m}$ are given by the $(n\times m)$-matrices.
+\begin{exer}\label{exer:category_of_monoids} Define a category $\MON$ whose objects are monoids, i.e. define a suitable notion of morphism between monoids and moreover show that this indeed defines a category.
+\end{exer}
+
+\begin{exer}\label{exer:category_with_naturalnumbers_and_matrices} Define a category $\CC$ whose objects are the natural numbers (i.e. $\Ob{\CC} = \mathbb{N}$) and whose hom-sets $\CHom{\CC}{n}{m}$ are given by the $(n\times m)$-matrices.
 \end{exer}
 
 \begin{exer}\label{exer:opposite}
@@ -644,10 +663,23 @@ The category generated by $G$ consists of the following data:
 \item The collection of objects is $\{x,y\}$.
 \item The hom-sets are given as follows:
 \begin{itemize}
-\item $\Hom{x}{x} = \left\{\Id{x}, \co{f}{g}, (\co{f}{g})^2, \co{f}{g}^3, \cdots\right\}$, 
-\item $\Hom{y}{y} = \left\{\Id{y}, \co{g}{f}, (\co{g}{f})^2, \co{g}{f}^3, \cdots\right\}$, 
-\item $\Hom{x}{y} = \left\{f, \co{f}{(\co{g}{f})}, \co{f}{(\co{g}{f})^2}, \co{f}{(\co{g}{f})^3}, \cdots\right\}$, 
-\item $\Hom{y}{x} = \left\{g, \co{g}{(\co{f}{g})}, \co{g}{(\co{f}{g})^2}, \co{g}{(\co{f}{g})^3}, \cdots\right\}$, 
+\item $\Hom{x}{x}$ contains
+\[
+\Id[x], \co{f}{g}, (\co{f}{g})^2, (\co{f}{g})^3, \cdots,
+\]
+But these are not the only ones, we also have that each of these can be precomposed or postcomposed with $\Id[x]$, however, by the unit laws, we know that these don't give us any \textit{new} morphisms. The same remark holds for the associativity law. This comment also holds for the upcoming hom-sets.
+\item $\Hom{y}{y}$ contains
+\[
+\Id[y], \co{g}{f}, (\co{g}{f})^2, (\co{g}{f})^3, \cdots,
+\]
+\item $\Hom{x}{y}$ contains  
+\[
+f, \co{f}{(\co{g}{f})}, \co{f}{(\co{g}{f})^2}, \co{f}{(\co{g}{f})^3}, \cdots
+\]
+\item $\Hom{y}{x}$ contains
+\[
+g, \co{g}{(\co{f}{g})}, \co{g}{(\co{f}{g})^2}, \co{g}{(\co{f}{g})^3}, \cdots
+\] 
 \end{itemize}
 \end{itemize}
 \end{exa}
@@ -669,7 +701,7 @@ The category generated by $G$ has four objects (namely $x,y,z,w$) and the hom-se
 \end{itemize}
 \end{exa}
 
-\begin{exer} 
+\begin{exer} \label{exer:connection_graphs_preordersets}
 Describe the connection between the categories generated by graphs and the categories associated to preordered sets. What is the property of anti-symmetry translated under this connection with graphs?
 \end{exer}
 
@@ -698,7 +730,7 @@ Describe the connection between the categories generated by graphs and the categ
   Show that if $f : a \to b$ is an isomorphism with inverse $g : b \to a$, then $g$ is an isomorphism with inverse $f$.
 \end{exer}
 
-\begin{exer}
+\begin{exer}\label{exer:inverse_uniqueness}
   Show that a morphism $f : a \to b$ in $\CC$ is an isomorphism \textbf{in at most one way}, that is, show that its inverse is unique if it exists.
 \end{exer}
 
@@ -721,13 +753,13 @@ data BW = Black | White
 Construct two (different!) isomorphisms between |BW| and the type |Bool| of booleans.
 \end{exer}
 
-\begin{exer} Can you characterize the isomorphisms in $\SET$?
+\begin{exer}\label{exer:iso_in_sets} Can you characterize the isomorphisms in $\SET$?
 \end{exer}
 
-\begin{exer} Can you characterize the isomorphisms in $\POS$?
+\begin{exer}\label{exer:iso_in_pos} Can you characterize the isomorphisms in $\POS$?
 \end{exer}
 
-\begin{exer} Let $(X,\leq)$ be a poset. Can you characterize the isomorphisms in $\POS(X,\leq)$?
+\begin{exer}\label{exer:iso_in_posetcategory} Let $(X,\leq)$ be a poset. Can you characterize the isomorphisms in $\POS(X,\leq)$?
 \end{exer}
 
 \begin{exer} Can you characterize the isomorphisms in $\MON$?
@@ -844,19 +876,20 @@ In this section, we study two properties of morphisms in a category that, in the
 \end{exer}
 
 
-\begin{exer}
-  In the category of sets, show that any section is injective.
+\begin{exer}\label{exer:sections_in_set_injective}
+  In the category of sets, show that if $(s,r)$ is a section-retraction pair, then is the section $s$ injective.
   Hint: you can use \cref{ex:mono-inj}.
 \end{exer}
 \begin{exer}
-  In the category of sets, show that any retraction is surjective.
+  In the category of sets, show that if $(s,r)$ is a section-retraction pair, then the retraction $r$ is surjective.
     Hint: you can use \cref{ex:epi-surj}.
 \end{exer}
 
 \begin{exer}\label{exer:iso_to_monoepi} Show that any isomorphism $f : a\cong b$ (in some arbitrary category $\CC$) is both a monomorphism and an epimorphism.
 \end{exer}
 
-\begin{exer} Show that the converse of \cref{exer:iso_to_monoepi} does not hold in general, i.e. give an example of a category where there exists a morphism which is both an epi- and a monomorphism, but which is not an isomorphism.\\
+\begin{exer}\label{exer:counterexample_monoepi_not_iso} Show that the converse of \cref{exer:iso_to_monoepi} does not hold in general, i.e. give an example of a category where there exists a morphism which is both an epi- and a monomorphism, but which is not an isomorphism.
+
 Hint: Consider a preordered set.
 \end{exer}
 
@@ -914,7 +947,7 @@ In this section, we discuss special objects in a category.
   Let $\CC$ be a category. An object $A \in \Ob{\CC}$ is \textbf{initial} if there is exactly one morphism from $A$ to any object $B \in \Ob{\CC}$.
 \end{dfn}
 
-\begin{exer}
+\begin{exer}\label{exer:initial_set}
   Identify an initial object in the category $\SET$ of sets.
   Prove that it is indeed initial.
 \end{exer}
@@ -924,7 +957,7 @@ In this section, we discuss special objects in a category.
   Prove that it is indeed initial.
 \end{exer}
 
-\begin{exer}
+\begin{exer}\label{exer:initial_posetcat}
   Let $(X,\leq)$ be a poset. Describe what an initial object looks like in  $\POS(X,\leq)$.
 \end{exer}
 
@@ -932,7 +965,7 @@ In this section, we discuss special objects in a category.
   Let $A$ and $A'$ be initial objects in $\CC$. Construct an isomorphism $i : A \cong A'$.
 \end{exer}
 
-\begin{exer}
+\begin{exer}\label{exer:initiality_preserved_by_iso}
   Let $A$ be an initial object in $\CC$, and let $A'$ be isomorphic to $A$ (via an isomorphism $i : A \cong A'$).
   Show that $A'$ is an initial object of $\CC$.
 \end{exer}
@@ -1185,7 +1218,7 @@ If $X$ and $Y$ are types in Haskell, then one also has the product type, which w
 \begin{exer}\label{ex:poset_functors} Let $(X,\leq_X)$ and $(Y,\leq_Y)$ be posets. Can you characterize/describe the functors from $\POS(X,\leq_X)$ to $\POS(Y,\leq_Y)$  ? Before writing out the definitions, what would you expect the answer to be?
 \end{exer}
 
-\begin{exer}\label{ex:monoid_functors} Let $(M,m,e)$ be a monad and let $\MON(M,m,e)$ be its corresponding category as defined in \cref{monoidcategory}. Can you characterize/describe the functors from $\MON(M,m,e)$ to $\SET$?
+\begin{exer}\label{ex:monoid_functors} Let $(M,m,e)$ be a monoid and let $\MON(M,m,e)$ be its corresponding category as defined in \cref{monoidcategory}. Can you characterize/describe the functors from $\MON(M,m,e)$ to $\SET$?
 \end{exer}
 
 \subsection{Category of categories}
@@ -1565,7 +1598,7 @@ then we can fix some $x$ such that $P(x)$ holds.
 
 \onlydraft{\input{data}}
 
-
+\onlydraft{\input{solutions}}
 
 
 \printbibliography

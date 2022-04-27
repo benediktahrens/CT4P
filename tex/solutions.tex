@@ -1,0 +1,333 @@
+\section{Solutions}
+\label{sec:solutions}
+
+\begin{solution}[to \cref{exer:post_antisymmetry}] 
+The inequality $x\leq y$ (resp. $y\leq x$) means that we have a (unique) morphism from $f\in \Hom{x}{y}$ (resp. $g\in \Hom{y}{x}$). Consequently, we get a \textit{loop} $\co{f}{g} \in \Hom{x}{x}$. Since the hom-sets are either empty or a singleton, we have $\co{f}{g} = \Id[x]$. Hence, antisymmetry means that if $\Id[X] = \co{f}{g}$ for some $f\in \Hom{x}{y}$ and $g\in \Hom{y}{x}$, we must have 
+\[x=y,\quad f = \Id[x] = g.\]
+Rephrased a little bit different, we get: The category $\PRE(X,\leq)$ has no non-trivial loops if $(X,\leq)$ is antisymmetric.
+\end{solution}
+
+\begin{solution}[to \cref{exer:POS_isnt_a_posetcat}]
+That $\POS$ would be a preorder-category means that each of the hom-sets is either empty or a singleton. Hence, it is not a preorder-category if there exists $(X,\leq_X)$ and $(Y,\leq_Y)$ such that $\CHom{\POS}{(X,\leq_X)}{(Y,\leq_Y)}$ has more then one element.\\
+We choose $(X,\leq) := (\mathbb{N},\leq) =: (Y,\leq)$. A morphism $f\in \CHom{\POS}{(\mathbb{N},\leq)}{(\mathbb{N},\leq)}$ consists of a function $f:\mathbb{N}\to\mathbb{N}$ such that the following property holds:
+\[
+\forall n,m\in\mathbb{N}: n\leq m \implies f(n)\leq f(m).
+\]
+But there are a lot of functions from $\mathbb{N}$ to $\mathbb{N}$ which satisfies this property, indeed: For any $k\in\mathbb{N}$, we have that
+\[
+f_k : \mathbb{N}\to\mathbb{N}: n\mapsto n+k,
+\]
+is a morphism in $\POS$. Hence $\CHom{\POS}{(\mathbb{N},\leq)}{(\mathbb{N},\leq)}$ consists of an infinite amount of distinct morphisms.
+\end{solution} 
+
+\begin{solution}[ to \cref{exer:categories_coming_from_monoids}] 
+A category $\CC$ is of the form $(M,m,e)$ if and only if $\CC$ has a unique object. Indeed, if $\CC$ has a unique object, lets denote this by $X$, then we can define a monoid $(M,m,e)$ as follows:
+\begin{itemize}
+\item The underlying set of the monoid is $M := \CHom{\CC}{X}{X}$.
+\item The multiplication $m$ is given by $m(f,g) := \co{f}{g}$.
+\item The identity element $e$ is given by $e := \Id[X]$.
+\end{itemize}
+That $(M,m,e)$ is indeed a monoid, i.e. satisfies the monoid laws, is just a translation of the axioms of $\CC$ being a category.
+\end{solution}
+
+\begin{solution}[to \cref{exer:category_of_monoids}]
+Since a monoid consists of a set $M$ together with a binary operation $m:M\to M\to M$ (called the \textit{multiplication}) and a \textit{identity} element $e\in M$, a suitable \textit{morphism of monoids}, from $(M_1,m_1,e_1)$ to $(M_2,m_2,e_2)$ should consists of a function $f:M\to N$ which preserves the structure (i.e. the multiplication and the identity element). More precisely:
+\begin{itemize}
+\item Preservation of the multiplication:
+\[
+\forall x,y\in M_1: f(m_1(x,y)) = m_2(f(x), f(y)).
+\]
+\item Preservation of the identity:
+\[
+f(e_1) = e_2.
+\]
+\end{itemize}
+We will now prove that the monoids (as objects) and morphisms of monoids (as the morphisms) carry the data of a category, i.e. we have to define identity morphisms and the composition of morphisms:
+\begin{itemize}
+\item Let $(M,m,e)$ be a monoid. The identity morphism is given by the identity function $\Id[M]$ on the underlying set $M$. 
+\item Let $(M_i,m_i,e_i)$ be a monoid for $i=1,2,3$ and let 
+\[ 
+f:(M_1,m_1,e_1)\to (M_2,m_2,e_2),\quad g:(M_2,m_2,e_2)\to (M_3,m_3,e_3)
+\] 
+be morphisms of monoids. The composition $\co{f}{g}$ of $f$ and $g$ is defined as the composition of the underlying functions.
+\end{itemize}
+Before we show that this data satisfies the properties of a category, we first have to show that everything is well-defined, i.e. that the identity is a morphism of monoids and that the composition of morphisms of monoids is again a morphism of monoids:
+\begin{itemize}
+\item That the identity is a morphism of monoids follows by the following calculations:
+\begin{eqnarray*}
+\forall x,y\in M &:& \Id[M](m(x,y)) = m(x,y) = m(\Id[M](x),\Id[M](y)),\\
+&& \Id[M](e) = e.
+\end{eqnarray*}
+The equalities holds because $\Id[M]$ is the identity function on $M$.
+\item That the composition of morphism of monoids is again a morphism of monoids follows by the following calculations:
+\begin{itemize}
+\item Composition preserves multiplication by:
+\begin{eqnarray*}
+\forall x,y\in M_1 : \co{f}{g}(m_1(x,y)) &=& g\left(f(m_1(x,y))\right)\\ 
+	&=& g\left(m_2(f(x),f(y)))\right) \quad \text{ since $f$ preserves multiplication} \\
+	&=& m_3(g(f(x)),g(f(y))) \quad \text{ since $g$ preserves multiplication}\\
+	&=& m_3(\co{f}{g}(x),\co{f}{g}(y))
+\end{eqnarray*}
+Composition preserves identity element by:
+\[
+\co{f}{g}(e_1) = g(f(e_1)) = g(e_2) = e_3,
+\]
+where the second (resp. third) equality holds since $f$ (resp. $g$) preserves the identity element.
+\end{itemize}
+\end{itemize}
+So everything is indeed well-defined. So we are now ready to show that composition of some morphism of monoids $f$ with the identity morphism is again $f$ (both on the left and right) and that the composition of morphisms of monoids is associative. This follows immediate since everything is defined using functions and we know that functions satisfy these properties.
+\end{solution}
+
+\begin{solution}[to \cref{exer:category_with_naturalnumbers_and_matrices}]
+In order to make $\mathcal{C}$ into a category, we have to define the identity morphisms and the composition of morphisms.\\
+Let $n\in \mathbb{N} =: \Ob{\CC}$ be a natural number. The identity on $n$ is an element in $\CHom{\CC}{n}{n}$, which is the set of $n\times n$-matrices. Hence, for the identity on $n$, we can take $\Id[n]$ to be the identity $n\times n$-matrix, i.e. all coefficients are zero except on the diagonal where everything is $1$.\\
+Let $l,m,n \in\mathbb{N}$ be natural numbers and $M$ (resp. $N$) be a $l\times m$-matrix (resp. $m\times n$-matrix). The composition $\co{M}{N}$ should be an $l\times n$-matrix, hence we define $\co{M}{N}$ as the matrix multiplication of $M$ and $N$, i.e. $\co{M}{N} = M\cdot N$.\\
+That this data satisfies the properties of being a category follows immediate because matrix multiplication is associative and that the multiplication of any matrix $M$ with the identity matrix (of the right size and both on the left or on the right) is again $M$.
+\end{solution}
+
+\begin{solution}[to \cref{exer:opposite}]
+In order to avoid confusion, we use the following notation: For any $f\in\CHom{\CC}{X}{Y}$ morphism, we denote by $\op{f}$ the corresponding morphism in $\CHom{\op\CC}{Y}{X}$.\\
+Let $X\in \Ob{\op\CC} = \Ob{\CC}$. The identity morphism is defined as the morphism corresponding to the identity, i.e. it is $\op{(\Id[X])}$.\\
+Let $\op{g} \in \CHom{\op\CC}{Z}{Y}, \op{f}\in \CHom{\op\CC}{Y}{X}$. The composition is defined as: $\co{\op g}{\op f} := \op{(\co{f}{g})}$.\\
+That this data satisfies the properties of a category, follows because $\CC$ is a category, indeed:
+\begin{itemize}
+\item That the left unit law holds follows by the right unit law of $\CC$ as follows:
+\[
+\co{\op{\Id}}{\op{f}} = \op{(\co{f}{\Id})} = \op{f},
+\]
+where the first equality holds by definition of the \textit{opposite composition} and the second holds by the right unit law of $\CC$.\\
+The right unit law holds analoguously by the left unit law of $\CC$.
+\item That the associativity holds follows by the associativity of $\CC$ as follows:
+\begin{eqnarray*}
+\co{\op{h}}{(\co{\op g}{\op f})} &=& \co{\op{h}}{\op{(\co{f}{g})}}\\
+ 	&=& \op{(\co{(\co{f}{g})}{h})}\\ 
+ 	&=& \op{(\co{f}{(\co{g}{h})})} \text{ by associativity of $\CC$},\\
+ 	&=& \co{\op{(\co{g}{h})}}{\op f}\\
+ 	&=& \co{(\co{\op h}{\op g})}{\op f}
+\end{eqnarray*}
+\end{itemize}
+\end{solution}
+
+\begin{solution}[to \cref{exer:connection_graphs_preordersets}]
+Any preordered set $(X,\leq)$ can be described by a graph where the vertices are given by the elements of $X$ and there exists an edge from $x$ to $y$ if and only if $x \leq y$. Hence, if we denote by $G$ the corresponding graph of $(X,\leq)$, we have that $\POS(X,\leq) = \mathbf{Graph}(G)$.\\
+In particular we have that the number of edges is either $0$ or $1$. Hence, a category generated by a graph comes from a preordered set if and only if the number of morphisms in any fixed hom-set is either $0$ or $1$.\\
+If $(X,\leq)$ is a poset, i.e. we have antisymmetry, then we have that the corresponding graph (and consequently the corresponding category) have no (non-trivial) loops.
+\end{solution}
+
+
+%% Section on isomorphisms
+\begin{solution}[to \cref{exer:inverse-iso}]
+That $f:a\to b$ is an isomorphism with inverse $g$ means precisely that $\co{f}{g} = \Id[a]$ and $\co{g}{f} = \Id[b]$. But stating that $g$ is an isomorphism with inverse $f$ means precisely those conditions. Hence, this hold by definition.
+\end{solution}
+
+\begin{solution}[to \cref{exer:inverse_uniqueness}]
+Let $f:a\to b$ be an isomorphism. That $f$ has a unique inverse means that if $g,h : b\to a$ are morphisms such that 
+\[
+\co{f}{g} = \Id[a], \co{g}{f} = \Id[b], \co{f}{h} = \Id[a], \co{h}{f} = \Id[b]
+\]
+then we must have $g = h$.\\
+So assume $g$ and $h$ satisfy the condition of being an inverse of $f$. Then we have:
+\begin{eqnarray*}
+g =& \co{g}{\Id[b]} &,\text{ by left unit law},\\
+	=& \co{g}{(\co{f}{h})} &, \text{ since $h$ is inverse of $f$},\\
+	=& \co{(\co{g}{f})}{h} &, \text{ by associativity},\\
+	=& \co{\Id[a]}{h} &, \text{ since $g$ is inverse of $f$}\\
+	=& h &, \text{ by right unit law}
+\end{eqnarray*}
+\end{solution}
+
+\begin{solution}[to \cref{exer:compofiso}]
+Let $f: a\to b$ and $g:b\to c$ be isomorphisms. Denote their (unique) inverses by $f^{-1}$ and $g^{-1}$. We have to show that there exists a morphism $h : c\to a$ such that 
+\[
+\co{(\co{f}{g})}{h} = \Id[a], \quad \co{h}{(\co{f}{g})} = \Id[c].
+\]
+We define $h := \co{g^{-1}}{f^{-1}}$. The left equality then holds by the following computation:
+\begin{eqnarray*}
+\co{(\co{f}{g})}{h} =& \co{(\co{f}{g})}{(\co{g^{-1}}{f^{-1}})} &\\
+	=& \co{f^{-1}}{\co{(\co{g}{g^{-1}})}{f}} &\text{ by associativity,}\\
+	=& \co{f^{-1}}{\co{\Id[b]}{f}} &\text{ since $g^{-1}$ inverse of $g$,}\\
+	=& \co{f^{-1}}{f} &\text{ by unit law,}\\
+	=& \Id[a] &\text{ since $f^{-1}$ inverse of $f$.}
+\end{eqnarray*}
+The right equality holds analoguously.
+\end{solution}
+
+
+\begin{solution}[to \cref{exer:iso-bool}]
+The Haskell datatype |Bool| is given by:
+\begin{lstlisting}
+data Bool = True | False
+\end{lstlisting}
+In order to construct a (Haskell) function $f$ from |BW| to |Bool|, it suffices to define $f(Black)$ and $f(White)$.\\
+The first isomorphism, denoted by $f_1$, is given by $f_1(Black)=True$ and $f_1(White) = False$. Its inverse (denoted by $g_1$) is given by $g_1(True) = Black$ and $g_1(False) = White$. To show that these are inverse, we have to show 
+\[
+g_1 (f_1 (White)) = White, \quad g_1 (f_1 (Black)) = Black.
+\]
+These equalities holds by definition of $f_1$ and $g_1$.\\
+The second isomorphism, denoted by $f_2$, is given by $f_2(Black)=False$ and $f_2(White) = True$. Its inverse (denoted by $g_2$) is given by $g_2(False) = Black$ and $g_1(True) = White$. That $g_2$ is the inverse of $f_2$ is also immediate.
+\end{solution}
+
+\begin{solution}[to \cref{exer:iso_in_sets}]
+The isomorphisms in $\SET$ are precisely the bijective functions, indeed:\\
+\begin{itemize}
+\item Assume $f: X\to Y$ is a bijection, i.e.
+\[
+\forall y\in Y: \exists! x_{y}\in X: f(x)=y 
+\]
+We show that the inverse of $f$ is given by:
+\[
+g : Y\to X: y\mapsto x_y.
+\]
+So we have to show $\co{f}{g} = \Id[X]$ and $\co{g}{f} = \Id[Y]$. Let $x\in X$, since that $g(f(x))$ is the unique element $z\in X$ such that $f(z) = f(x)$ (and since $x$ satisfies this condition), we have $g(f(x)) = x$. Since this holds for all $x\in X$, we have $\co{f}{g} = \Id[X]$.\\
+Let $y\in Y$ and let $x := x_y$  be the unique element in $X$ such that $f(x)=y$. So by definition of $g$, we have $g(y) = x$, hence 
+$f(g(y)) = f(x) = y$.
+\item Assume $f:X\to Y$ is an isomorphism with inverse $f^{-1}$. Let $y\in Y$, we have to show that there exists a unique $x\in X$ such that $f(x)=y$. Define $x := g(y)$. Since $\co{g}{f} = \Id[Y]$, we have $y = f(g(y)) = f(x)$, hence, this $x$ indeed satisfies the condition. To show that $x$ is unique, let $z\in X$ satisfy $f(z)=y$. That $z=x$ now follows from $\co{f}{g} = \Id[X]$, indeed: 
+$z = g(f(z)) = g(y) = x$.
+\end{itemize}
+\end{solution}
+
+\begin{solution}[to \cref{exer:iso_in_pos}]
+The isomorphisms in $\POS$ are precisely the bijections $f:(X,\leq_X) \to (Y,\leq_Y)$ such that 
+\begin{equation}\label{eqn:order_iso}
+x_1 \leq_X x_2 \iff f(x_1) \leq_Y f(x_2),
+\end{equation}
+Indeed:
+\begin{itemize}
+\item Assume $f$ is a bijection which satisfies \cref{eqn:order_iso}. Since it is a bijection, we know (by the solution to \cref{exer:iso_in_sets}), that there exists a function $g:(Y,\leq_Y)\to (X,\leq_X)$ such that $\co{f}{g}=\Id[(X,\leq_X)]$ and $\co{g}{f}=\Id[(Y,\leq_Y)]$. However, this does not conclude the proof of the first implication, because we do not know appriori, that $g$ is a morphism of posets. So we have to show
+\[
+\forall y_1,y_2\in Y: y_1\leq_Y y_2 \implies g(y_1)\leq_X g(y_2).
+\]
+Let $y_1,y_2\in Y$. Since $f$ is bijective, there exists $x_1,x_2 \in X$ such that $f(x_1)=y_1$ and $f(x_2)=y_2$. If $f(x_1) = y_1\leq_Y y_2 = f(x_2)$, then by \cref{eqn_order_iso}, we also have that $x_1 \leq x_2$. But by definition of $g$, we have $g(y_1)=x_1$ and $g(y_2)=x_2$, hence $g(y_1)\leq_X g(y_2)$ which shows that $g$ is an order-preserving morphism, i.e. $g \in \CHom{\POS}{(Y,\leq_Y)}{(X,\leq_X)}$.
+\item Assume $f$ is an isomorphism in $\POS$ with inverse $g$. Since $f$ is a function which satisfies $\co{f}{g}=\Id[(X,\leq_X)]$ and $\co{g}{f}=\Id[(Y,\leq_Y)]$, we have (by the same argument as in the solution to \cref{exer:iso_in_sets}), that $f$ is a bijection. Hence, it remains to show that \cref{eqn:order_iso} holds. Let $x_1,x_2\in X$.\\
+If $x_1\leq_X x_2$, then we have $f(x_1)\leq_Y f(x_2)$ since $f \in\CHom{\POS}{(X,\leq_X)}{(Y,\leq_Y)}$.\\
+Assume $f(x_1)\leq_Y f(x_2)$. Since $g \in\CHom{\POS}{(Y,\leq_Y)}{(X,\leq_X)}$, we have $g(f(x_1)) \leq_X g(f(x_2))$. But $\co{f}{g} = \Id[X]$, hence $x_1 \leq_X x_2$.
+\end{itemize}
+\end{solution}
+
+\begin{solution}[to \cref{exer:iso_in_posetcategory}]
+First, let $(X,\leq_Y)$ be a preorder. A morphism $f:x\to y$ is an isomorphism if and only if there exists a morphism $g: y\to x$ such that $\co{f}{g}=\Id[x]$ and $\co{g}{f}=\Id[y]$. But, in a preorder category, each hom-set has a unique element if it is non-empty. So, for any $g\in \Hom{y}{x}$ and $f\in \Hom{x}{y}$, we always have $\co{f}{g}=\Id[x]$ and $\co{g}{f}=\Id[y]$. Hence a morphism $f:x\to y$ in a preorder-category is an isomorphism if and only if there exists a morphism $g:y\to x$. The existence of a morphism $f:x\to y$ means precisely that $x\leq y$. Hence, isomorphisms in a preorder-category corresponds with a pair of elements $(x,y)$ in $X$ such that $x\leq y$ and $y\leq x$.\\
+If $(X,\leq_X)$ is a poset, i.e. satisfies antisymmetry, then if $x\leq y$ and $y\leq x$, we must have $x=y$. Consequently, in a poset-category, the only isomorphisms are the identity morphisms (i.e. corresponding with $x\leq x$).
+\end{solution}
+
+\begin{solution}[to \cref{ex:mono-inj}]
+The monomorphisms in $\SET$ correspond precisely with the injective functions, i.e. the functions $f:X\to Y$ which satisfy
+\[
+\forall x_1,x_2\in X: f(x_1)=f(x_2) \implies x_1=x_2,
+\]
+Indeed:
+\begin{itemize}
+\item Assume $f$ is injective. Let $g,h: Z\to X$ be functions such that $\co{g}{f}=\co{h}{f}$. We have to show $g=h$, i.e. 
+\[
+\forall z\in Z: g(z)=h(z).
+\]
+Since $f$ is injective, it suffices to show 
+\[
+\forall z\in Z: f(g(z))=f(h(z)).
+\]
+But this holds by the condition of $g$ and $h$. Hence, $f$ is indeed a monomorphism.
+\item Assume $f$ is a monomorphism. We have to show that for each $x_1,x_2\in X$, we have $f(x_1) = f(x_2)$. Let $\mathbf{1} = \{\star\}$ be a singleton set and define
+\[
+g_1 : \mathbf{1}\to X: \star\mapsto x_1,\quad  g_2 : \mathbf{1}\to X: \star\mapsto x_2, 
+\]
+Since $f(x_1)=f(x_2)$, we have $\co{g_1}{f} = \co{g_2}{f}$. But $f$ is a monomorphism, hence $g_1 = g_2$ which means $x_1 = g_1(\star) = g_2(\star) = x_2$. Thus, $f$ is indeed injective.
+\end{itemize}
+\end{solution}
+
+\begin{solution}[to \cref{exer:sections_in_set_injective}]
+Let $f:X\to Y$ be a section with a retraction $h:Y\to X$, i.e. $\co{f}{h} = \Id[Y]$. By \cref{ex:mono-inj}, it suffices to show that $f$ is a monomorphism. Let  $g_1, g_2 : Z \to X$ be morphisms in $\SET$ such that $\co{g_1}{f} = \co{g_2}{f}$. We have to show $g_1=g_2,$, this follows from the following computation:
+\begin{eqnarray*}
+g_1 =& \co{g_1}{\Id[Y]} & \text{ by unit law},\\ 
+	=& \co{g_1}{\co{f}{h}} & \text{ since $f$ section},\\ 
+	=& \co{\co{g_1}{f}}{h} & \text{ by associativity},\\
+	=&  \co{\co{g_2}{f}}{h} & \text{ by assumption},\\
+	=& \co{g_2}{\co{f}{h}} & \text{ by associativity},\\ 
+	=& \co{g_2}{\Id[Y]} & \text{ since $f$ section},\\
+	=& g_2 & \text{ by unit law}.
+\end{eqnarray*}
+Notice that this proof shows that in an arbitrary category, a section is always a monomorphism.
+\end{solution}
+
+\begin{solution}[to \cref{exer:iso_to_monoepi}] 
+Let $f : a\cong b$ be an isomorphism with inverse $f^{-1}$. There are multiple proofs which one can give, an abstract one (which is \textit{indirect} in the sense that we use another exercise/lemma) and a more \textit{direct} one.
+\begin{itemize}
+\item \textbf{Indirect proof:} By the solution of \ref{exer:sections_in_set_injective}, we know that any section (from a section-retraction pair) is a monomorphism. An analoguous argument shows that any retraction (section-retraction pair) is an epimorphism. Hence it suffices to show that $f$ is both a section and a retraction, but this is immediate because $\co{f}{f^{-1}} = \Id[a]$ and $\co{f^{-1}}{f} = \Id[b]$.
+\item \textbf{Direct proof:} We first show that $f$ is a monomorphism. Assume $g_1,g_2 : c\to a$ are morphisms such that $\co{g_1}{f} = \co{g_2}{f}$. We then have that $g_1 = g_2$ because 
+\begin{eqnarray*}
+g_1 = \co{g_1}{\Id[a]} =& \co{g_1}{(\co{f}{f^{-1}})} & \text{ since $f : a\cong b$},\\ 
+	=& \co{(\co{g_1}{f})}{f^{-1}} & \text{ by associativity}, \\ 
+	=& \co{(\co{g_2}{f})}{f^{-1}} & \text{ by assumption}, \\
+	=& \co{g_2}{(\co{f}{f^{-1}})} & \text{ by associativity} \\
+	=& \co{g_2}{\Id[a]} & \text{ since $f : a\cong b$} \\
+	=& g_2.
+\end{eqnarray*}
+That $f$ is also an epimorphism is analoguous, indeed: Assume $g_1,g_2 : b\to c$ are morphisms such that $\co{f}{g_1} = \co{f}{g_2}$. We then have that $g_1 = g_2$ because 
+\begin{eqnarray*}
+g_1 = \co{\Id[b]}{g_1} =& \co{(\co{f^{-1}}{f})}{g_1} & \text{ since $f : a\cong b$},\\ 
+	=& \co{f^{-1}}{(\co{f}{g_1})} & \text{ by associativity}, \\ 
+	=& \co{f^{-1}}{(\co{f}{g_2})} & \text{ by assumption}, \\
+	=& \co{(\co{f^{-1}}{f})}{g_2} & \text{ by associativity} \\
+	=& \co{\Id[b]}{g_2} & \text{ since $f : a\cong b$} \\
+	=& g_2.
+\end{eqnarray*}
+\end{itemize}
+\end{solution}
+
+\begin{solution}[to \cref{exer:counterexample_monoepi_not_iso}]
+Let $(X,\leq_X)$ be a preordered set. Any morphism $f \in \POS(X,\leq_X)(x,y)$ is always both a monomorphism and an epimorphism because hom-sets have at most on element. But, by \cref{exer:iso_in_posetcategory}, we know that in a poset (not a preordered set!), the only isomorphisms are the identity morphisms. Hence, if $x\leq y$ but $x\not=y$ (living in a poset), then the corresponding morphism in $\Hom{x}{y}$ is both an epimorphism and monomorphisms but not an isomorphism.\\
+A concrete example is given by e.g. the poset of truth values $\{0, 1\}$. We have $0\leq 1$ and those are not equal.
+\end{solution}
+
+%% Universal properties
+\begin{solution}[to \cref{exer:initial_set}] 
+An initial object (and the only one), is the emptyset $\emptyset$, indeed: Let $X$ be a set. Then there is clearly a unique function $\emptyset\to X$.
+\end{solution}
+
+\begin{solution}[to \cref{exer:initial_posetcat}]
+A initial object in $\POS(X,\leq)$ is the minimal object, that is an element $\bot\in X$ such that
+\begin{equation}
+\forall y\in X: \bot \leq y.
+\end{equation}
+Indeed: Assume $x$ is an initial object in $(X,\leq)$, i.e. for any other element $y\in X$, there exists a (unique) morphism $x\to y$, i.e. hence, by definition of the hom-sets, we have $x\leq y$. So $x$ is indeed the minimal object.
+
+Conversely, assume $\bot$ is a minimal element, hence, for each $y\in X$, we have $\bot\leq y$. Hence $\Hom{\bot}{y}$ is non-empty. So it must contain exactly one element. This means precisely that it is initial.
+
+
+A somewhat \textit{more compact} solution is as follows: By definition of $\POS(X,\leq)$, for each $x\in X$, we have:
+\[
+\forall y\in X: \left(x\leq y \iff \exists! f\in \Hom{x}{y}\right).
+\]
+Hence an object $x$ is initial if and only if, $x\leq y$ for all $y\in X$, if and only if it is minimal.
+\end{solution}
+
+\begin{solution}[to \cref{exer:initial-unique}]
+Let $A$ and $B$ be initial objects in $\CC$. By initiality of $A$ (resp. $B$), there exists a unique morphism $f \in \CHom{\CC}{A}{B}$ (resp. $g \in \CHom{\CC}{B}{A}$). That $f$ and $g$ are inverses follows because $\co{f}{g} \in \CHom{\CC}{A}{A}$ (resp. $\co{g}{f}\in \CHom{\CC}{B}{B}$). But by initiality of $A$ (resp. $B$), $\CHom{\CC}{A}{A}$ (resp. $\CHom{\CC}{B}{B}$) has a unique element, but both $\co{f}{g}, \Id[A] \in \CHom{\CC}{A}{A}$ (resp. $\co{g}{f}, \Id[B] \in \CHom{\CC}{B}{B}$), hence they must be equal.
+\end{solution}
+
+\begin{solution}[to \cref{exer:initiality_preserved_by_iso}]
+Assume $A\in \Ob{\CC}$ is initial, $B\in\Ob{\CC}$ an arbitrary object and $i:A\cong B$ an isomorphism. We have to show that $B$ is initial, i.e. for each $X\in\Ob{\CC}$, there should exists a unique morphism $B\to X$.
+
+Fix such an $X$. By initiality of $A$, there exists a (unique) morphism $f\in \CHom{\CC}{A}{X}$. If we denote the inverse of $i$ by $j$, we have $\co{j}{f} \in\CHom{\CC}{B}{X}$. To show that $\co{j}{f}$ is the unique morphism in this hom-set, let $g\in \CHom{\CC}{B}{X}$. So we have $\co{i}{g} \in \CHom{\CC}{A}{X}$. By initiality of $A$, we have $\co{i}{g} = f$. The claim now follows by the following computation:
+\[
+\co{j}{f} = \co{j}{(\co{i}{g})} = \co{(\co{j}{i})}{g} = \co{\Id[B]}{g} = g.
+\]
+\end{solution}
+
+\begin{solution}[to \cref{exer:cat-without-initial}]
+We give two solutions to this exercise.
+\begin{itemize}
+\item Consider the category generated by the graph: 
+\[
+\begin{tikzcd}
+x & y
+\end{tikzcd}
+\]
+This category can not have an initial object since there is no morphism from $x$ to $y$ or vice versa.
+\item Consider the category generated by the graph: 
+\[
+\begin{tikzcd}
+x \arrow[r, bend left, "f"] \arrow[r, bend right, "g"] & y
+\end{tikzcd}
+\]
+This category also can not have an initial object, indeed: There is no morphism from $y$ to $x$, hence $y$ can not be initial. But also $x$ can not be initial since $f$ and $g$ are different morphisms.
+\end{itemize}
+\end{solution}
