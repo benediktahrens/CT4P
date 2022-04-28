@@ -158,6 +158,7 @@ literate={→ }{\ARROW}1
 \newcommand{\BinTree}{\Catb{BinTree}}
 \newcommand{\Maybe}{\Catb{Maybe}}
 \newcommand{\SET}{\Catb{Set}}
+\newcommand{\PTSET}{\Catb{PtSet}}
 \newcommand{\FINSET}{\Catb{FinSet}}
 \newcommand{\CAT}{\Catb{Cat}}
 \newcommand{\POS}{\Catb{Pos}}
@@ -965,6 +966,17 @@ In this section, we discuss special objects in a category.
 \end{exer}
 
 \begin{exer}
+  Does the category 
+  \[ 
+  \begin{tikzcd}
+  	A & B
+  \end{tikzcd}  
+   \] 
+  have an initial object?
+\end{exer}
+
+
+\begin{exer}
   Does the category $A \to B$ have an initial object?
 \end{exer}
 
@@ -974,6 +986,16 @@ In this section, we discuss special objects in a category.
 
 \begin{exer}
   Does the category $A \rightrightarrows B$ have an initial object?
+\end{exer}
+
+\begin{exer}
+  Does the category 
+  \[
+  \begin{tikzcd}
+  A \arrow[r] \arrow[loop, swap, looseness=4, "f"] & B
+  \end{tikzcd}
+  \]
+  have an initial object? (Here, the morphism $f$ is different from $\Id[A]$).
 \end{exer}
 
 \begin{exer}[\cref{sol:initial_set}]\label{exer:initial_set}
@@ -1011,6 +1033,9 @@ In this section, we discuss special objects in a category.
 
 \begin{exer}[\cref{sol:cat-without-initial}]\label{exer:cat-without-initial}
   Construct a category that does not have an initial object.
+\end{exer}
+
+\begin{exer} Let $\PTSET$ be the category of pointed sets, that is the category whose objects are pairs $(X,x)$ with $X$ a set and $x\in X$ and a morphism from $(X,x)$ to $(Y,y)$ is defined as a function $f:X\to Y$ such that $f(x)=y$. Identify an initial object in $\PTSET$.
 \end{exer}
 
 \begin{rem}
@@ -1130,6 +1155,23 @@ In this section, we discuss special objects in a category.
 
 \begin{exer}
   Given a product $(P,\projl : P \to A ,\projr : P \to B)$ of $A$ and $B$ in $\CC$, and an object $P'$ that is isomorphic to $P$ via an isomorphism $i : P \cong P'$, construct a product with object $P'$ of $A$ and $B$.
+\end{exer}
+
+\begin{exer} Assume $\CC$ has a terminal object $T\in\Ob{\CC}$. Show that for any object $A\in \Ob{\CC}$, the product of $A$ and $T$ always exists.
+\end{exer}
+
+\begin{exer} Let $\CC$ be a category and $A,B\in\Ob{\CC}$ be objects. Show that the product of $A$ and $B$ exists if and only if the following category has a terminal object:
+\begin{itemize}
+\item The objects are triples $(P,p_l: P\to A, p_r:P\to B)$.
+\item A morphism from $(P,p_l,p_r)$ to $(Q,q_l,q_r)$ is a morphism $f\in\Ob{\CC}$ such that the following diagram commutes:
+\[
+\begin{tikzcd}
+& P \arrow[ld,swap, "p_l"] \arrow[rd, "p_r"] \arrow[d, "f"] & \\
+A & Q \arrow[l, "q_l"]  \arrow[r,swap, "q_r"] & B
+\end{tikzcd}
+\]
+\item The composition and identity is inherented from the structure of $\CC$.
+\end{itemize}
 \end{exer}
 
 \begin{dfn}
@@ -1371,7 +1413,7 @@ $$m\left((x_1,\cdots,x_n),(y_1,\cdots,y_m)\right) := (x_1,\cdots,x_n,y_1,\cdots,
 \end{itemize}
 \end{exa}
 
-\begin{exa} The \textbf{free functor from $\SET$ to $\MON$} is specified by the following data:
+\begin{exa}\label{exa:freemonoids} The \textbf{free functor from $\SET$ to $\MON$} is specified by the following data:
 \begin{itemize}
 \item The function on objects is given by 
 \[
@@ -1660,7 +1702,7 @@ then we can fix some $x$ such that $P(x)$ holds.
 \end{exer}
 
 
-%\onlydraft{\input{adjunctions}}
+\onlydraft{\input{adjunctions}}
 
 \onlydraft{\input{monads}}
 

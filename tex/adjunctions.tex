@@ -1,0 +1,122 @@
+\section{Adjunctions}
+\label{sec:adjunctions}
+
+\begin{dfn} A pair $(F,G)$ of functors $F : \CC\to\DD, G:\DD\to\CC$ is called an \textbf{adjoint pair} if for every objects $C\in\Ob{\CC}$ and $D\in\Ob{\DD}$, there exists a bijection 
+\[
+\alpha_{C,D} : \CHom{\DD}{F(C)}{D} \to \CHom{\CC}{C}{G(D)},
+\]
+which are moreover natural in both $C$ and $D$, i.e. for each $f\in\CHom{\CC}{C_1}{C_2}$ and $g\in\CHom{\DD}{D_1}{D_2}$, the following diagrams commute:
+\begin{eqnarray}
+\begin{tikzcd}
+\CHom{\DD}{F(C_2)}{D} \arrow[r, "\alpha_{C_2,D}"] \arrow[d,swap, "\co{F(f)}{-}"] & \CHom{\CC}{C_2}{G(D)} \arrow[d, "\co{f}{-}"] \\
+\CHom{\DD}{F(C_1)}{D} \arrow[r,swap, "\alpha_{C_1,D}"] & \CHom{\CC}{C_1}{G(D)}
+\end{tikzcd}\\
+\begin{tikzcd}
+\CHom{\DD}{F(C)}{D_1} \arrow[r, "\alpha_{C,D_1}"] \arrow[d,swap, "\co{-}{G(g)}"] & \CHom{\CC}{C}{G(D_1)} \arrow[d, "\co{-}{g}"] \\
+\CHom{\DD}{F(C)}{D_2} \arrow[r,swap, "\alpha_{C,D_2}"] & \CHom{\CC}{C}{G(D_2)}
+\end{tikzcd}
+\end{eqnarray}
+If $(F,G)$ is an adjoint pair, we call $F$ the \textbf{left adjoint} of $G$ and we call $G$ the \textbf{right adjoint} of $F$ and we denote $F \dashv G$.
+\end{dfn}
+
+\begin{exer} Let $F:\CC\to\DD$ be a functor. Show that if $F$ has a left (resp. right) adjoint $G$, then $G$ must be unique up to isomorphism\footnote{Isomorphism w.r.t the functor category.}.
+\end{exer}
+
+\begin{exer} Let $U:\MON\to \SET$ be the forgetful functor (defined in \cref{example:forgetful_montoset}) which maps a monoid to its underlying set and let $F : \SET\to\MON$ be the functor which maps a set to the free monoid of this set (defined in \cref{exa:freemonoids}). Then is $(F,U)$ an adjoint pair. (Hint: Use \cref{prop:UVP_forget_montoset}). 
+\end{exer}
+
+\begin{exer}\label{exer:adjunction_homtensor_currying} Let $Y$ be a set. Show that the functor (induced by the following mapping on objects)
+\[
+- \times Y : \SET\to \SET: X\mapsto X\times Y,
+\]
+has a right adjoint which is given by the functor (induced by the following mapping on objects)
+\[
+\CHom{\SET}{Y}{-} : \SET\to\SET : X\mapsto \CHom{\SET}{Y}{X}.
+\]
+Is there an analoguous statement in the category $\LEAN$ instead of $\SET$?
+\end{exer}
+
+\begin{thm} Let $(F,G)$ be a pair of functors $F : \CC\to\DD, G: \DD\to\CC$. The following statements are equivalent:
+\begin{enumerate}
+\item $(F,G)$ is an adjoint pair.
+\item There exists natural transformations 
+\[
+\NatTrans{\eta}{\Id[\CC]}{\co{F}{G}}, \quad \NatTrans{\epsilon}{\co{G}{F}}{\Id[\DD]},
+\]
+such that for all $C\in\CC$ and $D\in\DD$ the following diagrams commute:
+\[
+\begin{tikzcd}
+F(C) \arrow[r,"{F(\eta_C)}"] \arrow[rd,swap, "{\Id[F(C)]}"] & F(G(F(C))) \arrow[d, "{\epsilon_{F(C)}}"] \\
+& F(C)
+\end{tikzcd} \quad 
+\begin{tikzcd}
+G(D) \arrow[r,"{\eta_{G(D)}}"] \arrow[rd,swap, "{\Id[G(D)]}"] & G(F(G(D))) \arrow[d, "{G(\epsilon_{C})}"] \\
+& G(D)
+\end{tikzcd}
+\]
+\end{enumerate}
+In case $(F,G)$ satisfies these (equivalent) conditions, we call $\eta$ the \textbf{unit of the adjunction} and $\epsilon$ the \textbf{counit of the adjunction}. The equalities in condition $2$ are called the \textbf{triangle identities}.
+\begin{proof}
+First assume that $(F,G)$ is an adjoint pair. We have to define the unit and counit and show that the triangle identities hold:
+\begin{itemize}
+\item \textbf{Unit}: For each $X\in\Ob{\CC}$, we should first define $\eta_X \in \CHom{\CC}{X}{G(F(X))}$. Since $F \dashv G$, we have a bijection
+\[
+\alpha_{X,FX} : \CHom{\DD}{FX}{FX} \to \CHom{\CC}{X}{G(F(X))},
+\]
+hence, we define $\eta_X := \alpha_{X,FX}(\Id[FX])$. We now show that $(\eta_X)_{X\in\Ob{\CC}}$ forms a natural transformation: Assume $f\in\CHom{\CC}{X}{Y}$. We have to show that the following diagram commutes:
+\[
+\begin{tikzcd}
+X \arrow[rr, "{\alpha_{X,FX}(\Id[FX])}"] \arrow[d,swap, "f"] && G(F(X)) \arrow[d, "G(F(f))"] \\
+Y \arrow[rr, swap, "{\alpha_{Y,FY}(\Id[FY])}"] && G(F(Y))
+\end{tikzcd}
+\]
+That this square is indeed commutative follows from the following computation:
+\begin{equation}\label{eqn:unitnaturality_fromhomsetadj}
+\co{f}{\alpha(\Id[FY])} = \alpha(\co{F(f)}{\Id[FY]}) = \alpha(F(f)) =  \alpha(\co{\Id[FX]}{F(f)}) = \co{\alpha(\Id[Fx])}{G(F(f))},
+\end{equation}
+where the first and last equality hold by naturality of $\alpha$.
+\item \textbf{Counit}: For each $Y\in\Ob{\DD}$, we the counit $\epsilon_Y \in \CHom{\DD}{F(G(Y))}{Y}$ is defined as the image of $\Id[G(Y)]$ of the bijection
+\[
+\alpha^{-1}_{GY,Y} : \CHom{\CC}{GY}{GY}\to \CHom{\DD}{F(G(Y))}{Y}.
+\]
+That $\epsilon$ indeed forms a natural transformation is analoguous to the computation in \cref{eqn:unitnaturality_fromhomsetadj}.
+\item \textbf{Triangle identities}: Both the triangle identities are proved analoguously, hence we will only show the first triangle identity, i.e. $\Id[FX] = \co{F(\eta_X)}{\epsilon_{FX}}$. Unfolding the definition of $\epsilon$, this is equivalent to showing:
+\[
+\Id[FX] = \co{F(\eta_X)}{\alpha^{-1}_{GFX,FX}(\Id[GF(X)])}.
+\]
+Since the components of $\alpha$ are bijections, this is equivalent to showing 
+\[
+\alpha(\Id[FX]) = \alpha(\co{F(\eta_X)}{\alpha^{-1}_{GFX,FX}(\Id[GF(X)])})
+\]
+This indeed holds by the following computation:
+\[
+\alpha(\co{F(\eta_X)}{\alpha^{-1}_{GFX,FX}(\Id[GF(X)])}) = \co{\eta_X}{\alpha(\alpha^{-1}(\Id[GFX]))} = \co{\eta_X}{\Id[GFX]} = \eta_X,
+\]
+where the first (resp. second) equality holds by naturality (resp. bijectiveness) of $\alpha$.
+\end{itemize}
+This concludes the proof of $(1)\implies (2)$. Now assume that $(2)$ holds. We have to construct bijections
+\[
+\alpha_{X,Y} : \CHom{\DD}{F(X)}{Y} \to \CHom{\CC}{X}{G(Y)},
+\]
+which are natural in $X$ and $Y$. Let $g\in \CHom{\DD}{F(X)}{Y}$. Define $\alpha_{X,Y}(g)$ as the composite:
+\[
+X \xrightarrow{\eta_X} G(F(X)) \xrightarrow{G(g)} G(Y).
+\]
+For the other direction, let $f\in \CHom{\CC}{X}{G(Y)}$. Define $\alpha^{-1}_{X,Y}(f)$ as the composite:
+\[
+FX \xrightarrow{F(f)} F(G(Y)) \xrightarrow{\epsilon_Y} Y.
+\]
+That $\alpha$ and $\alpha^{-1}$ are inverses of eachother follows from the following computation:
+\begin{eqnarray*}
+\alpha(\alpha^{-1}(f)) = \alpha(\co{F(f)}{\epsilon_Y}) =& \co{\eta_X}{G(\co{F(f)}{\epsilon_Y})} &\text{ by definition, }\\
+	=& \co{\eta_X}{(\co{GF(f)}{G\epsilon_Y})} &\text{ by functoriality of $G$},\\
+	=& \co{(\co{\eta_X}{GF(f)})}{G\epsilon_Y} &\text{ by associativity},\\
+	=& \co{(\co{f}{\eta_{GY})}}{G\epsilon_Y} &\text{ by naturality of $\eta$}\\
+	=& \co{f}{(\co{\eta_{GY}}{G\epsilon_Y})} &\text{ by associativity}\\
+	=& f &\text{by triangle identity}.
+\end{eqnarray*}
+The other equality is shown analoguous by using functoriality of $F$, naturality of $\epsilon$ and the other triangle identity.
+
+It remains to show the naturality of $\alpha$ in both $x$ and $y$ which is left to the reader as a good exercise on diagram chasing. \KW{TODO: Give the proof of the naturality}
+\end{proof}
+\end{thm}
