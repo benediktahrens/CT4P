@@ -193,7 +193,7 @@ Compare it to a definition of a function $f : \List(A) \to X$ by pattern matchin
 
 \begin{rem}
   In the case of lists, the operator $\catam{\_}$ is also known as |fold|, which in Haskell is defined as follows:
-  \begin{lstlisting}[haskell]
+  \begin{lstlisting}
     fold            :: (a → b → b) → b → ([a] → b)
     fold f v   []   =  v
     fold f v (x:xs) =  f x (fold f v xs)

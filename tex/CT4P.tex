@@ -28,7 +28,7 @@
    \renewcommand{\KW}[1]{\todo[color=green!30]{KW: #1}\PackageWarning{TODO}{KW: #1}}
 }
 
-\newcommand{\issue}[1]{\href{https://github.com/benediktahrens/cats-for-programmers/issues/#1}{Issue #1}}
+\newcommand{\issue}[1]{\href{https://github.com/benediktahrens/CT4P/issues/#1}{Issue #1}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \usepackage[style=numeric,backend=biber]{biblatex}
@@ -960,6 +960,22 @@ In this section, we discuss special objects in a category.
   Let $\CC$ be a category. An object $A \in \Ob{\CC}$ is \textbf{initial} if there is exactly one morphism from $A$ to any object $B \in \Ob{\CC}$.
 \end{dfn}
 
+\begin{exer}
+  Does the category $\bullet$ have an initial object?
+\end{exer}
+
+\begin{exer}
+  Does the category $A \to B$ have an initial object?
+\end{exer}
+
+\begin{exer}
+  Does the category $A \rightleftarrows B$ have an initial object? (Here, the morphism $A \to B$ is inverse to the morphism $B \to A$.)
+\end{exer}
+
+\begin{exer}
+  Does the category $A \rightrightarrows B$ have an initial object?
+\end{exer}
+
 \begin{exer}[\cref{sol:initial_set}]\label{exer:initial_set}
   Identify an initial object in the category $\SET$ of sets.
   Prove that it is indeed initial.
@@ -1008,12 +1024,30 @@ In this section, we discuss special objects in a category.
 \end{dfn}
 
 \begin{exer}
+  Does the category $\bullet$ have a terminal object?
+\end{exer}
+
+\begin{exer}
+  Does the category $A \to B$ have an initial object?
+\end{exer}
+
+\begin{exer}
+  Does the category $A \rightleftarrows B$ have a terminal object?
+\end{exer}
+
+\begin{exer}
+  Does the category $A \rightrightarrows B$ have a terminal object?
+\end{exer}
+
+
+
+\begin{exer}
   Identify a terminal object in the category $\SET$ of sets.
   Prove that it is indeed terminal.
 \end{exer}
 
 \begin{exer}
-  Identify an terminal object in the category $\LEAN$ of Lean types.
+  Identify a terminal object in the category $\LEAN$ of Lean types.
   Prove that it is indeed terminal.
 \end{exer}
 
@@ -1058,6 +1092,22 @@ In this section, we discuss special objects in a category.
   \]
   If $A$ and $B$ have a specified product $(P,\projl : P \to A ,\projr : P \to B)$, then the object $P$ is often called $A \times B$.
 \end{dfn}
+
+\begin{exer}
+  Does the category $\bullet$ have products?
+\end{exer}
+
+\begin{exer}
+  Does the category $A \to B$ have an initial object?
+\end{exer}
+
+\begin{exer}
+  Does the category $A \rightleftarrows B$ have products?
+\end{exer}
+
+\begin{exer}
+  Does the category $A \rightrightarrows B$ have products?
+\end{exer}
 
 
 \begin{exer}
