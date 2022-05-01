@@ -227,7 +227,7 @@ Compare it to a definition of a function $f : \List(A) \to X$ by pattern matchin
 \end{rem}
 
 
-\begin{exer}
+\begin{exer}\label{exer:list-functions-as-fold}
   Define the following functions as a catamorphism, that is, using |fold|.
   In each case, draw the diagram corresponding to Diagram~\ref{eq:initial-f-alg} of \cref{dfn:initial-alg}.
   \begin{enumerate}
@@ -241,9 +241,10 @@ Compare it to a definition of a function $f : \List(A) \to X$ by pattern matchin
   \item |map :: (a →  b) →  ([a] →  [b])|
   \item |filter :: (a →  Bool ) →  ([a] →  [a])|
   \end{enumerate}
-  Solutions are given in \cite{DBLP:journals/jfp/Hutton99}.
-\end{exer}
+  Solutions are given in \cite[\S2]{DBLP:journals/jfp/Hutton99}.
 
+  Hint: a systematic approach to reformulating functions on lists defined by explicit recursion in terms of |fold| is described in \cite[\S3.3]{DBLP:journals/jfp/Hutton99}.
+\end{exer}
 
 
 \begin{exer}[{\cite[\S3.1]{DBLP:journals/jfp/Hutton99}}]
