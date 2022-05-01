@@ -5,7 +5,9 @@
 \usepackage{xcolor}
 \usepackage{amssymb}
 \usepackage{amsmath}
+\usepackage{thmtools}
 \usepackage{amsthm}
+%\usepackage{ntheorem}
 \usepackage{stmaryrd} % texlive-science
 \usepackage{verbatim}
 
@@ -123,8 +125,11 @@ literate={→ }{\ARROW}1
 \usepackage[capitalize]{cleveref}
 
 
+
 \theoremstyle{plain}
 \newtheorem{thm}{Theorem}
+\crefname{thm}{theorem}{theorems}
+\Crefname{thm}{Theorem}{Theorems}
 \newtheorem{prop}[thm]{Proposition}
 \newtheorem{cor}[thm]{Corollary}
 \newtheorem{lemma}[thm]{Lemma}
@@ -134,9 +139,15 @@ literate={→ }{\ARROW}1
 \theoremstyle{definition}
 \newtheorem{rem}[thm]{Remark}
 \newtheorem{dfn}[thm]{Definition}
+\crefname{dfn}{Definition}{Definitions}
+\Crefname{dfn}{Definition}{Definitions}
 \newtheorem{que}[thm]{Question}
 \newtheorem{exa}[thm]{Example}
+\crefname{exa}{Example}{Examples}
+\Crefname{exa}{Example}{Examples}
 \newtheorem{exer}[thm]{Exercise}
+\crefname{exer}{Exercise}{Exercises}
+\Crefname{exer}{Exercises}{Exercises}
 \newtheorem{app}[thm]{Application}
 \newtheorem{intu}[thm]{Intuition}
 
@@ -145,6 +156,13 @@ literate={→ }{\ARROW}1
 \newtheorem{goal}[thm]{Goal}
 \newtheorem{constr}[thm]{Construction}
 \newtheorem{solution}[thm]{Solution}
+
+% \declaretheorem[name=Solution,
+% refname={theorem,theorems},
+% Refname={Theorem,Theorems}]{solution}
+
+%\Crefname{exer}{Exercise}{Exercises}
+%\Crefname{solution}{Solution}{Solutions}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -336,8 +354,8 @@ Moreover, this data should satisfy the following properties:
 
 \begin{intu} So what does a category represent? There are (at least) $3$ possible ways how one can think about this definition:
 \begin{enumerate}
-\item A category represents a type system in the sense that the objects are the types and each hom-set is the type\footnote{In this case, each hom-set is a type, so isn't each hom-set an object again? Categories which satisfy such a property are called \textit{cartesian closed}.} of functions. See (\cref{example:hask}).
-\item A category represents a \textit{bag} of instances of a particular mathematical structure (e.g. sets with a notion of addition). The objects are then instances of such a mathematical theory (e.g. $(\mathbb{N},+)$) and the morphisms are structure preserving functions (e.g. functions $f$ which satisfy $f(x+y) = f(x) + f(y)$). See \cref{example:set}, \cref{example:poset} and \cref{monoidcategory}.
+\item A category represents a type system in the sense that the objects are the types and each hom-set is the type\footnote{In this case, each hom-set is a type, so isn't each hom-set an object again? Categories which satisfy such a property are called \textit{cartesian closed}.} of functions. See \cref{example:hask}.
+\item A category represents a \textit{bag} of instances of a particular mathematical structure (e.g. sets with a notion of addition). The objects are then instances of such a mathematical theory (e.g. $(\mathbb{N},+)$) and the morphisms are structure preserving functions (e.g. functions $f$ which satisfy $f(x+y) = f(x) + f(y)$). See \cref{example:set,example:poset,monoidcategory}.
 \item A category represents a directed graph in the sense that an object is a vertex and a morphism is an edge.
 \item Anything (almost at least) can be seen as a category in some exotic way. 
 \end{enumerate}
@@ -1033,7 +1051,7 @@ In this section, we discuss special objects in a category.
   This justifies using the determinate article: we will say that $A$ is \textbf{the} initial object of $\CC$.
 
   
-  This is more generally the case for any object with a universal property, see, e.g., \cref{exer:terminal-unique} and \cref{exer:product-unique}.
+  This is more generally the case for any object with a universal property, see, e.g., \cref{exer:terminal-unique,exer:product-unique}.
 \end{rem}
 
 \begin{exer}[\cref{sol:cat-without-initial}]\label{exer:cat-without-initial}
