@@ -181,6 +181,7 @@ literate={→ }{\ARROW}1
 \newcommand{\projr}{\ensuremath{\pi_r}}
 
 
+\newcommand{\Initalg}[1]{\ensuremath{\mu^{#1}}}
 \newcommand{\Inv}[1]{#1 ^{-1}}
 \newcommand{\catam}[1]{\llparenthesis #1 \rrparenthesis}
 \newcommand{\anam}[1]{\llbracket #1 \rrbracket} % Different notation for anamorphisms which the author of the thesis uses, but I can't find the symbol which he uses. Actually it looks like he hardcoded [( )] which doesn't look nice. But this comes close to the notation I think.
@@ -1120,7 +1121,10 @@ In this section, we discuss special objects in a category.
     \end{tikzcd}
   \]
   If $A$ and $B$ have a specified product $(P,\projl : P \to A ,\projr : P \to B)$, then the object $P$ is often called $A \times B$.
+  The morphism $f : Q \to A \times B$ determined by $(Q, q_1, q_2)$ is denoted by $\langle q_1, q_2 \rangle$.
 \end{dfn}
+
+
 
 \begin{exer}
   Does the category $\bullet$ have products?
@@ -1197,6 +1201,8 @@ A & Q \arrow[l, "q_l"]  \arrow[r,swap, "q_r"] & B
     \end{tikzcd}
   \]
   If $A$ and $B$ have a specified coproduct $(C,\inl : A \to C,\inr : B \to C)$, then the object $C$ is often called $A + B$.
+  The morphism $f : A + B \to D$ determined by $(D, i_l, i_r)$ is denoted by $[ i_l, i_r]$.
+  
 \end{dfn}
 
 \begin{exer}
@@ -1331,6 +1337,24 @@ If $X$ and $Y$ are types in Haskell, then one also has the product type, which w
 
 \begin{exer}\label{ex:poset_functors} Let $(X,\leq_X)$ and $(Y,\leq_Y)$ be posets. Can you characterize/describe the functors from $\POS(X,\leq_X)$ to $\POS(Y,\leq_Y)$  ? Before writing out the definitions, what would you expect the answer to be?
 \end{exer}
+
+\begin{exer}
+  Let $\CC$ be a category with chosen products $(A\times B, \pi_A, \pi_B)$ for any two objects $A$ and $B$.
+  Construct a functor
+  \[ (\times) : \CC\times \CC \to \CC\]
+  from the product category $\CC\times \CC$ to $\CC$.
+  The objects of $\CC\times \CC$ are pairs of objects in $\CC$, and morphisms $\CHom{(\CC\times\CC)}{(X,X')}{(Y,Y')}$ are pairs $(f : X \to Y, f' : X' \to Y')$ of morphisms in $\CC$.
+\end{exer}
+
+\begin{exer}
+  Let $\CC$ be a category with chosen coproducts $(A + B, \iota_A, \iota_B)$ for any two objects $A$ and $B$.
+  Construct a functor
+  \[ (+) : \CC\times \CC \to \CC\]
+  from the product category $\CC\times \CC$ to $\CC$.
+\end{exer}
+
+
+
 
 \begin{exer}\label{ex:monoid_functors} Let $(M,m,e)$ be a monoid and let $\MON(M,m,e)$ be its corresponding category as defined in \cref{monoidcategory}. Can you characterize/describe the functors from $\MON(M,m,e)$ to $\SET$?
 \end{exer}
