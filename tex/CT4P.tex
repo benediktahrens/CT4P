@@ -1477,7 +1477,7 @@ Moreover, we call $\alpha$ a \textbf{natural isomorphism} if for each $X\in\Ob{\
 \end{center}
 \end{nota}
 
-\begin{exa} (\textbf{Currying}) Let $X$ be a set. Let $\SET(X, -)\times X : \SET\to\SET$ be the functor induced by the following data (on objects):
+\begin{exa} (\textbf{Currying}) Let $X$ be a set. Let $F := \SET(X, -)\times X : \SET\to\SET$ be the functor induced by the following data (on objects):
 \[
 Y\mapsto \SET(X,Y)\times X.
 \]
@@ -1498,7 +1498,7 @@ Show that this indeed satisfies the naturality condition.
 \begin{exer} Show that for any functor $F:\CC\to\DD$, the identity natural transformation $\Id[F]$ satisfies the properties of a natural transformation.
 \end{exer}
 
-\begin{dfn}\label{dfn:nattrans_comp} Let $F,G,H\CC\to\DD$ be functors and $\NatTrans{\alpha}{F}{G}$, $\NatTrans{\beta}{G}{H}$ be natural transformations. The \textbf{(vertical) composition} of $\alpha$ and $\beta$ is the natural transformation $\Comp{\alpha}{\beta}$ is given by the following data:
+\begin{dfn}\label{dfn:nattrans_comp} Let $F,G,H: \CC\to\DD$ be functors and $\NatTrans{\alpha}{F}{G}$, $\NatTrans{\beta}{G}{H}$ be natural transformations. The \textbf{(vertical) composition} of $\alpha$ and $\beta$ is the natural transformation $\Comp{\alpha}{\beta}$ is given by the following data:
 \[
 \forall X\in\Ob{\CC}: (\co{\alpha}{\beta})_{X} := \co{\alpha_X}{\beta_X}.
 \]
