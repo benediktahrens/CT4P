@@ -1,0 +1,61 @@
+\subsection{Contravariant functors}
+
+A variation on functors are \textbf{contravariant functors}.
+A contravariant functor consists of a map on objects just like a functor.
+However, the \textbf{map on morpisms turns the morphisms around}.
+We give the formal definition:
+
+\begin{dfn} Let $\CC$ and $\DD$ be categories. A \textbf{contravariant functor} $F$ from $\CC$ to $\DD$ consists of the following data:
+\begin{itemize}
+\item A function 
+\[
+\Ob{\CC} \to \Ob{\DD},
+\]
+written as $X\mapsto F(X)$.
+\item For each $X,Y\in \Ob{\CC}$, a function
+\[
+\CHom{\CC}{X}{Y} \to \CHom{\DD}{F(Y)}{F(X)},
+\]
+written as $f\mapsto F(f)$.
+\end{itemize}
+Moreover, this data should satisfy the following properties:
+\begin{itemize}
+\item (\textbf{Preserves composition}) For $f\in \Hom[\CC]{X}{Y}$ and $g\in \Hom[\CC]{Y}{Z}$, we have $F(\co f g) =  \co {F(g)}{F(f)}$.
+\item (\textbf{Preserves identity}) For $X\in\CC$, we have $F(\Id[X]) = \Id[F(X)]$.
+\end{itemize}
+\end{dfn}
+
+\begin{exer} Notice that the preservation of composition has now changed, why is this the case?
+\end{exer}
+
+An example of a contravariant functor is given by the powerset-functor:
+\begin{exa} \label{example:powersetfunctor} Recall that the powerset of a set $X$, denoted by $\mathbb{P}(X)$, is the set of all subsets of $X$, i.e. 
+\[
+\mathbb{P}(X) :=  \left\{A \mid A\subseteq X\right\}.
+\]
+The contravariant \textbf{powerset-functor}\footnote{Since a function is mapped to the inverse-image function, one also calls the powerset-functor, an inverse image-functor} (on sets), denoted by $\mathbb{P}$, is the functor from $\SET$ to $\SET$ defined by the following data:
+\begin{itemize}
+\item The function on objects is given by:
+\[
+\Ob{\SET}\to \Ob{\SET}: X\mapsto \mathbb{P}(X).
+\]
+\item For each $X,Y\in\SET$, the function on morphisms is given by
+\[
+\CHom{\SET}{X}{Y} \to \CHom{\SET}{\mathbb{P}(X)}{\mathbb{P}(Y)}: f\mapsto f^{-1},
+\]
+where $f^{-1}$ given by
+\[
+f^{-1}:\mathbb{P}(Y)\to \mathbb{P}(X): B\mapsto f^{-1}(B) := \left\{x\in X \mid f(x)\in B\right\}.
+\]
+\end{itemize}
+\end{exa}
+
+\begin{exer} Show that $\mathbb{P}$, defined in \cref{example:powersetfunctor} satisfies the properties of a contravariant functor.
+\end{exer}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "CT4P"
+%%% End:
