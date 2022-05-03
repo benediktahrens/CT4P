@@ -1535,16 +1535,17 @@ Show that this indeed satisfies the naturality condition.
 Hint: Write the equality as a (not-known commutative) square.
 \end{exer}
 
-\subsection{Examples}
-\begin{exa} Let $(M,m,e)$ be a monoid and let $\MON(M,m,e)$ be its corresponding category. Recall from \cref{ex:monoid_functors} that a functor from $\mathcal{M}$ to $\SET$ is a set $X$ together with an action of $M$ on $X$, i.e. a function $\mu: M\times X\to X$ such that 
+\subsection{Exercises}
+\begin{exer} Let $(M,m,e)$ be a monoid and let $\MON(M,m,e)$ be its corresponding category. Recall from \cref{ex:monoid_functors} that a functor from $\mathcal{M}$ to $\SET$ is a set $X$ together with an action of $M$ on $X$, i.e. a function $\mu: M\times X\to X$ such that 
 \[
 \forall x\in X: \mu(e,x) = x, \quad \forall n_1,n_2\in M, x\in X: \mu(n_1, \mu(n_2,x)) = \mu(m(n_1,n_2), x).
 \]
-Characterize the natural transformations between $G$-sets.
-\end{exa}
+We will call a set $ X $ with an action of $ M $ on $ X $ an $ M $-set.
+Characterize the natural transformations between $M$-sets.
+\end{exer}
 
-\begin{exa} Let $(X,\leq_X)$ and $(Y,\leq_Y)$ be posets. Recall from \cref{ex:poset_functors} that a functor between posets corresponds with an order-preserving function, i.e. $x_1 \leq_X x_2 \implies f(x_1) \leq_Y f(x_2)$. Characterize the natural transformations between order-preserving functions.
-\end{exa}
+\begin{exer} Let $(X,\leq_X)$ and $(Y,\leq_Y)$ be posets. Recall from \cref{ex:poset_functors} that a functor between posets corresponds with an order-preserving function, i.e. $x_1 \leq_X x_2 \implies f(x_1) \leq_Y f(x_2)$. Characterize the natural transformations between order-preserving functions.
+\end{exer}
 
 \subsection{Equivalence of categories}
 Recall that objects $X,Y\in\Ob{\CC}$ are isomorphic if there exists morphisms $f\in\CHom{C}{X}{Y}$ and $g\in\CHom{C}{Y}{X}$ such that $\co{f}{g} = \Id[X]$ and $\co{g}{f} = \Id[Y]$. So in particular we have the notion of an isomorphism in the category $\CAT$ of categories. Spelled out, this means categories $\CC$ and $\DD$ are isomorphic if there exist functors $F:\CC\to\DD$ and $G:\CC\to\DD$ such that $\co{F}{G}= \Id[\CC]$ and $\co{G}{F} = \Id[\DD]$.\\
