@@ -1477,7 +1477,7 @@ Moreover, we call $\alpha$ a \textbf{natural isomorphism} if for each $X\in\Ob{\
 \end{center}
 \end{nota}
 
-\begin{exa} (\textbf{Currying}) Let $X$ be a set. Let $\SET(X, -)\times X : \SET\to\SET$ be the functor induced by the following data (on objects):
+\begin{exa} (\textbf{Currying}) Let $X$ be a set. Let $F := \SET(X, -)\times X : \SET\to\SET$ be the functor induced by the following data (on objects):
 \[
 Y\mapsto \SET(X,Y)\times X.
 \]
@@ -1498,13 +1498,13 @@ Show that this indeed satisfies the naturality condition.
 \begin{exer} Show that for any functor $F:\CC\to\DD$, the identity natural transformation $\Id[F]$ satisfies the properties of a natural transformation.
 \end{exer}
 
-\begin{dfn}\label{dfn:nattrans_comp} Let $F,G,H\CC\to\DD$ be functors and $\NatTrans{\alpha}{F}{G}$, $\NatTrans{\beta}{G}{H}$ be natural transformations. The \textbf{(vertical) composition} of $\alpha$ and $\beta$ is the natural transformation $\Comp{\alpha}{\beta}$ is given by the following data:
+\begin{dfn}\label{dfn:nattrans_comp} Let $F,G,H: \CC\to\DD$ be functors and $\NatTrans{\alpha}{F}{G}$, $\NatTrans{\beta}{G}{H}$ be natural transformations. The \textbf{(vertical) composition} of $\alpha$ and $\beta$ is the natural transformation $\Comp{\alpha}{\beta}$ is given by the following data:
 \[
 \forall X\in\Ob{\CC}: (\co{\alpha}{\beta})_{X} := \co{\alpha_X}{\beta_X}.
 \]
 \end{dfn}
 
-\begin{exer} Show that for any functors $F,G,H\CC\to\DD$ and $\NatTrans{\alpha}{F}{G}$, $\NatTrans{\beta}{G}{H}$ natural transformations, the (vertical) composition of $\alpha$ and $\beta$ satisfies the properties of a natural transformation.
+\begin{exer} Show that for any functors $F,G,H: \CC\to\DD$ and $\NatTrans{\alpha}{F}{G}$, $\NatTrans{\beta}{G}{H}$ natural transformations, the (vertical) composition of $\alpha$ and $\beta$ satisfies the properties of a natural transformation.
 \end{exer}
 
 \begin{dfn} Let $\CC,\DD$ be categories. The \textbf{category of functors} or the \textbf{functor category} from $\CC\to\DD$, denoted by $Fun(\CC,\DD)$ or $[\CC,\DD]$, is given by the following data:
@@ -1535,19 +1535,20 @@ Show that this indeed satisfies the naturality condition.
 Hint: Write the equality as a (not-known commutative) square.
 \end{exer}
 
-\subsection{Examples}
-\begin{exa} Let $(M,m,e)$ be a monoid and let $\MON(M,m,e)$ be its corresponding category. Recall from \cref{ex:monoid_functors} that a functor from $\mathcal{M}$ to $\SET$ is a set $X$ together an action of $M$ on $X$, i.e. a function $\mu: M\times X\to X$ such that 
+\subsection{Exercises}
+\begin{exer} Let $(M,m,e)$ be a monoid and let $\MON(M,m,e)$ be its corresponding category. Recall from \cref{ex:monoid_functors} that a functor from $\mathcal{M}$ to $\SET$ is a set $X$ together with an action of $M$ on $X$, i.e. a function $\mu: M\times X\to X$ such that 
 \[
 \forall x\in X: \mu(e,x) = x, \quad \forall n_1,n_2\in M, x\in X: \mu(n_1, \mu(n_2,x)) = \mu(m(n_1,n_2), x).
 \]
-Characterize the natural transformations between $G$-sets.
-\end{exa}
+We will call a set $ X $ with an action of $ M $ on $ X $ an $ M $-set.
+Characterize the natural transformations between $M$-sets.
+\end{exer}
 
-\begin{exa} Let $(X,\leq_X)$ and $(Y,\leq_Y)$ be posets. Recall from \cref{ex:poset_functors} that a functor between posets corresponds with an order-preserving function, i.e. $x_1 \leq_X x_2 \implies f(x_1) \leq_Y f(x_2)$. Characterize the natural transformations between order-preserving functions.
-\end{exa}
+\begin{exer} Let $(X,\leq_X)$ and $(Y,\leq_Y)$ be posets. Recall from \cref{ex:poset_functors} that a functor between posets corresponds with an order-preserving function, i.e. $x_1 \leq_X x_2 \implies f(x_1) \leq_Y f(x_2)$. Characterize the natural transformations between order-preserving functions.
+\end{exer}
 
 \subsection{Equivalence of categories}
-Recall that objects $X,Y\in\Ob{\CC}$ are isomorphic if there exists morphisms $f\in\CHom{C}{X}{Y}$ and $g\in\CHom{C}{Y}{X}$ such that $\co{f}{g} = \Id[X]$ and $\co{g}{f} = \Id[Y]$. So in particular we have the notion of an isomorphism in the category $\CAT$ of categories. Spelled out, this means categories $\CC$ and $\DD$ are isomorphic if there exist functors $F:\CC\to\DD$ and $G:\CC\to\DD$ such that $\co{F}{G}= \Id[\CC]$ and $\co{G}{F} = \Id[\DD]$.\\
+Recall that objects $X,Y\in\Ob{\CC}$ are isomorphic if there exist morphisms $f\in\CHom{C}{X}{Y}$ and $g\in\CHom{C}{Y}{X}$ such that $\co{f}{g} = \Id[X]$ and $\co{g}{f} = \Id[Y]$. So in particular we have the notion of an isomorphism in the category $\CAT$ of categories. Spelled out, this means categories $\CC$ and $\DD$ are isomorphic if there exist functors $F:\CC\to\DD$ and $G:\CC\to\DD$ such that $\co{F}{G}= \Id[\CC]$ and $\co{G}{F} = \Id[\DD]$.\\
 However, the following exercise shows that isomorphism of categories is not the correct notion of \textit{equivalence/sameness} between categories:\\
 Let $\FINSET$ be the category whose objects are given by finite sets and whose morphisms are given by functions\footnote{Notice that the objects of $\FINSET$ form a subset of the objects of $\SET$, but given any two finite sets $X,Y in \Ob{\FINSET}$, we have $\CHom{FINSET}{X}{Y}$ = $\CHom{SET}{X}{Y}$. We say in this case that $\FINSET$ is a (full) subcategory of $\SET$.}. That this is a category follows since $\SET$ is a category.\\
 Let $\Catb{FinOrd}$ be the category whose objects are given by sets of the form 
@@ -1606,7 +1607,7 @@ So motivated by the remark, we define:
 \]
 \end{dfn}
 
-So although $U$ is not an isomorphism, it does induces an equivalence of categories:
+So although $U$ is not an isomorphism, it does induce an equivalence of categories:
 \begin{exer} Show that $U$ induces an equivalence of categories.
 \end{exer}
 
