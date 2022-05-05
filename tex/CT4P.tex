@@ -815,47 +815,6 @@ Show that the only isomorphisms in $\mathcal{G}$ are the identity morphisms (i.e
 \subsection{Sections and Retractions}
 \label{sec:sections}
 
-There are weaker relations between objects of a category than isomorphism.
-For instance, a (Haskell) type |a| can be a ``subtype'' of another Haskell type |b|, in the sense that there is a ``copy'' of |a| in |b|.
-A simple example is that the type |Bool| has a copy inside the type |Int|:
-\begin{lstlisting}
-bool2Int :: Bool -> Int
-bool2Int False = 0
-bool2Int True  = 1
-\end{lstlisting}    
-
-Not only do we have a copy of |Bool| inside |Int|, but also we can go back, so that we get |False| and |True| from |0| and |1|:
-\begin{lstlisting}
-int2Bool :: Int -> Bool
-int2Bool n | n == 0    = False
-           | otherwise = True
-\end{lstlisting}
-However, notice that not only |1| is converted back to |True|, but also everything other than |0| is converted to |True|.
-
-We have
-\begin{lstlisting}
-   int2Bool (bool2Int y) = y
-\end{lstlisting}
-for every |y :: Bool|, but we don't have |bool2Int (int2Bool x) = x| for all |x :: Int|, as this fails for e.g. |x = 17| because |bool2Int (int2Bool 17)| is |1| rather than |17|.
-
-We can say that there is enough room in the type integers for it to host a copy of the type of booleans, but there isn't enough room in the type of booleans for it to host a copy of the type of integers.
-
-When there are functions
-\begin{lstlisting}
-f :: a -> b
-g :: b -> a
-\end{lstlisting}
-such that |f (g y) = y| for all |y :: b|, but not necessarily |g (f x) = x| for all |x :: a|, we say that the type |b| is a retract of the type |a|.
-
-Our discussion above shows that the type |Bool| is a retract of the type |Int|. This retraction is the same as that performed in the programming language C, where the integer |0| codes |False| and everything else codes |True|.
-
-But notice that there are other ways in which the type |Bool| lives inside the type |Int| as a retract: for example, we can send |False| to |13| and |True| to |17|, and then send back everything bigger than |15| to |True| and everything else to |False|.
-
-\begin{exer}
- Show that the type |Maybe a| is a retract of the type |[a]|. 
- 
- Hint: The idea is that |Nothing| corresponds to the empty list |[]| and that |Just x| corresponds to the one-element list |[x]|. Make this idea precise by writing back and forth functions between these types so that they exhibit |Maybe a| as a retract of |[a]|. 
-\end{exer}
 
 \begin{dfn}[Section, Retraction]
   A pair $(s,r)$ of morphisms $s : a \to b$ and $r : b \to a$ in $\CC$ is called a \textbf{section-retraction pair} if $\co{s}{r} = \Id[b]$.
@@ -866,6 +825,22 @@ But notice that there are other ways in which the type |Bool| lives inside the t
 \begin{rem}
   Note that a morphism can be a retraction in more than one way, that is, there can be more than one section $s$ such that $\co{s}{r} = \Id$.
 \end{rem}
+
+Intuitively, a section-retraction pair $(s,r)$ of morphisms $s : a \to b$ and $r : b \to a$ in a category $\CC$ provides a way for $a$ to ``live inside'' $b$.
+Note that for a given $a$ and $b$ there can be many ways for $a$ to live inside $b$.
+
+\begin{exer}[\cref{sol:section-retraction-bool-int}]\label{exer:section-retraction-bool-int}
+  Construct two different section-retraction pairs between the type |Bool| of booleans and the type |Int| of integers (e.g., in Haskell).
+\end{exer}
+
+
+
+\begin{exer}
+ Show that the type |Maybe a| is a retract of the type |[a]|. 
+ 
+ Hint: The idea is that |Nothing| corresponds to the empty list |[]| and that |Just x| corresponds to the one-element list |[x]|. Make this idea precise by writing back and forth functions between these types so that they exhibit |Maybe a| as a retract of |[a]|. 
+\end{exer}
+
 
 \subsection{Monomorphisms and Epimorphisms}
 \label{sec:mono-epi}
@@ -981,6 +956,11 @@ In this section, we discuss special objects in a category.
   
 \end{reading*}
 
+\subsection{Initial Objects}
+\label{sec:initial-objects}
+
+
+
 \begin{dfn}
   Let $\CC$ be a category. An object $A \in \Ob{\CC}$ is \textbf{initial} if there is exactly one morphism from $A$ to any object $B \in \Ob{\CC}$.
 \end{dfn}
@@ -1068,6 +1048,11 @@ In this section, we discuss special objects in a category.
   we will see this in \cref{sec:initial-algs}.
 \end{rem}
 
+\subsection{Terminal Objects}
+\label{sec:terminal-objects}
+
+
+
 \begin{dfn}
   Let $\CC$ be a category. An object $B \in \Ob{\CC}$ is \textbf{terminal} (or \textbf{final}) if there is exactly one morphism to $B$ from any object $A \in \Ob{\CC}$.
 \end{dfn}
@@ -1120,6 +1105,10 @@ In this section, we discuss special objects in a category.
 \begin{exer}
   Construct a category that does not have an terminal object.
 \end{exer}
+
+\subsection{(Binary) Products}
+\label{sec:products}
+
 
 
 \begin{dfn}
@@ -1184,8 +1173,14 @@ In this section, we discuss special objects in a category.
   Given a product $(P,\projl : P \to A ,\projr : P \to B)$ of $A$ and $B$ in $\CC$, and an object $P'$ that is isomorphic to $P$ via an isomorphism $i : P \cong P'$, construct a product with object $P'$ of $A$ and $B$.
 \end{exer}
 
-\begin{exer} Assume $\CC$ has a terminal object $T\in\Ob{\CC}$. Show that for any object $A\in \Ob{\CC}$, the product of $A$ and $T$ always exists.
+\begin{exer} Let $\CC$ be a category and $T\in\Ob{\CC}$ a terminal object.
+  For any object $A\in \Ob{\CC}$, construct a product of $A$ and $T$.
+
+  Hint: to form an idea what the object $A \times T$ should be, solve the exercise first in a specific category, e.g., in the category of sets or in a category coming from a preordered set.
 \end{exer}
+
+
+
 
 \begin{exer} Let $\CC$ be a category and $A,B\in\Ob{\CC}$ be objects. Show that the product of $A$ and $B$ exists if and only if the following category has a terminal object:
 \begin{itemize}
@@ -1200,6 +1195,25 @@ A & Q \arrow[l, "q_l"]  \arrow[r,swap, "q_r"] & B
 \item The composition and identity is inherented from the structure of $\CC$.
 \end{itemize}
 \end{exer}
+
+\begin{exer}
+  Let $\CC$ be a category with a choice of product $(A\times B, \projl, \projr)$ for any two objects $A,B\in \Ob{\CC}$.
+  Given morphisms $f : A \to C$ and $g : B \to D$ in $\CC$, construct a morphism
+  \[ f \times g : A \times B \to C \times D.\]
+\end{exer}
+
+
+\begin{exer}
+  Let $\CC$ be a category with a choice of product $(A\times B, \projl, \projr)$ for any two objects $A,B\in \Ob{\CC}$.
+  For any $A, B \in \Ob\CC$, construct an isomorphism
+  \[ A \times B \cong B \times A. \]
+\end{exer}
+
+
+\subsection{(Binary) Coproducts}
+\label{sec:coproducts}
+
+
 
 \begin{dfn}
    Let $\CC$ be a category and let $A,B \in \Ob\CC$ be objects of $\CC$.
@@ -1331,26 +1345,30 @@ Since this holds for every such list, we indeed have that the composition is pre
   Hint: use structural induction on lists.
 \end{exer}
 
-If $X$ and $Y$ are types in Haskell, then one also has the product type, which we denote by $X\times Y$. Fixing (either) one of those arguments, induces a functor:
-\begin{exa}\label{example:functor_haskproduct} Let $Y$ be an object in $\HASK$. The \textbf{product-functor (w.r.t $Y$)} consists of the following data:
-\begin{itemize}
-\item The function on objects is given by:
-\[
-\Ob{\HASK} \to \Ob{\HASK}: X\mapsto X\times Y.
-\]
-\item Let $X_1,X_2 \in \HASK$. The function on morphisms is given by:
-\[
- \CHom{\HASK}{X_1}{X_2} \to \CHom{\HASK}{X_1 \times Y}{X_2\times Y}: f\mapsto f\times \Id[Y].
-\]
-\end{itemize}
-\end{exa}
-
-\begin{exer} Show that the product functor, defined in \cref{example:functor_haskproduct}, satisfies the functor properties.
+\begin{exer}
+  Consider the function $\Ob{\Maybe} : \Ob\SET \to \Ob\SET$ sending a set $X$ to $X + \{*\}$.
+  For any two sets $X$ and $Y$ and $f : X \to Y$, define a function
+  \[ \Maybe(f) : \Ob\Maybe X \to \Ob\Maybe Y\]
+  and show that this assignment satisfies the functor laws.
 \end{exer}
 
-\begin{exer} Show how the |Maybe| type constructor yields a functor on $\HASK$.
+\begin{exer}
+  Let $\CC$ be a category with chosen products, and let $A \in \Ob\CC$.
+  Construct a functor $(\times A) : \CC \to \CC$ that, on objects, is given by
+  \[ (\times A) X := X \times A. \]
 \end{exer}
 
+\begin{exer}
+  Let $\CC$ be a category with chosen coproducts, and let $A \in \Ob\CC$.
+  Construct a functor $(+ A) : \CC \to \CC$ that, on objects, is given by
+  \[ (+ A) X := X + A. \]
+\end{exer}
+
+\begin{exer}
+  Let $R \in \Ob\SET$ be a set.
+  Construct a functor $(R \to) : \SET \to \SET$ that, on objects, is given by
+  \[ (R \to) X := R \to X. \]
+\end{exer}
 
 
 
