@@ -218,6 +218,37 @@ First, let $(X,\leq_Y)$ be a preorder. A morphism $f:x\to y$ is an isomorphism i
 If $(X,\leq_X)$ is a poset, i.e. satisfies antisymmetry, then if $x\leq y$ and $y\leq x$, we must have $x=y$. Consequently, in a poset-category, the only isomorphisms are the identity morphisms (i.e. corresponding with $x\leq x$).
 \end{solution}
 
+
+\begin{solution}[\cref{exer:section-retraction-bool-int}]\label{sol:section-retraction-bool-int}
+Consider
+\begin{lstlisting}
+bool2Int :: Bool -> Int
+bool2Int False = 0
+bool2Int True  = 1
+\end{lstlisting}    
+
+We can go back, so that we get |False| and |True| from |0| and |1|:
+\begin{lstlisting}
+int2Bool :: Int -> Bool
+int2Bool n | n == 0    = False
+           | otherwise = True
+\end{lstlisting}
+However, notice that not only |1| is converted back to |True|, but also everything other than |0| is converted to |True|.
+
+We have
+\begin{lstlisting}
+   Int2Bool (bool2Int y) = y
+\end{lstlisting}
+for every |y :: Bool|, but we don't have |bool2Int (int2Bool x) = x| for all |x :: Int|.
+
+We can say that there is enough room in the type integers for it to host a copy of the type of booleans, but there isn't enough room in the type of booleans for it to host a copy of the type of integers.
+
+But notice that there are other ways in which the type |Bool| lives inside the type |Int| as a retract: for example, we can send |False| to |13| and |True| to |17|, and then send back everything bigger than |15| to |True| and everything else to |False|.
+\end{solution}
+
+
+
+
 \begin{solution}[\cref{ex:mono-inj}]\label{sol:mono-inj}
 The monomorphisms in $\SET$ correspond precisely with the injective functions, i.e. the functions $f:X\to Y$ which satisfy
 \[

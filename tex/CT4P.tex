@@ -5,7 +5,9 @@
 \usepackage{xcolor}
 \usepackage{amssymb}
 \usepackage{amsmath}
+\usepackage{thmtools}
 \usepackage{amsthm}
+%\usepackage{ntheorem}
 \usepackage{stmaryrd} % texlive-science
 \usepackage{verbatim}
 
@@ -123,8 +125,11 @@ literate={→ }{\ARROW}1
 \usepackage[capitalize]{cleveref}
 
 
+
 \theoremstyle{plain}
 \newtheorem{thm}{Theorem}
+\crefname{thm}{theorem}{theorems}
+\Crefname{thm}{Theorem}{Theorems}
 \newtheorem{prop}[thm]{Proposition}
 \newtheorem{cor}[thm]{Corollary}
 \newtheorem{lemma}[thm]{Lemma}
@@ -134,9 +139,15 @@ literate={→ }{\ARROW}1
 \theoremstyle{definition}
 \newtheorem{rem}[thm]{Remark}
 \newtheorem{dfn}[thm]{Definition}
+\crefname{dfn}{Definition}{Definitions}
+\Crefname{dfn}{Definition}{Definitions}
 \newtheorem{que}[thm]{Question}
 \newtheorem{exa}[thm]{Example}
+\crefname{exa}{Example}{Examples}
+\Crefname{exa}{Example}{Examples}
 \newtheorem{exer}[thm]{Exercise}
+\crefname{exer}{Exercise}{Exercises}
+\Crefname{exer}{Exercises}{Exercises}
 \newtheorem{app}[thm]{Application}
 \newtheorem{intu}[thm]{Intuition}
 
@@ -145,6 +156,13 @@ literate={→ }{\ARROW}1
 \newtheorem{goal}[thm]{Goal}
 \newtheorem{constr}[thm]{Construction}
 \newtheorem{solution}[thm]{Solution}
+
+% \declaretheorem[name=Solution,
+% refname={theorem,theorems},
+% Refname={Theorem,Theorems}]{solution}
+
+%\Crefname{exer}{Exercise}{Exercises}
+%\Crefname{solution}{Solution}{Solutions}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -181,6 +199,7 @@ literate={→ }{\ARROW}1
 \newcommand{\projr}{\ensuremath{\pi_r}}
 
 
+\newcommand{\Initalg}[1]{\ensuremath{\mu^{#1}}}
 \newcommand{\Inv}[1]{#1 ^{-1}}
 \newcommand{\catam}[1]{\llparenthesis #1 \rrparenthesis}
 \newcommand{\anam}[1]{\llbracket #1 \rrbracket} % Different notation for anamorphisms which the author of the thesis uses, but I can't find the symbol which he uses. Actually it looks like he hardcoded [( )] which doesn't look nice. But this comes close to the notation I think.
@@ -199,17 +218,21 @@ literate={→ }{\ARROW}1
 
 
 %opening
-\title{Category Theory for Programmers}
+\title{Category Theory for Programming}
 \author{Benedikt Ahrens \and Kobe Wullaert}
 
 \begin{document}
 
 \maketitle
 
-\begin{abstract}
-\end{abstract}
+\vspace*{\fill}
+We thank Arnoud van der Leer for their contributions to these notes.
+\vspace*{\fill}
 
+
+\newpage
 \tableofcontents
+\newpage
 
 
 \section{Introduction}
@@ -301,7 +324,8 @@ The definition of categories is also given in \cite[\S 2.1]{barr-wells}. Plenty 
   It also introduces the notion of ``diagram'', which we do not use in the present notes.
 \end{reading*}
 
-\begin{dfn} A \textbf{category} $\CC$ consists of the following data:
+\begin{dfn}\label{dfn:category}
+  A \textbf{category} $\CC$ consists of the following data:
 \begin{enumerate}
 \item A collection of objects, denoted by $\Ob{\CC}$.
 \item For any given objects $X,Y \in \Ob{\CC}$, a collection of morphisms from $X$ to $Y$, denoted by $\Hom[\CC]{X}{Y}$ (or $\Hom{X}{Y}$ when the category $\CC$ is clear, or $\CHom \CC X Y$ or $X \to Y$) and which is called a \textit{hom-set}.
@@ -331,8 +355,8 @@ Moreover, this data should satisfy the following properties:
 
 \begin{intu} So what does a category represent? There are (at least) $3$ possible ways how one can think about this definition:
 \begin{enumerate}
-\item A category represents a type system in the sense that the objects are the types and each hom-set is the type\footnote{In this case, each hom-set is a type, so isn't each hom-set an object again? Categories which satisfy such a property are called \textit{cartesian closed}.} of functions. See (\cref{example:hask}).
-\item A category represents a \textit{bag} of instances of a particular mathematical structure (e.g. sets with a notion of addition). The objects are then instances of such a mathematical theory (e.g. $(\mathbb{N},+)$) and the morphisms are structure preserving functions (e.g. functions $f$ which satisfy $f(x+y) = f(x) + f(y)$). See \cref{example:set}, \cref{example:poset} and \cref{monoidcategory}.
+\item A category represents a type system in the sense that the objects are the types and each hom-set is the type\footnote{In this case, each hom-set is a type, so isn't each hom-set an object again? Categories which satisfy such a property are called \textit{cartesian closed}.} of functions. See \cref{example:hask}.
+\item A category represents a \textit{bag} of instances of a particular mathematical structure (e.g. sets with a notion of addition). The objects are then instances of such a mathematical theory (e.g. $(\mathbb{N},+)$) and the morphisms are structure preserving functions (e.g. functions $f$ which satisfy $f(x+y) = f(x) + f(y)$). See \cref{example:set,example:poset,monoidcategory}.
 \item A category represents a directed graph in the sense that an object is a vertex and a morphism is an edge.
 \item Anything (almost at least) can be seen as a category in some exotic way. 
 \end{enumerate}
@@ -791,47 +815,6 @@ Show that the only isomorphisms in $\mathcal{G}$ are the identity morphisms (i.e
 \subsection{Sections and Retractions}
 \label{sec:sections}
 
-There are weaker relations between objects of a category than isomorphism.
-For instance, a (Haskell) type |a| can be a ``subtype'' of another Haskell type |b|, in the sense that there is a ``copy'' of |a| in |b|.
-A simple example is that the type |Bool| has a copy inside the type |Int|:
-\begin{lstlisting}
-bool2Int :: Bool -> Int
-bool2Int False = 0
-bool2Int True  = 1
-\end{lstlisting}    
-
-Not only do we have a copy of |Bool| inside |Int|, but also we can go back, so that we get |False| and |True| from |0| and |1|:
-\begin{lstlisting}
-int2Bool :: Int -> Bool
-int2Bool n | n == 0    = False
-           | otherwise = True
-\end{lstlisting}
-However, notice that not only |1| is converted back to |True|, but also everything other than |0| is converted to |True|.
-
-We have
-\begin{lstlisting}
-   int2Bool (bool2Int y) = y
-\end{lstlisting}
-for every |y :: Bool|, but we don't have |bool2Int (int2Bool x) = x| for all |x :: Int|, as this fails for e.g. |x = 17| because |bool2Int (int2Bool 17)| is |1| rather than |17|.
-
-We can say that there is enough room in the type integers for it to host a copy of the type of booleans, but there isn't enough room in the type of booleans for it to host a copy of the type of integers.
-
-When there are functions
-\begin{lstlisting}
-f :: a -> b
-g :: b -> a
-\end{lstlisting}
-such that |f (g y) = y| for all |y :: b|, but not necessarily |g (f x) = x| for all |x :: a|, we say that the type |b| is a retract of the type |a|.
-
-Our discussion above shows that the type |Bool| is a retract of the type |Int|. This retraction is the same as that performed in the programming language C, where the integer |0| codes |False| and everything else codes |True|.
-
-But notice that there are other ways in which the type |Bool| lives inside the type |Int| as a retract: for example, we can send |False| to |13| and |True| to |17|, and then send back everything bigger than |15| to |True| and everything else to |False|.
-
-\begin{exer}
- Show that the type |Maybe a| is a retract of the type |[a]|. 
- 
- Hint: The idea is that |Nothing| corresponds to the empty list |[]| and that |Just x| corresponds to the one-element list |[x]|. Make this idea precise by writing back and forth functions between these types so that they exhibit |Maybe a| as a retract of |[a]|. 
-\end{exer}
 
 \begin{dfn}[Section, Retraction]
   A pair $(s,r)$ of morphisms $s : a \to b$ and $r : b \to a$ in $\CC$ is called a \textbf{section-retraction pair} if $\co{s}{r} = \Id[b]$.
@@ -842,6 +825,22 @@ But notice that there are other ways in which the type |Bool| lives inside the t
 \begin{rem}
   Note that a morphism can be a retraction in more than one way, that is, there can be more than one section $s$ such that $\co{s}{r} = \Id$.
 \end{rem}
+
+Intuitively, a section-retraction pair $(s,r)$ of morphisms $s : a \to b$ and $r : b \to a$ in a category $\CC$ provides a way for $a$ to ``live inside'' $b$.
+Note that for a given $a$ and $b$ there can be many ways for $a$ to live inside $b$.
+
+\begin{exer}[\cref{sol:section-retraction-bool-int}]\label{exer:section-retraction-bool-int}
+  Construct two different section-retraction pairs between the type |Bool| of booleans and the type |Int| of integers (e.g., in Haskell).
+\end{exer}
+
+
+
+\begin{exer}
+ Show that the type |Maybe a| is a retract of the type |[a]|. 
+ 
+ Hint: The idea is that |Nothing| corresponds to the empty list |[]| and that |Just x| corresponds to the one-element list |[x]|. Make this idea precise by writing back and forth functions between these types so that they exhibit |Maybe a| as a retract of |[a]|. 
+\end{exer}
+
 
 \subsection{Monomorphisms and Epimorphisms}
 \label{sec:mono-epi}
@@ -957,6 +956,11 @@ In this section, we discuss special objects in a category.
   
 \end{reading*}
 
+\subsection{Initial Objects}
+\label{sec:initial-objects}
+
+
+
 \begin{dfn}
   Let $\CC$ be a category. An object $A \in \Ob{\CC}$ is \textbf{initial} if there is exactly one morphism from $A$ to any object $B \in \Ob{\CC}$.
 \end{dfn}
@@ -1028,7 +1032,7 @@ In this section, we discuss special objects in a category.
   This justifies using the determinate article: we will say that $A$ is \textbf{the} initial object of $\CC$.
 
   
-  This is more generally the case for any object with a universal property, see, e.g., \cref{exer:terminal-unique} and \cref{exer:product-unique}.
+  This is more generally the case for any object with a universal property, see, e.g., \cref{exer:terminal-unique,exer:product-unique}.
 \end{rem}
 
 \begin{exer}[\cref{sol:cat-without-initial}]\label{exer:cat-without-initial}
@@ -1044,6 +1048,11 @@ In this section, we discuss special objects in a category.
   we will see this in \cref{sec:initial-algs}.
 \end{rem}
 
+\subsection{Terminal Objects}
+\label{sec:terminal-objects}
+
+
+
 \begin{dfn}
   Let $\CC$ be a category. An object $B \in \Ob{\CC}$ is \textbf{terminal} (or \textbf{final}) if there is exactly one morphism to $B$ from any object $A \in \Ob{\CC}$.
 \end{dfn}
@@ -1053,7 +1062,7 @@ In this section, we discuss special objects in a category.
 \end{exer}
 
 \begin{exer}
-  Does the category $A \to B$ have an initial object?
+  Does the category $A \to B$ have a terminal object?
 \end{exer}
 
 \begin{exer}
@@ -1097,6 +1106,10 @@ In this section, we discuss special objects in a category.
   Construct a category that does not have an terminal object.
 \end{exer}
 
+\subsection{(Binary) Products}
+\label{sec:products}
+
+
 
 \begin{dfn}
   Let $\CC$ be a category and let $A,B \in \Ob\CC$ be objects of $\CC$.
@@ -1116,14 +1129,17 @@ In this section, we discuss special objects in a category.
     \end{tikzcd}
   \]
   If $A$ and $B$ have a specified product $(P,\projl : P \to A ,\projr : P \to B)$, then the object $P$ is often called $A \times B$.
+  The morphism $f : Q \to A \times B$ determined by $(Q, q_1, q_2)$ is denoted by $\langle q_1, q_2 \rangle$.
 \end{dfn}
+
+
 
 \begin{exer}
   Does the category $\bullet$ have products?
 \end{exer}
 
 \begin{exer}
-  Does the category $A \to B$ have an initial object?
+  Does the category $A \to B$ have products?
 \end{exer}
 
 \begin{exer}
@@ -1157,8 +1173,14 @@ In this section, we discuss special objects in a category.
   Given a product $(P,\projl : P \to A ,\projr : P \to B)$ of $A$ and $B$ in $\CC$, and an object $P'$ that is isomorphic to $P$ via an isomorphism $i : P \cong P'$, construct a product with object $P'$ of $A$ and $B$.
 \end{exer}
 
-\begin{exer} Assume $\CC$ has a terminal object $T\in\Ob{\CC}$. Show that for any object $A\in \Ob{\CC}$, the product of $A$ and $T$ always exists.
+\begin{exer} Let $\CC$ be a category and $T\in\Ob{\CC}$ a terminal object.
+  For any object $A\in \Ob{\CC}$, construct a product of $A$ and $T$.
+
+  Hint: to form an idea what the object $A \times T$ should be, solve the exercise first in a specific category, e.g., in the category of sets or in a category coming from a preordered set.
 \end{exer}
+
+
+
 
 \begin{exer} Let $\CC$ be a category and $A,B\in\Ob{\CC}$ be objects. Show that the product of $A$ and $B$ exists if and only if the following category has a terminal object:
 \begin{itemize}
@@ -1174,6 +1196,25 @@ A & Q \arrow[l, "q_l"]  \arrow[r,swap, "q_r"] & B
 \end{itemize}
 \end{exer}
 
+\begin{exer}
+  Let $\CC$ be a category with a choice of product $(A\times B, \projl, \projr)$ for any two objects $A,B\in \Ob{\CC}$.
+  Given morphisms $f : A \to C$ and $g : B \to D$ in $\CC$, construct a morphism
+  \[ f \times g : A \times B \to C \times D.\]
+\end{exer}
+
+
+\begin{exer}
+  Let $\CC$ be a category with a choice of product $(A\times B, \projl, \projr)$ for any two objects $A,B\in \Ob{\CC}$.
+  For any $A, B \in \Ob\CC$, construct an isomorphism
+  \[ A \times B \cong B \times A. \]
+\end{exer}
+
+
+\subsection{(Binary) Coproducts}
+\label{sec:coproducts}
+
+
+
 \begin{dfn}
    Let $\CC$ be a category and let $A,B \in \Ob\CC$ be objects of $\CC$.
 
@@ -1187,12 +1228,14 @@ A & Q \arrow[l, "q_l"]  \arrow[r,swap, "q_r"] & B
       B \ar[l, "\inr"'] \ar[ld, "i_r"]
       \\
       &
-      Q %\ar[ld, "q_1"'] \ar[rd, "q_2"] \ar[d, "f"]
+      D %\ar[ld, "q_1"'] \ar[rd, "q_2"] \ar[d, "f"]
       &
       \\
     \end{tikzcd}
   \]
-  If $A$ and $B$ have a specified coproduct $(C,\inl : A \to C,\inr : B \to C)$, then the object $P$ is often called $A + B$.
+  If $A$ and $B$ have a specified coproduct $(C,\inl : A \to C,\inr : B \to C)$, then the object $C$ is often called $A + B$.
+  The morphism $f : A + B \to D$ determined by $(D, i_l, i_r)$ is denoted by $[ i_l, i_r]$.
+  
 \end{dfn}
 
 \begin{exer}
@@ -1302,36 +1345,74 @@ Since this holds for every such list, we indeed have that the composition is pre
   Hint: use structural induction on lists.
 \end{exer}
 
-If $X$ and $Y$ are types in Haskell, then one also has the product type, which we denote by $X\times Y$. Fixing (either) one of those arguments, induces a functor:
-\begin{exa}\label{example:functor_haskproduct} Let $Y$ be an object in $\HASK$. The \textbf{product-functor (w.r.t $Y$)} consists of the following data:
-\begin{itemize}
-\item The function on objects is given by:
-\[
-\Ob{\HASK} \to \Ob{\HASK}: X\mapsto X\times Y.
-\]
-\item Let $X_1,X_2 \in \HASK$. The function on morphisms is given by:
-\[
- \CHom{\HASK}{X_1}{X_2} \to \CHom{\HASK}{X_1 \times Y}{X_2\times Y}: f\mapsto f\times \Id[Y].
-\]
-\end{itemize}
-\end{exa}
-
-\begin{exer} Show that the product functor, defined in \cref{example:functor_haskproduct}, satisfies the functor properties.
+\begin{exer}
+  Consider the function $\Ob{\Maybe} : \Ob\SET \to \Ob\SET$ sending a set $X$ to $X + \{*\}$.
+  For any two sets $X$ and $Y$ and $f : X \to Y$, define a function
+  \[ \Maybe(f) : \Ob\Maybe X \to \Ob\Maybe Y\]
+  and show that this assignment satisfies the functor laws.
 \end{exer}
 
-\begin{exer} Show how the |Maybe| type constructor yields a functor on $\HASK$.
+\begin{exer}
+  Let $A \in \Ob\SET$.
+  Construct a functor $(\times A) : \SET \to \SET$ that, on objects, is given by
+  \[ (\times A) X := X \times A. \]
 \end{exer}
 
 
+\begin{exer}
+  Let $\CC$ be a category with chosen products, and let $A \in \Ob\CC$.
+  Construct a functor $(\times A) : \CC \to \CC$ that, on objects, is given by
+  \[ (\times A) X := X \times A. \]
+\end{exer}
+
+\begin{exer}
+  Let $A \in \Ob\SET$.
+  Construct a functor $(+ A) : \SET \to \SET$ that, on objects, is given by
+  \[ (+ A) X := X + A. \]
+\end{exer}
+
+\begin{exer}
+  Let $\CC$ be a category with chosen coproducts, and let $A \in \Ob\CC$.
+  Construct a functor $(+ A) : \CC \to \CC$ that, on objects, is given by
+  \[ (+ A) X := X + A. \]
+\end{exer}
+
+\begin{exer}
+  Let $R \in \Ob\SET$ be a set.
+  Construct a functor $(R \to) : \SET \to \SET$ that, on objects, is given by
+  \[ (R \to) X := R \to X. \]
+\end{exer}
+
+\begin{exer}
+  Let $\CC$ be a category and let $R \in \Ob\CC$.
+  Construct a functor $\CHom \CC R - : \CC \to \SET$ that, on objects, is given by
+  \[ (\CHom \CC R -) X := \CHom \CC R X. \]
+\end{exer}
 
 
 \begin{exer}\label{ex:poset_functors} Let $(X,\leq_X)$ and $(Y,\leq_Y)$ be posets. Can you characterize/describe the functors from $\POS(X,\leq_X)$ to $\POS(Y,\leq_Y)$  ? Before writing out the definitions, what would you expect the answer to be?
 \end{exer}
 
+\begin{exer}
+  Let $\CC$ be a category with chosen products $(A\times B, \pi_A, \pi_B)$ for any two objects $A$ and $B$.
+  Construct a functor
+  \[ (\times) : \CC\times \CC \to \CC\]
+  from the product category $\CC\times \CC$ to $\CC$.
+  The objects of $\CC\times \CC$ are pairs of objects in $\CC$, and morphisms $\CHom{(\CC\times\CC)}{(X,X')}{(Y,Y')}$ are pairs $(f : X \to Y, f' : X' \to Y')$ of morphisms in $\CC$.
+\end{exer}
+
+\begin{exer}
+  Let $\CC$ be a category with chosen coproducts $(A + B, \iota_A, \iota_B)$ for any two objects $A$ and $B$.
+  Construct a functor
+  \[ (+) : \CC\times \CC \to \CC\]
+  from the product category $\CC\times \CC$ to $\CC$.
+\end{exer}
+
+
 \begin{exer}\label{ex:monoid_functors} Let $(M,m,e)$ be a monoid and let $\MON(M,m,e)$ be its corresponding category as defined in \cref{monoidcategory}. Can you characterize/describe the functors from $\MON(M,m,e)$ to $\SET$?
 \end{exer}
 
-\subsection{Category of categories}
+\subsection{Categories as objects of a category?}
 Notice that a functor is a function between categories which preserves the structure of a category. So by the \textit{philosophy} of category theory, this would define a category whose objects are categories and whose morphisms are functors. In order to make this precise, we would also need a \textit{identity functor} and we should have a \textit{composition of functors}.
 
 \begin{exa}\label{example:functor_id} Let $\CC$ be a category. The \textbf{identity functor on $\CC$}, denoted by $\Id[\CC]$, is the functor specified by the following data:
@@ -1378,149 +1459,28 @@ Notice that a functor is a function between categories which preserves the struc
 \begin{exer} Show that $\CAT$ satisfies the property of a category, i.e. $\CAT$ is indeed a category.
 \end{exer}
 
-\subsection{Forgetful and free functors}
-A lot of (mathematical) structures are defined as some other kind of mathematical structure, but where extra structure is added. An example of this is the following:\\
-Recall that a monoid is a set $M$ together with a binary operation $m:M\to M\to M$ which is associative and such that there is an identity element $e$ (see \cref{monoidcategory}). In particular, any monoid has an underlying set and any morphism of monoids has an underlying function (between those sets). So forgetting the binary operation and identity element defines a functor from $\MON$ to $\SET$ which is called a \textit{forgetful functor}:
-\begin{exa}\label{example:forgetful_montoset} The \textbf{forgetful functor from $\MON$ to $\SET$} is the functor specified by the following data:
-\begin{itemize}
-\item The function on objects is given by 
-\[
-\Ob{\MON}\to \Ob{\SET}: (M,m,e)\mapsto M.
-\]
-\item The function on objects is given by
-\[
-\CHom{\MON}{(M_1,m_1,e_1)}{(M_2,m_2,e_2)} \to \CHom{\SET}{M_1}{M_2} : f\mapsto f.
-\]
-\end{itemize}
-\end{exa}
-Notice that if one defines a category whose objects are sets $M$ together with an associative binary operation $m:M\to M\to M$, then one could analoguously also define a forgetful functor from $\MON$ to this category by only forgetting the neutral element.
+\begin{rem}
+  When showing that $\CAT$ is a category, one is forced to consider \emph{equality of objects} when showing that two functors are equal.
+  This goes against the spirit of category theory, where we only ever consider \emph{equality of (parallel) morphisms}.
+  We want to consider two objects ``the same'' when they are \emph{isomorphic}, not when they are \emph{equal}. Of course, any two equal objects are isomorphic to each other, but not the other way round; for instance, in the category of sets, the cartesian product $A \times B$ is isomorphic to $B \times A$, but they are not equal.
 
-\begin{lemma} The forgetful functor from $\MON$ to $\SET$ satisfies the properties of a functor.
-\begin{proof}
-We clearly have that everything is well-defined since the codomain is $\SET$.\\
-That the identity morphism is preserved holds by definition because the identity morphism of $(M,m,e)$ (in $\MON$) is given by the identity function and the identity morphism of $M$ (in $\SET$) is also given by the identity function.\\
-That the composition of morphisms is preserved also holds by definition because the composition of morphisms (in $\MON$) is given by the composition of the underlying functions which is also the composition in $\SET$.
-\end{proof}
-\end{lemma}
+  To stay within the spirit of category theory, one can instead consider $\CAT$ as a \textbf{bicategory}.%
+  \footnote{See, e.g.,   \url{https://ncatlab.org/nlab/show/bicategory\#detailedDefn} for a definition of bicategories.}
+  In a bicategory, one has one more layer of things: objects, morphisms, and 2-cells between parallel morphisms. One also calls objects ``0-cells'' and morphisms ``1-cells'', for consistency.
+  Importantly, in a bicategory, the laws concerning 1-cells (as stated in \cref{dfn:category}) do not hold up to equality, but only up to isomorphism of 2-cells.
 
-The forgetful functor $Forget$ from $\MON$ to $\SET$ forgets the \textit{algebraic} structure of a monoid and since there are multiple monoid structures on the same set (given an example of this), hence we do not have that there exists some functor $G: \SET\to \MON$ such that $Forget\Comp G$ is the identity on $\MON$. However, to each set, one can define a monoid which satisfies an important property (this is \cref{prop:UVP_forget_montoset}). The associated monoid is called the \textit{free monoid}:
-\begin{exa} Let $X$ be a set. The \textbf{free monoid generated by $X$}, denoted by $Free(X)$, is specified by the following data:
-\begin{itemize}
-\item The underlying set consists of all finite sequences/strings of elements in $X$ (including the empty sequence).
-\item The multiplication is defined by concatenating the sequences, i.e. 
-$$m\left((x_1,\cdots,x_n),(y_1,\cdots,y_m)\right) := (x_1,\cdots,x_n,y_1,\cdots,y_m).$$
-\item The identity element is given by the empty sequence.
-\end{itemize}
-\end{exa}
+  An important example is the bicategory given by the following data, which we only list partially:
+  \begin{enumerate}
+  \item 0-cells are categories;
+  \item 1-cells are functors;
+  \item 2-cells are natural transformations (see \cref{sec:nat-trans});
+  \item composition and identity of 1-cells is composition and identity of functors.
+  \end{enumerate}
 
-\begin{exa}\label{exa:freemonoids} The \textbf{free functor from $\SET$ to $\MON$} is specified by the following data:
-\begin{itemize}
-\item The function on objects is given by 
-\[
-\Ob{\SET}\to \Ob{\MON}: X\mapsto Free(X).
-\]
-\item The function on morphisms is given as follows: A morphism $f \in \CHom{\SET}{X}{Y}$ (i.e. a function) is mapped to the monoidal morphism which is given by pointwise application of $f$, i.e.
-\[
-Free(f)(x_1,\cdots,x_n) := (f(x_1),\cdots, f(x_n)).
-\]
-\end{itemize}
-\end{exa}
-
-\begin{exer} Show that $Free$ satisfies the properties of a functor.
-\end{exer}
-
-For any set $X$, we have the \textit{canonical function} 
-\[
-Free^{X}_{!}: X\to Free(X): x\mapsto (x).
-\]
-This function satisfies the property that any function from $X$ to an arbitrary monoid corresponds with a unique morphism (of monoids) from the free monoid generated by $X$ to that monoid:
-\begin{prop}\label{prop:UVP_forget_montoset} Let $(M,m,e)$ be a monoid and $X$ be a set. For any morphism $f \in \CHom{\SET}{X}{M}$ (i.e. a function), there exists a unique  morphism $\phi^{f} \in \CHom{\MON}{Free(X)}{(M,m,e)}$, such that $f = Free^{X}_{!}\Comp \phi^{f}$.
-\begin{proof}
-For elements $a,b\in M$, we denote their multiplication by $a\times b := m(a,b)$ (note that by associativity we have that $a_1\times a_2\times\cdots\times a_n)$ is well-defined). Let $f\in \CHom{\SET}{X}{M}$ be a function. Define 
-\[
-\phi^{f}: Free(X)\to (M,m,e): (x_1\cdots,x_n)\mapsto f(x_1) \times\cdots \times f(x_n),
-\] 
-We have to define separately what happens with the empty sequence. The empty sequence we map to the identity element $e$, so in particular we have that the identity element is preserved under $\phi^{f}$, so in order to conclude that $\phi^{f}$ is a morphism of monoids, it remains to show that it preserves the binary operation but this is clear by definition.\\
-That $f = Free^{X}_{!}\Comp \phi^{f}$ holds follows immediately by the definition of $Free^{X}_{!}$ and $\phi^{f}$, indeed:
-\[
-\left(Free^{X}_{!}\Comp \phi^{f}\right)(x) = \phi^{f}\left((x)\right) = f(x).
-\]
-So it only remains to show uniqueness. Assume that $\psi$ also satisfies $Free^{X}_{!}\Comp \psi = f$. The claim now follows because $\psi$ is a morphism of monoids, indeed: Since $\psi$ is morphism is monoids, we have that it preserves the multiplication, but the multiplication is given by concatenation, hence, we have that $\psi$ is uniquely determined by the images of the sequences of length $1$ (and length $0$, but this sequence of length $0$ should be mapped under $\psi$ to $e$). But a sequence of length $1$ is of the form $(x) = Free^{X}_{!}(x)$. So the claim indeed follows by the following computation: 
-\[
-\psi((x)) = \psi(Free^{X}_{!}(x)) = f(x) = \phi^{f}(Free^{X}_{!}(x)) = \phi^{f}((x)).
-\]
-\end{proof}
-\end{prop}
-
-The following exercise shows that there is a special connection between the forgetful functor $\mathit{forget}: \MON\to\SET$ and the free functor $\mathit{free}: \SET\to\MON$. This connection expresses that these form a so-called \textit{adjoint pair} (see \cref{sec:adjunctions}).
-\begin{exer}\label{exer:preadjunction_monset}
-Show that for any set $X$ and monoid $(M,m,e)$, there exist bijections between the hom-sets:
-\[
-\alpha_{X}^{(M,m,e)} : \CHom{\MON}{Free(X)}{(M,m,e)} \to \CHom{\SET}{X}{forget(M,m,e)}.
-\]
-Hint: use \cref{prop:UVP_forget_montoset}.
-\end{exer}
-
-\begin{exer} Define a forgetful functor from the category $\POS$ of posets (defined in \cref{example:poset}) to $\SET$ analoguous to the the forgetful functor from $\MON$ to $\SET$ (defined in \cref{example:forgetful_montoset}).
-\end{exer}
-\begin{rem} The story about free monoids can not be repeated for posets, i.e. there is no free poset structure on all sets. But in order to prove this one needs more machinery.
+  We do not delve into bicategories in these notes; an introductory text is, for instance, Leinster's \cite{leinster:basic-bicats}.
 \end{rem}
 
 
-\subsection{Contravariant functors}
-
-A variation on functors are \textbf{contravariant functors}.
-A contravariant functor consists of a map on objects just like a functor.
-However, the \textbf{map on morpisms turns the morphisms around}.
-We give the formal definition:
-
-\begin{dfn} Let $\CC$ and $\DD$ be categories. A \textbf{contravariant functor} $F$ from $\CC$ to $\DD$ consists of the following data:
-\begin{itemize}
-\item A function 
-\[
-\Ob{\CC} \to \Ob{\DD},
-\]
-written as $X\mapsto F(X)$.
-\item For each $X,Y\in \Ob{\CC}$, a function
-\[
-\CHom{\CC}{X}{Y} \to \CHom{\DD}{F(Y)}{F(X)},
-\]
-written as $f\mapsto F(f)$.
-\end{itemize}
-Moreover, this data should satisfy the following properties:
-\begin{itemize}
-\item (\textbf{Preserves composition}) For $f\in \Hom[\CC]{X}{Y}$ and $g\in \Hom[\CC]{Y}{Z}$, we have $F(\co f g) =  \co {F(g)}{F(f)}$.
-\item (\textbf{Preserves identity}) For $X\in\CC$, we have $F(\Id[X]) = \Id[F(X)]$.
-\end{itemize}
-\end{dfn}
-
-\begin{exer} Notice that the preservation of composition has now changed, why is this the case?
-\end{exer}
-
-An example of a contravariant functor is given by the powerset-functor:
-\begin{exa} \label{example:powersetfunctor} Recall that the powerset of a set $X$, denoted by $\mathbb{P}(X)$, is the set of all subsets of $X$, i.e. 
-\[
-\mathbb{P}(X) :=  \left\{A \mid A\subseteq X\right\}.
-\]
-The contravariant \textbf{powerset-functor}\footnote{Since a function is mapped to the inverse-image function, one also calls the powerset-functor, an inverse image-functor} (on sets), denoted by $\mathbb{P}$, is the functor from $\SET$ to $\SET$ defined by the following data:
-\begin{itemize}
-\item The function on objects is given by:
-\[
-\Ob{\SET}\to \Ob{\SET}: X\mapsto \mathbb{P}(X).
-\]
-\item For each $X,Y\in\SET$, the function on morphisms is given by
-\[
-\CHom{\SET}{X}{Y} \to \CHom{\SET}{\mathbb{P}(X)}{\mathbb{P}(Y)}: f\mapsto f^{-1},
-\]
-where $f^{-1}$ given by
-\[
-f^{-1}:\mathbb{P}(Y)\to \mathbb{P}(X): B\mapsto f^{-1}(B) := \left\{x\in X \mid f(x)\in B\right\}.
-\]
-\end{itemize}
-\end{exa}
-
-\begin{exer} Show that $\mathbb{P}$, defined in \cref{example:powersetfunctor} satisfies the properties of a contravariant functor.
-\end{exer}
 
 
 \section{Natural transformations}
@@ -1553,7 +1513,7 @@ Moreover, we call $\alpha$ a \textbf{natural isomorphism} if for each $X\in\Ob{\
 \end{center}
 \end{nota}
 
-\begin{exa} (\textbf{Currying}) Let $X$ be a set. Let $\SET(X, -)\times X : \SET\to\SET$ be the functor induced by the following data (on objects):
+\begin{exa} (\textbf{Currying}) Let $X$ be a set. Let $F := \SET(X, -)\times X : \SET\to\SET$ be the functor induced by the following data (on objects):
 \[
 Y\mapsto \SET(X,Y)\times X.
 \]
@@ -1574,13 +1534,13 @@ Show that this indeed satisfies the naturality condition.
 \begin{exer} Show that for any functor $F:\CC\to\DD$, the identity natural transformation $\Id[F]$ satisfies the properties of a natural transformation.
 \end{exer}
 
-\begin{dfn}\label{dfn:nattrans_comp} Let $F,G,H\CC\to\DD$ be functors and $\NatTrans{\alpha}{F}{G}$, $\NatTrans{\beta}{G}{H}$ be natural transformations. The \textbf{(vertical) composition} of $\alpha$ and $\beta$ is the natural transformation $\Comp{\alpha}{\beta}$ is given by the following data:
+\begin{dfn}\label{dfn:nattrans_comp} Let $F,G,H: \CC\to\DD$ be functors and $\NatTrans{\alpha}{F}{G}$, $\NatTrans{\beta}{G}{H}$ be natural transformations. The \textbf{(vertical) composition} of $\alpha$ and $\beta$ is the natural transformation $\Comp{\alpha}{\beta}$ is given by the following data:
 \[
 \forall X\in\Ob{\CC}: (\co{\alpha}{\beta})_{X} := \co{\alpha_X}{\beta_X}.
 \]
 \end{dfn}
 
-\begin{exer} Show that for any functors $F,G,H\CC\to\DD$ and $\NatTrans{\alpha}{F}{G}$, $\NatTrans{\beta}{G}{H}$ natural transformations, the (vertical) composition of $\alpha$ and $\beta$ satisfies the properties of a natural transformation.
+\begin{exer} Show that for any functors $F,G,H: \CC\to\DD$ and $\NatTrans{\alpha}{F}{G}$, $\NatTrans{\beta}{G}{H}$ natural transformations, the (vertical) composition of $\alpha$ and $\beta$ satisfies the properties of a natural transformation.
 \end{exer}
 
 \begin{dfn} Let $\CC,\DD$ be categories. The \textbf{category of functors} or the \textbf{functor category} from $\CC\to\DD$, denoted by $Fun(\CC,\DD)$ or $[\CC,\DD]$, is given by the following data:
@@ -1611,19 +1571,20 @@ Show that this indeed satisfies the naturality condition.
 Hint: Write the equality as a (not-known commutative) square.
 \end{exer}
 
-\subsection{Examples}
-\begin{exa} Let $(M,m,e)$ be a monoid and let $\MON(M,m,e)$ be its corresponding category. Recall from \cref{ex:monoid_functors} that a functor from $\mathcal{M}$ to $\SET$ is a set $X$ together an action of $M$ on $X$, i.e. a function $\mu: M\times X\to X$ such that 
+\subsection{Exercises}
+\begin{exer} Let $(M,m,e)$ be a monoid and let $\MON(M,m,e)$ be its corresponding category. Recall from \cref{ex:monoid_functors} that a functor from $\mathcal{M}$ to $\SET$ is a set $X$ together with an action of $M$ on $X$, i.e. a function $\mu: M\times X\to X$ such that 
 \[
 \forall x\in X: \mu(e,x) = x, \quad \forall n_1,n_2\in M, x\in X: \mu(n_1, \mu(n_2,x)) = \mu(m(n_1,n_2), x).
 \]
-Characterize the natural transformations between $G$-sets.
-\end{exa}
+We will call a set $ X $ with an action of $ M $ on $ X $ an $ M $-set.
+Characterize the natural transformations between $M$-sets.
+\end{exer}
 
-\begin{exa} Let $(X,\leq_X)$ and $(Y,\leq_Y)$ be posets. Recall from \cref{ex:poset_functors} that a functor between posets corresponds with an order-preserving function, i.e. $x_1 \leq_X x_2 \implies f(x_1) \leq_Y f(x_2)$. Characterize the natural transformations between order-preserving functions.
-\end{exa}
+\begin{exer} Let $(X,\leq_X)$ and $(Y,\leq_Y)$ be posets. Recall from \cref{ex:poset_functors} that a functor between posets corresponds with an order-preserving function, i.e. $x_1 \leq_X x_2 \implies f(x_1) \leq_Y f(x_2)$. Characterize the natural transformations between order-preserving functions.
+\end{exer}
 
 \subsection{Equivalence of categories}
-Recall that objects $X,Y\in\Ob{\CC}$ are isomorphic if there exists morphisms $f\in\CHom{C}{X}{Y}$ and $g\in\CHom{C}{Y}{X}$ such that $\co{f}{g} = \Id[X]$ and $\co{g}{f} = \Id[Y]$. So in particular we have the notion of an isomorphism in the category $\CAT$ of categories. Spelled out, this means categories $\CC$ and $\DD$ are isomorphic if there exist functors $F:\CC\to\DD$ and $G:\CC\to\DD$ such that $\co{F}{G}= \Id[\CC]$ and $\co{G}{F} = \Id[\DD]$.\\
+Recall that objects $X,Y\in\Ob{\CC}$ are isomorphic if there exist morphisms $f\in\CHom{C}{X}{Y}$ and $g\in\CHom{C}{Y}{X}$ such that $\co{f}{g} = \Id[X]$ and $\co{g}{f} = \Id[Y]$. So in particular we have the notion of an isomorphism in the category $\CAT$ of categories. Spelled out, this means categories $\CC$ and $\DD$ are isomorphic if there exist functors $F:\CC\to\DD$ and $G:\CC\to\DD$ such that $\co{F}{G}= \Id[\CC]$ and $\co{G}{F} = \Id[\DD]$.\\
 However, the following exercise shows that isomorphism of categories is not the correct notion of \textit{equivalence/sameness} between categories:\\
 Let $\FINSET$ be the category whose objects are given by finite sets and whose morphisms are given by functions\footnote{Notice that the objects of $\FINSET$ form a subset of the objects of $\SET$, but given any two finite sets $X,Y in \Ob{\FINSET}$, we have $\CHom{FINSET}{X}{Y}$ = $\CHom{SET}{X}{Y}$. We say in this case that $\FINSET$ is a (full) subcategory of $\SET$.}. That this is a category follows since $\SET$ is a category.\\
 Let $\Catb{FinOrd}$ be the category whose objects are given by sets of the form 
@@ -1682,7 +1643,7 @@ So motivated by the remark, we define:
 \]
 \end{dfn}
 
-So although $U$ is not an isomorphism, it does induces an equivalence of categories:
+So although $U$ is not an isomorphism, it does induce an equivalence of categories:
 \begin{exer} Show that $U$ induces an equivalence of categories.
 \end{exer}
 
@@ -1708,9 +1669,14 @@ then we can fix some $x$ such that $P(x)$ holds.
 
 \onlydraft{\input{data}}
 
-\onlydraft{\input{solutions}}
+\input{solutions}
 
 
+\appendix
+
+\onlydraft{\input{forget-free}}
+
+\onlydraft{\input{contravariant}}
 
 \printbibliography
 

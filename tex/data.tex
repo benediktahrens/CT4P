@@ -77,13 +77,13 @@ Let $F:\CC\to \CC$ be an endofunctor and $(C,\phi)$ and $(D,\psi)$ be $F$-algebr
 A \textbf{($F$-algebra) homomorphism} from $(C,\phi)$ to $(D,\psi)$ is a morphism $f\in \CHom{\CC}{C}{D}$ such that the following diagram commutes:
 \[
 \begin{tikzcd}
-F(C) 
+FC
 \arrow[r, "\phi"] 
-\arrow[d,swap, "F(f)"]
+\arrow[d,swap, "Ff"]
 & C 
 \arrow[d, "f"] 
 \\
-F(D) 
+FD
 \arrow[r, swap, "\psi"] 
 & D
 \end{tikzcd}
@@ -136,34 +136,59 @@ we consider an example.
 
 
 \begin{dfn}\label{dfn:initial-alg}
-  Let $F:\CC\to\CC$ be an endofunctor. The \textbf{initial $F$-algebra} (if it exists), is the initial object in $\ALG{F}$.
-  Unfolding the definition, this means that it is an $F$-algebra $(\mu F, \In)$ such that for any $F$-algebra $(C,\phi)$, there exists a unique morphism $\catam{\phi} \in \CHom{\CC}{\mu F}{C}$ such that the following diagram commutes:
-\[
+  Let $F:\CC\to\CC$ be an endofunctor. An \textbf{initial $F$-algebra} (if it exists) is an initial object in $\ALG{F}$.
+  Unfolding the definition, this means that it is an $F$-algebra $(\Initalg{F}, \In)$ such that for any $F$-algebra $(C,\phi)$, there exists a unique morphism $\catam{\phi} \in \CHom{\CC}{\Initalg{F}}{C}$ such that the following diagram commutes:
+\begin{equation}\label{eq:initial-f-alg}
 \begin{tikzcd}
-{F(\mu F)} 
-\arrow[r, "in"] 
-\arrow[d,swap, "F(\catam{\phi})"]
-& {\mu F} 
+{F\Initalg{F}} 
+\arrow[r, "\In"] 
+\arrow[d,swap, "F\catam{\phi}"]
+& {\Initalg{F}} 
 \arrow[d, "\catam{\phi}"] 
 \\
-F(C) 
+FC
 \arrow[r, swap, "\phi"] 
 & C
 \end{tikzcd}
-\]
+\end{equation}
 A morphism of the form $\catam{\phi}$ is called a \textit{catamorphism}.
 \end{dfn}
 
-
 \begin{exer}
-  Let $F:\CC\to\CC$ be an endofunctor and let $(\mu F, \In)$ be an initial algebra. Show that the following properties holds:
-\begin{enumerate}
-\item $\Id = \catam{\In}$.
-\item For $F$-algebras $(C,\phi)$ and $(D,\psi)$ and $f\in\CHom{\CC}{C}{D}$, we have 
+  Let $F:\CC\to\CC$ be an endofunctor and let $(\Initalg F, \In)$ be an initial algebra. Show that
+  \[\catam{\In} = \Id[\Initalg{F}].\]
+\end{exer}
+
+\begin{exer}[Fusion Property]\label{exer:fusion-property}
+  Let $F:\CC\to\CC$ be an endofunctor and let $(\Initalg F, \In)$ be an initial algebra. Show that
+  for $F$-algebras $(C,\phi)$ and $(D,\psi)$ and $f\in\CHom{\CC}{C}{D}$, we have 
 \[
-\co{f}{\phi} = \co{\psi}{F(f)} \implies \co{f}{\catam{\phi}} = \catam{\psi}.
+\co{\phi}{f} = \co{F(f)}{\psi} \implies \co{\catam{\phi}}{f} = \catam{\psi}.
 \]
-\end{enumerate} 
+This is summarized in the following diagram:
+\begin{equation}\label{eq:initial-f-alg-composition}
+\begin{tikzcd}
+F\Initalg{F} 
+\arrow[r, "\In"] 
+\arrow[d,swap, "F\catam{\phi}"]
+\ar[dd, bend right=60, "F\catam{\psi}"']
+&
+\Initalg{F}
+\arrow[d, "\catam{\phi}"]
+\ar[dd, bend left=60, "\catam{\psi}"]
+\\
+FC
+\arrow[r, swap, "\phi"]
+\ar[d, "Ff"'] 
+&
+C \ar[d, "f"]
+\\
+FD \ar[r, "\psi"']
+&
+D
+\end{tikzcd}
+\end{equation}
+
 \end{exer}
 
 \begin{exer}[\textbf{Lambek's theorem}] Let $F:\CC\to\CC$ be an endofunctor and let $(\mu F, \In)$ be an initial algebra.
@@ -202,8 +227,9 @@ Compare it to a definition of a function $f : \List(A) \to X$ by pattern matchin
 \end{rem}
 
 
-\begin{exer}
-  Define the following functions as a catamorphism, that is, using |fold|:
+\begin{exer}\label{exer:list-functions-as-fold}
+  Define the following functions as a catamorphism, that is, using |fold|.
+  In each case, draw the diagram corresponding to Diagram~\ref{eq:initial-f-alg} of \cref{dfn:initial-alg}.
   \begin{enumerate}
   \item |sum :: [Int] →  Int|
   \item |product :: [Int] →  Int|
@@ -215,8 +241,17 @@ Compare it to a definition of a function $f : \List(A) \to X$ by pattern matchin
   \item |map :: (a →  b) →  ([a] →  [b])|
   \item |filter :: (a →  Bool ) →  ([a] →  [a])|
   \end{enumerate}
-  Solutions are given in \cite{DBLP:journals/jfp/Hutton99}.
+  Solutions are given in \cite[\S2]{DBLP:journals/jfp/Hutton99}.
+
+  Hint: a systematic approach to reformulating functions on lists defined by explicit recursion in terms of |fold| is described in \cite[\S3.3]{DBLP:journals/jfp/Hutton99}.
 \end{exer}
+
+
+\begin{exer}[{\cite[\S3.1]{DBLP:journals/jfp/Hutton99}}]
+  Show that |(+1) . sum = fold (+) 1|, by showing that |(+1) . sum| makes Diagram~\ref{eq:initial-f-alg} of \cref{dfn:initial-alg} commute.
+\end{exer}
+
+
 
 
 \begin{exer}\label{exercise:initialalg_for_btree} Let $A$ be a set and define $F$ to be the functor induced by 
@@ -248,6 +283,82 @@ exists. Show how
 induces a functor.
 \end{exer}
 
+
+
+\section{Fusion Property}\label{sec:fusion}
+
+The fusion property of \cref{exer:fusion-property} can be used to ``fuse'' a composition of functions into one function, possibly leading to more efficient code.
+
+We are going to exemplify this using the datatypes of lists and of natural numbers.
+Recall that $(\NN, [\Zero,\Succ])$ is the initial $\Maybe$-algebra.
+We also write $(+1)$ for $\Succ$.
+
+\begin{reading*}
+  The content of this section is very much inspired by \cite[\S3.2]{DBLP:journals/jfp/Hutton99}.
+  You are strongly encouraged to read that section before reading the present section.
+  In this section, we show how 
+\end{reading*}
+
+\begin{exer}[{\cite[\S3.2]{DBLP:journals/jfp/Hutton99}}]
+  Show that |(+1) . sum = fold (+) 1|, by using the fusion property of \cref{exer:fusion-property}.
+\end{exer}
+
+\begin{solution}
+  We also write $\sum$ for |sum|. Note that |sum| is defined as the catamorphism $\catam{[\Zero, (+)]}$.
+  The situation is summarized in the following diagram
+  
+  \[
+    \begin{tikzcd}[row sep = huge, column sep = huge]
+      \{*\} + \NN \times \List(\NN)
+      \ar[d, "\Id + \Id \times \sum" description]
+      \ar[r, "{[\nil, \cons]}"]
+      &
+      \List(\NN)
+      \ar[d, "\sum" description]
+      \ar[dd, bend left, "\catam{[1, (+)]}"]
+      \\
+      \{*\} + \NN \times \NN
+      \ar[r, "{[\Zero, (+)]}"]
+      \ar[d, "{\Id + \Id \times (+1)}" description]
+      &
+      \NN
+      \ar[d, "{(+1)}" description]
+      \\
+      \{*\} + \NN \times \NN
+      \ar[r, "{[1, (+)]}"]
+      &
+      \NN 
+    \end{tikzcd}
+  \]
+
+  In order to show that |(+1) . sum = fold (+) 1|, in the diagram expressed as $\co{\sum}{(+1)} = \catam{[1, (+)]}$, we need to show that the lower rectangle commutes---this is what  \cref{exer:fusion-property} says.
+
+  There are two cases to consider: the case of $*$, and the case of a pair $(m,n) \in \NN\times\NN$.
+  In the case of $*$, we obtain
+  \[
+    (+1)~0 = 1
+  \]
+  and in the case of $(m,n)$, we obtain
+  \[
+    (+1)~ ((+)~ m~ n) = (+)~ m~ ((+1)~n)
+  \]
+  both of which hold.
+  
+\end{solution}
+
+\begin{exer}
+  Prove that |map g . map f = map (g . f)| using the fusion property.
+\end{exer}
+
+
+\begin{reading*}
+  In \cref{sec:initial-algs,sec:fusion}, we have only looked at functions defined via \emph{iteration}, that is, functions defined as \emph{catamorphisms} of some $F$-algebra.
+  While \emph{primitive recursive} functions can always be expressed as a catamorphism via tupling (see, e.g., \cite[\S4]{DBLP:journals/jfp/Hutton99} and \cite[\S3.1]{vene_phd}), it is more natural specify them via a slightly more sophisticated universal property, explained in detail in Vene's dissertation~\cite[Chapter~3]{vene_phd}.
+
+  The interested reader might also study the tutorial by Fokkinga~\cite{Fokkinga_homo-cata} or the paper by Meijer et al.~\cite{DBLP:conf/fpca/MeijerFP91}.
+  
+  A guide to further literature on recursion operators is given in \cite[\S6]{DBLP:journals/jfp/Hutton99}.
+\end{reading*}
 
 \section{Terminal Coalgebras and Coinductive Datatypes}
 In this section we introduce (terminal) coalgebras which allows us to define coinductive data types.
