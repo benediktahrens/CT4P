@@ -371,6 +371,23 @@ x \arrow[r, bend left, "f"] \arrow[r, bend right, "g"] & y
 This category also can not have an initial object, indeed: There is no morphism from $y$ to $x$, hence $y$ can not be initial. But also $x$ can not be initial since $f$ and $g$ are different morphisms.
 \end{itemize}
 \end{solution}
+
+\begin{solution}[\cref{exer:initial_pointset}]\label{sol:initial_pointset}
+	An initial object is a one-element set $ (\{ \star \}, \star) $. Let $ (X, x) $ be a pointed set. Then we have a unique function $ \star \to X $ that sends $ \star $, the chosen (and only) point of $ \{ \star \} $, to $ x $, the chosen point of $ X $, namely $ f: \star \mapsto x $.
+\end{solution}
+
+\begin{solution}[\cref{exer:terminal_set}]\label{sol:terminal_set}
+	A terminal set in the category of sets is a one-element set $ \{ \star \} $. Given any set $ X $, we have a unique function $ X \to \star $, since any element of $ X $ must be sent to $ \star $.
+\end{solution}
+
+\begin{solution}[\cref{exer:terminal_posetcat}]\label{sol:terminal_posetcat}
+	Given a poset $ (X, \leq) $, a terminal object in the category $ \POS(X, \leq) $ would correspond to a maximal element in $ X $. Indeed, given such a maximal element $ x \in X = \POS(X, \leq)_0 $, we have for all $ y \in \POS(X, \leq)_0 $, since $ x $ is maximal, that $ y \leq x $. Therefore, we have a morphism $ f: x \to y $. By the definition of the hom-sets in $ \POS(X, \leq) $, $ f $ is unique and we conclude that $ x $ is a terminal object.
+\end{solution}
+
+\begin{solution}[\cref{exer:terminal-unique}]\label{sol:terminal-unique}
+	Suppose that we have a category $ \mathcal C $ and two terminal objects $ B, B^\prime \in \mathcal C_0 $. Since $ B^\prime $ is terminal, we have a morphism $ f: B \to B^\prime $ and since $ B $ is terminal, we have a morphism $ g: B^\prime \to B $. Note that we have two morphisms from $ B $ to $ B $, namely $ g \circ f $ and $ \Id[B] $. Also, because $ B $ is terminal, there should exist a unique morphism $ B \to B $. Therefore, $ g \circ f = \Id[B] $. In the same way, we have $ f \circ g = \Id[B^\prime] $. Therefore, $ f $ is the isomorphism between $ B $ and $ B^\prime $ that we are looking for.
+\end{solution}
+
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "CT4P"
