@@ -1353,9 +1353,22 @@ Since this holds for every such list, we indeed have that the composition is pre
 \end{exer}
 
 \begin{exer}
+  Let $A \in \Ob\SET$.
+  Construct a functor $(\times A) : \SET \to \SET$ that, on objects, is given by
+  \[ (\times A) X := X \times A. \]
+\end{exer}
+
+
+\begin{exer}
   Let $\CC$ be a category with chosen products, and let $A \in \Ob\CC$.
   Construct a functor $(\times A) : \CC \to \CC$ that, on objects, is given by
   \[ (\times A) X := X \times A. \]
+\end{exer}
+
+\begin{exer}
+  Let $A \in \Ob\SET$.
+  Construct a functor $(+ A) : \SET \to \SET$ that, on objects, is given by
+  \[ (+ A) X := X + A. \]
 \end{exer}
 
 \begin{exer}
@@ -1370,6 +1383,11 @@ Since this holds for every such list, we indeed have that the composition is pre
   \[ (R \to) X := R \to X. \]
 \end{exer}
 
+\begin{exer}
+  Let $\CC$ be a category and let $R \in \Ob\CC$.
+  Construct a functor $\CHom \CC R - : \CC \to \SET$ that, on objects, is given by
+  \[ (\CHom \CC R -) X := \CHom \CC R X. \]
+\end{exer}
 
 
 \begin{exer}\label{ex:poset_functors} Let $(X,\leq_X)$ and $(Y,\leq_Y)$ be posets. Can you characterize/describe the functors from $\POS(X,\leq_X)$ to $\POS(Y,\leq_Y)$  ? Before writing out the definitions, what would you expect the answer to be?
