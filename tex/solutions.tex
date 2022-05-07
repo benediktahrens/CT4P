@@ -376,51 +376,53 @@ This category also can not have an initial object, indeed: There is no morphism 
 
 %% Solutions to monads
 
-\begin{solution}[ to \cref{exer:kleisli_triple_list}]
-\label{sol:kleisli_triple_list}
-For each set $X\in\Ob \SET$, we define:
-\[
-\eta_X : X \to \List(X) : x\mapsto [x].
-\]
-For each function $f\in\CHom{\Ob \SET}{X}{\List(Y)}$, we define:
-\begin{align*}
-f^{*} : \List(X) \to \List(Y) : [x_1,\cdots,x_n] \mapsto 
-\begin{cases}
-[\:] &\quad \text{ if } n=0,\\
-append(f(x_1),\cdots, f(x_n)) &\quad \text{ if } n>0.
-\end{cases}
-\end{align*}
-i.e. $f^{*}([\:]) = [\:]$ and if $l := append(x,s)$ with $x\in X$ and $s\in \List(X)$, then $f^{*}(append(x,s)) = append(f(x), f^{*}(s))$.
+\begin{solution}[\cref{exer:kleisli_triple_list}]
+  \label{sol:kleisli_triple_list}
+  For any set $X$, we write
+  \[ (+) : \List(X) \times \List(X) \to \List(X)\]
+  for list concatenation.
 
+  For each set $X\in\Ob \SET$, we define:
+  \[
+    \eta_X : X \to \List(X) : x\mapsto [x] := \cons(x,\nil).
+  \]
+  For each function $f\in\CHom{\Ob \SET}{X}{\List(Y)}$, we define, by list recursion, the following function:
+  \begin{align}
+    f^{*} : \List(X) &\to \List(Y) 
+    \\
+    \nil & \mapsto \nil  \label{eq:list-bind-nil}
+    \\
+    \cons(x,xs) &\mapsto fx + f^*xs  \label{eq:list-bind-cons}
+  \end{align}
+  
 We now show that the properties of a Kleisli triple hold:
 \begin{enumerate}
-\item For each set $X$, we have to show $\eta_X^{*} = \Id[T(X)]$:
-
-we give two (equivalent) ways to writing it. Option $1$ is:
-\begin{eqnarray*}
-\eta_X^{*}\left([x_1,\cdots,x_n]\right) =& append\left(\eta_X(x_1),\cdots,\eta_X(x_n)\right) & \text{ by definition of $(-)^{\star}$,}\\ 
-	=& append([x_1],\cdots,[x_n]) &\text{ by definition of $\eta_X$,}\\ 
-	=& [x_1,\cdots,x_n] &\text{ by definition of append,}\\
-	=& \Id[{\List([x_1,\cdots,x_n])}].
-\end{eqnarray*}
-Options $2$ is as follows:
-\begin{itemize}
-\item By definition of $(-)^{*}$ on the empty list, we have :
-\[\eta_{X}^{*}([\:]) = [\:]. \]
-\item Let $l := append(x,s)$, then 
-\begin{eqnarray*}
-\eta_X^{*}(append(x,s)) =& append (\eta_X(x), \eta_X^{*}(s)) &\text{ by definition of } (-)^{*},\\
-	=& append(\eta_X(x), \Id[\List{X}](s)) &\text{ by the induction hypothesis,}\\
-	=& append(x, \Id[\List{X}](s)) &\text{ by definition of } \eta_X,\\
-	=& append(x,s) = t.
-\end{eqnarray*}
-\end{itemize}
+\item For each set $X$, we have to show $\eta_X^{*} = \Id[T(X)]$,
+  that is, for a list $\ell \in \List (X)$, we show $\eta_X^{*}(\ell) = \ell$.
+  We prove this by structural induction on the list $\ell$.
+  
+  In case $\ell = \nil$, we have, by \cref{eq:list-bind-nil}, that $\eta_X^{*}(\nil) = \nil$.
+  
+  In case $\ell = \cons(x,xs)$, we compute
+  \begin{align*}
+    \eta_X^{*}(\cons(x,xs)) &= \eta_X(x) + \eta_X^{*}(xs) & \text{ by definition of } (-)^{*},
+    \\
+                            &= \eta_X(x) + \Id[\List{X}](xs)  & \text{ by induction hypothesis}
+    \\
+                            &= [x] + \Id[\List{X}](xs) & \text{ by definition of } \eta_X
+    \\
+                            &= [x] + xs
+    \\
+                            &= \cons(x,xs).
+  \end{align*}
+  
+  
 
 \item For each function $f:X\to Y$, we have to show $f^{*}(\eta_X(x)) = f(x)$, this indeed holds by the following computation:
 \[
-f^{*}(\eta_X(x)) = f^{*}([x]) = f(x),
+f^{*}(\eta_X(x)) = f^{*}(\cons(x,\nil)) = \cons(fx, f^{*}(\nil)) = \cons(fx, \nil),
 \]
-where the first equality holds by definition of $\eta_X$ and the second equality holds by definition of $f^{*}$ (and using that append on a single list equals the single list).
+where the first equality holds by definition of $\eta_X$ and the second equality holds by definition of $f^{*}$.
 \item Let $f:X\to \List Y$ and $g:Y\to \List Z$ be functions, we have to show 
 \[
 g^{*}(f^{*}([x_1,\cdots,x_n])) = (\co{f}{g^{*}})^{*}([x_1,\cdots,x_n]).
