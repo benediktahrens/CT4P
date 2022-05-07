@@ -204,7 +204,7 @@ Indeed:
 \[
 \forall y_1,y_2\in Y: y_1\leq_Y y_2 \implies g(y_1)\leq_X g(y_2).
 \]
-Let $y_1,y_2\in Y$. Since $f$ is bijective, there exists $x_1,x_2 \in X$ such that $f(x_1)=y_1$ and $f(x_2)=y_2$. If $f(x_1) = y_1\leq_Y y_2 = f(x_2)$, then by \cref{eqn_order_iso}, we also have that $x_1 \leq x_2$. But by definition of $g$, we have $g(y_1)=x_1$ and $g(y_2)=x_2$, hence $g(y_1)\leq_X g(y_2)$ which shows that $g$ is an order-preserving morphism, i.e. $g \in \CHom{\POS}{(Y,\leq_Y)}{(X,\leq_X)}$.
+Let $y_1,y_2\in Y$. Since $f$ is bijective, there exist $x_1,x_2 \in X$ such that $f(x_1)=y_1$ and $f(x_2)=y_2$. If $f(x_1) = y_1\leq_Y y_2 = f(x_2)$, then by \cref{eqn:order_iso}, we also have that $x_1 \leq x_2$. But by definition of $g$, we have $g(y_1)=x_1$ and $g(y_2)=x_2$, hence $g(y_1)\leq_X g(y_2)$ which shows that $g$ is an order-preserving morphism, i.e. $g \in \CHom{\POS}{(Y,\leq_Y)}{(X,\leq_X)}$.
 \item Assume $f$ is an isomorphism in $\POS$ with inverse $g$. Since $f$ is a function which satisfies $\co{f}{g}=\Id[(X,\leq_X)]$ and $\co{g}{f}=\Id[(Y,\leq_Y)]$, we have (by the same argument as in the solution to \cref{exer:iso_in_sets}), that $f$ is a bijection. Hence, it remains to show that \cref{eqn:order_iso} holds. Let $x_1,x_2\in X$.
   
   If $x_1\leq_X x_2$, then we have $f(x_1)\leq_Y f(x_2)$ since $f \in\CHom{\POS}{(X,\leq_X)}{(Y,\leq_Y)}$.
