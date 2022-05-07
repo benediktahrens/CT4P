@@ -369,6 +369,13 @@ x \arrow[r, bend left, "f"] \arrow[r, bend right, "g"] & y
 \end{tikzcd}
 \]
 This category also can not have an initial object, indeed: There is no morphism from $y$ to $x$, hence $y$ can not be initial. But also $x$ can not be initial since $f$ and $g$ are different morphisms.
+\item Consider the category $ \POS(\mathbb Z, \leq) $, i.e., the category
+\[
+\begin{tikzcd}
+	\dots \arrow[r] & -2 \arrow[r] & -1 \arrow[r] & 0 \arrow[r] & 1 \arrow[r] & 2 \arrow[r] & \dots
+\end{tikzcd}
+\]
+This category can not have an initial object. Suppose it has an initial object $ x \in \mathbb Z $. Then we have another object $ x - 1 \in \mathbb Z $. Since $ x $ is initial, we have a morphism $ x \to x - 1 $, which means that $ x \leq x - 1 $, which is absurd. Therefore, this category does not have an initial object.
 \end{itemize}
 \end{solution}
 
