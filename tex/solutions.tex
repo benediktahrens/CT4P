@@ -404,6 +404,13 @@ This category can not have an initial object: Suppose it has an initial object $
 	and this concludes the proof.
 \end{solution}
 
+\begin{solution}[\cref{exer:terminal_iff_initial_op}]\label{sol:terminal_iff_initial_op}
+	Let $ \CC $ be a category. Suppose that $ \CC $ has a terminal object $ B \in \Ob\CC $. Note that $ \Ob\CC = \Ob{\op\CC} $. We will show that $ B $ is an initial object in $ \op\CC $. That is, for all $ A \in \Ob{\op\CC} $, we will show that $ \op\CC $ has a unique morphism from $ B $ to $ A $.
+	Let $ A \in \Ob{\op\CC} $ be an arbitrary object. Since $ B $ is terminal in $ \CC $, we have that $ \CC(A, B) $ contains exactly one element. Then $ \op\CC(B, A) $ contains exactly one element as well, because $ \CC(A, B) = \op\CC(B, A) $. Therefore, $ B $ is an initial object in $ \op\CC $.
+
+	Conversely, suppose that $ \op\CC $ has an initial object $ B \in \Ob{\op\CC} = \Ob\CC $. Given any object $ A \in \Ob\CC = \Ob{\op\CC}  $, since $ B $ is initial in $ \op\CC $, $ \op\CC(B, A) $ contains exactly one element $ f $. Then $ \CC(A, B) $ contains exactly one element (this is $ f $ again) as well. Therefore, $ B $ is a terminal object in $ \CC $.
+\end{solution}
+
 \begin{solution}[\cref{exer:cat-without-terminal}]\label{sol:cat-without-terminal}
 We give three solutions to this exercise.
 \begin{itemize}
