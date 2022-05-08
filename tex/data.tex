@@ -115,9 +115,12 @@ In this section we introduce (initial) algebras which allows us to define induct
 \end{enumerate}
 \end{dfn}
 
-\begin{intu} An algebra is loosely speaking a set with some \textit{algebraic} operations like multiplication. A simple example is that of a monoid. The following example shows that (the data of) monoids correspond precisely with algebras over a fixed endofunctor.
+\begin{intu}
+An algebra is roughly a set equipped with some operations, such as multiplication.
+The \emph{arities}, that is, the inputs, of the operations are determined by the functor $F$.
+An important class of functors are \emph{polynomial functors} built using the coproduct $(+)$ and the product $(\times)$.
+Intuitively, the different summands of a polynomial functor each correspond to one datatype constructor, whereas the use of the product indicates that a constructor takes several inputs.
 \end{intu}
-
 
 \begin{exa}
  Let $\Maybe : \SET \to \SET$ be the endofunctor given on objects by $\Maybe(X) := 1 + X$. 
@@ -134,10 +137,12 @@ Here, think of ``$z$'' standing for ``zero'', and ``$s$'' standing for ``success
 
 
 \begin{exa}\label{example:algebra_of_monoids} Let $F$ be the endofunctor induced by:
-\[
-F: \SET \to \SET: X \mapsto 1 + (X\times X).
-\]
-An $F$-algebra consists of a set $X\in\SET$ together with a function $\phi:\CHom{\SET}{1\sqcup (X\times X)}{X}$. Since $\phi$ is function from the disjoint union, we have that $\phi$ corresponds uniquely to two functions:
+\begin{align*}
+  F: \SET &\to \SET
+  \\
+  X &\mapsto 1 + (X\times X).
+\end{align*}
+An $F$-algebra consists of a set $X\in\SET$ together with a function $\phi:\CHom{\SET}{1 + (X\times X)}{X}$. Since $\phi$ is function from the disjoint union, we have that $\phi$ corresponds uniquely to two functions:
 \begin{align*}
 e &: 1\to X
 \\
@@ -147,18 +152,19 @@ This is precisely the data of a monoid.
 
 Conversely, if $(M,m,e)$ is a monoid, then this induces a function
 \[
-1 + (M\times M) \xrightarrow{\phi} M,
+1 + (M\times M) \xrightarrow{\phi = [\phi_e,\phi_m]} M,
 \]
-which is defined by 
+defined by pattern matching as follows:
 \begin{align*}
-\phi\vert_{1} : 1 &\to M
+\phi_e : 1 &\to M
 \\
 \star &\mapsto e
 \\
-\phi\vert_{M\times M} : M\times M &\to M 
+\phi_m : M\times M &\to M 
 \\
 (x,y) &\mapsto m(x,y)
 \end{align*}
+
 The pair $(M, \phi)$ is an $F$-algebra.
 
 \end{exa}
