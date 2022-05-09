@@ -503,6 +503,20 @@ This category can not have a terminal object: Suppose it has a terminal object $
 	which concludes the proof.
 \end{solution}
 
+\begin{solution}[\cref{exer:product_with_terminal}]\label{sol:product_with_terminal}
+	Let $ \CC $ be a category, let $ A \in \Ob\CC $ be an object and let $ T \in \CC $ be the terminal object.
+
+	We claim that $ (A, \pi_l, \pi_r) $ (with $ \pi_l = \Id[A] $ and $ \pi_r $ the unique morphism $ A \to T $) is a product of $ A $ and $ T $.
+
+	We have to prove that for all $ B \in \Ob\CC $ with morphisms $ l: B \to A $ and $ r: B \to T $, there exists a unique morphism $ f: B \to A $ such that $ \pi_l \circ f = l $ and $ \pi_r \circ f = r $. To that end, let $ B \in \Ob\CC $ be such an object with morphisms $ l $ and $ r $.
+	
+	To prove existence, we take $ f = l $. Then we have $ \pi_l \circ f = \Id[A] \circ l = l $. Since $ T $ is a terminal object, the morphism $ B \to T $ is unique, so $ l = \pi_r \circ f $.
+
+	To prove uniqueness of $ f $, suppose that there exists also another morphism, $ f^\prime: B \to A $ such that $ \pi_l \circ f^\prime = l $. Then we have
+	\[ f^\prime = \Id{A} \circ f^\prime = \pi_l \circ f^\prime = l = f, \]
+	which concludes the proof.
+\end{solution}
+
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "CT4P"
