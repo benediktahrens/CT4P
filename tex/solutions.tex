@@ -468,11 +468,39 @@ This category can not have a terminal object: Suppose it has a terminal object $
 \end{solution}
 
 \begin{solution}[\cref{exer:product-unique}]\label{sol:product-unique}
-	In a category $ \CC $, given two objects $ A, B \in \Ob \CC $, suppose that we have two products $ C, C^\prime \in \Ob \CC $, with morphisms $ \pi_l: C \to A $, $ \pi_r: C \to B $, $ \pi^\prime_l: C^\prime \to A $ and $ \pi^\prime_r: C^\prime \to B $.
+	In a category $ \CC $, given two objects $ A, B \in \Ob \CC $, suppose that we have two products $ C, C^\prime \in \Ob \CC $, with projections $ \pi_l: C \to A $, $ \pi_r: C \to B $, $ \pi^\prime_l: C^\prime \to A $ and $ \pi^\prime_r: C^\prime \to B $.
 
 	Since $ C^\prime $ is a product, and we have the morphisms $ \pi_l $ and $ \pi_r $, the universal property gives a morphism $ f: C \to C^\prime $ such that $ \pi_l = \pi^\prime_l \circ f $ and $ \pi_r = \pi^\prime_r \circ f $. In the same way, we have a morphism $ g: C^\prime \to C $ such that $ \pi^\prime_l = \pi_l \circ g $ and $ \pi^\prime_r = \pi_r \circ g $.
 	
 	Since $ C $ is a product, the universal property gives that there is exactly one morphism $ h: C \to C $ such that $ \pi_l \circ h = \pi_l $ and $ \pi_r \circ h = \pi_r $. The morphism $ h = \Id[C] $ satisfies this property. However, we also have the morphism $ g \circ f: C \to C $, such that $ \pi_l \circ g \circ f = \pi^\prime_l \circ f = \pi_l $ and $ \pi_r \circ g \circ f = \pi^\prime_r \circ f = \pi_r $. Therefore, $ g \circ f = h = \Id[C] $. In the same way, $ f \circ g = \Id[C^\prime] $, so $ f: C \cong C^\prime $ is an isomorphism, with inverse $ g $.
+\end{solution}
+
+\begin{solution}[\cref{exer:product_preserved_by_iso}]\label{sol:product_preserved_by_iso}
+	Let $ \CC $ be a category and take objects $ A, B \in \Ob\CC $. Let $ (P, \pi_l: P \to A, \pi_r: P \to B) $ be a product of $ A $ and $ B $ in $ \CC $. Let $ P^\prime \in \Ob\CC $ be another object, and suppose that we have an isomorphism $ f: P \cong P^\prime $.
+
+	We claim that $ (P^\prime, \pi_l^\prime, \pi_r^\prime) $, with $ \pi_l^\prime = \pi_l \circ \Inv{f} $ and $ \pi_r^\prime = \pi_r \circ \Inv{f} $ is also a product of $ A $ and $ B $. Now, given any object $ Q \in \Ob\CC $ with morphisms $ l: Q \to A $ and $ r: Q \to B $, we have to show that there exists a unique morphism $ g: Q \to P^\prime $ such that $ \pi_l^\prime \circ g = l $ and $ \pi_r^\prime \circ g = r $. See also the following diagram:
+
+	\begin{center}
+		\begin{tikzcd}
+		& Q \arrow[ld, "l"'] \arrow[rd, "r"] \arrow[d, "h"]               &   \\
+		A & P \arrow[l, "\pi_l"] \arrow[r, "\pi_r"'] \arrow[d, "f"]         & B \\
+		& P^\prime \arrow[lu, "\pi_l^\prime"] \arrow[ru, "\pi_r^\prime"'] &  
+		\end{tikzcd}
+	\end{center}
+	
+	By the universal property of the product, we have a morphism $ h: Q \to P $ such that $ \pi_l \circ h = l $ and $ \pi_r \circ h = r $. We take $ g = f \circ h $. We have 
+	\[ \pi_l^\prime \circ g = (\pi_l \circ \Inv{f}) \circ (f \circ h) = \pi_l \circ h = l  \]
+	and
+	\[ \pi_r^\prime \circ g = (\pi_r \circ \Inv{f}) \circ (f \circ h) = \pi_r \circ h = r.  \]
+	This proves existence.
+
+	For uniqueness, suppose that we have two morphisms, $ g, g^\prime: Q \to P^\prime $ such that $ \pi_l^\prime \circ g = l = \pi_l^\prime \circ g^\prime $ and $ \pi_r^\prime \circ g = r = \pi_r^\prime \circ g^\prime $. By the universal property of the product, there exists exactly one morphism $ h: Q \to P $ such that $ \pi_l \circ h = l $ and $ \pi_r \circ h = r $. Since
+	\[ \pi_l \circ (\Inv{f} \circ g) = (\pi_l \circ \Inv{f}) \circ g = \pi_l^\prime \circ g = l \]
+	and
+	\[ \pi_r \circ (\Inv{f} \circ g) = (\pi_r \circ \Inv{f}) \circ g = \pi_r^\prime \circ g = r, \]
+	we have $ h = \Inv{f} \circ g $. In the same way, we have $ h = \Inv f \circ g^\prime $. Therefore,
+	\[ g = f \circ \Inv f \circ g = f \circ h = f \circ \Inv f \circ g^\prime = g^\prime, \]
+	which concludes the proof.
 \end{solution}
 
 %%% Local Variables:
