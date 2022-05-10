@@ -517,6 +517,14 @@ This category can not have a terminal object: Suppose it has a terminal object $
 	which concludes the proof.
 \end{solution}
 
+\begin{solution}[\cref{exer:product_iff_terminal_in_subcategory}]\label{sol:product_iff_terminal_in_subcategory}
+	Let $ \CC $ be a category and $ A, B \in \Ob \CC $ objects. Let us call the category mentioned in the exercise $ \CC_{A \times B} $.
+
+	Suppose that we have a terminal object $ (C, \pi_l, \pi_r) \in \Ob{\CC_{A \times B}} $. We claim that this is a product of $ A $ and $ B $ in $ \CC $. Indeed, given any object $ D \in \Ob \CC $ with morphisms $ l: D \to A $, $ r: D \to B $, we have an object $ (D, l, r) \in \Ob{\CC_{A \times B}} $. Since $ (C, \pi_l, \pi_r) $ is a terminal object, there exists a unique morphism $ f: (D, l, r) \to (C, \pi_l, \pi_r) $. By the definition of morphisms in $ \CC_{A \times B} $, $ f $ is the unique morphism $ f: D \to C $ such that $ \pi_l \circ f = l $ and $ \pi_r \circ f = r $.
+
+	Conversely, suppose that we have a product $ C \in \Ob \CC $ of $ A $ and $ B $ with morphisms $ \pi_l: C \to A $ and $ \pi_r: C \to B $. This gives an object $ (C, \pi_l, \pi_r) \in \Ob{\CC_{A \times B}} $. We claim that this is a terminal object. Indeed, given any object $ (D, l, r) \in \Ob{\CC_{A \times B}} $, since $ C $ is a product in $ \CC $, we have a unique morphism $ f: D \to C $ such that $ \pi_l \circ f = l $ and $ \pi_r \circ f = r $. Therefore, $ f $ is a unique morphism in $ \CC_{A \times B}((D, l, r), (C, \pi_l, \pi_r)) $. Since this holds for any $ (D, l, r) \in \Ob{\CC_{A \times B}} $, $ (C, \pi_l, \pi_r) $ is a terminal object in $ \CC_{A \times B} $, which concludes the proof.
+\end{solution}
+
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "CT4P"
