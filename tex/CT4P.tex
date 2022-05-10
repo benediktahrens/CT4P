@@ -1151,7 +1151,7 @@ In this section, we discuss special objects in a category.
 \end{exer}
 
 
-\begin{exer}
+\begin{exer}[\cref{sol:product_set}]\label{exer:product_set}
   Identify a product of sets $X$ and $Y$ in the category $\SET$ of sets.
   Prove that it is indeed a product.
 \end{exer}
@@ -1161,19 +1161,19 @@ In this section, we discuss special objects in a category.
   Prove that it is indeed a product.
 \end{exer}
 
-\begin{exer}
+\begin{exer}[\cref{sol:product_posetcat}]\label{exer:product_posetcat}
   Let $(X,\leq)$ be a poset. Describe what a product looks like in  $\POS(X,\leq)$.
 \end{exer}
 
-\begin{exer}\label{exer:product-unique}
+\begin{exer}[\cref{sol:product-unique}]\label{exer:product-unique}
   Given two products of $A$ and $B$ in a category $\CC$, construct an isomorphism between them, that is, between their underlying objects.
 \end{exer}
 
-\begin{exer}
+\begin{exer}[\cref{sol:product_preserved_by_iso}]\label{exer:product_preserved_by_iso}
   Given a product $(P,\projl : P \to A ,\projr : P \to B)$ of $A$ and $B$ in $\CC$, and an object $P'$ that is isomorphic to $P$ via an isomorphism $i : P \cong P'$, construct a product with object $P'$ of $A$ and $B$.
 \end{exer}
 
-\begin{exer} Let $\CC$ be a category and $T\in\Ob{\CC}$ a terminal object.
+\begin{exer}[\cref{sol:product_with_terminal}]\label{exer:product_with_terminal} Let $\CC$ be a category and $T\in\Ob{\CC}$ a terminal object.
   For any object $A\in \Ob{\CC}$, construct a product of $A$ and $T$.
 
   Hint: to form an idea what the object $A \times T$ should be, solve the exercise first in a specific category, e.g., in the category of sets or in a category coming from a preordered set.
@@ -1182,7 +1182,7 @@ In this section, we discuss special objects in a category.
 
 
 
-\begin{exer} Let $\CC$ be a category and $A,B\in\Ob{\CC}$ be objects. Show that the product of $A$ and $B$ exists if and only if the following category has a terminal object:
+\begin{exer}[\cref{sol:product_iff_terminal_in_subcategory}]\label{exer:product_iff_terminal_in_subcategory} Let $\CC$ be a category and $A,B\in\Ob{\CC}$ be objects. Show that the product of $A$ and $B$ exists if and only if the following category has a terminal object:
 \begin{itemize}
 \item The objects are triples $(P,p_l: P\to A, p_r:P\to B)$.
 \item A morphism from $(P,p_l,p_r)$ to $(Q,q_l,q_r)$ is a morphism $f\in\Ob{\CC}$ such that the following diagram commutes:
@@ -1196,14 +1196,14 @@ A & Q \arrow[l, "q_l"]  \arrow[r,swap, "q_r"] & B
 \end{itemize}
 \end{exer}
 
-\begin{exer}
+\begin{exer}[\cref{sol:product_of_morphisms}]\label{exer:product_of_morphisms}
   Let $\CC$ be a category with a choice of product $(A\times B, \projl, \projr)$ for any two objects $A,B\in \Ob{\CC}$.
   Given morphisms $f : A \to C$ and $g : B \to D$ in $\CC$, construct a morphism
   \[ f \times g : A \times B \to C \times D.\]
 \end{exer}
 
 
-\begin{exer}
+\begin{exer}[\cref{sol:swap_binary_product}]\label{exer:swap_binary_product}
   Let $\CC$ be a category with a choice of product $(A\times B, \projl, \projr)$ for any two objects $A,B\in \Ob{\CC}$.
   For any $A, B \in \Ob\CC$, construct an isomorphism
   \[ A \times B \cong B \times A. \]
