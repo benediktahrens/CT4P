@@ -525,6 +525,20 @@ This category can not have a terminal object: Suppose it has a terminal object $
 	Conversely, suppose that we have a product $ C \in \Ob \CC $ of $ A $ and $ B $ with morphisms $ \projl: C \to A $ and $ \projr: C \to B $. This gives an object $ (C, \projl, \projr) \in \Ob{\CC_{A \times B}} $. We claim that this is a terminal object. Indeed, given any object $ (D, l, r) \in \Ob{\CC_{A \times B}} $, since $ C $ is a product in $ \CC $, we have a unique morphism $ f: D \to C $ such that $ \projl \circ f = l $ and $ \projr \circ f = r $. Therefore, $ f $ is a unique morphism in $ \CC_{A \times B}((D, l, r), (C, \projl, \projr)) $. Since this holds for any $ (D, l, r) \in \Ob{\CC_{A \times B}} $, $ (C, \projl, \projr) $ is a terminal object in $ \CC_{A \times B} $, which concludes the proof.
 \end{solution}
 
+\begin{solution}[\cref{exer:product_of_morphisms}]\label{sol:product_of_morphisms}
+	Let $\CC$ be a category with a choice of product $(A\times B, \projl, \projr)$ for any two objects $A,B\in \Ob{\CC}$. Take objects $ A, B, C, D \in \Ob \CC $ and morphisms $ f: A \to C $ and $ g: B \to D $.
+
+	\begin{center}
+		\begin{tikzcd}
+		A \arrow[d, "f"'] & A \times B \arrow[l, "\projl"'] \arrow[r, "\projr"] \arrow[ld, "f \circ \projl"'] \arrow[rd, "g \circ \projr"] \arrow[d, "h"] & B \arrow[d, "g"] \\
+		C                 & C \times D \arrow[l, "\projl^\prime"] \arrow[r, "\projr^\prime"']                                                             & D               
+		\end{tikzcd}
+	\end{center}
+
+	We have the products $ (A \times B, \projl, \projr) $ and $ (C \times D, \projl^\prime, \projr^\prime) $. We have morphisms $ f \circ \projl: A \times B \to C $ and $ g \circ \projr: A \times B \to D $. By the universal property of the product $ C \times D $, there exists a (unique) morphism $ h: A \times B \to C \times D $ that makes the diagram commute. This is the morphism we are looking for.
+\end{solution}
+
+
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "CT4P"
