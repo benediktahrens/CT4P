@@ -441,7 +441,7 @@ This category can not have a terminal object: Suppose it has a terminal object $
 \begin{solution}[\cref{exer:product_set}]\label{sol:product_set}
 	Given $ A, B \in \Ob \SET $, we claim that the cartesian product $ A \times B $ with the left projection $ \projl: (a, b) \mapsto a $ and right projection $ \projr: (a, b) \mapsto b $ is a product of $ A $ and $ B $.
 
-	Indeed, given an object $ Q \in \Ob \SET $ with morphisms $ l: Q \to A $ and $ r: Q \to B $, we have a morphism $ f: Q \to A \times B $, given by $ q \mapsto (l(q), r(q)) $. For all $ q \in Q $, we have $ \projl \circ f(q) = \projl(l(q), r(q)) = l(q) $ and $ \projr \circ f(q) = \projr(l(q), r(q)) = r(q) $, so the diagram commutes, which proves existence.
+	Indeed, given an object $ Q \in \Ob \SET $ with morphisms $ l: Q \to A $ and $ r: Q \to B $, we have a morphism $ f := \langle l, r \rangle : Q \to A \times B $, given by $ q \mapsto (l(q), r(q)) $. For all $ q \in Q $, we have $ \projl \circ f(q) = \projl(l(q), r(q)) = l(q) $ and $ \projr \circ f(q) = \projr(l(q), r(q)) = r(q) $, so the diagram commutes, which proves existence.
 
 	Now, for uniqueness, suppose that we also have another morphism $ g: Q \to A \times B $ that makes the diagram commute. Note that we can write all elements $ p \in A \times B $ as $ p = (\projl(p), \projr(p)) $. Then we have, for all $ q \in Q $,
 	\[ g(q) = (\projl(g(q)), \projr(g(q))) = (\projl \circ g(q), \projr \circ g(q)) = (l(q), r(q)) = f(q), \]
