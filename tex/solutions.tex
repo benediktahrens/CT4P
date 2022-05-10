@@ -538,6 +538,24 @@ This category can not have a terminal object: Suppose it has a terminal object $
 	We have the products $ (A \times B, \projl, \projr) $ and $ (C \times D, \projl^\prime, \projr^\prime) $. We have morphisms $ f \circ \projl: A \times B \to C $ and $ g \circ \projr: A \times B \to D $. By the universal property of the product $ C \times D $, there exists a (unique) morphism $ h: A \times B \to C \times D $ that makes the diagram commute. This is the morphism we are looking for.
 \end{solution}
 
+\begin{solution}[\cref{exer:swap_binary_product}]\label{sol:swap_binary_product}
+  Let $\CC$ be a category with a choice of product $(A\times B, \projl, \projr)$ for any two objects $A,B\in \Ob{\CC}$. Let $A, B \in \Ob\CC$ be objects.
+
+	\begin{center}
+		\begin{tikzcd}
+		& A \times B \arrow[ld, "\projr"'] \arrow[rd, "\projl"] \arrow[dd, "f", bend left]               &   \\
+		B &                                                                                               & A \\
+		& B \times A \arrow[ru, "\projr^\prime"'] \arrow[lu, "\projl^\prime"] \arrow[uu, "g", bend left] &  
+		\end{tikzcd}
+	\end{center}
+
+	We have the products $ (A \times B, \projl, \projr) $ and $ (B \times A, \projl^\prime, \projr^\prime) $. By the universal properties of the products $ A \times B $ and $ B \times A $, we get morphisms $ f: A \times B \to B \times A $ and $ g: B \times A \to A \times B $, which make the diagram commute.
+	
+	By the universal property of the product $ A \times B $, there exists a unique morphism $ h: A \times B \to A \times B $ such that $ \projl \circ h = \projl $ and $ \projr \circ h = \projr $. Since $ \Id[A \times B] $ satisfies this, we have $ h = A \times B $. We also have the morphism $ g \circ f: A \times B \to A \times B $. We have
+	\[ \projr \circ g \circ f = \projl^\prime \circ f = \projr \]
+	and in the same way, we have $ \projl \circ g \circ f = \projl $. Therefore, $ g \circ f = h = \Id[A \times B] $. In the same way, we have $ f \circ g = \Id[B \times A] $. Therefore, we conclude that $ f $ is the isomorphism we are looking for, with inverse $ g $.
+\end{solution}
+
 
 %%% Local Variables:
 %%% mode: latex
