@@ -556,6 +556,17 @@ This category can not have a terminal object: Suppose it has a terminal object $
 	and in the same way, we have $ \projl \circ g \circ f = \projl $. Therefore, $ g \circ f = h = \Id[A \times B] $. In the same way, we have $ f \circ g = \Id[B \times A] $. Therefore, we conclude that $ f $ is the isomorphism we are looking for, with inverse $ g $.
 \end{solution}
 
+\begin{solution}[\cref{exer:in_catamorphism_id}]\label{sol:in_catamorphism_id}
+	Let $ F: \CC \to \CC $ be an endofunctor and let $ (\Initalg F, \In) $ be an initial algebra. By definition, $ \catam{\In} $ is the unique morphism $ \Initalg F \to \Initalg F $ that makes the following diagram commute
+	\begin{center}
+		\begin{tikzcd}
+			F (\Initalg F) \arrow[r, "\In"] \arrow[d, "F \catam \In"] & \Initalg F \arrow[d, "\catam \In"]\\
+			F (\Initalg F) \arrow[r, "\In"] & \Initalg F\\
+		\end{tikzcd}
+	\end{center}
+	Since $ F(\Id[\Initalg F]) = \Id[F(\Initalg F)] $, the morphism $ \Id[\Initalg F] $ satisfies this property, and therefore $ \catam{\In} = \Id[\Initalg F] $.
+\end{solution}
+
 
 %%% Local Variables:
 %%% mode: latex

@@ -110,7 +110,7 @@ In this section we introduce (initial) algebras which allows us to define induct
 
 \begin{dfn} Let $F:\CC\to \CC$ be an endofunctor. An \textbf{$F$-algebra} consists of the following data:
 \begin{enumerate}
-\item An object $C\in \CC$.
+\item An object $C\in \Ob \CC$.
 \item A morphism $\phi \in \CHom{\CC}{F(C)}{C}$.
 \end{enumerate}
 \end{dfn}
@@ -258,7 +258,7 @@ FC
 A morphism of the form $\catam{\phi}$ is called a \textit{catamorphism}.
 \end{dfn}
 
-\begin{exer}
+\begin{exer}[\cref{sol:in_catamorphism_id}]\label{exer:in_catamorphism_id}
   Let $F:\CC\to\CC$ be an endofunctor and let $(\Initalg F, \In)$ be an initial algebra. Show that
   \[\catam{\In} = \Id[\Initalg{F}].\]
 \end{exer}
@@ -295,7 +295,7 @@ D
 
 \end{exer}
 
-\begin{exer}[\textbf{Lambek's theorem}] Let $F:\CC\to\CC$ be an endofunctor and let $(\mu F, \In)$ be an initial algebra.
+\begin{exer}[\textbf{Lambek's theorem}] Let $F:\CC\to\CC$ be an endofunctor and let $(\mu^F, \In)$ be an initial algebra.
   Then $\In$ is an isomorphism whose inverse is given by $\Inv{\In} = \catam{F(\In)}$.
 \end{exer}
 
