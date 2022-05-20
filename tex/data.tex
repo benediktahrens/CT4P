@@ -302,8 +302,7 @@ D
 \begin{exer}[\cref{sol:initialalg_for_idfun_with_initialob}]\label{exer:initialalg_for_idfun_with_initialob} Let $\CC$ be a category with an initial object $\bot$. Show that $(\bot, \Id[\bot])$ is the initial algebra for the identity (endo)functor on $\CC$.
 \end{exer}
 
-
-\begin{exer}\label{exercise:initialalg_for_list}
+\begin{exer}\label{exer:initialalg_for_list}
   Let $A$ be a set and define $F$ to be the functor induced by 
 \begin{align*}
   F_A:\SET &\to\SET
@@ -327,7 +326,7 @@ Compare it to a definition of a function $f : \List(A) \to X$ by pattern matchin
     fold f v   []   =  v
     fold f v (x:xs) =  f x (fold f v xs)
   \end{lstlisting}
-  Compare the input of |fold| to the data of an $F_A$-algebra given in \cref{enum:list-alg} of \cref{exercise:initialalg_for_list}.
+  Compare the input of |fold| to the data of an $F_A$-algebra given in \cref{enum:list-alg} of \cref{exer:initialalg_for_list}.
 \end{rem}
 
 
@@ -358,14 +357,14 @@ Compare it to a definition of a function $f : \List(A) \to X$ by pattern matchin
 
 
 
-\begin{exer}\label{exercise:initialalg_for_btree} Let $A$ be a set and define $F$ to be the functor induced by 
+\begin{exer}\label{exer:initialalg_for_btree} Let $A$ be a set and define $F$ to be the functor induced by 
 \[
 F_A:\SET\to\SET : X\mapsto A \sqcup (X\times X).
 \]
 Show that the initial $F_A$-algebra is given by the set $BTree(A)$ of $A$-valued binary trees.
 \end{exer}
 
-\begin{rem} Notice that in \cref{exercise:initialalg_for_list} and \cref{exercise:initialalg_for_btree}, we can consider the functor $F_A$ as a bifunctor where we vary $A$, i.e.
+\begin{rem} Notice that in \cref{exer:initialalg_for_list} and \cref{exer:initialalg_for_btree}, we can consider the functor $F_A$ as a bifunctor where we vary $A$, i.e.
 \[
 F: \SET\to \SET\to \SET: (A,X)\mapsto F_A(X).
 \]
@@ -514,7 +513,7 @@ f\Comp\psi  = \phi\Comp F(f) \implies f\Comp\anam{\psi} = anam{\phi}.
 \begin{exer} (\textbf{Dual Lambek's theorem}) Let $F:\CC\to\CC$ be an endofunctor and assume that the terminal coalgebra $(\nu F, out)$ exists. Then is $out$ an isomorphism whose inverse is given by $\Inv{out} = \anam{F(out)}$.
 \end{exer}
 
-\begin{exer}\label{exercise:terminalalg_for_idfun_with_terminalob} Let $\CC$ be a category with an terminal object $\top$. Then is $(\top, \Id[\top])$ the terminal coalgebra for the identity (endo)functor on $\CC$.
+\begin{exer}\label{exer:terminalalg_for_idfun_with_terminalob} Let $\CC$ be a category with an terminal object $\top$. Then is $(\top, \Id[\top])$ the terminal coalgebra for the identity (endo)functor on $\CC$.
 \end{exer}
 
 \begin{exer} Let $F$ be the functor induced by 
