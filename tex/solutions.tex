@@ -568,6 +568,20 @@ This category can not have a terminal object: Suppose it has a terminal object $
 	Since $ F(\Id[\Initalg F]) = \Id[F(\Initalg F)] $, the morphism $ \Id[\Initalg F] $ satisfies this property, and therefore $ \catam{\In} = \Id[\Initalg F] $.
 \end{solution}
 
+% Let $\CC$ be a category with an initial object $\bot$. Show that $(\bot, \Id[\bot])$ is the initial algebra for the identity (endo)functor on $\CC$.
+
+\begin{solution}[\cref{exer:initialalg_for_idfun_with_initialob}]\label{sol:initialalg_for_idfun_with_initialob}
+	Let $\CC$ be a category with an initial object $\bot$. Let $ F: \CC \to \CC $ be the identity endofunctor.
+
+	Note that $ (\bot, \Id[\bot]) $ is an $ F $-algebra since $ \Id[\bot]: \bot \to \bot $ and $ \bot = F(\bot) $. Now, to show that it is initial, suppose we have another $ F $-algebra $ (X \in \Ob \CC, f: F X \to X) $. By initiality of $ \bot $ in $ \CC $, we have a unique morphism $ g \in \CC(\bot, X) $. To show that $ g $ is a $ F $-algebra morphism, we have to show that the following diagram commutes:
+	\begin{center}
+		\begin{tikzcd}
+			\bot = F(\bot) \arrow[r, "{\Id[\bot]}"] \arrow[d, "g = F(g)"] & \bot \arrow[d, "g"]\\
+			X = F(X) \arrow[r, "f"] & X
+		\end{tikzcd}
+	\end{center}
+	Because $ \bot $ is initial, there exists exactly one morphism from $ \bot $ to $ X $. Therefore, $ g = f \circ g $ and $ g $ is an $ F $-algebra morphism. It is also unique, because $ \bot $ is initial in $ \CC $. Therefore, $ (\bot, \Id[\bot]) $ is an initial $ F $-algebra.
+\end{solution}
 
 %%% Local Variables:
 %%% mode: latex
