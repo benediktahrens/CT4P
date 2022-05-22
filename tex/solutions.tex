@@ -568,8 +568,6 @@ This category can not have a terminal object: Suppose it has a terminal object $
 	Since $ F(\Id[\Initalg F]) = \Id[F(\Initalg F)] $, the morphism $ \Id[\Initalg F] $ satisfies this property, and therefore $ \catam{\In} = \Id[\Initalg F] $.
 \end{solution}
 
-% Let $\CC$ be a category with an initial object $\bot$. Show that $(\bot, \Id[\bot])$ is the initial algebra for the identity (endo)functor on $\CC$.
-
 \begin{solution}[\cref{exer:initialalg_for_idfun_with_initialob}]\label{sol:initialalg_for_idfun_with_initialob}
 	Let $\CC$ be a category with an initial object $\bot$. Let $ F: \CC \to \CC $ be the identity endofunctor.
 
@@ -581,6 +579,65 @@ This category can not have a terminal object: Suppose it has a terminal object $
 		\end{tikzcd}
 	\end{center}
 	Because $ \bot $ is initial, there exists exactly one morphism from $ \bot $ to $ X $. Therefore, $ g = f \circ g $ and $ g $ is an $ F $-algebra morphism. It is also unique, because $ \bot $ is initial in $ \CC $. Therefore, $ (\bot, \Id[\bot]) $ is an initial $ F $-algebra.
+\end{solution}
+
+% Let $F:\CC\to\CC\to\CC$ be a bifunctor such that for any object $A\in\CC$, the initial algebra for the functor induced by 
+% \[
+% F_A : \CC\to\CC : X\mapsto F(A,X),
+% \]
+% exists. Show how
+% \[
+% \Ob{\CC} \to \Ob{\CC} : A\mapsto \mu F_A ,
+% \]
+% induces a functor.
+
+
+\begin{solution}[\cref{exer:initialalg_for_bifunctor_functor}]\label{sol:initialalg_for_bifunctor_functor}
+	Let $F:\CC\to\CC\to\CC$ be a bifunctor such that for any object $A\in\CC$, the initial algebra $ (\Initalg{F_A}, \In_A) $ for the functor induced by 
+	\[ F_A : \CC\to\CC : X \mapsto F(A,X), \]
+	exists.
+	
+	We define a functor $ G: \CC \to \CC $ by $ G(A) = \Initalg{F_A} $. For $ A, B \in \Ob\CC $, we have an initial $ F_A $-algebra $ (\Initalg{F_A}, \In_A: F_A(\Initalg{F_A}) \to \Initalg{F_A}) $ and an initial $ F_B $-algebra $ (\Initalg{F_B}, \In_B: F_B(\Initalg{F_B}) \to \Initalg{F_B}) $. Now, for all $ f \in \CC(A, B) $, we have by the bifunctoriality of $ F $, a morphism
+	\[ F(\_, \Initalg{F_B})(f): F_A(\Initalg{F_B}) = F(A, \Initalg{F_B}) \to F(B, \Initalg{F_B}) = F_B(\Initalg{F_B}). \]
+	Then $ (\Initalg{F_B}, \In_B \circ F(\_, \Initalg{F_B})(f): F_A(\Initalg{F_B}) \to \Initalg{F_B}) $ is an $ F_A $-algebra, so by the initiality of $ \Initalg{F_A} $, we have a unique morphism $ f^\prime: \Initalg{F_A} \to \Initalg{F_B} $ such that 
+	\[ \In_B \circ F(\_, \Initalg{F_B})(f) \circ F_A(f^\prime) = f^\prime \circ \In_A \]
+	and we set $ G(f) = f^\prime $.
+	
+	We now check that $ G $ is a functor. To show that, we need to show that for all $ A \in \Ob \CC $, $ G(\Id[A]) = \Id[\Initalg{F_A}] $ and for all $ f \in \CC(A, B) $ and $ g \in \CC(B, C) $, $ G(g \circ f) = G(g) \circ G(f) $.
+
+	For the first property, given an object $ A \in \Ob \CC $, $ G(\Id[A]): \Initalg{F_A} \to \Initalg{F_A} $ is the unique morphism such that
+	\[ \In_A \circ F(\_, \Initalg{F_A})(\Id[A]) \circ F_A(G(\Id[A])) = G(\Id[A]) \circ \In_A. \]
+	Hence, to show that $ G(\Id[A]) = \Id[\Initalg{F_A}] $ holds, it suffices to show 
+	\[ \In_A \circ F(\_, \Initalg{F_A})(\Id[A]) \circ F_A(\Id[\Initalg{F_A}]) = \Id[\Initalg{F_A}] \circ \In_A. \]
+	This indeed follows by the following computation:
+	\begin{align*}
+		\In_A \circ F(\_, \Initalg{F_A})(\Id[A]) \circ F_A(\Id[\Initalg{F_A}]) &= \In_A \circ \Id[F_A(\Initalg{F_A})] \circ \Id[F_A(\Initalg{F_A})]\\
+		&= \In_A\\
+		&= \Id[\Initalg{F_A}] \circ \In_A,
+	\end{align*}
+
+	For the second property, given objects $ A, B, C \in \Ob \CC $, and $ f: \CC(A, B) $ and $ g: \CC(B, C) $, we have that
+	\[ \In_B \circ F(\_, \Initalg{F_B})(f) \circ F_A(G(f)) = G(f) \circ \In_A \]
+	and
+	\[ \In_C \circ F(\_, \Initalg{F_C})(g) \circ F_B(G(g)) = G(g) \circ \In_B, \]
+	and we know that $ G(g \circ f): \Initalg{F_A} \to \Initalg{F_C} $ is the unique morphism such that
+	\[ \In_C \circ F(\_, \Initalg{F_C})(g \circ f) \circ F_A(G(g \circ f)) = G(g \circ f) \circ \In_A. \]
+	Note that $ F $ is a bifunctor, and therefore, the following diagram commutes:
+	\begin{center}
+		\begin{tikzcd}
+			F(A, \Initalg{F_B}) \arrow[rr, "{F(\_, \Initalg{F_B})(f)}"] \arrow[d, "{F(A, \_)(G(g))}"'] && F(B, \Initalg{F_B}) \arrow[d, "{F(B, \_)(G(g))}"]\\
+			F(A, \Initalg{F_C}) \arrow[rr, "{F(\_, \Initalg{F_C})(f)}"] && F(B, \Initalg{F_C})
+		\end{tikzcd}
+	\end{center}
+	Then we have the following equality:
+	\begin{align*}
+		& \In_C \circ F(\_, \Initalg{F_C})(g \circ f) \circ F_A(G(g) \circ G(f))\\
+		=& \In_C \circ F(\_, \Initalg{F_C})(g) \circ F(\_, \Initalg{F_C})(f) \circ F_A(G(g)) \circ F_A(G(f))\\
+		=& \In_C \circ F(\_, \Initalg{F_C})(g) \circ F_B(G(g)) \circ F(\_, \Initalg{F_B})(f) \circ F_A(G(f))\\
+		=& G(g) \circ \In_B \circ F(\_, \Initalg{F_B})(f) \circ F_A(G(f))\\
+		=& G(g) \circ G(f) \circ \In_A.
+	\end{align*}
+	Therefore, $ G(g \circ f) = G(g) \circ G(f) $.
 \end{solution}
 
 %%% Local Variables:
