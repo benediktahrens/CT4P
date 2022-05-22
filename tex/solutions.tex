@@ -599,7 +599,7 @@ This category can not have a terminal object: Suppose it has a terminal object $
 	
 	We define a functor $ G: \CC \to \CC $ by $ G(A) = \Initalg{F_A} $. For $ A, B \in \Ob\CC $, we have an initial $ F_A $-algebra $ (\Initalg{F_A}, \In_A: F_A(\Initalg{F_A}) \to \Initalg{F_A}) $ and an initial $ F_B $-algebra $ (\Initalg{F_B}, \In_B: F_B(\Initalg{F_B}) \to \Initalg{F_B}) $. Now, for all $ f \in \CC(A, B) $, we have by the bifunctoriality of $ F $, a morphism
 	\[ F(\_, \Initalg{F_B})(f): F_A(\Initalg{F_B}) = F(A, \Initalg{F_B}) \to F(B, \Initalg{F_B}) = F_B(\Initalg{F_B}). \]
-	Then $ (\Initalg{F_B}, \In_B \circ F(\_, \Initalg{F_B})(f): F_A(\Initalg{F_B}) \to \Initalg{F_B}) $ is an $ F_A $-algebra, so by the initiality of $ \Initalg{F_A} $, there exists a unique morphism $ f^\prime: \Initalg{F_A} \to \Initalg{F_B} $ such that 
+	Then $ (\Initalg{F_B}, \In_B \circ F(\_, \Initalg{F_B})(f): F_A(\Initalg{F_B}) \to \Initalg{F_B}) $ is an $ F_A $-algebra, so by the initiality of $ \Initalg{F_A} $, we have a unique morphism $ f^\prime: \Initalg{F_A} \to \Initalg{F_B} $ such that 
 	\[ \In_B \circ F(\_, \Initalg{F_B})(f) \circ F_A(f^\prime) = f^\prime \circ \In_A \]
 	and we set $ G(f) = f^\prime $.
 	
