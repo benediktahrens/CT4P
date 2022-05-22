@@ -625,8 +625,8 @@ This category can not have a terminal object: Suppose it has a terminal object $
 	Note that $ F $ is a bifunctor, and therefore, the following diagram commutes:
 	\begin{center}
 		\begin{tikzcd}
-			F(A, \Initalg{F_B}) \arrow[r, "{F(\_, \Initalg{F_B})(f)}"] \arrow[d, "{F(A, \_)(G(g))}"'] & F(B, \Initalg{F_B}) \arrow[d, "{F(B, \_)(G(g))}"]\\
-			F(A, \Initalg{F_C}) \arrow[r, "{F(\_, \Initalg{F_C})(f)}"] & F(B, \Initalg{F_C})
+			F(A, \Initalg{F_B}) \arrow[rr, "{F(\_, \Initalg{F_B})(f)}"] \arrow[d, "{F(A, \_)(G(g))}"'] && F(B, \Initalg{F_B}) \arrow[d, "{F(B, \_)(G(g))}"]\\
+			F(A, \Initalg{F_C}) \arrow[rr, "{F(\_, \Initalg{F_C})(f)}"] && F(B, \Initalg{F_C})
 		\end{tikzcd}
 	\end{center}
 	Then we have the following equality:
