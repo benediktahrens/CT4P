@@ -607,13 +607,14 @@ This category can not have a terminal object: Suppose it has a terminal object $
 
 	For the first property, given an object $ A \in \Ob \CC $, $ G(\Id[A]): \Initalg{F_A} \to \Initalg{F_A} $ is the unique morphism such that
 	\[ \In_A \circ F(\_, \Initalg{F_A})(\Id[A]) \circ F_A(G(\Id[A])) = G(\Id[A]) \circ \In_A. \]
-	We know that
+	Hence, to show that $ G(\Id[A]) = \Id[\Initalg{F_A}] $ holds, it suffices to show 
+	\[ \In_A \circ F(\_, \Initalg{F_A})(\Id[A]) \circ F_A(\Id[\Initalg{F_A}]) = \Id[\Initalg{F_A}] \circ \In_A. \]
+	This indeed follows by the following computation:
 	\begin{align*}
 		\In_A \circ F(\_, \Initalg{F_A})(\Id[A]) \circ F_A(\Id[\Initalg{F_A}]) &= \In_A \circ \Id[F_A(\Initalg{F_A})] \circ \Id[F_A(\Initalg{F_A})]\\
 		&= \In_A\\
 		&= \Id[\Initalg{F_A}] \circ \In_A,
 	\end{align*}
-	so $ G(\Id[A]) = \Id[\Initalg{F_A}] $.
 
 	For the second property, given objects $ A, B, C \in \Ob \CC $, and $ f: \CC(A, B) $ and $ g: \CC(B, C) $, we have that
 	\[ \In_B \circ F(\_, \Initalg{F_B})(f) \circ F_A(G(f)) = G(f) \circ \In_A \]
