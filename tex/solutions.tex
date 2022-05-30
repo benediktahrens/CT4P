@@ -432,46 +432,44 @@ f^{*}(\eta_X(x)) = f^{*}(\cons(x,\nil)) = \cons(fx, f^{*}(\nil)) = \cons(fx, \ni
 where the first equality holds by definition of $\eta_X$ and the second equality holds by definition of $f^{*}$.
 \item Let $f:X\to \List Y$ and $g:Y\to \List Z$ be functions, we have to show 
 \[
-g^{*}(f^{*}([x_1,\cdots,x_n])) = (\co{f}{g^{*}})^{*}([x_1,\cdots,x_n]).
+g^{*}(f^{*}(\ell)) = (\co{f}{g^{*}})^{*}(\ell),
 \] 
-That this equality holds follows by the following argument:
+for any $\ell \in \List X$.
+ We prove this by structural induction on the list $\ell$.
+
 \begin{itemize}
-\item By the definition of $(-)^{*}$ on the empty list, this equality trivially holds for $n=0$.
-\item Let $l := append(x,s)$. By definition of $(f)^{*}$ we have:
+\item In case $\ell = \nil$, the equality holds trivially by \cref{eq:list-bind-nil}.
+
+\item In case $\ell := \cons(x,s)$. By definition of $(f)^{*}$, the left hand side of is:
 \[
-g^{*}(f^{*}(append(x,s))) = g^{*}(append(f(x),f^{*}(s)).
+g^{*}(f^{*}(\cons(x,s))) = g^{*}(f(x) + f^{*}(xs)),
 \]
-We also have:
+and the right hand side is:
 \[
-(\co{f}{g^{*}})^{*}(append(x,s)) = append((\co{f}{g^{*}})(x), (\co{f}{g^{*}})^{*}(s)) = append((\co{f}{g^{*}})(x), g^{*}(f^{*}((s))),
+(\co{f}{g^{*}})^{*}(\cons(x,s)) = g^{*}(f(x)) + (\co{f}{g^{*}})^{*}(xs) = g^{*}(f(x)) + g^{*}(f^{*}(xs)),
 \]
 where the first equality holds by definition of $(\co{f}{g^{*}})^{*}$ and the second holds by the induction hypothesis. Hence it remains to show the following equality:
-\[
-g^{*}(append(f(x),f^{*}(s)) = append((\co{f}{g^{*}})(x), g^{*}(f^{*}((s))).
-\]
+\begin{align}\label{eqn:bind_distributes}
+g^{*}(f(x) + f^{*}(xs)) = g^{*}(f(x)) + g^{*}(f^{*}(xs)).
+\end{align}
 
-We do a pattern matching on $f(x)$, i.e. we either have $f(x) = [\:]$ or we have $f(x) = append(y,u)$ with $y\in Y$ and $u\in \List Y$:
+We do a pattern matching on $f(x)$ to show \cref{eqn:bind_distributes}:
 \begin{itemize}
-\item If $f(x) = [\:]$, then 
+\item In case $f(x) = \nil$, we have
+\[
+g^{*}(\nil + f^{*}(xs)) = g^{*}(f^{*}(xs)) = \nil + g^{*}(f^{*}(xs)) = g^{*}(\nil) + g^{*}(f^{*}(xs)),
+\]
+where the thirth equality holds by \cref{eq:list-bind-nil}.
+\item In case $f(x) = \cons(y,u)$, with $y\in Y$ and $u\in \List Y$, we have:
 \begin{eqnarray*}
-g^{*}(append(f(x),f^{*}(s)) =& g^{*}(append([\:],f^{*}(s)))\\ 
-	=& g^{*}(f^{*}(s))\\ 
-	=& append([\:], g^{*}(f^{*}(s)))\\ 
-	=& append(g^{*}([\:]), g^{*}(f^{*}(s)))\\ 
-	=& append(g^{*}(f(x)), g^{*}(f^{*}(s)))\\ 
-	=& append((\co{f}{g^{*}})(x), g^{*}(f^{*}((s))).
+g^{*}(\cons(f(x),f^{*}(s)) =& g^{*}(\cons(\cons(y,u), f^{*}(xs))), \\
+	=& g^{*}(\cons(y, u + f^{*}(xs))),\\
+	=& g(y) + g^{*}(u + f^{*}(xs)),\\
+	=& g(y) + g^{*}(u) + g^{*}(f^{*}(xs)),\\
+	=& g^{*}(\cons(y,u)) + g^{*}(f^{*}(xs)).
 \end{eqnarray*}
-\item If $f(x) = append(y,u)$, then 
-\begin{eqnarray*}
-g^{*}(append(f(x),f^{*}(s)) =& g^{*}(append(y,u),f^{*}(s)))\\ 
-	=& g^{*}(append(y, append(u,f^{*}(s))))\\
-	=& append(g(y), g^{*}(append(u,f^{*}(s))))\\ 
-	=& \\ %\KW{This I have to redo}\\
-	=& append((append(g(y), g^{*}(u)), g^{*}(f^{*}(s)))\\
-	=& append(g^{*}(append(y,u)), g^{*}(f^{*}(s)))\\ 
-	=& append(g^{*}(f(x)), g^{*}(f^{*}(s)))\\ 
-	=& append((\co{f}{g^{*}})(x), g^{*}(f^{*}((s))).
-\end{eqnarray*}
+where the second equality holds by definition of $\cons$, the thirth and fifth by definition of $g^{*}$ and the fourth by the induction hypothesis.
+
 \end{itemize}
 \end{itemize}
 \end{enumerate}
@@ -481,14 +479,14 @@ g^{*}(append(f(x),f^{*}(s)) =& g^{*}(append(y,u),f^{*}(s)))\\
 \label{sol:kleisli_triple_bintree}
 For each set $X\in\Ob \SET$, we define:
 \[
-\eta_X : X \to \BinTree(X) : x\mapsto leaf(x).
+\eta_X : X \to \BinTree(X) : x\mapsto \Leaf x.
 \]
 For each function $f\in\CHom{\Ob \SET}{X}{\BinTree(Y)}$, we define:
 \begin{align*}
 f^{*} : \BinTree(X) \to \BinTree(Y) : t \mapsto 
 \begin{cases}
-f(a) &\quad \text{ if } t=leaf(a),\\
-branch(f^{*}(t_1),f^{*}(t_2)) &\quad \text{ if } t=branch(t_1,t_2).
+f(a) &\quad \text{ if } t=\Leaf a,\\
+\Branch{f^{*}(t_1)}{f^{*}(t_2)} &\quad \text{ if } t=\Branch{t_1}{t_2}.
 \end{cases}
 \end{align*}
 
@@ -496,19 +494,19 @@ We now show that the properties of a Kleisli triple hold:
 \begin{enumerate}
 \item For each set $X$, we have to show $\eta_X^{*} = \Id[\BinTree(X)]$. We show this by pattern matching on $t$:
 \begin{itemize}
-\item If $t=leaf(a)$, then
+\item If $t=\Leaf a$, then
 \[
-\eta_X^{*}(t) = \eta_X^{*}(leaf(a)) = \eta_X(a) = leaf(a)=t.
+\eta_X^{*}(t) = \eta_X^{*}(\Leaf{a}) = \eta_X(a) = \Leaf{a} = t.
 \]
-\item If $t=branch(t_1,t_2)$, then
+\item If $t=\Branch{t_1}{t_2}$, then
 \[
-\eta_X^{*}(t) = \eta_X^{*}(branch(t_1,t_2)) = branch(\eta_X^{*}(t_1),\eta_X^{*}(t_2)) = branch(t_1,t_2) = t.
+\eta_X^{*}(t) = \eta_X^{*}(\Branch{t_1}{t_2}) = \Branch{\eta_X^{*}(t_1)}{\eta_X^{*}(t_2)} = \Branch{t_1}{t_2} = t.
 \]
 \end{itemize}
 
 \item For each function $f:X\to Y$, we have to show $f^{*}(\eta_X(a)) = f(a)$, this indeed holds by the following computation:
 \[
-f^{*}(\eta_X(a)) = f^{*}(leaf(a)) = f(a).
+f^{*}(\eta_X(a)) = f^{*}(\Leaf{a}) = f(a).
 \]
 
 \item Let $f:X\to \BinTree Y$ and $g:Y\to \BinTree Z$ be functions, we have to show 
@@ -517,17 +515,17 @@ g^{*}(f^{*}(t)) = (\co{f}{g^{*}})^{*}(t).
 \] 
 That this equality holds follows by pattern matching:
 \begin{itemize}
-\item If $t=leaf(a)$, then
+\item If $t= \Leaf{a}$, then
 \[
-g^{*}(f^{*}(t)) = g^{*}(f^{*}(leaf(a)) = g^{*}(f(a)) = (\co{f}{g^{*}})(a) = (\co{f}{g^{*}})^{*}(leaf(a)) = (\co{f}{g^{*}})^{*}(t).
+g^{*}(f^{*}(t)) = g^{*}(f^{*}(\Leaf{a}) = g^{*}(f(a)) = (\co{f}{g^{*}})(a) = (\co{f}{g^{*}})^{*}(\Leaf{a}) = (\co{f}{g^{*}})^{*}(t).
 \]
-\item If $t=branch(t_1,t_2)$, then is the left-hand-side given by
+\item If $t=\Branch{t_1}{t_2}$, then is the left-hand-side given by
 \[
-g^{*}(f^{*}(t)) = g^{*}(f^{*}(branch(t_1,t_2))) = g^{*}\left(branch(f^{*}(t_1), f^{*}(t_2))\right) = branch(g^{*}(f^{*}(t_1)),g^{*}(f^{*}(t_2))).
+g^{*}(f^{*}(t)) = g^{*}(f^{*}(\Branch{t_1}{t_2})) = g^{*}\left(\Branch{f^{*}(t_1)}{f^{*}(t_2)}\right) = \Branch{g^{*}(f^{*}(t_1))}{g^{*}(f^{*}(t_2))}.
 \]
 The right-hand-side is given by 
 \[
-(\co{f}{g^{*}})^{*}(t) = (\co{f}{g^{*}})^{*}(branch(t_1,t_2)) = branch\left((\co{f}{g^{*}})(t_1), (\co{f}{g^{*}})(t_2)\right).
+(\co{f}{g^{*}})^{*}(t) = (\co{f}{g^{*}})^{*}(\Branch{t_1}{t_2}) = \Branch{(\co{f}{g^{*}})(t_1)}{(\co{f}{g^{*}})(t_2)}.
 \]
 Hence, by the induction hypothesis, the both sides are equal.
 \end{itemize}
