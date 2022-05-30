@@ -1,7 +1,7 @@
 
 \section{Monads and Effects}
 \label{sec:monads}
-Recall that a monad (as defined, e.g., in Haskell) is a function |m :: * -> *| together with the additional data of a function |pure: a -> m a| (for each type |a|) and a function |(>>=) :: m a -> (a -> m b) -> m b| (for types |a| and |b|).
+Recall that a monad (as defined, e.g., in Haskell) is a function |m :: * -> *| together with the additional data of a function |pure :: a -> m a| (for each type |a|) and a function |(>>=) :: m a -> (a -> m b) -> m b| (for types |a| and |b|).
 
 The operations |pure| and |(>>=)| are expected to satisfy the following laws:
 such that they satisfy the following properties:

@@ -1,6 +1,104 @@
 
-\section{Initial Algebras and Inductive Datatypes}
+\section{Inductive Datatypes and Initial Algebras}
 \label{sec:initial-algs}
+
+\subsection{Examples}
+\label{sec:examples}
+
+
+
+\begin{exer}
+  Consider the datatype
+\begin{lstlisting}[mathescape=true]
+data $\NN$ ::=
+| $\Zero$ : $\NN$
+| $\Succ$ : $\NN \to \NN$
+\end{lstlisting}
+and the following  category:
+  \begin{itemize}
+  \item Objects are triples $(X, z \in X, s : X \to X)$ with $X$ a set/type;
+  \item Morphisms from $(X, z \in X, s : X \to X)$ to $(X', z' \in X', s' : X' \to X')$ are functions
+    $f : X \to X'$ such that the following diagrams commute:
+    \[
+      \begin{tikzcd}
+        1 \ar[r, "z"] \ar[rd, "z'"']
+        &
+        X \ar[d, "f"]
+        \\
+        &
+        X'
+      \end{tikzcd}
+      \quad
+      \begin{tikzcd}
+        X \ar[r, "s"] \ar[d, "f"']
+        &
+        X \ar[d, "f"]
+        \\
+        X' \ar[r, "s'"]
+        &
+        X'
+      \end{tikzcd}
+    \]
+  \item Composition and identity are given by composition of functions in $\SET$.
+    (Check that this is well-defined, that is, that the composition of two functions making the above diagrams commute makes the right diagrams commute again.)
+  \end{itemize}
+
+  Show that the triple $(\NN, \Zero, \Succ)$ is an initial object in this category.
+\end{exer}
+
+\begin{exer}
+  Consider the datatype
+\begin{lstlisting}[mathescape=true]
+data Exp ::=
+| Int     : $\mathbb{Z}$ $\to$ Exp
+| Plus    : Exp $\times$ Exp $\to$ Exp
+| Squared : Exp $\to$ Exp
+\end{lstlisting}
+  and consider the following category:
+  \begin{itemize}
+  \item Objects are quadruples $(X, I : \mathbb{Z} \to X, P : X \to X \to X, S : X \to X)$ with $X$ a set/type;
+  \item Morphisms from $(X, I, P, S)$ to $(X', I', P', S')$ are functions
+    $f : X \to X'$ such that the following diagrams commute:
+    \[
+      \begin{tikzcd}
+        \mathbb{Z} \ar[r, "I"] \ar[rd, "I'"']
+        &
+        X \ar[d, "f"]
+        \\
+        &
+        X'
+      \end{tikzcd}
+      \quad
+      \begin{tikzcd}
+        X\times X \ar[r, "P"] \ar[d, "f \times f"']
+        &
+        X \ar[d, "f"]
+        \\
+        X' \times X' \ar[r, "P'"]
+        &
+        X'
+      \end{tikzcd}
+      \quad
+      \begin{tikzcd}
+        X \ar[r, "S"] \ar[d, "f"']
+        &
+        X \ar[d, "f"]
+        \\
+        X' \ar[r, "S'"]
+        &
+        X'
+      \end{tikzcd}
+    \]
+  \item Composition and identity are given by composition of functions in $\SET$. (Check that this is well-defined.)
+  \end{itemize}
+  
+    Show that the quadruple consisting of the type |Exp| together with the functions |Int|, |Plus|, and |Squared|, is an initial object in this category.
+\end{exer}
+
+\subsection{Datatypes as Initial Algebras}
+\label{sec:datatypes-as-initial}
+
+
 
 \begin{reading*}
   This chapter is strongly inspired by Varmo Vene's Ph.D.\ thesis \cite[Chapter 2]{vene_phd}.
@@ -12,16 +110,19 @@ In this section we introduce (initial) algebras which allows us to define induct
 
 \begin{dfn} Let $F:\CC\to \CC$ be an endofunctor. An \textbf{$F$-algebra} consists of the following data:
 \begin{enumerate}
-\item An object $C\in \CC$.
+\item An object $C\in \Ob \CC$.
 \item A morphism $\phi \in \CHom{\CC}{F(C)}{C}$.
 \end{enumerate}
 \end{dfn}
 
-\begin{intu} An algebra is loosely speaking a set with some \textit{algebraic} operations like multiplication. A simple example is that of a monoid. The following example shows that (the data of) monoids correspond precisely with algebras over a fixed endofunctor.
+\begin{intu}
+An algebra is roughly a set equipped with some operations, such as multiplication.
+The \emph{arities}, that is, the inputs, of the operations are determined by the functor $F$.
+An important class of functors are \emph{polynomial functors} built using the coproduct $(+)$ and the product $(\times)$.
+Intuitively, the different summands of a polynomial functor each correspond to one datatype constructor, whereas the use of the product indicates that a constructor takes several inputs.
 \end{intu}
 
-
-\begin{exa}
+\begin{exa}\label{exa:nno_initial_alg_maybe}
  Let $\Maybe : \SET \to \SET$ be the endofunctor given on objects by $\Maybe(X) := 1 + X$. 
  A $\Maybe$-algebra is a pair $(X,\phi)$ of a set $X$ and a function $\phi : 1 + X \to X$.
  By the universal property of the coproduct, $\phi$ is given, equivalently,
@@ -36,10 +137,12 @@ Here, think of ``$z$'' standing for ``zero'', and ``$s$'' standing for ``success
 
 
 \begin{exa}\label{example:algebra_of_monoids} Let $F$ be the endofunctor induced by:
-\[
-F: \SET \to \SET: X \mapsto 1 + (X\times X).
-\]
-An $F$-algebra consists of a set $X\in\SET$ together with a function $\phi:\CHom{\SET}{1\sqcup (X\times X)}{X}$. Since $\phi$ is function from the disjoint union, we have that $\phi$ corresponds uniquely to two functions:
+\begin{align*}
+  F: \SET &\to \SET
+  \\
+  X &\mapsto 1 + (X\times X).
+\end{align*}
+An $F$-algebra consists of a set $X\in\SET$ together with a function $\phi:\CHom{\SET}{1 + (X\times X)}{X}$. Since $\phi$ is function from the disjoint union, we have that $\phi$ corresponds uniquely to two functions:
 \begin{align*}
 e &: 1\to X
 \\
@@ -49,18 +152,19 @@ This is precisely the data of a monoid.
 
 Conversely, if $(M,m,e)$ is a monoid, then this induces a function
 \[
-1 + (M\times M) \xrightarrow{\phi} M,
+1 + (M\times M) \xrightarrow{\phi = [\phi_e,\phi_m]} M,
 \]
-which is defined by 
+defined by pattern matching as follows:
 \begin{align*}
-\phi\vert_{1} : 1 &\to M
+\phi_e : 1 &\to M
 \\
 \star &\mapsto e
 \\
-\phi\vert_{M\times M} : M\times M &\to M 
+\phi_m : M\times M &\to M 
 \\
 (x,y) &\mapsto m(x,y)
 \end{align*}
+
 The pair $(M, \phi)$ is an $F$-algebra.
 
 \end{exa}
@@ -133,8 +237,6 @@ we consider an example.
   \end{enumerate}
 \end{exer}
 
-
-
 \begin{dfn}\label{dfn:initial-alg}
   Let $F:\CC\to\CC$ be an endofunctor. An \textbf{initial $F$-algebra} (if it exists) is an initial object in $\ALG{F}$.
   Unfolding the definition, this means that it is an $F$-algebra $(\Initalg{F}, \In)$ such that for any $F$-algebra $(C,\phi)$, there exists a unique morphism $\catam{\phi} \in \CHom{\CC}{\Initalg{F}}{C}$ such that the following diagram commutes:
@@ -154,9 +256,48 @@ FC
 A morphism of the form $\catam{\phi}$ is called a \textit{catamorphism}.
 \end{dfn}
 
-\begin{exer}
+\begin{exer}[\cref{sol:in_catamorphism_id}]\label{exer:in_catamorphism_id}
   Let $F:\CC\to\CC$ be an endofunctor and let $(\Initalg F, \In)$ be an initial algebra. Show that
   \[\catam{\In} = \Id[\Initalg{F}].\]
+\end{exer}
+
+\begin{exer}\label{exer:bool_as_initial_algebra}
+ Let $\mathbf{Bool}$ be the inductive data type generated by the following two constructors:
+ \begin{lstlisting}
+    True  : Bool
+    False : Bool
+  \end{lstlisting}
+ Define an endofunctor $F:\SET\to \SET$ such that the $F$-algebras can be characterized as triples $(X, b_1, b_2)$ with $X$ a set and $b_1,b_2\in X$.
+ 
+Moreover, show that $(\mathbf{Bool}, true, false)$ is the initial object in $\ALG[F]$.
+\end{exer}
+
+\begin{exer}\label{exer:coproduct_as_initial_algebra}
+The disjoint union (i.e. the coproduct) of two sets $X$ and $Y$ can also be characterized as an inductive data type, indeed: It is generated by the following two constructors:
+ \begin{lstlisting}
+    f : X -> X+Y
+    g : Y -> X+Y
+  \end{lstlisting}
+ Define an endofunctor $F:\SET\to \SET$ such that the $F$-algebras can be characterized as triples $(C, i_l, i_r)$ with $C$ a set and $i_l : X\to C, i_r : Y\to C$ be functions.
+ 
+Moreover, show that $(X + Y, inl, inr)$ is the initial object in $\ALG{F}$, where $X+Y$ is the disjoint union of $X$ and $Y$ (i.e. the coproduct in $\SET$) and $inl:X\to X+Y, inr:Y\to X+Y$ the canonical inclusions.
+\end{exer}
+
+\begin{exer}\label{exer:conatural_numbers_are_not_initial}
+Let $\mathbb{N}^{c}$ be the conatural numbers, i.e. $\mathbb{N}^{c} + \{\infty\}$. Consider the maybe endofunctor (defined in \cref{exa:nno_initial_alg_maybe}), i.e. the functor induced by
+\[
+F : \SET\to\SET : X\mapsto 1 + X.
+\]
+The functions 
+\begin{align*}
+zero^{c} &: \mathbf{1}\to \mathbb{N}^{c} &:& \star\mapsto 0,\\
+succ^{c} &: \mathbb{N}^{c}\to \mathbb{N}^{c} &:& x\mapsto 
+\begin{cases}
+n+1,\quad &\text{ if } x := n\in\mathbb{N},\\
+\infty,\quad &\text{ if } x := \infty.\\
+\end{cases}
+\end{align*}
+form an $F$-algebra. However, show that $(\mathbb{N}^{c},zero^{c},succ^{c})$ is not a initial $F$-algebra.
 \end{exer}
 
 \begin{exer}[Fusion Property]\label{exer:fusion-property}
@@ -188,18 +329,16 @@ FD \ar[r, "\psi"']
 D
 \end{tikzcd}
 \end{equation}
-
 \end{exer}
 
-\begin{exer}[\textbf{Lambek's theorem}] Let $F:\CC\to\CC$ be an endofunctor and let $(\mu F, \In)$ be an initial algebra.
+\begin{exer}[\textbf{Lambek's theorem}] Let $F:\CC\to\CC$ be an endofunctor and let $(\mu^F, \In)$ be an initial algebra.
   Then $\In$ is an isomorphism whose inverse is given by $\Inv{\In} = \catam{F(\In)}$.
 \end{exer}
 
-\begin{exer}\label{exercise:initialalg_for_idfun_with_initialob} Let $\CC$ be a category with an initial object $\bot$. Show that $(\bot, \Id[\bot])$ is the initial algebra for the identity (endo)functor on $\CC$.
+\begin{exer}[\cref{sol:initialalg_for_idfun_with_initialob}]\label{exer:initialalg_for_idfun_with_initialob} Let $\CC$ be a category with an initial object $\bot$. Show that $(\bot, \Id[\bot])$ is the initial algebra for the identity (endo)functor on $\CC$.
 \end{exer}
 
-
-\begin{exer}\label{exercise:initialalg_for_list}
+\begin{exer}\label{exer:initialalg_for_list}
   Let $A$ be a set and define $F$ to be the functor induced by 
 \begin{align*}
   F_A:\SET &\to\SET
@@ -223,7 +362,7 @@ Compare it to a definition of a function $f : \List(A) \to X$ by pattern matchin
     fold f v   []   =  v
     fold f v (x:xs) =  f x (fold f v xs)
   \end{lstlisting}
-  Compare the input of |fold| to the data of an $F_A$-algebra given in \cref{enum:list-alg} of \cref{exercise:initialalg_for_list}.
+  Compare the input of |fold| to the data of an $F_A$-algebra given in \cref{enum:list-alg} of \cref{exer:initialalg_for_list}.
 \end{rem}
 
 
@@ -254,14 +393,14 @@ Compare it to a definition of a function $f : \List(A) \to X$ by pattern matchin
 
 
 
-\begin{exer}\label{exercise:initialalg_for_btree} Let $A$ be a set and define $F$ to be the functor induced by 
+\begin{exer}\label{exer:initialalg_for_btree} Let $A$ be a set and define $F$ to be the functor induced by 
 \[
 F_A:\SET\to\SET : X\mapsto A \sqcup (X\times X).
 \]
 Show that the initial $F_A$-algebra is given by the set $BTree(A)$ of $A$-valued binary trees.
 \end{exer}
 
-\begin{rem} Notice that in \cref{exercise:initialalg_for_list} and \cref{exercise:initialalg_for_btree}, we can consider the functor $F_A$ as a bifunctor where we vary $A$, i.e.
+\begin{rem} Notice that in \cref{exer:initialalg_for_list} and \cref{exer:initialalg_for_btree}, we can consider the functor $F_A$ as a bifunctor where we vary $A$, i.e.
 \[
 F: \SET\to \SET\to \SET: (A,X)\mapsto F_A(X).
 \]
@@ -272,7 +411,7 @@ In particular, under the assumption that for every $A\in\SET$ the initial $F_A$-
 can be extended to a functor. The following exercise answers this question positively for arbitrary categories.
 \end{rem}
 
-\begin{exer} Let $F:\CC\to\CC\to\CC$ be a bifunctor such that for any object $A\in\CC$, the initial algebra for the functor induced by 
+\begin{exer}[\cref{sol:initialalg_for_bifunctor_functor}]\label{exer:initialalg_for_bifunctor_functor} Let $F:\CC\to\CC\to\CC$ be a bifunctor such that for any object $A\in\CC$, the initial algebra for the functor induced by 
 \[
 F_A : \CC\to\CC : X\mapsto F(A,X),
 \]
@@ -410,7 +549,7 @@ f\Comp\psi  = \phi\Comp F(f) \implies f\Comp\anam{\psi} = anam{\phi}.
 \begin{exer} (\textbf{Dual Lambek's theorem}) Let $F:\CC\to\CC$ be an endofunctor and assume that the terminal coalgebra $(\nu F, out)$ exists. Then is $out$ an isomorphism whose inverse is given by $\Inv{out} = \anam{F(out)}$.
 \end{exer}
 
-\begin{exer}\label{exercise:terminalalg_for_idfun_with_terminalob} Let $\CC$ be a category with an terminal object $\top$. Then is $(\top, \Id[\top])$ the terminal coalgebra for the identity (endo)functor on $\CC$.
+\begin{exer}\label{exer:terminalalg_for_idfun_with_terminalob} Let $\CC$ be a category with an terminal object $\top$. Then is $(\top, \Id[\top])$ the terminal coalgebra for the identity (endo)functor on $\CC$.
 \end{exer}
 
 \begin{exer} Let $F$ be the functor induced by 
