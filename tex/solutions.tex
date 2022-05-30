@@ -379,6 +379,320 @@ This category can not have an initial object: Suppose it has an initial object $
 \end{itemize}
 \end{solution}
 
+
+
+%% Solutions to monads
+
+\begin{solution}[\cref{exer:kleisli_triple_list}]
+  \label{sol:kleisli_triple_list}
+  For any set $X$, we write
+  \[ (+) : \List(X) \times \List(X) \to \List(X)\]
+  for list concatenation.
+
+  For each set $X\in\Ob \SET$, we define:
+  \[
+    \eta_X : X \to \List(X) : x\mapsto [x] := \cons(x,\nil).
+  \]
+  For each function $f\in\CHom{\Ob \SET}{X}{\List(Y)}$, we define, by list recursion, the following function:
+  \begin{align}
+    f^{*} : \List(X) &\to \List(Y) 
+    \\
+    \nil & \mapsto \nil  \label{eq:list-bind-nil}
+    \\
+    \cons(x,xs) &\mapsto fx + f^*xs  \label{eq:list-bind-cons}
+  \end{align}
+  
+We now show that the properties of a Kleisli triple hold:
+\begin{enumerate}
+\item For each set $X$, we have to show $\eta_X^{*} = \Id[T(X)]$,
+  that is, for a list $\ell \in \List (X)$, we show $\eta_X^{*}(\ell) = \ell$.
+  We prove this by structural induction on the list $\ell$.
+  
+  In case $\ell = \nil$, we have, by \cref{eq:list-bind-nil}, that $\eta_X^{*}(\nil) = \nil$.
+  
+  In case $\ell = \cons(x,xs)$, we compute
+  \begin{align*}
+    \eta_X^{*}(\cons(x,xs)) &= \eta_X(x) + \eta_X^{*}(xs) & \text{ by definition of } (-)^{*},
+    \\
+                            &= \eta_X(x) + \Id[\List{X}](xs)  & \text{ by induction hypothesis}
+    \\
+                            &= [x] + \Id[\List{X}](xs) & \text{ by definition of } \eta_X
+    \\
+                            &= [x] + xs
+    \\
+                            &= \cons(x,xs).
+  \end{align*}
+  
+  
+
+\item For each function $f:X\to Y$, we have to show $f^{*}(\eta_X(x)) = f(x)$, this indeed holds by the following computation:
+\[
+f^{*}(\eta_X(x)) = f^{*}(\cons(x,\nil)) = \cons(fx, f^{*}(\nil)) = \cons(fx, \nil),
+\]
+where the first equality holds by definition of $\eta_X$ and the second equality holds by definition of $f^{*}$.
+\item Let $f:X\to \List Y$ and $g:Y\to \List Z$ be functions, we have to show 
+\[
+g^{*}(f^{*}([x_1,\cdots,x_n])) = (\co{f}{g^{*}})^{*}([x_1,\cdots,x_n]).
+\] 
+That this equality holds follows by the following argument:
+\begin{itemize}
+\item By the definition of $(-)^{*}$ on the empty list, this equality trivially holds for $n=0$.
+\item Let $l := append(x,s)$. By definition of $(f)^{*}$ we have:
+\[
+g^{*}(f^{*}(append(x,s))) = g^{*}(append(f(x),f^{*}(s)).
+\]
+We also have:
+\[
+(\co{f}{g^{*}})^{*}(append(x,s)) = append((\co{f}{g^{*}})(x), (\co{f}{g^{*}})^{*}(s)) = append((\co{f}{g^{*}})(x), g^{*}(f^{*}((s))),
+\]
+where the first equality holds by definition of $(\co{f}{g^{*}})^{*}$ and the second holds by the induction hypothesis. Hence it remains to show the following equality:
+\[
+g^{*}(append(f(x),f^{*}(s)) = append((\co{f}{g^{*}})(x), g^{*}(f^{*}((s))).
+\]
+
+We do a pattern matching on $f(x)$, i.e. we either have $f(x) = [\:]$ or we have $f(x) = append(y,u)$ with $y\in Y$ and $u\in \List Y$:
+\begin{itemize}
+\item If $f(x) = [\:]$, then 
+\begin{eqnarray*}
+g^{*}(append(f(x),f^{*}(s)) =& g^{*}(append([\:],f^{*}(s)))\\ 
+	=& g^{*}(f^{*}(s))\\ 
+	=& append([\:], g^{*}(f^{*}(s)))\\ 
+	=& append(g^{*}([\:]), g^{*}(f^{*}(s)))\\ 
+	=& append(g^{*}(f(x)), g^{*}(f^{*}(s)))\\ 
+	=& append((\co{f}{g^{*}})(x), g^{*}(f^{*}((s))).
+\end{eqnarray*}
+\item If $f(x) = append(y,u)$, then 
+\begin{eqnarray*}
+g^{*}(append(f(x),f^{*}(s)) =& g^{*}(append(y,u),f^{*}(s)))\\ 
+	=& g^{*}(append(y, append(u,f^{*}(s))))\\
+	=& append(g(y), g^{*}(append(u,f^{*}(s))))\\ 
+	=& \\ %\KW{This I have to redo}\\
+	=& append((append(g(y), g^{*}(u)), g^{*}(f^{*}(s)))\\
+	=& append(g^{*}(append(y,u)), g^{*}(f^{*}(s)))\\ 
+	=& append(g^{*}(f(x)), g^{*}(f^{*}(s)))\\ 
+	=& append((\co{f}{g^{*}})(x), g^{*}(f^{*}((s))).
+\end{eqnarray*}
+\end{itemize}
+\end{itemize}
+\end{enumerate}
+\end{solution}
+
+\begin{solution}[ to \cref{exer:kleisli_triple_bintree}]
+\label{sol:kleisli_triple_bintree}
+For each set $X\in\Ob \SET$, we define:
+\[
+\eta_X : X \to \BinTree(X) : x\mapsto leaf(x).
+\]
+For each function $f\in\CHom{\Ob \SET}{X}{\BinTree(Y)}$, we define:
+\begin{align*}
+f^{*} : \BinTree(X) \to \BinTree(Y) : t \mapsto 
+\begin{cases}
+f(a) &\quad \text{ if } t=leaf(a),\\
+branch(f^{*}(t_1),f^{*}(t_2)) &\quad \text{ if } t=branch(t_1,t_2).
+\end{cases}
+\end{align*}
+
+We now show that the properties of a Kleisli triple hold:
+\begin{enumerate}
+\item For each set $X$, we have to show $\eta_X^{*} = \Id[\BinTree(X)]$. We show this by pattern matching on $t$:
+\begin{itemize}
+\item If $t=leaf(a)$, then
+\[
+\eta_X^{*}(t) = \eta_X^{*}(leaf(a)) = \eta_X(a) = leaf(a)=t.
+\]
+\item If $t=branch(t_1,t_2)$, then
+\[
+\eta_X^{*}(t) = \eta_X^{*}(branch(t_1,t_2)) = branch(\eta_X^{*}(t_1),\eta_X^{*}(t_2)) = branch(t_1,t_2) = t.
+\]
+\end{itemize}
+
+\item For each function $f:X\to Y$, we have to show $f^{*}(\eta_X(a)) = f(a)$, this indeed holds by the following computation:
+\[
+f^{*}(\eta_X(a)) = f^{*}(leaf(a)) = f(a).
+\]
+
+\item Let $f:X\to \BinTree Y$ and $g:Y\to \BinTree Z$ be functions, we have to show 
+\[
+g^{*}(f^{*}(t)) = (\co{f}{g^{*}})^{*}(t).
+\] 
+That this equality holds follows by pattern matching:
+\begin{itemize}
+\item If $t=leaf(a)$, then
+\[
+g^{*}(f^{*}(t)) = g^{*}(f^{*}(leaf(a)) = g^{*}(f(a)) = (\co{f}{g^{*}})(a) = (\co{f}{g^{*}})^{*}(leaf(a)) = (\co{f}{g^{*}})^{*}(t).
+\]
+\item If $t=branch(t_1,t_2)$, then is the left-hand-side given by
+\[
+g^{*}(f^{*}(t)) = g^{*}(f^{*}(branch(t_1,t_2))) = g^{*}\left(branch(f^{*}(t_1), f^{*}(t_2))\right) = branch(g^{*}(f^{*}(t_1)),g^{*}(f^{*}(t_2))).
+\]
+The right-hand-side is given by 
+\[
+(\co{f}{g^{*}})^{*}(t) = (\co{f}{g^{*}})^{*}(branch(t_1,t_2)) = branch\left((\co{f}{g^{*}})(t_1), (\co{f}{g^{*}})(t_2)\right).
+\]
+Hence, by the induction hypothesis, the both sides are equal.
+\end{itemize}
+
+\end{enumerate}
+\end{solution}
+
+\begin{solution}[ to \cref{exer:kleisli_triple_maybe}]
+\label{sol:kleisli_triple_maybe}
+Before we continue with this exercise, we first fix some notation. Since $X+E$ is the disjoint union of $X$ and $E$, we have the canonical inclusions which we denote by
+\[ i^X_l : X\to X + E, \quad i^X_r : E\to X+E. \] 
+Hence, a function whose domain is $X+E$ is completely determined by specifiying where each $i^X_l(x)$ and each $i^X_r(e)$ are mapped to. \textit{Notice that this is precisely the notation and the universal property of the coproduct (in $\SET$)}.
+
+For each set $X\in\Ob \SET$, we define:
+\[
+\eta_X : X \to X+E : x\mapsto i^X_l(x).
+\]
+For each function $f\in\CHom{\Ob \SET}{X}{Y+E}$, we define:
+\begin{align*}
+f^{*} :X+E \to Y+E : z \mapsto 
+\begin{cases}
+f(x) &\quad \text{ if } z=i^X_l(x),\\
+i^Y_r(e) &\quad \text{ if } z=i^X_r(e).
+\end{cases}
+\end{align*}
+
+
+We now show that the properties of a Kleisli triple hold:
+\begin{enumerate}
+\item For each set $X$, we have to show $\eta_X^{*} = \Id[X+E]$: 
+\begin{itemize}
+\item If $z=i^X_l(x)$, then 
+\[
+\eta_X^{*}(z) = \eta_X^{*}(i^X_l(x)) = \eta_X(x) = i^X_l(x) = z = \Id[X+E](z).
+\]
+\item If $z=i^X_r(e)$, then
+\[
+\eta_X^{*}(e) = \eta_X^{*}(i^X_r(e)) = i^X_r(e) = z = \Id[X+E](z).
+\]
+\end{itemize}
+
+\item For each function $f:X\to Y$, we have to show $f^{*}(\eta_X(x)) = f(x)$ but this holds directly by the definition of $(-)^{*}$ since $\eta_X(x)=i_l^X(x)$.
+
+\item Let $f:X\to Y + E$ and $g:Y\to Z + E$ be functions, we have to show 
+\[
+g^{*}(f^{*}(z)) = (\co{f}{g^{*}})^{*}(z).
+\] 
+To show this, we do pattern matching on $z\in X+E$:
+\begin{itemize}
+\item If $z=i^X_l(x)$, then
+\[
+g^{*}(f^{*}(z)) = g^{*}(f^{*}(i_l^X(x))) = g^{*}(f(x)) = (\co{f}{g^{*}})^{*}(i_l^X(x)) = (\co{f}{g^{*}})^{*}(z).
+\]
+\item If $z=i^X_r(e)$, then
+\[
+g^{*}(f^{*}(z)) = g^{*}(f^{*}(i_l^X(e))) = g^{*}(i_l^Y(e)) = i_l^Z(e) = (\co{f}{g^{*}})^{*}(i_l^X(e)) = (\co{f}{g^{*}})^{*}(z).
+\]
+\end{itemize}
+
+\end{enumerate}
+\end{solution}
+
+\begin{solution}[ to \cref{exer:kleisli_triple_nondeterminism}]
+For each set $X\in\Ob \SET$, we define:
+\[
+\eta_X : X \to \mathbb{P}_{fin}(X) : x\mapsto \{x\}.
+\]
+For each function $f\in\CHom{\Ob \SET}{X}{\mathbb{P}_{fin}(Y)}$, we define:
+\begin{align*}
+f^{*} : \mathbb{P}_{fin}(X) \to \mathbb{P}_{fin}(Y) : A \mapsto \bigcup_{a\in A} f(a).
+\end{align*}
+First notice that $\eta_X$ and $f^{*}$ are well-defined, indeed: 
+\begin{itemize}
+\item $\eta_X(x) = \{x\}$ is clearly finite since it only contains one element.
+\item Let $A\in \mathbb{P}_{fin}(X)$. By definition of $f$, for each $a\in A$, $f(a)$ is finite. But there are only a finite number of elements in $A$, so $\bigcup_{a\in A} f(a)$ is a finite union of finite sets, hence, it is again finite.
+\end{itemize}
+We now show that the properties of a Kleisli triple hold:
+\begin{enumerate}
+\item For each set $X$, we have to show $\eta_X^{*} = \Id[\mathbb{P}_{fin}(X)]$. Let $A\in \mathbb{P}_{fin}(X)$, the claim then follows by the following computation:
+\[
+\eta_X^{*}(A) = \bigcup_{a\in A} \eta_X(a) = \bigcup_{a\in A} \{a\} = A = \Id[\mathbb{P}_{fin}(X)](A).
+\]
+
+\item For each function $f:X\to Y$, we have to show $f^{*}(\eta_X(x)) = f(x)$ but this holds directly by the definition of $(-)^{*}$ since
+\[
+f^{*}(\eta_X(x)) = f^{*}(\{x\}) = \bigcup_{a\in \{x\}} f(a) = f(x).
+\]
+
+\item Let $f:X\to \mathbb{P}_{fin}(Y)$ and $g:Y\to \mathbb{P}_{fin}(Z)$ be functions, we have to show 
+\[
+g^{*}(f^{*}(A)) = (\co{f}{g^{*}})^{*}(A).
+\] 
+Let $A\in \mathbb{P}_{fin}(X)$, the left-hand-side is given as:
+\[
+g^{*}(f^{*}(A)) = g^{*}\left( \bigcup_{a\in A} f(a) \right) = \bigcup_{b \in \bigcup_{a\in A} f(a)} g(f(a)) = \bigcup_{a\in A} \bigcup_{b\in f(a)} g(f(a)).
+\]
+The right-hand-side is given as:
+\[
+(\co{f}{g^{*}})^{*}(A) = \bigcup_{a\in A} (\co{f}{g^{*}})(a) = \bigcup_{a\in A} g^{*}(f(a)) = \bigcup_{a\in A} \bigcup_{b\in f(a)} g(f(a))
+\]
+Hence, both sides are equal.
+
+\end{enumerate}
+\end{solution}
+
+\begin{solution}[ to \cref{exer:kleisli_triple_continuation}]
+\label{sol:kleisli_triple_continuation}
+For each set $X\in\Ob \SET$, we define:
+\[
+\eta_X : X \to (X\to R)\to R : x\mapsto (\lambda f. f(x)).
+\]
+For each function $f\in\CHom{\Ob \SET}{X}{Cont^R(Y)}$, we define:
+\begin{align*}
+f^{*} : Cont^R(X) \to Cont^R(Y) : i \mapsto \lambda (j:Y\to R), i(f(-)(j)).
+\end{align*}
+Notice that this is indeed well-defined: Let $i\in Cont^R(X)$, i.e. $i:(X\to R)\to R$. Then $f^{*}(i) : (Y\to R)\to R$. Let $j:Y\to R$. Then $f(-)(j) : X\to R$, hence we can apply it to $i$ and we have $i\left(f(-)(j)\right)\in R$.
+
+Let $i\in Cont^R(X)$. We now show that this data satisfies the properties of a Kleisli triple:
+\begin{enumerate}
+\item For each set $X$, we have to show $\eta_X^{*} = \Id[Cont^R(X)]$. Let $x\in X$. The claim then follows by the following computation:
+\[
+\eta_X^{*}(i) = \lambda j, i\left(\eta_X(-)(j)\right) = \lambda j, i\left(\lambda x, j(x)\right) = i
+\]
+
+\item For each function $f:X\to Y$, we have to show $f^{*}(\eta_X(x)) = f(x)$, this follows by the following computation:
+\[
+f^{*}(\eta_X(x)) = f^{*}(\lambda g,g(x)) = \lambda j, \left(\left(\lambda g,g(x)\right)(f(-)(j))\right) = \lambda j, (f(x)(j)) = f(x).
+\]
+
+\item Let $f:X\to Cont^R(Y)$ and $g:Y\to Cont^R(Z)$ be functions, we have to show 
+\[
+g^{*}(f^{*}(i)) = (\co{f}{g^{*}})^{*}(i).
+\] 
+The left-hand-side is given as:
+\[
+g^{*}(f^{*}(i)) = g^{*}\left(\lambda j, i\left(f(-)(j)\right)\right) = \lambda \tilde{j}, \left(\lambda j, i\left(f(-)(j)\right)\right)\left(g(-)(\tilde{j})\right) = \lambda \tilde{j}, i\left(f(-)\left(g(-)(\tilde{j})\right)\right).
+\]
+The right-hand-side is given as:
+\[
+(\co{f}{g^{*}})^{*}(i) = \lambda j, i\left((\co{f}{g^{*}})(-)(j)\right)
+\]
+So to show that both sides are equal, it sufficies to show that for each $j$, we have 
+\[
+f(-)\left(g(-)(j)\right) = (\co{f}{g^{*}})(-)(j).
+\]
+Notice that these are functions $X\to R$. Hence we will show this pointwise for each $x\in X$. The left-hand-side is given by: 
+\[
+f(-)\left(g(-)(j)\right)(x) = f(x)\left(g(-)(j)\right) 
+\]
+The right-hand-side is given by:
+\begin{eqnarray*}
+(\co{f}{g^{*}})(-)(j)(x) &=& (\co{f}{g^{*}})(x)(j)\\ 
+	&=& \left( (\co{f}{g^{*}})(x) \right)(j)\\ 
+	&=& \left(g^{*}(f(x))\right)(j)\\ 
+	&=& \left( \lambda k, f(x)\left(g(-)(k)\right) \right)(j)\\ 
+	&=& f(x)\left(g(-)(j)\right).
+\end{eqnarray*}
+Hence, both sides are equal.
+
+\end{enumerate}
+\end{solution}
+
+
+
+
 \begin{solution}[\cref{exer:initial_pointset}]\label{sol:initial_pointset}
 	An initial object is a one-element set $ (\{ \star \}, \star) $. Let $ (X, x) $ be a pointed set. Then we have a unique function $ \star \to X $ that sends $ \star $, the chosen (and only) point of $ \{ \star \} $, to $ x $, the chosen point of $ X $, namely $ f: \star \mapsto x $.
 \end{solution}
