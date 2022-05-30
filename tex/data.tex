@@ -632,22 +632,22 @@ where $\star$ is the unique element of $1$.
   $f : C \to  \Stream(A)$
   of the equation system
   \begin{align*}
-    \co{f} \head = h
+    \co{f} \head &= h
     \\
-    \co f \tail = t
+    \co f \tail &=  \co t f
   \end{align*}
   that is, the unique function $f : C \to \Stream(A)$ making the following square commute:
   \[
-    \begin{tikzcd}
+    \begin{tikzcd}[column sep = large]
       C
       \ar[r, "{\langle h, t \rangle}"]
-      \ar[d, "\anam{\langle h, t \rangle }"']
+      \ar[d, "\anam{\langle h, t \rangle}"']
       &
       A \times C
-      \ar[d]
+      \ar[d, "\Id \times \anam{\langle h, t \rangle}"]
       \\
       \Stream(A
-      \ar[r, "\langle \head, \tail \rangle"]
+      \ar[r, "{\langle \head, \tail \rangle}"]
       &
       A \times \Stream(A)
     \end{tikzcd}
@@ -655,15 +655,15 @@ where $\star$ is the unique element of $1$.
   
 \end{exa}
 
+\begin{exer}[\cref{sol:stream-of-nats}]\label{exer:stream-of-nats}
+  Define, as an anamorphism, the function $\nats : \NN \to \Stream(\NN)$ which returns the stream of all natural
+  numbers starting with the natural number given as the argument
+\end{exer}
 
-% The function nats : Nat → Stream(Nat), which returns the stream of all natural
-% numbers starting with the natural number given as the argument, is the unique
-% solution of the equation system
-% head ◦ nats = id
-% tail ◦ nats
-% = nats ◦ succ,
-% and is thus definable as the anamorphism [( h id, succ i )].
 
+\begin{exer}[\cref{sol:zip}]\label{exer:zip}
+  Define, as an anamorphism, the function $\zip : \Stream(A) \times \Stream(B) \to \Stream(A \times B)$ that zips the argument streams together.
+\end{exer}
 
 %%% Local Variables:
 %%% mode: latex

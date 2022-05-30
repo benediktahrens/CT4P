@@ -475,7 +475,7 @@ where the second equality holds by definition of $\cons$, the thirth and fifth b
 \end{enumerate}
 \end{solution}
 
-\begin{solution}[ to \cref{exer:kleisli_triple_bintree}]
+\begin{solution}[\cref{exer:kleisli_triple_bintree}]
 \label{sol:kleisli_triple_bintree}
 For each set $X\in\Ob \SET$, we define:
 \[
@@ -533,7 +533,7 @@ Hence, by the induction hypothesis, the both sides are equal.
 \end{enumerate}
 \end{solution}
 
-\begin{solution}[ to \cref{exer:kleisli_triple_maybe}]
+\begin{solution}[\cref{exer:kleisli_triple_maybe}]
 \label{sol:kleisli_triple_maybe}
 Before we continue with this exercise, we first fix some notation. Since $X+E$ is the disjoint union of $X$ and $E$, we have the canonical inclusions which we denote by
 \[ i^X_l : X\to X + E, \quad i^X_r : E\to X+E. \] 
@@ -588,7 +588,7 @@ g^{*}(f^{*}(z)) = g^{*}(f^{*}(i_l^X(e))) = g^{*}(i_l^Y(e)) = i_l^Z(e) = (\co{f}{
 \end{enumerate}
 \end{solution}
 
-\begin{solution}[ to \cref{exer:kleisli_triple_nondeterminism}]
+\begin{solution}[\cref{exer:kleisli_triple_nondeterminism}]
 For each set $X\in\Ob \SET$, we define:
 \[
 \eta_X : X \to \mathbb{P}_{fin}(X) : x\mapsto \{x\}.
@@ -631,7 +631,7 @@ Hence, both sides are equal.
 \end{enumerate}
 \end{solution}
 
-\begin{solution}[ to \cref{exer:kleisli_triple_continuation}]
+\begin{solution}[\cref{exer:kleisli_triple_continuation}]
 \label{sol:kleisli_triple_continuation}
 For each set $X\in\Ob \SET$, we define:
 \[
@@ -979,6 +979,33 @@ This category can not have a terminal object: Suppose it has a terminal object $
 	\end{align*}
 	Therefore, $ G(g \circ f) = G(g) \circ G(f) $.
 \end{solution}
+
+
+\begin{solution}[\cref{exer:stream-of-nats}]\label{sol:stream-of-nats}
+  The sought function $\nats : \NN \to \Stream(\NN)$ is the unique solution of the equation system
+  \begin{align*}
+    \co {\nats} \head  &= \Id
+    \\
+    \co {\nats} \tail &= \co \Succ {\nats}
+  \end{align*}
+% head ◦ nats = id
+% tail ◦ nats
+% = nats ◦ succ,
+  and is thus can be defined as the anamorphism $\anam{ \langle \Id, \Succ \rangle }$.
+  Draw a diagram to convince yourself that this is correct.
+\end{solution}
+
+\begin{solution}[\cref{exer:zip}]\label{sol:zip}
+  The sought function $\zip : \Stream(A) \times \Stream(B) \to \Stream(A\times B)$ is the unique solution to the equation system
+  \begin{align*}
+    \co \zip \head = \co {(\Out \times \Out)}{(\projl \times \projl)}
+    \\
+    \co \zip \tail = \co{(\Out \times \Out)} {\co {(\projr \times \projr)}{\zip}}
+  \end{align*}
+  This function can, therefore, be defined as $\anam{ \co{(\Out \times \Out)} {\langle \projl \times \projl, \projr \times \projr \rangle} }$.
+  Draw a diagram to convince yourself that this is correct.
+\end{solution}
+
 
 %%% Local Variables:
 %%% mode: latex
