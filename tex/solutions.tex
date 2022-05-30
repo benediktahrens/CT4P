@@ -880,6 +880,34 @@ This category can not have a terminal object: Suppose it has a terminal object $
 	Since $ F(\Id[\Initalg F]) = \Id[F(\Initalg F)] $, the morphism $ \Id[\Initalg F] $ satisfies this property, and therefore $ \catam{\In} = \Id[\Initalg F] $.
 \end{solution}
 
+\begin{solution}[\cref{exer:fusion-property}]\label{sol:fusion-property}
+	Let $ F : \CC \to \CC $ be an endofunctor and let $ (\Initalg F, \In) $ be an initial algebra. Given $F$-algebras $(C,\phi)$ and $(D,\psi)$ and $ f \in \CHom{\CC}{C}{D} $, we have the following commutative diagrams:
+	\begin{center}
+		\begin{tikzcd}
+			F \Initalg F \arrow[r, "\In"] \arrow[d, "F( \catam{\phi} )"] & \Initalg F \arrow[d, "\catam{\phi}"]\\
+			F C \arrow[r, "\phi"] & C
+		\end{tikzcd}
+		\quad
+		\begin{tikzcd}
+			F \Initalg F \arrow[r, "\In"] \arrow[d, "F( \catam{\psi} )"] & \Initalg F \arrow[d, "\catam{\psi}"]\\
+			F D \arrow[r, "\psi"] & D
+		\end{tikzcd}
+	\end{center}
+	Now, suppose that $ f \circ \phi = \psi \circ F(f) $.
+
+	By definition, $ \catam \psi $ is the unique morphism from $ \Initalg F $ to $ D $ such that 
+	\[ \catam{\psi} \circ \In = \psi \circ F(\catam{\psi}). \]
+	Therefore, to show that $ \catam \psi = f \circ \catam \phi $, it suffices to show that
+	\[ (f \circ \catam{\phi}) \circ \In = \psi \circ F(f \circ \catam{\phi}). \]
+	And indeed, we have
+	\begin{align*}
+		f \circ \catam{\phi} \circ \In &= f \circ \phi \circ F(\catam{\phi})\\
+		&= \psi \circ F(f) \circ F(\catam{\phi})\\
+		&= \psi \circ F(f \circ \catam{\phi}).
+	\end{align*}
+	Therefore, $ \catam{\psi} = f \circ \catam{\phi} $.
+\end{solution}
+
 \begin{solution}[\cref{exer:initialalg_for_idfun_with_initialob}]\label{sol:initialalg_for_idfun_with_initialob}
 	Let $\CC$ be a category with an initial object $\bot$. Let $ F: \CC \to \CC $ be the identity endofunctor.
 
