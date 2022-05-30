@@ -219,6 +219,10 @@ literate={→ }{\ARROW}1
 
 \newcommand{\Leaf}[1]{\ensuremath{\mathsf{leaf}(#1)}}
 \newcommand{\Branch}[2]{\ensuremath{\mathsf{branch}(#1, #2)}}
+
+\newcommand{\Stream}{\ensuremath{\mathsf{Stream}}}
+\newcommand{\tail}{\ensuremath{\mathsf{tail}}}
+\newcommand{\head}{\ensuremath{\mathsf{head}}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -1116,7 +1120,7 @@ In this section, we discuss special objects in a category.
 
 
 
-\begin{dfn}
+\begin{dfn}\label{def:binproduct}
   Let $\CC$ be a category and let $A,B \in \Ob\CC$ be objects of $\CC$.
 
   A triple $(P,\projl : P \to A ,\projr : P \to B)$ is called a \textbf{product of $A$ and $B$} if for any triple $(Q,q_1 : Q \to A, q_2 : Q \to B)$ there is exactly one morphism $f : Q \to P$ such that the following diagram commutes:

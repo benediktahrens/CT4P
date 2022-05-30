@@ -500,6 +500,14 @@ We also write $(+1)$ for $\Succ$.
 \end{reading*}
 
 \section{Terminal Coalgebras and Coinductive Datatypes}
+
+
+\begin{reading*}
+  We only give a brief introduction to (terminal) coalgebras in this section.
+  A more systematic exploration of the topic is given in~\cite{DBLP:conf/fpca/MeijerFP91}.
+\end{reading*}
+
+
 In this section we introduce (terminal) coalgebras which allows us to define coinductive data types.
 
 \begin{dfn} Let $F:\CC\to \CC$ be an endofunctor. An \textbf{$F$-coalgebra} consists of the following data:
@@ -599,7 +607,62 @@ where $\star$ is the unique element of $1$.
 \end{itemize}
 \end{exer}
 
-\KW{Streams to add}
+
+\begin{exa}[Streams]
+  The codata type of streams over a given set $A$ is given by the terminal coalgebra $(\Terminalcoalg{F_A}, \Out)$ of the functor $F_A (X) := A \times X$.
+  We write $\Stream(A)$ for $\Terminalcoalg{F_A}$.
+  The functions $\head : \Stream(A) \to A$ and $\tail : \Stream(A) \to \Stream(A)$
+  are given by
+  \begin{align*}
+    \head &= \co{\Out}{\projl} : \Stream(A) \to A
+    \\
+    \tail &= \co{\Out}{\projr} : \Stream(A) \to \Stream(A)
+  \end{align*}
+  respectively. Put differently (recall the definition of the product in \cref{def:binproduct}), we have
+  \[
+    \Out = \langle \head, \tail \rangle : \Stream(A) \to A \times \Stream(A)
+  \] 
+  Given any two functions
+  \begin{align*}
+    h : C \to  A
+    \\
+    t : C \to C
+  \end{align*}
+  the anamorphism $\anam{\langle h, t \rangle }$ is the unique solution
+  $f : C \to  \Stream(A)$
+  of the equation system
+  \begin{align*}
+    \co{f} \head = h
+    \\
+    \co f \tail = t
+  \end{align*}
+  that is, the unique function $f : C \to \Stream(A)$ making the following square commute:
+  \[
+    \begin{tikzcd}
+      C
+      \ar[r, "{\langle h, t \rangle}"]
+      \ar[d, "\anam{\langle h, t \rangle }"']
+      &
+      A \times C
+      \ar[d]
+      \\
+      \Stream(A
+      \ar[r, "\langle \head, \tail \rangle"]
+      &
+      A \times \Stream(A)
+    \end{tikzcd}
+  \]
+  
+\end{exa}
+
+
+% The function nats : Nat → Stream(Nat), which returns the stream of all natural
+% numbers starting with the natural number given as the argument, is the unique
+% solution of the equation system
+% head ◦ nats = id
+% tail ◦ nats
+% = nats ◦ succ,
+% and is thus definable as the anamorphism [( h id, succ i )].
 
 
 %%% Local Variables:
