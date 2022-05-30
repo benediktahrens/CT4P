@@ -15,7 +15,7 @@
 
 \newcommand{\onlydraft}[1]{} % DON'T CHANGE THIS LINE
 
-\renewcommand{\onlydraft}[1]{#1}  % Toggle this line to show/hide todo-notes, table of contents, etc.
+%\renewcommand{\onlydraft}[1]{#1}  % Toggle this line to show/hide todo-notes, table of contents, etc.
 
 
 
@@ -200,10 +200,12 @@ literate={→ }{\ARROW}1
 
 
 \newcommand{\Initalg}[1]{\ensuremath{\mu^{#1}}}
+\newcommand{\Terminalcoalg}[1]{\ensuremath{\nu^{#1}}}
 \newcommand{\Inv}[1]{#1 ^{-1}}
 \newcommand{\catam}[1]{\llparenthesis #1 \rrparenthesis}
 \newcommand{\anam}[1]{\llbracket #1 \rrbracket} % Different notation for anamorphisms which the author of the thesis uses, but I can't find the symbol which he uses. Actually it looks like he hardcoded [( )] which doesn't look nice. But this comes close to the notation I think.
 \newcommand{\In}{\ensuremath{\mathsf{in}}}
+\newcommand{\Out}{\ensuremath{\mathsf{out}}}
 
 \newcommand{\nil}{\ensuremath{\mathsf{nil}}}
 \newcommand{\cons}{\ensuremath{\mathsf{cons}}}
@@ -1668,9 +1670,9 @@ then we can fix some $x$ such that $P(x)$ holds.
 
 \onlydraft{\input{adjunctions}}
 
-\onlydraft{\input{monads}}
+\input{monads}
 
-\onlydraft{\input{data}}
+\input{data}
 
 \input{solutions}
 

@@ -511,7 +511,7 @@ In this section we introduce (terminal) coalgebras which allows us to define coi
 Notice that an $F$-algebra consists of a morphism $F(C)\to C$, while an $F$-coalgebra consists of a morphism $C\to F(C)$ in the other direction.
 
 \begin{dfn} Let $F:\CC\to \CC$ be an endofunctor and $(C,\phi)$ and $(D,\psi)$ be $F$-coalgebras. A \textbf{($F$-algebra) homomorphism} from $(C,\phi)$ to $(D,\psi)$ is a morphism $f\in \CHom{\CC}{C}{D}$ such that the following diagram commutes:
-\begin{center}
+\[
 \begin{tikzcd}
 C 
 \arrow[r, "\phi"] 
@@ -521,50 +521,79 @@ C
 \\
 D
 \arrow[r, swap, "\psi"] 
-& F(D) 
+& F(D)
 \end{tikzcd}
-\end{center}
+\]
 \end{dfn}
 
 \begin{exer} Define the category $\COALG{F}$ of $F$-coalgebras analogously to the category $\ALG{F}$ of $F$-algebras (as in \cref{definition:category_of_Falgebras}).
 \end{exer}
 
-\begin{dfn} Let $F$ be an endofunctor on $\CC$. The \textbf{terminal $F$-coalgebra} is the terminal object in $\COALG{F}$ which we denote by $(\nu F, out)$.\\
-For $(C,\phi)$ an arbitrary $F$-coalgebra, we denote the unique morphism $C\to \nu F$ by $\anam{\phi}$. and we call a morphism of this form an \textit{anamorphism} (instead of a catamorphism).
+\begin{dfn} Let $F$ be an endofunctor on $\CC$. The \textbf{terminal $F$-coalgebra} is the terminal object in $\COALG{F}$ which we denote by $(\Terminalcoalg{F}, \Out)$.
+  
+For $(C,\phi)$ an arbitrary $F$-coalgebra, we denote the unique morphism $(C,\phi) \to (\Terminalcoalg{F}, \Out)$ by $\anam{\phi}$, and we call a morphism of this form an \textit{anamorphism} (instead of a catamorphism as in \cref{dfn:initial-alg}).
 \end{dfn}
 
 \begin{exer} Spell out what it means for a coalgebra to be the terminal coalgebra.
 \end{exer}
 
-\begin{exer} Let $F:\CC\to\CC$ be an endofunctor and assume that the terminal coalgebra $(\nu F, out)$ exists. Show that the following properties holds:
+\begin{exer} Let $F:\CC\to\CC$ be an endofunctor and assume that the terminal coalgebra $(\Terminalcoalg{F}, \Out)$ exists. Show that the following properties holds:
 \begin{enumerate}
-\item $\Id = \anam{out}$.
+\item $\Id = \anam{\Out}$.
 \item For $F$-algebras $(C,\phi)$ and $(D,\psi)$ and $f\in\CHom{\CC}{C}{D}$, we have 
 \[
-f\Comp\psi  = \phi\Comp F(f) \implies f\Comp\anam{\psi} = anam{\phi}.
+  \co f \psi   = \co \phi {F(f)} \implies \co{f}{\anam{\psi}} = \anam{\phi}.
+\]
+This is summarized in the following diagram:
+\[
+\begin{tikzcd}
+C 
+\arrow[r, "\phi"] 
+\arrow[d,swap, "f"]
+\ar[dd, "\anam{\phi}"', bend right = 60]
+&
+FC
+\arrow[d, "Ff"]
+\ar[dd, "F\anam{\phi}", bend left = 60]
+\\
+D
+\arrow[r, swap, "\psi"]
+\ar[d, "\anam{\psi}"']
+&
+FD
+\ar[d, "F\anam{\psi}"]
+\\
+\Terminalcoalg{F}
+\ar[r, "\Out"]
+&
+F\Terminalcoalg{F}
+\end{tikzcd}
 \]
 \end{enumerate} 
 \end{exer}
 
-\begin{exer} (\textbf{Dual Lambek's theorem}) Let $F:\CC\to\CC$ be an endofunctor and assume that the terminal coalgebra $(\nu F, out)$ exists. Then is $out$ an isomorphism whose inverse is given by $\Inv{out} = \anam{F(out)}$.
+\begin{exer} (\textbf{Dual Lambek's theorem}) Let $F:\CC\to\CC$ be an endofunctor and let $(\Terminalcoalg{F}, \Out)$ be a terminal coalgebra. Then is $\Out$ an isomorphism whose inverse is given by $\Inv{\Out} = \anam{F(\Out)}$.
 \end{exer}
 
-\begin{exer}\label{exer:terminalalg_for_idfun_with_terminalob} Let $\CC$ be a category with an terminal object $\top$. Then is $(\top, \Id[\top])$ the terminal coalgebra for the identity (endo)functor on $\CC$.
+\begin{exer}\label{exer:terminalalg_for_idfun_with_terminalob} Let $\CC$ be a category with an terminal object $\top$. Then $(\top, \Id[\top])$ is a terminal coalgebra for the identity (endo)functor on $\CC$.
 \end{exer}
 
 \begin{exer} Let $F$ be the functor induced by 
 \[
-F:\SET\to\SET : X\mapsto 1 \sqcup X.
+F:\SET\to\SET : X\mapsto 1 + X.
 \]
 Show that the terminal $F$-coalgebra is given by the following data:
 \begin{itemize}
-\item The underlying object is given by the set $\mathbb{N} \sqcup \{\infty\}$ of natural numbers with infinity.
+\item The underlying object is given by the set $\mathbb{N} + \{\infty\}$ of natural numbers with infinity.
 \item The underlying function is given by the predecessor defined as follows: 
 \begin{align*}
-\mathbb{N} \sqcup \{\infty\} &\to 1 \sqcup \mathbb{N} \sqcup \{\infty\},\\
-0 &\mapsto \star,\\
-s(n) &\mapsto n,\\
-\infty &\mapsto \infty,
+  \mathbb{N} + \{\infty\} &\to 1 + \mathbb{N} + \{\infty\}
+  \\
+  0 &\mapsto \star
+  \\
+  s(n) &\mapsto n
+  \\
+  \infty &\mapsto \infty
 \end{align*}
 where $\star$ is the unique element of $1$.
 \end{itemize}
