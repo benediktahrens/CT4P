@@ -980,6 +980,35 @@ This category can not have a terminal object: Suppose it has a terminal object $
 	Therefore, $ G(g \circ f) = G(g) \circ G(f) $.
 \end{solution}
 
+\begin{solution}[\cref{exer:conatural_numbers_terminal_coalgebra}] \label{sol:conatural_numbers_terminal_coalgebra}
+	Let $ F: \SET \to \SET $ be the functor induced by $ X \mapsto 1 + X $ with $ 1 = \{ \star \} $.
+	We claim that $ (\mathbb N^c, f) $ is a terminal coalgebra for this functor, with $ \mathbb N^c = \mathbb N + \{ \infty \} $ and $ f: \mathbb N + \{ \infty \} \to 1 + \mathbb N + \{ \infty \} $ given by
+	\begin{align*}
+		0 &\mapsto \star\\
+		s(n) &\mapsto n\\
+		\infty &\mapsto \infty
+	\end{align*}
+	We need to show that for all $ F $-coalgebras $ (X, g) $, there exists a unique $ F $-coalgebra morphism $ \varphi: (X, g) \to (\mathbb N^c , f) $. To this end, take an arbitrary $ F $-coalgebra $ (X, g) $.
+
+	We first show existence. Borrowing some notation from monads, given the morphism $ g: X \to F X $, we write $ g^* $ for the induced morphism $ g^*: F X \to F X $ and we write $ (g^*)^n = g^* \circ g^* \circ \dots \circ g^* $. We define $ \varphi: X \to \mathbb N^c $ as follows: For $ x \in X $, if for some $ n \in \mathbb N $, $ (g^*)^n(x) \in X $ and $ (g^*)^{s(n)}(x) = \star $, we set $ \varphi(x) = n $. Else, we set $ \varphi(x) = \infty $. We need to show that the following diagram commutes:
+	\begin{center}
+		\begin{tikzcd}
+			X \arrow[r, "g"] \arrow[d, "\varphi"] & 1 + X \arrow[d, "{\Id[1] + \varphi}"]\\
+			\mathbb N + \{ \infty \} \arrow[r, "f"] & 1 + \mathbb N + \{ \infty \}
+		\end{tikzcd}
+	\end{center}
+	To that end, take $ x \in X $. Suppose that $ (\Id[1] + \varphi)(g(x)) = \star $. Then $ g^1(x) = \star $, so $ \varphi(x) = 0 $ and $ f(\varphi(x)) = \star $. Suppose that $ (\Id[1] + \varphi)(g(x)) = \infty $. Then (by the definition of $ \varphi $) for all $ n \in \mathbb N $, $ (g^*)^{s(n)} = (x)(g^*)^n(g(x)) \in X $, so $ \varphi(x) = \infty $ and $ f(\varphi(x)) = \infty $. Lastly, suppose that $ (\Id[1] + \varphi)(g(x)) = n $. Then (by the definition of $ \varphi $), $ (g^*)^{s(n)}(x) = (g^*)^{n}(g(x)) \in X $ and $ (g^*)^{s(s(n))}(x) = (g^*)^{s(n)}(g(x)) = \star $. By the definition of $ \varphi $, we then have $ \varphi(x) = s(n) $. Then $ f(\varphi(x)) = n $ and we conclude that the diagram commutes and $ \varphi $ is a $ F $-coalgebra morphism.
+
+	For uniqueness, suppose that we also have a morphism $ \psi: X \to \mathbb N^c $ that makes the diagram commute.
+	
+	Suppose that for some $ x \in X $, $ g(x) = \star $. Then, to make the diagram commute, we must have $ f(\psi(x)) = (\Id[1] + \psi)(\star) = \star $, so by the definition of $ f $, we must have $ \psi(x) = 0 $.
+
+	By induction on $ n $, we will show that for all $ x \in X $, if $ (g^*)^n(x) \in X $ and $ (g^*)^{s(n)} = \star $, we have $ \psi(x) = n $ (which equals $ \varphi(x) $). Since we just showed the case for $ n = 0 $, we will now show the induction step: suppose that it holds for some $ n $. Take $ x \in X $. If $ (g^*)^n(g(x)) = (g^*)^{s(n)}(x) \in X $ and $ (g^*)^{s(n)}(g(x)) = (g^*)^{s(s(n))}(x) = \star $, we have $ \psi(g(x)) = n $. Then we have $ f(\psi(x)) = (\Id[1] + \psi)(g(x)) = n $. Therefore, $ f(\psi(x)) = s(n) $, which proves the induction step.
+
+	Now, take $ x \in X $ and suppose that for all $ n \in \mathbb N $, $ (g^*)^n(x) \in X $. If $ \psi(x) = n $ for some $ n $, then (since the diagram commutes), we have $ \psi(g(x)) = f(\psi(x)) = f(n) = n - 1 $. Repeating this $ n $ times, we have $ (\Id[1] + \psi)((g^*)^n(x)) = 0 $. We take $ x^\prime = (g^*)^n(x) \in X $. We have $ \psi(x^\prime) = 0 $ and $ f(x^\prime) = \star $. However, $ g(x^\prime) \in X $, so $ (\Id[1] + \varphi)(g(x^\prime)) \not = \star $ and the diagram does not commute. Therefore, we cannot have $ \psi(x) \in \mathbb N $, so $ \psi(x) = \infty = \varphi(x) $.
+
+	Therefore, $ \psi = \varphi $ and we conclude that $ \varphi $ is unique, so $ (\mathbb N^c, f) $ is a terminal $ F $-coalgebra.
+\end{solution}
 
 \begin{solution}[\cref{exer:stream-of-nats}]\label{sol:stream-of-nats}
   The sought function $\nats : \NN \to \Stream(\NN)$ is the unique solution of the equation system
