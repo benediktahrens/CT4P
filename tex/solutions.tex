@@ -988,7 +988,7 @@ This category can not have a terminal object: Suppose it has a terminal object $
 		s(n) &\mapsto n\\
 		\infty &\mapsto \infty
 	\end{align*}
-	We need to show that for all $ F $-coalgebras $ (X, g) $, there exists a unique $ F $-coalgebra morphism $ \varphi: (X, g) \to (\mathbb N^c \to f) $. To this end, take an arbitrary $ F $-coalgebra $ (X, g) $.
+	We need to show that for all $ F $-coalgebras $ (X, g) $, there exists a unique $ F $-coalgebra morphism $ \varphi: (X, g) \to (\mathbb N^c , f) $. To this end, take an arbitrary $ F $-coalgebra $ (X, g) $.
 
 	We first show existence. Borrowing some notation from monads, given the morphism $ g: X \to F X $, we write $ g^* $ for the induced morphism $ g^*: F X \to F X $ and we write $ (g^*)^n = g^* \circ g^* \circ \dots \circ g^* $. We define $ \varphi: X \to \mathbb N^c $ as follows: For $ x \in X $, if for some $ n \in \mathbb N $, $ (g^*)^n(x) \in X $ and $ (g^*)^{s(n)}(x) = \star $, we set $ \varphi(x) = n $. Else, we set $ \varphi(x) = \infty $. We need to show that the following diagram commutes:
 	\begin{center}
