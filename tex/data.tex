@@ -518,7 +518,7 @@ In this section we introduce (terminal) coalgebras which allows us to define coi
 \end{dfn}
 Notice that an $F$-algebra consists of a morphism $F(C)\to C$, while an $F$-coalgebra consists of a morphism $C\to F(C)$ in the other direction.
 
-\begin{dfn} Let $F:\CC\to \CC$ be an endofunctor and $(C,\phi)$ and $(D,\psi)$ be $F$-coalgebras. A \textbf{($F$-algebra) homomorphism} from $(C,\phi)$ to $(D,\psi)$ is a morphism $f\in \CHom{\CC}{C}{D}$ such that the following diagram commutes:
+\begin{dfn} Let $F:\CC\to \CC$ be an endofunctor and $(C,\phi)$ and $(D,\psi)$ be $F$-coalgebras. A \textbf{($F$-coalgebra) homomorphism} from $(C,\phi)$ to $(D,\psi)$ is a morphism $f\in \CHom{\CC}{C}{D}$ such that the following diagram commutes:
 \[
 \begin{tikzcd}
 C 
@@ -646,7 +646,7 @@ where $\star$ is the unique element of $1$.
       A \times C
       \ar[d, "\Id \times \anam{\langle h, t \rangle}"]
       \\
-      \Stream(A
+      \Stream(A)
       \ar[r, "{\langle \head, \tail \rangle}"]
       &
       A \times \Stream(A)
