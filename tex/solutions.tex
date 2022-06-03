@@ -1011,28 +1011,93 @@ This category can not have a terminal object: Suppose it has a terminal object $
 \end{solution}
 
 \begin{solution}[\cref{exer:stream-of-nats}]\label{sol:stream-of-nats}
-  The sought function $\nats : \NN \to \Stream(\NN)$ is the unique solution of the equation system
+
+	We wish to define $h,t : \NN\to \NN$ such that the following diagram commutes:
+	\begin{center}
+	\begin{tikzcd}
+	\NN \arrow[rr, "{\langle h, t \rangle}"] \arrow[d, swap, "\nats"] && \NN \times \NN \arrow[d, "\Id \times \nats"] \\
+	\Stream(\NN) \arrow[rr, swap, "{\langle \head, \tail \rangle}"] && {\NN\times\Stream(\NN)}
+	\end{tikzcd}
+	\end{center}
+	
+	This means:
+	\begin{align}
+	\co{\nats}{\head} &= h \label{eqn:streams_nats_eq1} \\
+	\co{\nats}{\tail} &= \co{t}{\nats} \label{eqn:streams_nats_eq2} 
+	\end{align}
+	
+	By definition of $\nats$, \cref{eqn:streams_nats_eq1} means
+	\[
+	\forall n : \NN: n = \head(\nats(n)) = h(n),
+	\]
+	and \cref{eqn:streams_nats_eq2} means
+	\[
+	\forall n : \nats(n+1) = \tail(\nats(n)) = \nats(t(n)).
+	\]
+	Hence, we define (as candidates)
+	\[
+	h = \Id[\NN], \quad t = \Succ.
+	\]
+	By construction, we have that \cref{eqn:streams_nats_eq1} and \cref{eqn:streams_nats_eq2} indeed holds for $h := \Id[\NN]$ and $t := \Succ$, which shows that the sought function $\nats : \NN \to \Stream(\NN)$ is the unique solution of the equation system
   \begin{align*}
     \co {\nats} \head  &= \Id
     \\
     \co {\nats} \tail &= \co \Succ {\nats}
-  \end{align*}
+  \end{align*}  
+  
 % head ◦ nats = id
 % tail ◦ nats
 % = nats ◦ succ,
-  and is thus can be defined as the anamorphism $\anam{ \langle \Id, \Succ \rangle }$.
-  Draw a diagram to convince yourself that this is correct.
+  and thus can be defined as the anamorphism $\anam{ \langle \Id, \Succ \rangle }$.
+  %Draw a diagram to convince yourself that this is correct.
 \end{solution}
 
 \begin{solution}[\cref{exer:zip}]\label{sol:zip}
-  The sought function $\zip : \Stream(A) \times \Stream(B) \to \Stream(A\times B)$ is the unique solution to the equation system
+
+We wish to define $h : \Stream(A)\times\Stream(B)\to A\times B$ and $t: \Stream(A)\times\Stream(B)\to \Stream(A)\times \Stream(B)$ such that the following diagram commutes:
+	\begin{center}
+	\begin{tikzcd}
+	\Stream(A)\times \Stream(B)
+		\arrow[rr, "{\langle h, t \rangle}"] 
+		\arrow[d, swap, "\zip"] 
+	&& 
+	A\times B\times \Stream(A)\times \Stream(B)
+		\arrow[d, "\Id \times \zip"] \\
+	\Stream(A\times B) 
+		\arrow[rr, swap, "{\langle \head, \tail \rangle}"] 
+	&& 
+	{\Stream(A\times B)}
+	\end{tikzcd}
+	\end{center}
+	
+	This means:
+	\begin{align}
+	\co{\zip}{\head} &= h \label{eqn:streams_zip_eq1} \\
+	\co{\zip}{\tail} &= \co{t}{\zip} \label{eqn:streams_zip_eq2} 
+	\end{align}
+	
+	By definition of $\zip$, \cref{eqn:streams_zip_eq1} means
+	\[
+	\forall as : \Stream(A), bs : \Stream(B): (\head(as),\head(bs)) = \head(\zip(as,bs)) = h(as,bs),
+	\]
+	and \cref{eqn:streams_zip_eq2} means
+	\[
+	\forall as : \Stream(A), bs : \Stream(B): (\tail(as),\tail(bs)) = \tail(\zip(as,bs)) = h(as,bs),
+	\]
+	Hence, we define (as candidates)
+	\[
+	h = \head\times\head, \quad t = \tail\times\tail.
+	\]
+	By construction, we have that \cref{eqn:streams_zip_eq1} and \cref{eqn:streams_zip_eq2} indeed holds for $h := \head\times\head$ and $t := \tail\times\tail$, 
+
+  which shows that the sought function $\zip : \Stream(A) \times \Stream(B) \to \Stream(A\times B)$ is the unique solution to the equation system
   \begin{align*}
-    \co \zip \head = \co {(\Out \times \Out)}{(\projl \times \projl)}
+    \co \zip \head = \head\times\head
     \\
-    \co \zip \tail = \co{(\Out \times \Out)} {\co {(\projr \times \projr)}{\zip}}
+    \co \zip \tail = \co{(\tail\times\tail)}{\zip}
   \end{align*}
-  This function can, therefore, be defined as $\anam{ \co{(\Out \times \Out)} {\langle \projl \times \projl, \projr \times \projr \rangle} }$.
-  Draw a diagram to convince yourself that this is correct.
+  This function can, therefore, be defined as $\anam{ {\langle \head \times \head, \tail \times \tail \rangle} }$.
+  %Draw a diagram to convince yourself that this is correct.
 \end{solution}
 
 
