@@ -390,8 +390,22 @@ Compare it to a definition of a function $f : \List(A) \to X$ by pattern matchin
   Show that |(+1) . sum = fold (+) 1|, by showing that |(+1) . sum| makes Diagram~\ref{eq:initial-f-alg} of \cref{dfn:initial-alg} commute.
 \end{exer}
 
+\begin{exer}
+  An exercise about (the limits of) representing functions as catamorphisms (or rewriting functions using `fold`):
+  \begin{enumerate}
+    \item We can represent numbers as big-endian binary numbers, in the set $ \List(\{0, 1\}) $: the lists with elements in the set $ \{0, 1 \} $. For example, $ 13 $ becomes $ [1, 1, 0, 1] $, which we represent as |(cons 1 (cons 1 (cons 0 (cons 1 nil))))|. We define the function $ \texttt{bin2int}: \List(\{0, 1\}) \to \NN $, that converts big-endian binary representations to positive integers. For example, |(bin2int (cons 1 (cons 0 nil))) = 2| and |(bin2int (cons 1 (cons 1 (cons 0 (cons 1 nil))))) = 13|.
+    
+      Show that we can give |bin2int| as a catamorphism. i.e. with $ F $ the functor for which $ \List(\{0, 1\}) $ is an initial algebra, show that there exists an $ F $-algebra $ (\NN, f) $ such that $ \catam f = \texttt{bin2int} $.
 
+    \item We can also represent a number as a little-endian binary number. Then 13 becomes $ [1, 0, 1, 1] $, which we represent as |(cons 1 (cons 0 (cons 1 (cons 1 nil))))|. We define the function $ \texttt{bin2int2}: \List(\{0, 1\}) \to \NN $, that converts little-endian binary representations back to positive integers.
+    
+      Why can't we give |bin2int2| as a catamorphism?
 
+      \textit{(Hint: how would such a catamorphism calculate the values for $ [1] $, $ [0, 1] $ and $ [0, 0, 1] $?)}
+
+    \item Show that there exists an $ F $-algebra $ (\NN \times \NN, f) $ such that $ \projl \circ \catam{f} = \texttt{bin2int2} $, with $ \projl $ the projection on the first coordinate.
+  \end{enumerate}
+\end{exer}
 
 \begin{exer}\label{exer:initialalg_for_btree} Let $A$ be a set and define $F$ to be the functor induced by 
 \[
