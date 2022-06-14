@@ -1082,7 +1082,7 @@ We wish to define $h : \Stream(A)\times\Stream(B)\to A\times B$ and $t: \Stream(
 	\]
 	and \cref{eqn:streams_zip_eq2} means
 	\[
-	\forall as : \Stream(A), bs : \Stream(B): (\tail(as),\tail(bs)) = \tail(\zip(as,bs)) = h(as,bs),
+	\forall as : \Stream(A), bs : \Stream(B): \zip (\tail(as),\tail(bs)) = \tail(\zip(as,bs)) = \zip (t(as,bs)).
 	\]
 	Hence, we define (as candidates)
 	\[
