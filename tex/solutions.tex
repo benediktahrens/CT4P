@@ -688,7 +688,46 @@ Hence, both sides are equal.
 \end{enumerate}
 \end{solution}
 
+\begin{solution}[\cref{exer:kleisli_triple_familiesofelements}]\label{sol:kleisli_triple_familiesofelements}
+For each set $X\in\Ob \SET$, we define:
+\[
+\eta_X : X \to (100 X) : x\mapsto (\lambda ?, x).
+\]
+For each function $f\in\CHom{\Ob \SET}{X}{R\to Y}$, we define:
+\begin{align*}
+f^{*} : (R\to X) \to (R\to Y) : g \mapsto \lambda r, f(g(r))(r).
+\end{align*}
+Notice that this is indeed well-typed: Let $g : R\to X$ and $r\in R$. Then $g(r)\in X$, therefore, $f(g(r)) : R\to Y$ and consequently $f(g(r))(r)\in Y$.
 
+We now show that this data satisfies the properties of a Kleisli triple:
+\begin{enumerate}
+\item For each set $X$, we have to show $\eta_X^{*} = \Id[R\to X]$. Let $r\in R$ and $g\in R\to X$. The claim then follows by the following computation (using functional extensionality):
+\[
+\eta_X^{*}(g)(r) = \eta_X(g(r))(r) = (\lambda ?, g(r))(r) = g(r).
+\]
+\item For each $x\in X$ and $r\in R$, we have to show $\co{\eta_X}{f^{*}} = f$. The claim then follows by the following computation (using functional extensionality):
+\[
+f^{*}(\eta_X(x))(r) = f^{*}(\lambda ?,x)(r) = \left(\lambda r', f((\lambda ?, x)(r'))(r')\right)(r) = f((\lambda ?,x)(r))(r) = f(x)(r).
+\]
+\item Let $f: X\to (R\to Y)$ and $g: Y\to (R\to Z)$. We have to show, by function extensionality, that for any $\phi\in R\to X$, we have 
+\[
+(\co{f}{g^{*}})^{*}(\phi) = g^{*}(f^{*}(\phi)).
+\]
+This indeed follows, yet again by functional extensionality. Let $r\in R$. We calculate both the left and right-hand side:
+\begin{align*}
+LHS =& (\co{f}{g^{*}})^{*}(\phi)(r)\\ 
+	=& \co{g^{*}}{f}(\phi(r))(r)\\ 
+	=& g^{*}\left(f(\phi(r))\right)(r)\\ 
+	=& g\left(f(\phi(r))(r)\right)(r).
+\end{align*}
+\begin{align*}
+RHS =& g^{*}(f^{*}(\phi))(r)\\ 
+	=& g^{*}\left(\lambda s, f(\phi(s))(s)\right)(r)\\
+	=& g( f(\phi(r))(r) )(r).
+\end{align*}
+Thus, the left and right hand sides compute to the same term, hence they are equal.
+\end{enumerate}
+\end{solution}
 
 
 \begin{solution}[\cref{exer:initial_pointset}]\label{sol:initial_pointset}
