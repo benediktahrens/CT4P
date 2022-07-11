@@ -691,7 +691,7 @@ Hence, both sides are equal.
 \begin{solution}[\cref{exer:kleisli_triple_familiesofelements}]\label{sol:kleisli_triple_familiesofelements}
 For each set $X\in\Ob \SET$, we define:
 \[
-\eta_X : X \to (100 X) : x\mapsto (\lambda ?, x).
+\eta_X : X \to (R \to X) : x\mapsto (\lambda \_, x).
 \]
 For each function $f\in\CHom{\Ob \SET}{X}{R\to Y}$, we define:
 \begin{align*}
@@ -703,11 +703,11 @@ We now show that this data satisfies the properties of a Kleisli triple:
 \begin{enumerate}
 \item For each set $X$, we have to show $\eta_X^{*} = \Id[R\to X]$. Let $r\in R$ and $g\in R\to X$. The claim then follows by the following computation (using functional extensionality):
 \[
-\eta_X^{*}(g)(r) = \eta_X(g(r))(r) = (\lambda ?, g(r))(r) = g(r).
+\eta_X^{*}(g)(r) = \eta_X(g(r))(r) = (\lambda \_, g(r))(r) = g(r).
 \]
 \item For each $x\in X$ and $r\in R$, we have to show $\co{\eta_X}{f^{*}} = f$. The claim then follows by the following computation (using functional extensionality):
 \[
-f^{*}(\eta_X(x))(r) = f^{*}(\lambda ?,x)(r) = \left(\lambda r', f((\lambda ?, x)(r'))(r')\right)(r) = f((\lambda ?,x)(r))(r) = f(x)(r).
+f^{*}(\eta_X(x))(r) = f^{*}(\lambda \_,x)(r) = \left(\lambda r', f((\lambda \_, x)(r'))(r')\right)(r) = f((\lambda \_,x)(r))(r) = f(x)(r).
 \]
 \item Let $f: X\to (R\to Y)$ and $g: Y\to (R\to Z)$. We have to show, by function extensionality, that for any $\phi\in R\to X$, we have 
 \[
