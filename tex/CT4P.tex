@@ -14,9 +14,9 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\onlydraft}[1]{} % DON'T CHANGE THIS LINE
+%\newcommand{\onlydraft}[1]{} % DON'T CHANGE THIS LINE
 
-\renewcommand{\onlydraft}[1]{#1}  % Toggle this line to show/hide todo-notes, table of contents, etc.
+%\renewcommand{\onlydraft}[1]{#1}  % Toggle this line to show/hide todo-notes, table of contents, etc.
 
 
 
@@ -25,11 +25,11 @@
 \newcommand{\plan}[1]{}
 \newcommand{\BA}[1]{}
 \newcommand{\KW}[1]{}
-\onlydraft{
-   \renewcommand{\plan}[1]{{\color{blue}{#1}}\PackageWarning{TODO}{Plan: #1}}
-   \renewcommand{\BA}[1]{\todo[color=orange!30]{BA: #1} \PackageWarning{TODO}{BA: #1}}
-   \renewcommand{\KW}[1]{\todo[color=green!30]{KW: #1}\PackageWarning{TODO}{KW: #1}}
-}
+% \onlydraft{
+%    \renewcommand{\plan}[1]{{\color{blue}{#1}}\PackageWarning{TODO}{Plan: #1}}
+%    \renewcommand{\BA}[1]{\todo[color=orange!30]{BA: #1} \PackageWarning{TODO}{BA: #1}}
+%    \renewcommand{\KW}[1]{\todo[color=green!30]{KW: #1}\PackageWarning{TODO}{KW: #1}}
+% }
 
 \newcommand{\issue}[1]{\href{https://github.com/benediktahrens/CT4P/issues/#1}{Issue #1}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1683,7 +1683,7 @@ then we can fix some $x$ such that $P(x)$ holds.
 \end{exer}
 
 
-\onlydraft{\input{adjunctions}}
+\input{adjunctions}
 
 \input{monads}
 
@@ -1694,9 +1694,9 @@ then we can fix some $x$ such that $P(x)$ holds.
 
 \appendix
 
-\onlydraft{\input{forget-free}}
+\input{forget-free}
 
-\onlydraft{\input{contravariant}}
+\input{contravariant}
 
 \printbibliography
 
