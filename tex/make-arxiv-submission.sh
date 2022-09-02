@@ -13,7 +13,6 @@ declare -a aux_files=("data.tex"
 		      "contravariant.tex"
 		      "adjunctions.tex"
 		      "forget-free.tex"
-		      "cat-of-cats.tex"
 		     )
 	 
 
