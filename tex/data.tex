@@ -385,6 +385,15 @@ Compare it to a definition of a function $f : \List(A) \to X$ by pattern matchin
   Hint: a systematic approach to reformulating functions on lists defined by explicit recursion in terms of |fold| is described in \cite[\S3.3]{DBLP:journals/jfp/Hutton99}.
 \end{exer}
 
+\begin{exer}[See also \cite{DBLP:journals/scp/Malcolm90}]
+  Consider the function |(++) :: [a] →  [a] →  [a]| defined in \cref{exer:list-functions-as-fold},
+  and |l :: [a]|.
+  \begin{enumerate}
+  \item Show that |nil ++ l = l|.
+    
+  \item Show that |l ++ nil = l|.
+  \end{enumerate}
+\end{exer}
 
 \begin{exer}[{\cite[\S3.1]{DBLP:journals/jfp/Hutton99}}]
   Show that |(+1) . sum = fold (+) 1|, by showing that |(+1) . sum| makes Diagram~\ref{eq:initial-f-alg} of \cref{dfn:initial-alg} commute.
@@ -449,8 +458,13 @@ We also write $(+1)$ for $\Succ$.
 \begin{reading*}
   The content of this section is very much inspired by \cite[\S3.2]{DBLP:journals/jfp/Hutton99}.
   You are strongly encouraged to read that section before reading the present section.
-  In this section, we show how 
 \end{reading*}
+
+\begin{exer}[See also \cite{DBLP:journals/scp/Malcolm90}]
+  Consider the function |(++) :: [a] →  [a] →  [a]| defined in \cref{exer:list-functions-as-fold}.
+  Show that |(l ++ m) ++ n = l ++ (m ++ n)| for any |l, m, n :: [a]|.
+\end{exer}
+
 
 \begin{exer}[{\cite[\S3.2]{DBLP:journals/jfp/Hutton99}}]
   Show that |(+1) . sum = fold (+) 1|, by using the fusion property of \cref{exer:fusion-property}.
@@ -509,6 +523,7 @@ We also write $(+1)$ for $\Succ$.
   While \emph{primitive recursive} functions can always be expressed as a catamorphism via tupling (see, e.g., \cite[\S4]{DBLP:journals/jfp/Hutton99} and \cite[\S3.1]{vene_phd}), it is more natural specify them via a slightly more sophisticated universal property, explained in detail in Vene's dissertation~\cite[Chapter~3]{vene_phd}.
 
   The interested reader might also study the tutorial by Fokkinga~\cite{Fokkinga_homo-cata} or the paper by Meijer et al.~\cite{DBLP:conf/fpca/MeijerFP91}.
+  The paper \cite{DBLP:journals/scp/Malcolm90} by Malcolm contains more examples.
   
   A guide to further literature on recursion operators is given in \cite[\S6]{DBLP:journals/jfp/Hutton99}.
 \end{reading*}
@@ -519,6 +534,8 @@ We also write $(+1)$ for $\Succ$.
 \begin{reading*}
   We only give a brief introduction to (terminal) coalgebras in this section.
   A more systematic exploration of the topic is given in~\cite{DBLP:conf/fpca/MeijerFP91}.
+
+  The paper \cite{DBLP:journals/scp/Malcolm90} by Malcolm contains further examples.
 \end{reading*}
 
 
