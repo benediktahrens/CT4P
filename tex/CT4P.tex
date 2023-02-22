@@ -151,6 +151,7 @@ literate={→ }{\ARROW}1
 \Crefname{exer}{Exercises}{Exercises}
 \newtheorem{app}[thm]{Application}
 \newtheorem{intu}[thm]{Intuition}
+\newtheorem{explanation}[thm]{Explanation}
 
 \newtheorem{nota}[thm]{Notation}
 \newtheorem{proposal}[thm]{Proposal}
@@ -975,7 +976,16 @@ x \arrow[r] & y
 
 \section{Universal Properties}\label{sec:universal}
 
-In this section, we discuss special objects in a category. 
+In category theory, we study objects of a category by studying the ``interactions'' they have with other objects in the category.
+What does this mean?
+The only interactions we know between objects are the morphisms of the category.
+Given an object of a category, we can ask what the morphisms out of this object, and into this object, are.
+More generally, we can ask what the morphisms out of, or into, an object are that make some given diagrams commute.
+We usually are interested in objects such that there exists a unique morphism out of it, or into it, such that a given diagram commutes.
+We say that this object satisfies a ``universal property''.
+
+This description is very vague and abstract; it will hopefully be clearer once we have looked at some specific universal properties.
+The first universal property is that of \emph{initiality}.
 
 \begin{reading*}
   On initial and terminal objects, see also \cite[\S 2.7.16]{barr-wells} and \cite[p. 48ff]{leinster}.
@@ -990,11 +1000,25 @@ In this section, we discuss special objects in a category.
 \subsection{Initial Objects}
 \label{sec:initial-objects}
 
-
+We say that an object of a category $\CC$ is \emph{initial} if it has a unique morphism to any object in the category:
 
 \begin{dfn}
   Let $\CC$ be a category. An object $A \in \Ob{\CC}$ is \textbf{initial} if there is exactly one morphism from $A$ to any object $B \in \Ob{\CC}$.
 \end{dfn}
+
+\begin{explanation}[about \textbf{Unique Existence}]
+  When you need to show that there exists a unique thing with some property, there are two things to prove:
+  \begin{description}
+  \item[Existence] You need to construct a thing and show that it has the desired property.
+  \item[Uniqueness] You need to show that any (abstract) thing that has the desired property is equal to the thing you have constructed. Equivalently, you can show that any two abstract things with the desired property are equal.
+  \end{description}
+\end{explanation}
+
+
+We look at some specific categories, and try to identify initial objects in them.
+These examples might seem a tad boring to you;
+indeed, in ``simple'' categories, initial objects are usually quite simple as well.
+However, in more complicated categories---that is, in categories where the objects and morphisms are complicated---an initial object can be very interesting; see, for instance, \cref{sec:initial-algs}.
 
 \begin{exer}
   Does the category $\bullet$ have an initial object?
