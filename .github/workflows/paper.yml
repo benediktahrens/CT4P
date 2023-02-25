@@ -15,7 +15,8 @@ jobs:
       - name: Compile CT4P.tex
         uses: xu-cheng/latex-action@master
         with:
-          root_file: tex/CT4P.tex
+          working_directory: tex/
+          root_file: CT4P.tex
       - name: Upload CT4P.pdf
         uses: actions/upload-artifact@v3
         with:
