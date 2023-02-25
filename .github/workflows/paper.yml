@@ -21,4 +21,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: paper
-          path: tex/build/CT4P.pdf
+          path: tex/CT4P.pdf
