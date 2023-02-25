@@ -1,0 +1,23 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Compile main.tex
+        uses: xu-cheng/latex-action@master
+        with:
+          root_file: tex/CT4P.tex
+      - name: Upload CT4P.pdf
+        uses: actions/upload-artifact@v3
+        with:
+          name: paper
+          path: build/CT4P.pdf
