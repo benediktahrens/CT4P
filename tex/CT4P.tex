@@ -1445,7 +1445,7 @@ Since this holds for every such list, we indeed have that the composition is pre
 \end{exer}
 
 
-\begin{exer}\label{ex:poset_functors} Let $(X,\leq_X)$ and $(Y,\leq_Y)$ be posets. Can you characterize/describe the functors from $\POS(X,\leq_X)$ to $\POS(Y,\leq_Y)$  ? Before writing out the definitions, what would you expect the answer to be?
+\begin{exer}\label{ex:poset_functors} Let $(X,\leq_X)$ and $(Y,\leq_Y)$ be preordered sets. Can you characterize/describe the functors from $\PRE(X,\leq_X)$ to $\PRE(Y,\leq_Y)$  ? Before writing out the definitions, what would you expect the answer to be?
 \end{exer}
 
 \begin{exer}
@@ -1577,6 +1577,11 @@ The evaluation defines a natural transformation $\NatTrans{ev}{F}{\Id[\SET]}$ as
 ev_Y : \SET(X,Y) \times X \to Y : (f,x) \mapsto f(x).
 \]
 Show that this indeed satisfies the naturality condition.
+\end{exa}
+
+\begin{exa}
+  Can you define a natural transformation that counts the occurrences of elements from $X$ in a list?
+  That is, for any set $X$, we would like to have a function of type $\List(X) \to X \to \NN$.
 \end{exa}
 
 \subsection{Functor categories}
