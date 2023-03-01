@@ -1579,10 +1579,14 @@ ev_Y : \SET(X,Y) \times X \to Y : (f,x) \mapsto f(x).
 Show that this indeed satisfies the naturality condition.
 \end{exa}
 
-\begin{exa}
+\begin{exer}
+  Given two preordered sets $(X,\leq_X)$ and $(Y, \leq_Y)$ and two functors $f, g : \PRE(X,\leq_X) \to \PRE(Y,\leq_Y)$ between their associated categories, what is a natural transformation from $f$ to $g$?
+\end{exer}
+
+\begin{exer}
   Can you define a natural transformation that counts the occurrences of elements from $X$ in a list?
   That is, for any set $X$, we would like to have a function of type $\List(X) \to X \to \NN$.
-\end{exa}
+\end{exer}
 
 \subsection{Functor categories}
 \begin{dfn}\label{dfn:nattrans_id} Let $F:\CC\to\DD$ be a functor. The \textbf{identity natural transformation} $\Id[F]$ on $F$ is given by the following data:
