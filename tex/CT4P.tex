@@ -1556,12 +1556,12 @@ F(Y) \arrow[r,swap, "\alpha_Y"] & G(Y)
 Moreover, we call $\alpha$ a \textbf{natural isomorphism} if for each $X\in\Ob{\CC}$, we have that $\alpha_X$ is an isomorphism in $\DD$.
 \end{dfn}
 
-\begin{nota} If $F,G:\CC\to\DD$ are functors. A natural transformation $\alpha$ from $F$ to $G$, is denoted as $\NatTrans{\alpha}{F}{G}$ or 
+\begin{nota} If $F,G:\CC\to\DD$ are functors, a natural transformation $\alpha$ from $F$ to $G$ is denoted as $\NatTrans{\alpha}{F}{G}$ or 
 \begin{center}
 \begin{tikzcd}[column sep=huge]
 \CC
   \arrow[bend left=50]{r}[name=U,label=above:$\scriptstyle F$]{}
-  \arrow[bend right=50]{r}[name=D,label=below:$\scriptstyle U$]{} &
+  \arrow[bend right=50]{r}[name=D,label=below:$\scriptstyle G$]{} &
 \DD
   \arrow[shorten <=5pt, Rightarrow,to path={(U) -- node[label=right:$\alpha$] {} (D)}]{}
 \end{tikzcd}
