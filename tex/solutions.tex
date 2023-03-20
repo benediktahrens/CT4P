@@ -971,6 +971,21 @@ This category can not have a terminal object: Suppose it has a terminal object $
 % \]
 % induces a functor.
 
+\begin{solution}[\cref{exer:list-concat-nil}]\label{sol:list-concat-nil}
+  We assume that list concatenation |(++) :: [a] -> [a] -> [a]| was defined by recursion on the \emph{first} argument.
+  This means that, for any |l :: [a]|, we define |(++ l) :: [a] -> [a]| as |(++ l) = fold cons l|.
+
+  The equation |nil ++ l = l| then follows by definition: |nil ++ l = (fold cons l) nil = l|.
+
+  Let's show |l ++ nil = l|.
+  We have that |l ++ nil = (fold cons nil) l| by the definition of |(++ nil)|.
+  We know that $[\cons,\nil] = \In$, the initial algebra for the list functor.
+  Thus, by \cref{exer:in_catamorphism_id}, |(fold cons nil) = id| is the identity function on lists.
+  We thus have |l ++ nil = (fold cons nil) l = id l = l|.
+
+  When |(++) : [a] -> [a] -> [a]| is defined by recursion on the \emph{second} argument, both equations hold as well, with their proofs swapped compared to those given above.
+\end{solution}
+
 
 \begin{solution}[\cref{exer:initialalg_for_bifunctor_functor}]\label{sol:initialalg_for_bifunctor_functor}
 	Let $F:\CC\to\CC\to\CC$ be a bifunctor such that for any object $A\in\CC$, the initial algebra $ (\Initalg{F_A}, \In_A) $ for the functor induced by 
