@@ -701,6 +701,16 @@ where $\star$ is the unique element of $1$.
   Define, as an anamorphism, the function $\zip : \Stream(A) \times \Stream(B) \to \Stream(A \times B)$ that zips the argument streams together.
 \end{exer}
 
+
+\begin{exer}
+  For a fixed set $A$, consider the functor given on objects by $F(X) := 1 + A \times X$.
+  Its terminal $F$-coalgebra is the datatype $\Colist(A)$ of potentially infinite lists over elements in $A$, with suitable destructors $\head$ and $\tail$ and an ``exception'' in case the colist is empty.
+
+  Define a function $\Colist(A) \to  \mathbb{N} + \{\infty\}$ counting the elements in a colist.
+  
+\end{exer}
+
+
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "CT4P"
