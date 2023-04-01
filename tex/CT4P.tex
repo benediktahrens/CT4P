@@ -1739,6 +1739,17 @@ then we can fix some $x$ such that $P(x)$ holds.
 
 We have given a brief, and necessarily incomplete, introduction to category theory.
 The choice of topics was guided by the applications to programming we considered.
+ Here below, we list a few avenues for further exploration; this list is curated with a view towards pedagogy rather than scientific completeness.
+\begin{itemize}
+\item Altenkirch and Reus show how the lambda calculus forms a monad.
+  (This can be generalized to other languages, including languages with simple types, see, e.g., \cite{DBLP:journals/jfrea/AhrensZ11}.)
+\item For \emph{nested} datatypes, the iteration principle of \cref{sec:datatypes-as-initial} is often not enough; Bird and Paterson~\cite{DBLP:journals/fac/BirdP99} develop a \emph{generalized} fold operator for nested datatypes.
+\item Some functions cannot straightforwardly defined using the simple iteration scheme of \cref{sec:datatypes-as-initial}; for instance, the factorial function does not adhere to the required pattern.
+  Vene~\cite{vene_phd} studies more general recursion schemes beyond the iteration (catamorphisms) of~\cref{sec:datatypes-as-initial}.
+\item Harper~\cite{DBLP:phd/ethos/Harper13} develops a unifying framework for shortcut fusion.
+
+\end{itemize}
+
 
 \appendix
 
