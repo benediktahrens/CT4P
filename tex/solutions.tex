@@ -102,7 +102,7 @@ That this data satisfies the properties of a category, follows because $\CC$ is 
 \co{\op{\Id}}{\op{f}} = \op{(\co{f}{\Id})} = \op{f},
 \]
 where the first equality holds by definition of the \textit{opposite composition} and the second holds by the right unit law of $\CC$.\\
-The right unit law holds analoguously by the left unit law of $\CC$.
+The right unit law holds analogously by the left unit law of $\CC$.
 \item That the associativity holds follows by the associativity of $\CC$ as follows:
 \begin{eqnarray*}
 \co{\op{h}}{(\co{\op g}{\op f})} &=& \co{\op{h}}{\op{(\co{f}{g})}}\\
@@ -156,7 +156,7 @@ We define $h := \co{g^{-1}}{f^{-1}}$. The left equality then holds by the follow
 	=& \co{f^{-1}}{f} &\text{ by unit law,}\\
 	=& \Id[a] &\text{ since $f^{-1}$ inverse of $f$.}
 \end{eqnarray*}
-The right equality holds analoguously.
+The right equality holds analogously.
 \end{solution}
 
 
@@ -265,7 +265,7 @@ Since $f$ is injective, it suffices to show
 \forall z\in Z: f(g(z))=f(h(z)).
 \]
 But this holds by the condition of $g$ and $h$. Hence, $f$ is indeed a monomorphism.
-\item Assume $f$ is a monomorphism. We have to show that for each $x_1,x_2\in X$, we have $f(x_1) = f(x_2)$. Let $\mathbf{1} = \{\star\}$ be a singleton set and define
+\item Assume $f$ is a monomorphism. We have to show that for all $x_1,x_2\in X$, $f(x_1) = f(x_2)$ implies $x_1 = x_2$. Let $\mathbf{1} = \{\star\}$ be a singleton set and define
 \[
 g_1 : \mathbf{1}\to X: \star\mapsto x_1,\quad  g_2 : \mathbf{1}\to X: \star\mapsto x_2, 
 \]
@@ -274,13 +274,13 @@ Since $f(x_1)=f(x_2)$, we have $\co{g_1}{f} = \co{g_2}{f}$. But $f$ is a monomor
 \end{solution}
 
 \begin{solution}[\cref{exer:sections_in_set_injective}]\label{sol:sections_in_set_injective}
-Let $f:X\to Y$ be a section with a retraction $h:Y\to X$, i.e. $\co{f}{h} = \Id[Y]$. By \cref{ex:mono-inj}, it suffices to show that $f$ is a monomorphism. Let  $g_1, g_2 : Z \to X$ be morphisms in $\SET$ such that $\co{g_1}{f} = \co{g_2}{f}$. We have to show $g_1=g_2,$, this follows from the following computation:
+Let $f:X\to Y$ be a section with a retraction $h:Y\to X$, i.e. $\co{f}{h} = \Id[Y]$. By \cref{ex:mono-inj}, it suffices to show that $f$ is a monomorphism. Let  $g_1, g_2 : Z \to X$ be morphisms in $\SET$ such that $\co{g_1}{f} = \co{g_2}{f}$. We have to show $g_1=g_2$, which follows from the following computation:
 \begin{eqnarray*}
 g_1 =& \co{g_1}{\Id[Y]} & \text{ by unit law},\\ 
-	=& \co{g_1}{\co{f}{h}} & \text{ since $f$ section},\\ 
-	=& \co{\co{g_1}{f}}{h} & \text{ by associativity},\\
-	=&  \co{\co{g_2}{f}}{h} & \text{ by assumption},\\
-	=& \co{g_2}{\co{f}{h}} & \text{ by associativity},\\ 
+	=& \co{g_1}{(\co{f}{h})} & \text{ since $f$ section},\\ 
+	=& \co{(\co{g_1}{f})}{h} & \text{ by associativity},\\
+	=&  \co{(\co{g_2}{f})}{h} & \text{ by assumption},\\
+	=& \co{g_2}{(\co{f}{h})} & \text{ by associativity},\\ 
 	=& \co{g_2}{\Id[Y]} & \text{ since $f$ section},\\
 	=& g_2 & \text{ by unit law}.
 \end{eqnarray*}
@@ -290,7 +290,7 @@ Notice that this proof shows that in an arbitrary category, a section is always 
 \begin{solution}[\cref{exer:iso_to_monoepi}]\label{sol:iso_to_monoepi}
 Let $f : a\cong b$ be an isomorphism with inverse $f^{-1}$. There are multiple proofs which one can give, an abstract one (which is \textit{indirect} in the sense that we use another exercise/lemma) and a more \textit{direct} one.
 \begin{itemize}
-\item \textbf{Indirect proof:} By the solution of \ref{exer:sections_in_set_injective}, we know that any section (from a section-retraction pair) is a monomorphism. An analoguous argument shows that any retraction (section-retraction pair) is an epimorphism. Hence it suffices to show that $f$ is both a section and a retraction, but this is immediate because $\co{f}{f^{-1}} = \Id[a]$ and $\co{f^{-1}}{f} = \Id[b]$.
+\item \textbf{Indirect proof:} By the solution of \ref{exer:sections_in_set_injective}, we know that any section (from a section-retraction pair) is a monomorphism. An analogous argument shows that any retraction (section-retraction pair) is an epimorphism. Hence it suffices to show that $f$ is both a section and a retraction, but this is immediate because $\co{f}{f^{-1}} = \Id[a]$ and $\co{f^{-1}}{f} = \Id[b]$.
 \item \textbf{Direct proof:} We first show that $f$ is a monomorphism. Assume $g_1,g_2 : c\to a$ are morphisms such that $\co{g_1}{f} = \co{g_2}{f}$. We then have that $g_1 = g_2$ because 
 \begin{eqnarray*}
 g_1 = \co{g_1}{\Id[a]} =& \co{g_1}{(\co{f}{f^{-1}})} & \text{ since $f : a\cong b$},\\ 
@@ -300,7 +300,7 @@ g_1 = \co{g_1}{\Id[a]} =& \co{g_1}{(\co{f}{f^{-1}})} & \text{ since $f : a\cong 
 	=& \co{g_2}{\Id[a]} & \text{ since $f : a\cong b$} \\
 	=& g_2.
 \end{eqnarray*}
-That $f$ is also an epimorphism is analoguous, indeed: Assume $g_1,g_2 : b\to c$ are morphisms such that $\co{f}{g_1} = \co{f}{g_2}$. We then have that $g_1 = g_2$ because 
+That $f$ is also an epimorphism is analogous, indeed: Assume $g_1,g_2 : b\to c$ are morphisms such that $\co{f}{g_1} = \co{f}{g_2}$. We then have that $g_1 = g_2$ because 
 \begin{eqnarray*}
 g_1 = \co{\Id[b]}{g_1} =& \co{(\co{f^{-1}}{f})}{g_1} & \text{ since $f : a\cong b$},\\ 
 	=& \co{f^{-1}}{(\co{f}{g_1})} & \text{ by associativity}, \\ 
@@ -459,7 +459,7 @@ We do a pattern matching on $f(x)$ to show \cref{eqn:bind_distributes}:
 \[
 g^{*}(\nil + f^{*}(xs)) = g^{*}(f^{*}(xs)) = \nil + g^{*}(f^{*}(xs)) = g^{*}(\nil) + g^{*}(f^{*}(xs)),
 \]
-where the thirth equality holds by \cref{eq:list-bind-nil}.
+where the third equality holds by \cref{eq:list-bind-nil}.
 \item In case $f(x) = \cons(y,u)$, with $y\in Y$ and $u\in \List Y$, we have:
 \begin{eqnarray*}
 g^{*}(\cons(f(x),f^{*}(s)) =& g^{*}(\cons(\cons(y,u), f^{*}(xs))), \\
@@ -468,7 +468,7 @@ g^{*}(\cons(f(x),f^{*}(s)) =& g^{*}(\cons(\cons(y,u), f^{*}(xs))), \\
 	=& g(y) + g^{*}(u) + g^{*}(f^{*}(xs)),\\
 	=& g^{*}(\cons(y,u)) + g^{*}(f^{*}(xs)).
 \end{eqnarray*}
-where the second equality holds by definition of $\cons$, the thirth and fifth by definition of $g^{*}$ and the fourth by the induction hypothesis.
+where the second equality holds by definition of $\cons$, the third and fifth by definition of $g^{*}$ and the fourth by the induction hypothesis.
 
 \end{itemize}
 \end{itemize}
@@ -537,7 +537,7 @@ Hence, by the induction hypothesis, the both sides are equal.
 \label{sol:kleisli_triple_maybe}
 Before we continue with this exercise, we first fix some notation. Since $X+E$ is the disjoint union of $X$ and $E$, we have the canonical inclusions which we denote by
 \[ i^X_l : X\to X + E, \quad i^X_r : E\to X+E. \] 
-Hence, a function whose domain is $X+E$ is completely determined by specifiying where each $i^X_l(x)$ and each $i^X_r(e)$ are mapped to. \textit{Notice that this is precisely the notation and the universal property of the coproduct (in $\SET$)}.
+Hence, a function whose domain is $X+E$ is completely determined by specifying where each $i^X_l(x)$ and each $i^X_r(e)$ are mapped to. \textit{Notice that this is precisely the notation and the universal property of the coproduct (in $\SET$)}.
 
 For each set $X\in\Ob \SET$, we define:
 \[
@@ -668,7 +668,7 @@ The right-hand-side is given as:
 \[
 (\co{f}{g^{*}})^{*}(i) = \lambda j, i\left((\co{f}{g^{*}})(-)(j)\right)
 \]
-So to show that both sides are equal, it sufficies to show that for each $j$, we have 
+So to show that both sides are equal, it suffices to show that for each $j$, we have 
 \[
 f(-)\left(g(-)(j)\right) = (\co{f}{g^{*}})(-)(j).
 \]

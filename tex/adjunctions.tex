@@ -29,11 +29,11 @@ If $(F,G)$ is an adjoint pair, we call $F$ the \textbf{left adjoint} of $G$ and 
 \[
 - \times Y : \SET\to \SET: X\mapsto X\times Y,
 \]
-has a right adjoint which is given by the functor (induced by the following mapping on objects)
+has a right adjoint, which is given by the functor (induced by the following mapping on objects)
 \[
 \CHom{\SET}{Y}{-} : \SET\to\SET : X\mapsto \CHom{\SET}{Y}{X}.
 \]
-Is there an analoguous statement in the category $\LEAN$ instead of $\SET$?
+Is there an analogous statement in the category $\LEAN$ instead of $\SET$?
 \end{exer}
 
 \begin{thm} Let $(F,G)$ be a pair of functors $F : \CC\to\DD, G: \DD\to\CC$. The following statements are equivalent:
@@ -57,7 +57,7 @@ G(D) \arrow[r,"{\eta_{G(D)}}"] \arrow[rd,swap, "{\Id[G(D)]}"] & G(F(G(D))) \arro
 \end{enumerate}
 In case $(F,G)$ satisfies these (equivalent) conditions, we call $\eta$ the \textbf{unit of the adjunction} and $\epsilon$ the \textbf{counit of the adjunction}. The equalities in condition $2$ are called the \textbf{triangle identities}.
 \begin{proof}
-First assume that $(F,G)$ is an adjoint pair. We have to define the unit and counit and show that the triangle identities hold:
+First, assume that $(F,G)$ is an adjoint pair. We have to define the unit and counit and show that the triangle identities hold:
 \begin{itemize}
 \item \textbf{Unit}: For each $X\in\Ob{\CC}$, we should first define $\eta_X \in \CHom{\CC}{X}{G(F(X))}$. Since $F \dashv G$, we have a bijection
 \[
@@ -79,8 +79,8 @@ where the first and last equality hold by naturality of $\alpha$.
 \[
 \alpha^{-1}_{GY,Y} : \CHom{\CC}{GY}{GY}\to \CHom{\DD}{F(G(Y))}{Y}.
 \]
-That $\epsilon$ indeed forms a natural transformation is analoguous to the computation in \cref{eqn:unitnaturality_fromhomsetadj}.
-\item \textbf{Triangle identities}: Both the triangle identities are proved analoguously, hence we will only show the first triangle identity, i.e. $\Id[FX] = \co{F(\eta_X)}{\epsilon_{FX}}$. Unfolding the definition of $\epsilon$, this is equivalent to showing:
+That $\epsilon$ indeed forms a natural transformation is analogous to the computation in \cref{eqn:unitnaturality_fromhomsetadj}.
+\item \textbf{Triangle identities}: Both the triangle identities are proved analogously, hence we will only show the first triangle identity, i.e. $\Id[FX] = \co{F(\eta_X)}{\epsilon_{FX}}$. Unfolding the definition of $\epsilon$, this is equivalent to showing:
 \[
 \Id[FX] = \co{F(\eta_X)}{\alpha^{-1}_{GFX,FX}(\Id[GF(X)])}.
 \]
@@ -106,7 +106,7 @@ For the other direction, let $f\in \CHom{\CC}{X}{G(Y)}$. Define $\alpha^{-1}_{X,
 \[
 FX \xrightarrow{F(f)} F(G(Y)) \xrightarrow{\epsilon_Y} Y.
 \]
-That $\alpha$ and $\alpha^{-1}$ are inverses of eachother follows from the following computation:
+That $\alpha$ and $\alpha^{-1}$ are inverses of each other follows from the following computation:
 \begin{eqnarray*}
 \alpha(\alpha^{-1}(f)) = \alpha(\co{F(f)}{\epsilon_Y}) =& \co{\eta_X}{G(\co{F(f)}{\epsilon_Y})} &\text{ by definition, }\\
 	=& \co{\eta_X}{(\co{GF(f)}{G\epsilon_Y})} &\text{ by functoriality of $G$},\\
@@ -115,7 +115,7 @@ That $\alpha$ and $\alpha^{-1}$ are inverses of eachother follows from the follo
 	=& \co{f}{(\co{\eta_{GY}}{G\epsilon_Y})} &\text{ by associativity}\\
 	=& f &\text{by triangle identity}.
 \end{eqnarray*}
-The other equality is shown analoguous by using functoriality of $F$, naturality of $\epsilon$ and the other triangle identity.
+The other equality is shown analogous by using functoriality of $F$, naturality of $\epsilon$ and the other triangle identity.
 
 It remains to show the naturality of $\alpha$ in both $x$ and $y$ which is left to the reader as a good exercise on diagram chasing. %\KW{TODO: Give the proof of the naturality}
 \end{proof}
