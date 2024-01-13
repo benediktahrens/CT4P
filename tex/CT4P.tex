@@ -439,14 +439,14 @@ We say that such a square \textbf{commutes} if $\co{f_1}{g_1} = \co{f_2}{g_2}$.
 $$g \circ f : X\to Z: x\mapsto g(f(x)).$$
 \end{itemize}
 \end{exa}
-\begin{lemma} The data of $\SET$ satisfies the properties of a category, hence $\SET$ is indeed a category.
+\begin{lemma} The data of $\SET$ satisfies the properties of a category; hence $\SET$ is indeed a category.
 \begin{proof}
-We first show that the left unit law holds. Let $X,Y\in \mathbf{Set}$ be sets and $f\in \CHom \SET X Y$ a function. We have to show that $\Id[X] \Comp f = f$, hence it suffices to show that they pointwise equal which holds by the following calculation:
+We first show that the left unit law holds. Let $X,Y\in \mathbf{Set}$ be sets and $f\in \CHom \SET X Y$ a function. We have to show that $\Id[X] \Comp f = f$; hence it suffices to show that they are pointwise equal, which holds by the following calculation:
 \[
 \forall x\in X: (f\circ \Id[X])(x) = f\left(\Id[X](x)\right) = f(x),
 \]
 where the first (resp. second) equality holds by definition of the composition (resp. identity morphism).\\
-That the right unit law holds is analogous. To show that the associator law holds, let $X,Y,Z,W\in\mathbf{Set}$ and $f\in \CHom \SET X Y, g\in \CHom \SET Y Z$ and $h\in \CHom \SET Z W$. We have to show $h\circ (g\circ f) = (h\circ g)\circ f$, hence it suffices again to show that they are pointwise equal which holds by the following calculation:
+That the right unit law holds is analogous. To show that the associator law holds, let $X,Y,Z,W\in\mathbf{Set}$ and $f\in \CHom \SET X Y, g\in \CHom \SET Y Z$ and $h\in \CHom \SET Z W$. We have to show $h\circ (g\circ f) = (h\circ g)\circ f$; hence it suffices again to show that they are pointwise equal which holds by the following calculation:
 \begin{eqnarray*}
 \forall x\in X: \left(h\circ (g\circ f)\right)(x) &=& h\left((g\circ f)(x)\right), \\ 
 	&=& h(g(f(x))),\\ 
@@ -494,7 +494,7 @@ axiom funext_nondep : ∀ {A B : Type} (f g : A → B),
   We repeat the definitions of \cref{exa:lean-cat} in Haskell instead of Lean.
   Does this data satisfies the axioms of a category?
 
-  Due to Haskell allowing for the |undefined| value in each type, the situation is slighly more complicated; consider the following two functions:
+  Due to Haskell allowing for the |undefined| value in each type, the situation is slightly more complicated; consider the following two functions:
 \begin{lstlisting}
 undef1 :: a -> a
 undef1 = undefined
@@ -543,7 +543,7 @@ Recall that a \textit{preordered set} $(X,\leq)$ consists of a set $X$ together 
 \item The objects are the elements of $X$.
 \item Let $x,y \in X$ be elements. The hom-set $\Hom x y$ consists of a unique element if $x\leq y$ and is empty otherwise.
 \item  We need an identity morphism for each $x\in X$.
-  By reflexitivity (i.e., $x\leq x$), we have that $\Hom x x$ consists of a unique element, which we take to be the identity.
+  By reflexivity (i.e., $x\leq x$), we have that $\Hom x x$ consists of a unique element, which we take to be the identity.
 \item We need to define for each $x,y,z\in X$, a composition operator:
 \[
 \Hom y z \to \Hom x y \to \Hom x z.
@@ -554,7 +554,7 @@ But then, by transitivity (i.e. if $x\leq y$ and $y\leq z$, then $x\leq z$), we 
 %
 We are now going to show that the axioms of a category holds.
 To show the right unit law, we have to show that for each $x,y\in X$ and $f\in \Hom x y$, we have $\co{\Id[x]}{f} = f$.
-This indeed holds since every hom-set has a unique element, but both $\co{\Id[x]}{f}$ and $f$ live in the same hom-set, hence they must be equal.
+This indeed holds since every hom-set has a unique element, but both $\co{\Id[x]}{f}$ and $f$ live in the same hom-set; hence they must be equal.
 The proof that left unit law and associator law hold are analogous.
 \end{exa}
 
@@ -850,7 +850,7 @@ Show that the only isomorphisms in $\mathcal{G}$ are the identity morphisms (i.e
 
 
 \begin{dfn}[Section, Retraction]
-  A pair $(s,r)$ of morphisms $s : a \to b$ and $r : b \to a$ in $\CC$ is called a \textbf{section-retraction pair} if $\co{s}{r} = \Id[b]$.
+  A pair $(s,r)$ of morphisms $s : a \to b$ and $r : b \to a$ in $\CC$ is called a \textbf{section-retraction pair} if $\co{s}{r} = \Id[a]$.
 
   In such a case, we call $s$ a section and $r$ a retraction.
 \end{dfn}
@@ -1248,7 +1248,7 @@ However, in more complicated categories---that is, in categories where the objec
 A & Q \arrow[l, "q_l"]  \arrow[r,swap, "q_r"] & B
 \end{tikzcd}
 \]
-\item The composition and identity is inherented from the structure of $\CC$.
+\item The composition and identity are inherited from the structure of $\CC$.
 \end{itemize}
 \end{exer}
 
@@ -1613,7 +1613,7 @@ Show that this indeed satisfies the naturality condition.
 \item An object is a functor $F:\CC\to\DD$.
 \item A morphism from $F$ to $G$ is a natural transformation $\NatTrans{\alpha}{F}{G}$.
 \item The identity morphism on $F$ is given by the identity natural transformation $\Id[F]$ defined in \cref{dfn:nattrans_id}.
-\item The composition of $F$ and $G$ is given by the composition $\co{\alpha}{\beta}$ defined in \cref{dfn:nattrans_comp}.
+\item The composition of $\alpha$ and $\beta$ is given by the composition $\co{\alpha}{\beta}$ defined in \cref{dfn:nattrans_comp}.
 \end{itemize}
 \end{dfn}
 
@@ -1637,7 +1637,7 @@ Hint: Write the equality as a (not-known commutative) square.
 \end{exer}
 
 \subsection{Exercises}
-\begin{exer} Let $(M,m,e)$ be a monoid and let $\MON(M,m,e)$ be its corresponding category. Recall from \cref{ex:monoid_functors} that a functor from $\mathcal{M}$ to $\SET$ is a set $X$ together with an action of $M$ on $X$, i.e. a function $\mu: M\times X\to X$ such that 
+\begin{exer} Let $(M,m,e)$ be a monoid and let $\MON(M,m,e)$ be its corresponding category. Recall from \cref{ex:monoid_functors} that a functor from $\MON(M,m,e)$ to $\SET$ is a set $X$ together with an action of $M$ on $X$, i.e. a function $\mu: M\times X\to X$ such that 
 \[
 \forall x\in X: \mu(e,x) = x, \quad \forall n_1,n_2\in M, x\in X: \mu(n_1, \mu(n_2,x)) = \mu(m(n_1,n_2), x).
 \]
@@ -1651,7 +1651,7 @@ Characterize the natural transformations between $M$-sets.
 \subsection{Equivalence of categories}
 Recall that objects $X,Y\in\Ob{\CC}$ are isomorphic if there exist morphisms $f\in\CHom{C}{X}{Y}$ and $g\in\CHom{C}{Y}{X}$ such that $\co{f}{g} = \Id[X]$ and $\co{g}{f} = \Id[Y]$. So in particular we have the notion of an isomorphism in the category $\CAT$ of categories. Spelled out, this means categories $\CC$ and $\DD$ are isomorphic if there exist functors $F:\CC\to\DD$ and $G:\CC\to\DD$ such that $\co{F}{G}= \Id[\CC]$ and $\co{G}{F} = \Id[\DD]$.\\
 However, the following exercise shows that isomorphism of categories is not the correct notion of \textit{equivalence/sameness} between categories:\\
-Let $\FINSET$ be the category whose objects are given by finite sets and whose morphisms are given by functions\footnote{Notice that the objects of $\FINSET$ form a subset of the objects of $\SET$, but given any two finite sets $X,Y in \Ob{\FINSET}$, we have $\CHom{FINSET}{X}{Y}$ = $\CHom{SET}{X}{Y}$. We say in this case that $\FINSET$ is a (full) subcategory of $\SET$.}. That this is a category follows since $\SET$ is a category.\\
+Let $\FINSET$ be the category whose objects are given by finite sets and whose morphisms are given by functions\footnote{Notice that the objects of $\FINSET$ form a subset of the objects of $\SET$, but given any two finite sets $X,Y \in \Ob{\FINSET}$, we have $\CHom{\FINSET}{X}{Y}$ = $\CHom{\SET}{X}{Y}$. We say in this case that $\FINSET$ is a (full) subcategory of $\SET$.}. That this is a category follows since $\SET$ is a category.\\
 Let $\Catb{FinOrd}$ be the category whose objects are given by sets of the form 
 \[
 [n] := \left\{0,1,\cdots,n-1\right\},
@@ -1696,19 +1696,19 @@ In order to show that $U$ is not an isomorphism, one can use the following lemma
 \begin{exer} Show that $U$ is not an isomorphism, i.e. state which part of an isomorphism fails and give a concrete example that it fails.
 \end{exer}
 
-\begin{rem} So the problem with $U$ (in the sense that it is not an isomorphism) is that multiple (finite) sets are mapped to the same set. For this reason, a good notion of equivalence between categories should not be injective on objects. Also, which is not clear from this example, we should also weaken the condition of $F$ being surjective on objects. Instead, we need that $F$ is \textbf{essentially surjective on objects}:
+\begin{rem} So, the problem with $U$ (in the sense that it is not an isomorphism) is that multiple (finite) sets are mapped to the same set. For this reason, a good notion of equivalence between categories should not be injective on objects. Also, which is not clear from this example, we should also weaken the condition of $F$ being surjective on objects. Instead, we need that $F$ is \textbf{essentially surjective on objects}:
 \[
 \forall Y\in\Ob{\DD}: \exists X\in\Ob{\CC} : F(X) \cong Y.
 \]
 \end{rem}
-So motivated by the remark, we define:
+So, motivated by the remark, we define:
 \begin{dfn} Categories $\CC$ and $\DD$ are \textbf{equivalent} if there exists a pair of functors $(F:\CC\to\DD, G:\DD\to\CC)$ such that there exists natural isomorphisms 
 \[
 \co{F}{G} \to \Id[\CC], \quad \co{G}{F} \to \Id[\DD]
 \]
 \end{dfn}
 
-So although $U$ is not an isomorphism, it does induce an equivalence of categories:
+So, although $U$ is not an isomorphism, it does induce an equivalence of categories:
 \begin{exer} Show that $U$ induces an equivalence of categories.
 \end{exer}
 
@@ -1724,7 +1724,7 @@ The following exercise gives a characterization of a functor being an equivalenc
 \exists x: P(x),
 \]
 then we can fix some $x$ such that $P(x)$ holds.
-\begin{exer} Show that a functor $F:\CC\to\DD$ induces an equivalences of categories if and only if it is essentially surjective on objects and fully faithful.
+\begin{exer} Show that a functor $F:\CC\to\DD$ induces an equivalence of categories if and only if it is essentially surjective on objects and fully faithful.
 \end{exer}
 
 
@@ -1744,7 +1744,7 @@ The choice of topics was guided by the applications to programming we considered
 \item Altenkirch and Reus show how the lambda calculus forms a monad.
   (This can be generalized to other languages, including languages with simple types, see, e.g., \cite{DBLP:journals/jfrea/AhrensZ11}.)
 \item For \emph{nested} datatypes, the iteration principle of \cref{sec:datatypes-as-initial} is often not enough; Bird and Paterson~\cite{DBLP:journals/fac/BirdP99} develop a \emph{generalized} fold operator for nested datatypes.
-\item Some functions cannot straightforwardly defined using the simple iteration scheme of \cref{sec:datatypes-as-initial}; for instance, the factorial function does not adhere to the required pattern.
+\item Some functions cannot be straightforwardly defined using the simple iteration scheme of \cref{sec:datatypes-as-initial}; for instance, the factorial function does not adhere to the required pattern.
   Vene~\cite{vene_phd} studies more general recursion schemes beyond the iteration (catamorphisms) of~\cref{sec:datatypes-as-initial}.
 \item Harper~\cite{DBLP:phd/ethos/Harper13} develops a unifying framework for shortcut fusion.
 

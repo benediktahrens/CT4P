@@ -107,10 +107,10 @@ The notion of a Kleisli triple can equivalently be described  as follows:
 A \textbf{monad} over a category $\CC$ consists of the following data:
 \begin{itemize}
 \item A (endo)functor $T:\CC\to\CC$.
-\item A natural transformation $\NatTrans{\eta}{\Id[\CC]}{T}$.
+\item A natural transformation (``unit'') $\NatTrans{\eta}{\Id[\CC]}{T}$.
 \item A natural transformation (``multiplication'') $\NatTrans{\mu}{\co{T}{T}}{T}$.
 \end{itemize}
-such that for each $X\in\Ob{\CC}$ the following diagrams commute:
+such that for each $X\in\Ob{\CC}$ the following diagrams commute (``associativity'' and ``unit'' laws):
 \begin{center}
 \begin{tikzcd}
 T^3(X) \arrow[r, "\mu_{T(X)}"] \arrow[d,swap, "T(\mu_X)"] & T^2(X) \arrow[d, "\mu_X"] \\
