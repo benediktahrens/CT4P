@@ -186,6 +186,7 @@ literate={→ }{\ARROW}1
 \newcommand{\MON}{\Catb{Monoid}}
 \newcommand{\HASK}{\Catb{Hask}}
 \newcommand{\LEAN}{\Catb{LEAN}}
+\newcommand{\COQ}{\Catb{Coq}}
 \newcommand{\ALG}[1]{\Cat{A}lg(#1)}
 \newcommand{\COALG}[1]{\Cat{C}o\Cat{A}lg(#1)}
 \newcommand{\Ob}[1]{{#1}_0}
@@ -457,13 +458,13 @@ where the first (resp. second, third, fourth) equality holds by definition of th
 \end{proof}
 \end{lemma}
 
-We are now going to describe the category whose collection of objects is given by collection of Lean types:
-\begin{exa}\label{exa:lean-cat}
+We are now going to describe the category whose collection of objects is given by collection of Coq types:
+\begin{exa}\label{exa:coq-cat}
   Consider the following data: 
 \begin{itemize}
-\item An object is a Lean type (of some fixed universe).
-\item If $X$ and $Y$ are Lean types, then is $\CHom \LEAN X Y$ the function type $X\to Y$.
-\item The identity morphism $\Id[X]$ (on $X\in \Ob{\LEAN}$) is the identity function on $X$, i.e.
+\item An object is a Coq type (of some fixed universe).
+\item If $X$ and $Y$ are Coq types, then is $\CHom \COQ X Y$ the function type $X\to Y$.
+\item The identity morphism $\Id[X]$ (on $X\in \Ob{\COQ}$) is the identity function on $X$, i.e.
 \begin{lstlisting}
 def idfun (X : Type) : X → X := λ x, x.
 \end{lstlisting}
@@ -473,15 +474,15 @@ def compfun {X Y Z} (f : X → Y) (g : Y → Z) : X → Z
   := λ x, g (f x)
 \end{lstlisting}
 \end{itemize}
-  Try it out, e.g., on \url{https://leanprover.github.io/live/latest/}:
+  Try it out, e.g., on \url{https://jscoq.github.io/scratchpad.html}:
 \begin{lstlisting}
 #eval compfun (+1) (^3) 5
 \end{lstlisting}  
-(You can get a pre-filled Lean input field by clicking here: \href{https://leanprover.github.io/live/latest/#code=%0Adef%20idfun%20(X%20:%20Type)%20:%20X%20%E2%86%92%20X%20:=%20%CE%BB%20x,%20x.%0Adef%20compfun%20%7BX%20Y%20Z%7D%20(f%20:%20X%20%E2%86%92%20Y)%20(g%20:%20Y%20%E2%86%92%20Z%20)%20:%20X%20%E2%86%92%20Z%0A:=%20%CE%BB%20x%20,%20g%20(%20f%20x%20)%0A%0A#eval%20compfun%20(+1)%20(%5E3)%205}{\textbf{ClickMe}}.)
+% (You can get a pre-filled Lean input field by clicking here: \href{https://leanprover.github.io/live/latest/#code=%0Adef%20idfun%20(X%20:%20Type)%20:%20X%20%E2%86%92%20X%20:=%20%CE%BB%20x,%20x.%0Adef%20compfun%20%7BX%20Y%20Z%7D%20(f%20:%20X%20%E2%86%92%20Y)%20(g%20:%20Y%20%E2%86%92%20Z%20)%20:%20X%20%E2%86%92%20Z%0A:=%20%CE%BB%20x%20,%20g%20(%20f%20x%20)%0A%0A#eval%20compfun%20(+1)%20(%5E3)%205}{\textbf{ClickMe}}.)
 \end{exa}
 
 \begin{exer}
-  Prove (on paper) that the data defined in \cref{exa:lean-cat} defines a category.
+  Prove (on paper) that the data defined in \cref{exa:coq-cat} defines a category.
   That is, show that it satisfies the axioms of a category.
   You might need to use the \textbf{axiom of functional extensionality}:
 \begin{lstlisting}
@@ -491,7 +492,7 @@ axiom funext_nondep : ∀ {A B : Type} (f g : A → B),
 \end{exer}
 
 \begin{exa}
-  We repeat the definitions of \cref{exa:lean-cat} in Haskell instead of Lean.
+  We repeat the definitions of \cref{exa:coq-cat} in Haskell instead of Coq.
   Does this data satisfies the axioms of a category?
 
   Due to Haskell allowing for the |undefined| value in each type, the situation is slightly more complicated; consider the following two functions:
@@ -1064,7 +1065,7 @@ However, in more complicated categories---that is, in categories where the objec
 \end{exer}
 
 \begin{exer}
-  Identify an initial object in the category $\LEAN$ of Lean types.
+  Identify an initial object in the category $\COQ$ of Coq types.
   Prove that it is indeed initial.
 \end{exer}
 
@@ -1137,7 +1138,7 @@ However, in more complicated categories---that is, in categories where the objec
 \end{exer}
 
 \begin{exer}
-  Identify a terminal object in the category $\LEAN$ of Lean types.
+  Identify a terminal object in the category $\COQ$ of Coq types.
   Prove that it is indeed terminal.
 \end{exer}
 
@@ -1213,7 +1214,7 @@ However, in more complicated categories---that is, in categories where the objec
 \end{exer}
 
 \begin{exer}
-  Identify a product of types $A$ and $B$ in the category $\LEAN$ of Lean types.
+  Identify a product of types $A$ and $B$ in the category $\COQ$ of Coq types.
   Prove that it is indeed a product.
 \end{exer}
 
