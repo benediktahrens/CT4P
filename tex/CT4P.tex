@@ -1696,12 +1696,12 @@ In order to show that $U$ is not an isomorphism, one can use the following lemma
 \begin{exer} Show that $U$ is not an isomorphism, i.e. state which part of an isomorphism fails and give a concrete example that it fails.
 \end{exer}
 
-\begin{rem} So, the problem with $U$ (in the sense that it is not an isomorphism) is that multiple (finite) sets are mapped to the same set. For this reason, a good notion of equivalence between categories should not be injective on objects. Also, which is not clear from this example, we should also weaken the condition of $F$ being surjective on objects. Instead, we need that $F$ is \textbf{essentially surjective on objects}:
+\begin{rem} The problem with $U$ (in the sense that it is not an isomorphism) is that multiple (finite) sets are mapped to the same set. For this reason, a good notion of equivalence between categories should not be injective on objects. Also, which is not clear from this example, we should also weaken the condition of $F$ being surjective on objects. Instead, we need that $F$ is \textbf{essentially surjective on objects}:
 \[
 \forall Y\in\Ob{\DD}: \exists X\in\Ob{\CC} : F(X) \cong Y.
 \]
 \end{rem}
-So, motivated by the remark, we define:
+Motivated by the remark, we define:
 \begin{dfn} Categories $\CC$ and $\DD$ are \textbf{equivalent} if there exists a pair of functors $(F:\CC\to\DD, G:\DD\to\CC)$ such that there exists natural isomorphisms 
 \[
 \co{F}{G} \to \Id[\CC], \quad \co{G}{F} \to \Id[\DD]
