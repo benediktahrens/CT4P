@@ -252,11 +252,11 @@ But notice that there are other ways in which the type |Bool| lives inside the t
 \begin{solution}[\cref{ex:mono-inj}]\label{sol:mono-inj}
 The monomorphisms in $\SET$ correspond precisely with the injective functions, i.e. the functions $f:X\to Y$ which satisfy
 \[
-\forall x_1,x_2\in X: f(x_1)=f(x_2) \implies x_1=x_2,
+\forall x_1,x_2\in X: f(x_1)=f(x_2) \implies x_1=x_2.
 \]
 Indeed:
 \begin{itemize}
-\item Assume $f$ is injective. Let $g,h: Z\to X$ be functions such that $\co{g}{f}=\co{h}{f}$. We have to show $g=h$, i.e. 
+\item First, we show that if $f$ is injective, then it is a monomorphism. Assume $f$ is injective. Let $g,h: Z\to X$ be functions such that $\co{g}{f}=\co{h}{f}$. We have to show $g=h$, i.e. 
 \[
 \forall z\in Z: g(z)=h(z).
 \]
@@ -265,11 +265,11 @@ Since $f$ is injective, it suffices to show
 \forall z\in Z: f(g(z))=f(h(z)).
 \]
 But this holds by the condition of $g$ and $h$. Hence, $f$ is indeed a monomorphism.
-\item Assume $f$ is a monomorphism. We have to show that for all $x_1,x_2\in X$, $f(x_1) = f(x_2)$ implies $x_1 = x_2$. Let $\mathbf{1} = \{\star\}$ be a singleton set and define
+\item Next, we show that if $f$ is a monomorphism, then it is injective. Assume $f$ is a monomorphism. We have to show that for all $x_1,x_2\in X$, $f(x_1) = f(x_2)$ implies $x_1 = x_2$. Let $\mathbf{1} = \{\star\}$ be a singleton set and define
 \[
-g_1 : \mathbf{1}\to X: \star\mapsto x_1,\quad  g_2 : \mathbf{1}\to X: \star\mapsto x_2, 
+g_1 : \mathbf{1}\to X: \star\mapsto x_1,\quad  g_2 : \mathbf{1}\to X: \star\mapsto x_2. 
 \]
-Since $f(x_1)=f(x_2)$, we have $\co{g_1}{f} = \co{g_2}{f}$. But $f$ is a monomorphism, hence $g_1 = g_2$ which means $x_1 = g_1(\star) = g_2(\star) = x_2$. Thus, $f$ is indeed injective.
+Since $f(x_1)=f(x_2)$, we have $\co{g_1}{f} = \co{g_2}{f}$. But $f$ is a monomorphism; hence $g_1 = g_2$ which means $x_1 = g_1(\star) = g_2(\star) = x_2$. Thus, $f$ is indeed injective.
 \end{itemize}
 \end{solution}
 
