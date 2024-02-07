@@ -1,19 +1,19 @@
 \section{Adjunctions}
 \label{sec:adjunctions}
 
-\begin{dfn} A pair $(F,G)$ of functors $F : \CC\to\DD, G:\DD\to\CC$ is called an \textbf{adjoint pair} if for every objects $C\in\Ob{\CC}$ and $D\in\Ob{\DD}$, there exists a bijection 
+\begin{dfn} A pair $(F,G)$ of functors $F : \CC\to\DD, G:\DD\to\CC$ is called an \textbf{adjoint pair} if for every objects $X\in\Ob{\CC}$ and $Y\in\Ob{\DD}$, there exists a bijection 
 \[
-\alpha_{C,D} : \CHom{\DD}{F(C)}{D} \to \CHom{\CC}{C}{G(D)},
+\alpha_{X,Y} : \CHom{\DD}{F(X)}{Y} \to \CHom{\CC}{X}{G(Y)},
 \]
-which are moreover natural in both $C$ and $D$, i.e. for each $f\in\CHom{\CC}{C_1}{C_2}$ and $g\in\CHom{\DD}{D_1}{D_2}$, the following diagrams commute:
+which are moreover natural in both $X$ and $Y$, i.e. for each $f\in\CHom{\CC}{X_1}{X_2}$ and $g\in\CHom{\DD}{Y_1}{Y_2}$, the following diagrams commute:
 \begin{eqnarray}
 \begin{tikzcd}
-\CHom{\DD}{F(C_2)}{D} \arrow[r, "\alpha_{C_2,D}"] \arrow[d,swap, "\co{F(f)}{-}"] & \CHom{\CC}{C_2}{G(D)} \arrow[d, "\co{f}{-}"] \\
-\CHom{\DD}{F(C_1)}{D} \arrow[r,swap, "\alpha_{C_1,D}"] & \CHom{\CC}{C_1}{G(D)}
+\CHom{\DD}{F(X_2)}{Y} \arrow[r, "\alpha_{X_2,Y}"] \arrow[d,swap, "\co{F(f)}{-}"] & \CHom{\CC}{X_2}{G(Y)} \arrow[d, "\co{f}{-}"] \\
+\CHom{\DD}{F(X_1)}{Y} \arrow[r,swap, "\alpha_{X_1,Y}"] & \CHom{\CC}{X_1}{G(Y)}
 \end{tikzcd}\\
 \begin{tikzcd}
-\CHom{\DD}{F(C)}{D_1} \arrow[r, "\alpha_{C,D_1}"] \arrow[d,swap, "\co{-}{G(g)}"] & \CHom{\CC}{C}{G(D_1)} \arrow[d, "\co{-}{g}"] \\
-\CHom{\DD}{F(C)}{D_2} \arrow[r,swap, "\alpha_{C,D_2}"] & \CHom{\CC}{C}{G(D_2)}
+\CHom{\DD}{F(X)}{Y_1} \arrow[r, "\alpha_{X,Y_1}"] \arrow[d,swap, "\co{-}{G(g)}"] & \CHom{\CC}{X}{G(Y_1)} \arrow[d, "\co{-}{g}"] \\
+\CHom{\DD}{F(X)}{Y_2} \arrow[r,swap, "\alpha_{X,Y_2}"] & \CHom{\CC}{X}{G(Y_2)}
 \end{tikzcd}
 \end{eqnarray}
 If $(F,G)$ is an adjoint pair, we call $F$ the \textbf{left adjoint} of $G$ and we call $G$ the \textbf{right adjoint} of $F$ and we denote $F \dashv G$.
@@ -43,15 +43,15 @@ Is there an analogous statement in the category $\LEAN$ instead of $\SET$?
 \[
 \NatTrans{\eta}{\Id[\CC]}{\co{F}{G}}, \quad \NatTrans{\epsilon}{\co{G}{F}}{\Id[\DD]},
 \]
-such that for all $C\in\CC$ and $D\in\DD$ the following diagrams commute:
+such that for all $X\in\CC$ and $Y\in\DD$ the following diagrams commute:
 \[
 \begin{tikzcd}
-F(C) \arrow[r,"{F(\eta_C)}"] \arrow[rd,swap, "{\Id[F(C)]}"] & F(G(F(C))) \arrow[d, "{\epsilon_{F(C)}}"] \\
-& F(C)
+F(X) \arrow[r,"{F(\eta_X)}"] \arrow[rd,swap, "{\Id[F(X)]}"] & F(G(F(X))) \arrow[d, "{\epsilon_{F(X)}}"] \\
+& F(X)
 \end{tikzcd} \quad 
 \begin{tikzcd}
-G(D) \arrow[r,"{\eta_{G(D)}}"] \arrow[rd,swap, "{\Id[G(D)]}"] & G(F(G(D))) \arrow[d, "{G(\epsilon_{C})}"] \\
-& G(D)
+G(Y) \arrow[r,"{\eta_{G(Y)}}"] \arrow[rd,swap, "{\Id[G(Y)]}"] & G(F(G(Y))) \arrow[d, "{G(\epsilon_{Y})}"] \\
+& G(Y)
 \end{tikzcd}
 \]
 \end{enumerate}
