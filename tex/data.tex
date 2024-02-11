@@ -336,8 +336,12 @@ Y
 \end{equation}
 \end{exer}
 
-\begin{exer}[\textbf{Lambek's theorem}] Let $F:\CC\to\CC$ be an endofunctor and let $(\mu^F, \In)$ be an initial algebra.
-  Then $\In$ is an isomorphism whose inverse is given by $\Inv{\In} = \catam{F(\In)}$.
+\begin{thm}[\textbf{Lambek's theorem}]
+  Let $F:\CC\to\CC$ be an endofunctor and let $(\mu^F, \In)$ be an initial algebra. Then, $\In$ is an isomorphism whose inverse is given by $\Inv{\In} = \catam{F(\In)}$.
+\end{thm}
+
+\begin{exer} 
+  Prove Lambek's theorem. 
 \end{exer}
 
 \begin{exer}[\cref{sol:initialalg_for_idfun_with_initialob}]\label{exer:initialalg_for_idfun_with_initialob} Let $\CC$ be a category with an initial object $\bot$. Show that $(\bot, \Id[\bot])$ is the initial algebra for the identity (endo)functor on $\CC$.
@@ -619,10 +623,14 @@ F\Terminalcoalg{F}
 \end{enumerate} 
 \end{exer}
 
-\begin{exer} (\textbf{Dual Lambek's theorem}) Let $F:\CC\to\CC$ be an endofunctor and let $(\Terminalcoalg{F}, \Out)$ be a terminal coalgebra. Then is $\Out$ an isomorphism whose inverse is given by $\Inv{\Out} = \anam{F(\Out)}$.
+\begin{thm}[\textbf{Dual of Lambek's theorem}] Let $F:\CC\to\CC$ be an endofunctor and let $(\Terminalcoalg{F}, \Out)$ be a terminal coalgebra. Then is $\Out$ an isomorphism whose inverse is given by $\Inv{\Out} = \anam{F(\Out)}$.
+\end{thm}
+
+\begin{exer}
+  Prove the dual of Lambek's theorem. 
 \end{exer}
 
-\begin{exer}\label{exer:terminalalg_for_idfun_with_terminalob} Let $\CC$ be a category with a terminal object $\top$. Then $(\top, \Id[\top])$ is a terminal coalgebra for the identity (endo)functor on $\CC$.
+\begin{exer}\label{exer:terminalalg_for_idfun_with_terminalob} Let $\CC$ be a category with a terminal object $\top$. Show that $(\top, \Id[\top])$ is a terminal coalgebra for the identity (endo)functor on $\CC$.
 \end{exer}
 
 \begin{exer}[\cref{sol:conatural_numbers_terminal_coalgebra}] \label{exer:conatural_numbers_terminal_coalgebra} Let $F$ be the functor induced by 
