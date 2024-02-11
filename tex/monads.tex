@@ -1,9 +1,8 @@
 
 \section{Monads and Effects}
 \label{sec:monads}
-Recall that a monad (as defined, e.g., in Haskell) is a function |m :: * -> *| together with the additional data of a function |pure :: a -> m a| (for each type |a|) and a function |(>>=) :: m a -> (a -> m b) -> m b| (for types |a| and |b|).
-
-The operations |pure| and |(>>=)| are expected to satisfy the following laws:
+Recall that a monad (as defined, e.g., in Haskell) is a function |m :: * -> *| together with the additional data of a function |pure :: a -> m a| (for each type |a|) and a function |(>>=) :: m a -> (a -> m b) -> m b| (for types |a| and |b|),
+% The operations |pure| and |(>>=)| are expected to satisfy the following laws:
 such that they satisfy the following properties:
 \begin{enumerate}
 \item |t >>= pure == t| %$\bind(X, pure) = X$.
@@ -16,7 +15,7 @@ In a category, however, we can define monads including the monad laws.
 We will actually give two different definitions of monad;
 one called ``Kleisli triple'' (\cref{def:kleisli-triple}), which corresponds to what is called ``monad'' in Haskell,
 and one called ``monad'' (\cref{def:monad}). 
-The formulation of monads uses that the arguments to |(>>=)| can be reordered.
+The formulation of monads uses the fact that the arguments to |(>>=)| can be reordered.
 
 \begin{dfn}\label{def:kleisli-triple}
   A \textbf{Kleisli triple} over a category $\CC$ is  consisting of the following data:
