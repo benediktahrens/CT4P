@@ -379,7 +379,124 @@ This category can not have an initial object: Suppose it has an initial object $
 \end{itemize}
 \end{solution}
 
+\begin{solution}[\cref{exer:swap_binary_coproduct}]\label{sol:swap_binary_coproduct}
+We fix objects $A,B\in\Ob{\CC}$. These objects have two binary coproducts in $\CC$: $(A+B,\inl,\inr)$ and $(B+A,\inl',\inr')$, where $\inl,\inr,\inl',\inr'$ are morphisms with types:
 
+\begin{itemize}
+    \item $\inl:A \to A+B$
+    \item $\inr:B \to A+B$
+    \item $\inl':B \to B+A$ 
+    \item $\inr':A \to B+A$
+\end{itemize}
+
+
+We need to provide a morphism $f:A+B \to B+A$ and its inverse $g:B+A \to A+B$, such that
+
+\begin{equation}
+\label{unit1}
+    \co {g} {f} = \Id[B+A]
+\end{equation}
+\begin{equation}
+\label{unit2}
+    \co {f} {g} = \Id[A+B]
+\end{equation}
+
+
+We define $f : A + B \to B + A$ via the universal property of $(A + B, \inl, \inr)$, as the unique morphism that makes the corresponding triangles commute --- see \eqref{co_f1} and \eqref{co_f2}.
+Analogously, we define $g : B + A \to A + B$; see \eqref{co_g1} and \eqref{co_g2}.
+
+\noindent
+We can visualize these coproducts with the following diagram:
+
+\[
+\begin{tikzcd}
+A \arrow[r, "\inl"] \arrow[rd, "\inr'"'] & A+B \arrow[d, "f"', shift right] & B \arrow[l, "\inr"'] \arrow[ld, "\inl'"] \\
+                                      & B+A \arrow[u, "g"', shift right] &                                       
+\end{tikzcd}
+\]
+
+\noindent
+Here $f$ and $g$ are morphisms that exist as a result of the definition of coproducts. These will be our candidates for constructing an isomorphism $A+B\cong B+A$. By the definition of coproducts we also have that the following equations hold:
+
+\begin{equation}
+\label{co_f1}
+    \co {\inl} {f} = \inr'
+\end{equation}
+\begin{equation}
+\label{co_f2}
+    \co {\inr} {f} = \inl'
+\end{equation}
+\begin{equation}
+\label{co_g1}
+    \co {\inl'} {g} = \inr
+\end{equation}
+\begin{equation}
+\label{co_g2}
+    \co {\inr'} {g} = \inl
+\end{equation}
+
+We will use these, along with an additional lemma (Lemma \ref{lemma}), to show that equations \ref{unit1} and \ref{unit2} hold for our $f$ and $g$, and therefore they form an isomorphism.\\
+
+\newpage
+\noindent
+\textbf{Claim $\co {g} {f} = \Id[B+A]$ (\ref{unit1})}.
+\begin{proof}
+Starting from equation \ref{co_f1}, we derive
+\begin{align*}
+ &\quad \co {\inl} {f} = \inr' \\
+\implies&\qquad \text{\{ By \ref{co_g1} \}} \\
+ &\quad \co {(\co {\inr'} {g})} {f} = \inr'  \\
+\implies&\qquad \text{\{ Associativity \}} \\
+ &\quad \co {\inr'} {(\co {g} {f})} = \inr'
+\end{align*}
+\noindent
+And starting from equation \ref{co_f2}, we derive
+\begin{align*}
+ &\quad \co {\inr} {f} = \inl' \\
+\implies&\qquad \text{\{ By \ref{co_g2} \}} \\
+ &\quad \co {(\co {\inl'} {g})} {f} = \inl'  \\
+\implies&\qquad \text{\{ Associativity \}} \\
+ &\quad \co {\inl'} {(\co {g} {f})} = \inl'
+\end{align*}
+\noindent
+Combining $\co {\inr'} {(\co {g} {f})} = \inl'$ and $\co {\inl'} {(\co {g} {f})} = \inl'$ with Lemma \ref{lemma}, we conclude $\co {g} {f}=\Id[B+A]$.
+\end{proof}
+
+\noindent
+\textbf{Claim $\co {f} {g} = \Id[A+B]$ (\ref{unit2})}.
+\begin{proof}
+Starting from equation \ref{co_g1}, we derive
+\begin{align*}
+ &\quad \co {\inl'} {g} = \inr \\
+\implies&\qquad \text{\{ By \ref{co_f2} \}} \\
+ &\quad \co {(\co {\inr} {f})} {g} = \inr  \\
+\implies&\qquad \text{\{ Associativity \}} \\
+ &\quad \co {\inr} {(\co {f} {g})} = \inr
+\end{align*}
+\noindent
+And starting from equation \ref{co_g2}, we derive
+\begin{align*}
+ &\quad \co {\inr'} {g} = \inl \\
+\implies&\qquad \text{\{ By \ref{co_f1} \}} \\
+ &\quad \co {(\co {\inl} {f})} {g} = \inl  \\
+\implies&\qquad \text{\{ Associativity \}} \\
+ &\quad \co {\inl} {(\co {f} {g})} = \inl
+\end{align*}
+\noindent
+Combining $\co {\inl} {(\co {f} {g})} = \inl$ and $\co {\inr} {(\co {f} {g})} = \inr$ with Lemma \ref{lemma}, we conclude $\co {f} {g}=\Id[A+B]$.
+\end{proof}
+
+\noindent
+Since $f : A+B \to B+A$ is an isomorphism with $g : B+A \to A+B$ as its inverse, we have successfully constructed our desired isomorphism $A+B \cong B+A$.
+
+\begin{lemma}
+\label{lemma}
+Given category $\CC$ with choice of coproduct, objects $A,B\in \Ob{\CC}$, their coproduct $(A+B,\inl,\inr)$ and a morphism $f:A+B\to A+B$. If $\co {\inl} {f}=\inl$ and $\co {\inr} {f}=\inr$, then $f=\Id[A+B]$.
+\begin{proof}
+By definition of coproduct $A+B$ we know there is a unique $g: A+B \to A+B$, s.t. $\co {\inl} {g}=\inl$ and $\co {\inr} {g}=\inr$. Since it is unique, $f$ and $g$ must be the same morphism. Furthermore, we know that the identity morphism $\Id[A+B]: A+B \to A+B$ exists, and satisfies the equations $\co {\inl} {\Id[A+B]} = \inl$ and $\co {\inr} {\Id[A+B]} = \inr$. Again because of uniqueness of $g$, $\Id[A+B]$ must be the same as $g$, therefore $f=g=\Id[A+B]$.
+\end{proof}
+\end{lemma}
+\end{solution}
 
 %% Solutions to monads
 
