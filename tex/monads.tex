@@ -1,31 +1,41 @@
 
 \section{Monads and Effects}
 \label{sec:monads}
-Recall that a monad (as defined, e.g., in Haskell) is a function |m :: * -> *| together with the additional data of a function |pure :: a -> m a| (for each type |a|) and a function |(>>=) :: m a -> (a -> m b) -> m b| (for types |a| and |b|),
-% The operations |pure| and |(>>=)| are expected to satisfy the following laws:
-such that they satisfy the following properties:
+
+In this section, we study the definition of monads as well as instances of monads useful in functional programming.
+
+There are different, equivalent, definitions of monads.
+Since these definitions are equivalent, we can use them interchangeably once we have understood them.
+But at first we need to distinguish them, and hence need different names for each definition; we choose to call one definition ``Kleisli triple'' or ``extension system'' (see \cref{def:kleisli-triple}) and one ``monad'' (see \cref{def:monad}).
+Whenever we want to gloss over the precise definition, we simply say ``monad''.
+
+
+Recall that a monad (as defined, e.g., in Haskell) is a function |m :: * -> *| together with the additional data of a function |pure :: a -> m a| (for each type |a|) and a function |(>>=) :: m a -> (a -> m b) -> m b| (for types |a| and |b|).
+The operations |pure| and |(>>=)| are expected to satisfy the following laws:
 \begin{enumerate}
 \item |t >>= pure == t| %$\bind(X, pure) = X$.
 \item |pure(x) >>= f == f x| %$bind(pure(X), f) = f(X)$.
 \item |(t >>= f) >>= g == t >>= (\x -> f x >>= g)|% $bind(bind(X,f), g) = bind(X, \lambda x. bind(f(x), g)$.
 \end{enumerate}
-However, these laws cannot be enforced in Haskell, since Haskell does not have any infrastructure for logic.
+However, these laws cannot be enforced in Haskell, since Haskell does not have any infrastructure for equational reasoning.
+(The laws could be tested for using Quickcheck or a similar framework.)
 
 In a category, however, we can define monads including the monad laws.
-We will actually give two different definitions of monad;
+As mentioned above, we give two different definitions of monad;
 one called ``Kleisli triple'' (\cref{def:kleisli-triple}), which corresponds to what is called ``monad'' in Haskell,
 and one called ``monad'' (\cref{def:monad}). 
-The formulation of monads uses the fact that the arguments to |(>>=)| can be reordered.
+
+%The formulation of monads uses the fact that the arguments to |(>>=)| can be reordered.
 
 \begin{dfn}\label{def:kleisli-triple}
   A \textbf{Kleisli triple} over a category $\CC$ is  consisting of the following data:
-\begin{itemize}
+\begin{enumerate}
 \item A function $T: \Ob{\CC}\to \Ob{\CC}$.
 \item For each $X\in\Ob{\CC}$, a morphism $\eta_X \in \CHom{\CC}{X}{T(X)}$.
 \item For each $f\in\CHom{\CC}{X}{T(Y)}$, a morphism $f^{*} \in \CHom{\CC}{T(X)}{T(Y)}$.
-\end{itemize}
+\end{enumerate}
 such that the following properties holds:
-\begin{enumerate}
+\begin{enumerate}[resume]
 \item For each $X \in \Ob\CC$, we have $\eta_X^{*} = \Id[T(X)]$.
 \item For each $f\in\CHom{\CC}{X}{T(Y)}$, the following diagram commutes:
 \begin{center}
@@ -47,6 +57,11 @@ We denote a Kleisli triple as $(T,\eta, (-)^{*})$.
 
 \begin{exer}
   Convince yourself that the operations and laws of a Kleisli triple correspond, in the category $\HASK$, to the operations and properties of a monad in Haskell.
+\end{exer}
+
+\begin{exer}
+  Consider the assignment $\Ob{\Maybe} : \Ob{\SET}\to \Ob{\SET}$ with $\Ob{\Maybe}(X) := X + 1$.
+  Define a Kleisli triple with this function as the first component.
 \end{exer}
 
 \begin{exer}[\cref{sol:kleisli_triple_list}]\label{exer:kleisli_triple_list} Show how the following assignment induces a Kleisli triple over the category $\SET$:
@@ -100,6 +115,19 @@ The resulting monad is called the \textbf{Monad of families of elements}.
 \end{exer}
 
 
+\begin{reading*}
+  Moggi \cite{DBLP:journals/iandc/Moggi91} defines a syntax, or rather, several syntaxes, for programming languages with categorical semantics in monads such as the ones above.
+  The basic idea, taken verbatim from Moggi's paper, is as follows:
+  \begin{quote}
+    The basic idea behind the categorical semantics below is that, in order to interpret a programming language in a category $\CC$, we distinguish the object $A$ of values (of type $A$) from the object $T A$ of computations (of type $A$), and take as denotations of programs (of type $A$) the \emph{elements} of $T A$.
+In particular, we identify the type $A$ with the object of values (of type $A$) and obtain the object
+of computations (of type $A$) by applying an unary type-constructor $T$ to $A$. We call $T$ a \emph{notion of computation}, since it abstracts away from the type of values computations may produce. There are many choices for $T A$ corresponding to different notions of computations.
+  \end{quote}
+
+  More information about monads and effects is also given in \cite{DBLP:conf/ac/BentonHM00}.
+\end{reading*}
+
+
 
 The notion of a Kleisli triple can equivalently be described  as follows:
 \begin{dfn}\label{def:monad}
@@ -147,6 +175,10 @@ Every Kleisli triple induces a category:
 \begin{exer} Show that for every Kleisli triple, its Kleisli category satisfies the properties of a category.
 \end{exer}
 
+\begin{reading*}
+  Another use of monads is the mathematical modelling of \emph{substitution}.
+  See, for instance, Altenkirch and Reus' paper \cite{DBLP:conf/csl/AltenkirchR99}.
+\end{reading*}
 
 %%% Local Variables:
 %%% mode: latex
