@@ -183,7 +183,9 @@ literate={→ }{\ARROW}1
 \newcommand{\CAT}{\Catb{Cat}}
 \newcommand{\POS}{\Catb{Pos}}
 \newcommand{\PRE}{\Catb{Pre}}
-\newcommand{\MON}{\Catb{Monoid}}
+\newcommand{\PREtoCAT}{\Catb{Pre2Cat}}
+\newcommand{\MONtoCAT}{\Catb{Mon2Cat}}
+\newcommand{\MON}{\Catb{Mon}}
 \newcommand{\HASK}{\Catb{Hask}}
 \newcommand{\LEAN}{\Catb{LEAN}}
 \newcommand{\COQ}{\Catb{Coq}}
@@ -542,18 +544,18 @@ Recall that a \textit{preordered set} $(X,\leq)$ consists of a set $X$ together 
 \item \textbf{Transitivity}: $\forall x,y,z\in X: \left(x\leq y \wedge y\leq z\right) \implies x\leq z$.
 \end{itemize}
 
-  Let $(X,\leq)$ be a preordered set. The following data induces a category $\PRE(X,\leq)$:
+  Let $(X,\leq)$ be a preordered set. We define the category $\PREtoCAT(X,\leq)$ as follows:
 \begin{itemize}
 \item The objects are the elements of $X$.
 \item Let $x,y \in X$ be elements. The hom-set $\Hom x y$ consists of a unique element if $x\leq y$ and is empty otherwise.
-\item  We need an identity morphism for each $x\in X$.
+\item  We define an identity morphism for each $x\in X$.
   By reflexivity (i.e., $x\leq x$), we have that $\Hom x x$ consists of a unique element, which we take to be the identity.
-\item We need to define for each $x,y,z\in X$, a composition operator:
+\item We define, for each $x,y,z\in X$, a composition operator
 \[
 \Hom y z \to \Hom x y \to \Hom x z.
 \]
 By definition of the hom-sets, we only have to define it in case $x\leq y$ and $y\leq z$.
-But then, by transitivity (i.e. if $x\leq y$ and $y\leq z$, then $x\leq z$), we have that $\Hom x z$ consists of a unique element which we take to be the composition.
+But then, by transitivity (i.e. if $x\leq y$ and $y\leq z$, then $x\leq z$), we have that $\Hom x z$ consists of a unique element; that unique element is the composite.
 \end{itemize}
 %
 We are now going to show that the axioms of a category holds.
@@ -567,7 +569,7 @@ The proof that left unit law and associator law hold are analogous.
   \begin{itemize}
   \item \textbf{Antisymmetry}: $\forall x,y\in X: (x\leq y \wedge y\leq x) \implies x=y$.
   \end{itemize}
-  What does this axiom say about $\PRE(X,\leq)$?
+  What does this axiom say about $\PREtoCAT(X,\leq)$?
 \end{exer}
 
 \begin{rem}
@@ -636,7 +638,7 @@ and such that there is an identity element, i.e.
 \[
 \exists e\in M: \forall x\in M: m(e,x)=x=m(x,e).
 \]
-Let $(M,m,e)$ be a monoid. The category $\MON(M,m,e)$ is defined by the following data:
+Let $(M,m,e)$ be a monoid. The category $\MONtoCAT(M,m,e)$ is defined by the following data:
 \begin{itemize}
 \item There is a unique object $\star$.
 \item The (only) hom-set is given by 
@@ -648,14 +650,14 @@ Let $(M,m,e)$ be a monoid. The category $\MON(M,m,e)$ is defined by the followin
 \end{itemize}
 \end{dfn}
 
-That for each monoid $(M,m,e)$, $\MON(M,m,e)$ is indeed a category, follows directly by the properties of being a monoid. Indeed, the axioms of a category become precisely:
+That for each monoid $(M,m,e)$, $\MONtoCAT(M,m,e)$ is indeed a category, follows directly by the properties of being a monoid. Indeed, the axioms of a category become precisely:
 \begin{enumerate}
 \item $\forall x\in M: m(x,e)=x$,
 \item $\forall x\in M: m(e,x)=x$,
 \item $\forall x,y,z\in M: m(m(x,y),z) = m(x,m(y,z))$.
 \end{enumerate}
 
-\begin{rem} Notice that this category illustrates that there is no relation between the collection of objects and the hom-sets since there is now only one object and the collection of the hom-set can be as small or as large as possible.\\
+\begin{rem} Notice that this category illustrates that there is no relation between the collection of objects and the hom-sets since there is now only one object and the collection of the hom-set can be as small or as large as possible.
 In fact, we can associate a different number of categories to a single monoid. We can for example consider an arbitrary set of objects $I$ and the defining the hom-sets as follows:
 \[
 \Hom{i}{j} := 
@@ -667,7 +669,7 @@ M ,\quad \text{ if } i=j,\\
 \end{rem}
 
 \begin{exer}[\cref{sol:categories_coming_from_monoids}]\label{exer:categories_coming_from_monoids}
-  Let $\CC$ be a category. When is $\CC$ of the form $\MON(M,m,e)$, i.e. does there exists a monoid $(M,m,e)$ such that $\CC =  \MON(M,m,e)$?
+  Let $\CC$ be a category. When does $\CC$ ``come from a monoid'', that is, when is there a monoid $(M,m,e)$ such that $\C$ of the form $\MONtoCAT(M,m,e)$?
 \end{exer}
 
 \begin{exer}[\cref{sol:category_of_monoids}]\label{exer:category_of_monoids}
@@ -1520,7 +1522,7 @@ Since this holds for every such list, we indeed have that the composition is pre
 \end{exer}
 
 
-\begin{exer}\label{ex:poset_functors} Let $(X,\leq_X)$ and $(Y,\leq_Y)$ be preordered sets. Can you characterize/describe the functors from $\PRE(X,\leq_X)$ to $\PRE(Y,\leq_Y)$  ? Before writing out the definitions, what would you expect the answer to be?
+\begin{exer}\label{ex:poset_functors} Let $(X,\leq_X)$ and $(Y,\leq_Y)$ be preordered sets. Can you characterize/describe the functors from $\PREtoCAT(X,\leq_X)$ to $\PREtoCAT(Y,\leq_Y)$  ? Before writing out the definitions, what would you expect the answer to be?
 \end{exer}
 
 \begin{exer}
@@ -1539,7 +1541,7 @@ Since this holds for every such list, we indeed have that the composition is pre
 \end{exer}
 
 
-\begin{exer}\label{ex:monoid_functors} Let $(M,m,e)$ be a monoid and let $\MON(M,m,e)$ be its corresponding category as defined in \cref{monoidcategory}. Can you characterize/describe the functors from $\MON(M,m,e)$ to $\SET$?
+\begin{exer}\label{ex:monoid_functors} Let $(M,m,e)$ be a monoid and let $\MONtoCAT(M,m,e)$ be its corresponding category as defined in \cref{monoidcategory}. Can you characterize/describe the functors from $\MONtoCAT(M,m,e)$ to $\SET$?
 \end{exer}
 
 \subsection{Categories as Objects of a Category?}
@@ -1655,7 +1657,7 @@ Show that this indeed satisfies the naturality condition.
 \end{exa}
 
 \begin{exer}
-  Given two preordered sets $(X,\leq_X)$ and $(Y, \leq_Y)$ and two functors $f, g : \PRE(X,\leq_X) \to \PRE(Y,\leq_Y)$ between their associated categories, what is a natural transformation from $f$ to $g$?
+  Given two preordered sets $(X,\leq_X)$ and $(Y, \leq_Y)$ and two functors $f, g : \PREtoCAT(X,\leq_X) \to \PREtoCAT(Y,\leq_Y)$ between their associated categories, what is a natural transformation from $f$ to $g$?
 \end{exer}
 
 \begin{exer}
@@ -1711,7 +1713,7 @@ Hint: Write the equality as a (not-known commutative) square.
 \end{exer}
 
 \subsection{Exercises}
-\begin{exer} Let $(M,m,e)$ be a monoid and let $\MON(M,m,e)$ be its corresponding category. Recall from \cref{ex:monoid_functors} that a functor from $\MON(M,m,e)$ to $\SET$ is a set $X$ together with an action of $M$ on $X$, i.e. a function $\mu: M\times X\to X$ such that 
+\begin{exer} Let $(M,m,e)$ be a monoid and let $\MONtoCAT(M,m,e)$ be its corresponding category. Recall from \cref{ex:monoid_functors} that a functor from $\MONtoCAT(M,m,e)$ to $\SET$ is a set $X$ together with an action of $M$ on $X$, i.e. a function $\mu: M\times X\to X$ such that 
 \[
 \forall x\in X: \mu(e,x) = x, \quad \forall n_1,n_2\in M, x\in X: \mu(n_1, \mu(n_2,x)) = \mu(m(n_1,n_2), x).
 \]
