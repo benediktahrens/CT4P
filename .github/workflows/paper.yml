@@ -11,14 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Compile CT4P.tex
         uses: xu-cheng/latex-action@master
         with:
           working_directory: tex/
           root_file: CT4P.tex
       - name: Upload CT4P.pdf
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4	
         with:
           name: paper
           path: tex/CT4P.pdf
