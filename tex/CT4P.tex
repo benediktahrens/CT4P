@@ -1232,6 +1232,9 @@ However, in more complicated categories---that is, in categories where the objec
   Does the category $A \rightrightarrows B$ have products?
 \end{exer}
 
+\begin{exer}[\cref{sol:product-represent}]\label{exer:product-represent}
+  Let $\CC$ be a category, let $A,B\in\Ob{\CC}$ and let $(A\times B,\projl,\projr)$ be a product of $A$ and $B$ in $\CC$. Fix an object $X\in\Ob{\CC}$. Construct an isomorphism between the set $\CC(X, A\times B)$ and the set $\CC(X,A)\times\CC(X,B)$.  
+\end{exer}
 
 \begin{exer}[\cref{sol:product_set}]\label{exer:product_set}
   Identify a product of sets $X$ and $Y$ in the category $\SET$ of sets.
@@ -1377,6 +1380,22 @@ A & Q \arrow[l, "q_l"]  \arrow[r,swap, "q_r"] & B
 \begin{exer}
   Does the category $A \rightrightarrows B$ have coproducts?
 \end{exer}
+
+
+\begin{lemma}
+\label{lemma}
+Given category $\CC$ with choice of coproduct, objects $A,B\in \Ob{\CC}$, their coproduct $(A+B,\inl,\inr)$ and a morphism $f:A+B\to A+B$. If $\co {\inl} {f}=\inl$ and $\co {\inr} {f}=\inr$, then $f=\Id[A+B]$.
+\end{lemma}
+\begin{proof}
+By definition of coproduct $A+B$ we know there is a unique $g: A+B \to A+B$, s.t. $\co {\inl} {g}=\inl$ and $\co {\inr} {g}=\inr$. Since it is unique, $f$ and $g$ must be the same morphism. Furthermore, we know that the identity morphism $\Id[A+B]: A+B \to A+B$ exists, and satisfies the equations $\co {\inl} {\Id[A+B]} = \inl$ and $\co {\inr} {\Id[A+B]} = \inr$. Again because of uniqueness of $g$, $\Id[A+B]$ must be the same as $g$, therefore $f=g=\Id[A+B]$.
+\end{proof}
+
+
+\begin{exer}[\cref{sol:coproduct-represent}] \label{exer:coproduct-represent}
+ Let $\CC$ be a category, let $A,B\in\Ob{\CC}$ and let $(A+B,\inl,\inr)$ be a coproduct of $A$ and $B$ in $\CC$. Fix an object $X\in\Ob{\CC}$. Construct an isomorphism between the set $\CC(A+B,X)$ and the set $\CC(A,X)\times\CC(B,X)$.
+\end{exer}
+
+
 
 \begin{exer}\label{exer:coproduct_set}
   Identify a coproduct of sets $X$ and $Y$ in the category $\SET$ of sets.

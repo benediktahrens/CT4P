@@ -379,6 +379,88 @@ This category can not have an initial object: Suppose it has an initial object $
 \end{itemize}
 \end{solution}
 
+\begin{solution}[\cref{exer:coproduct-represent}]\label{sol:coproduct-represent}
+\newcommand{\CP}{\CC(A+B,X)}
+\newcommand{\CQ}{\CC(A,X)\times\CC(B,X)}
+\newcommand{\PP}{\CC(X,A\times B)}
+\newcommand{\PQ}{\CC(X,A)\times\CC(X,B)}
+\newcommand{\pmap}[2]{ \langle #1, #2 \rangle }  % called \productmap in CT4P
+\newcommand{\cmap}[2]{ [ #1, #2 ] }           % called \coproductmap in CT4P
+ We need to construct a morphism \[\alpha:\SET(\CP, \CQ)\] and its inverse \[\beta:\SET(\CQ, \CP)\]
+such that
+\begin{equation}
+\label{unit1}
+    \alpha \circ \beta = \Id[\CQ]
+\end{equation}
+\begin{equation}
+\label{unit2}
+    \beta \circ \alpha = \Id[\CP]
+\end{equation}
+%
+Note that $\alpha$ and $\beta$ are morphisms in the category of sets ($\SET$).\\
+
+We define \[\alpha(k):=(\co {\inl} {k}, \co {\inr} {k})\] to be our candidate function $\alpha$. And we define \[\beta(a,b):= \cmap{a}{b}\] to be our candidate function $\beta$. Here $[a,b]$ is also known as the coproduct map, which is exactly the unique morphism from $A+B$ into $X$ that makes the corresponding coproduct triangles commute, as in the following diagram:
+
+\[
+\begin{tikzcd}
+A \arrow[r, "\inl"] \arrow[rd, "a"'] & A+B \arrow[d, "{\cmap{a}{b}}" description] & B \arrow[l, "\inr"'] \arrow[ld, "b"] \\
+                                    & X                                    &
+\end{tikzcd}
+\]
+
+Equivalently, it is the unique morphism s.t.
+
+\begin{equation}
+\label{ga}
+    \co {\inl} {\cmap{a}{b}} = a
+\end{equation}
+\begin{equation}
+\label{gb}
+    \co {\inr} {\cmap{a}{b}} = b
+\end{equation}
+
+To show that $\alpha$ is an isomorphism we have to show that equations \ref{unit1} and \ref{unit2} hold.
+\textbf{Claim $\co {\beta} {\alpha} = \Id[\CQ]$}(\cref{unit1})
+\begin{proof}
+Fix $(a',b') \in \CQ$.
+\begin{align*}
+ &\quad (\co {\beta} {\alpha}) ((a',b'))\\
+=&\qquad \text{\{ Function composition \}} \\
+ &\quad \alpha(\beta((a',b'))) \\
+=&\qquad \text{\{ Definition of $\beta$ \}} \\
+ &\quad \alpha(\cmap{a'}{b'}) \\
+=&\qquad \text{\{ Definition of $\alpha$ \}} \\
+ &\quad (\co {\inl} {\cmap{a'}{b'}}, \co {\inr} {\cmap{a'}{b'}}) \\
+=&\qquad \text{\{ Using \ref{ga} and \ref{gb} \}} \\
+ &\quad (a', b') \\
+=&\qquad \text{\{ Identity on $\CQ$ \}} \\
+ &\quad \Id[\CQ]((a', b')) \\
+\end{align*}
+\end{proof}
+We conclude $\co {\beta} {\alpha} = \Id[\CQ]$ (assuming functional extensionality).
+
+\textbf{Claim $\co {\alpha} {\beta} = \Id[\CP]$} (\cref{unit2}).
+\begin{proof}
+Fix $k' \in \CP$.
+\begin{align*}
+ &\quad (\co {\alpha} {\beta}) (k')\\
+=&\qquad \text{\{ Function composition \}} \\
+ &\quad \beta(\alpha(k')) \\
+=&\qquad \text{\{ Definition of $\alpha$ \}} \\
+ &\quad \beta((\co {\inl} {k'}, \co {\inr} {k'}))\\
+=&\qquad \text{\{ Definition of $\beta$ \}} \\
+ &\quad \cmap{\co {\inl} {k'}}{\co {\inr} {k'}}\\
+=&\qquad \text{\{ Uniqueness of $\cmap{\co {\inl} {k'}}{\co {\inr} {k'}} \in \CC(A+B,X) \}$} \\
+ &\quad k'\\
+=&\qquad \text{\{ Identity on $\CP$ \}} \\
+ &\quad \Id[\CP] (k')
+\end{align*}
+We conclude $\co {\alpha} {\beta} = \Id[\CP]$ (assuming functional extensionality).
+\end{proof}
+
+\end{solution}
+
+
 \begin{solution}[\cref{exer:swap_binary_coproduct}]\label{sol:swap_binary_coproduct}
 We fix objects $A,B\in\Ob{\CC}$. These objects have two binary coproducts in $\CC$: $(A+B,\inl,\inr)$ and $(B+A,\inl',\inr')$, where $\inl,\inr,\inl',\inr'$ are morphisms with types:
 
@@ -485,14 +567,6 @@ Combining $\co {\inl} {(\co {f} {g})} = \inl$ and $\co {\inr} {(\co {f} {g})} = 
 
 \noindent
 Since $f : A+B \to B+A$ is an isomorphism with $g : B+A \to A+B$ as its inverse, we have successfully constructed our desired isomorphism $A+B \cong B+A$.
-
-\begin{lemma}
-\label{lemma}
-Given category $\CC$ with choice of coproduct, objects $A,B\in \Ob{\CC}$, their coproduct $(A+B,\inl,\inr)$ and a morphism $f:A+B\to A+B$. If $\co {\inl} {f}=\inl$ and $\co {\inr} {f}=\inr$, then $f=\Id[A+B]$.
-\begin{proof}
-By definition of coproduct $A+B$ we know there is a unique $g: A+B \to A+B$, s.t. $\co {\inl} {g}=\inl$ and $\co {\inr} {g}=\inr$. Since it is unique, $f$ and $g$ must be the same morphism. Furthermore, we know that the identity morphism $\Id[A+B]: A+B \to A+B$ exists, and satisfies the equations $\co {\inl} {\Id[A+B]} = \inl$ and $\co {\inr} {\Id[A+B]} = \inr$. Again because of uniqueness of $g$, $\Id[A+B]$ must be the same as $g$, therefore $f=g=\Id[A+B]$.
-\end{proof}
-\end{lemma}
 \end{solution}
 
 %% Solutions to monads
@@ -871,10 +945,57 @@ Thus, the left and right hand sides compute to the same term, hence they are equ
 \end{solution}
 
 \begin{solution}[\cref{exer:terminal_iff_initial_op}]\label{sol:terminal_iff_initial_op}
-	Let $ \CC $ be a category. Suppose that $ \CC $ has a terminal object $ B \in \Ob\CC $. Note that $ \Ob\CC = \Ob{\op\CC} $. We will show that $ B $ is an initial object in $ \op\CC $. That is, for all $ A \in \Ob{\op\CC} $, we will show that $ \op\CC $ has a unique morphism from $ B $ to $ A $.
-	Let $ A \in \Ob{\op\CC} $ be an arbitrary object. Since $ B $ is terminal in $ \CC $, we have that $ \CC(A, B) $ contains exactly one element. Then $ \op\CC(B, A) $ contains exactly one element as well, because $ \CC(A, B) = \op\CC(B, A) $. Therefore, $ B $ is an initial object in $ \op\CC $.
+  Let $ \CC $ be a category. Suppose that $ \CC $ has a terminal object $ B \in \Ob\CC $. Note that $ \Ob\CC = \Ob{\op\CC} $. We will show that $ B $ is an initial object in $ \op\CC $. That is, for all $ A \in \Ob{\op\CC} $, we will show that $ \op\CC $ has a unique morphism from $ B $ to $ A $.
+  Let $ A \in \Ob{\op\CC} $ be an arbitrary object. Since $ B $ is terminal in $ \CC $, we have that $ \CC(A, B) $ contains exactly one element. Then $ \op\CC(B, A) $ contains exactly one element as well, because $ \CC(A, B) = \op\CC(B, A) $. Therefore, $ B $ is an initial object in $ \op\CC $.
+  
+  Conversely, suppose that $ \op\CC $ has an initial object $ B \in \Ob{\op\CC} = \Ob\CC $. Given any object $ A \in \Ob\CC = \Ob{\op\CC}  $, since $ B $ is initial in $ \op\CC $, $ \op\CC(B, A) $ contains exactly one element $ f $. Then $ \CC(A, B) $ contains exactly one element (this is $ f $ again) as well. Therefore, $ B $ is a terminal object in $ \CC $.
+\end{solution}
 
-	Conversely, suppose that $ \op\CC $ has an initial object $ B \in \Ob{\op\CC} = \Ob\CC $. Given any object $ A \in \Ob\CC = \Ob{\op\CC}  $, since $ B $ is initial in $ \op\CC $, $ \op\CC(B, A) $ contains exactly one element $ f $. Then $ \CC(A, B) $ contains exactly one element (this is $ f $ again) as well. Therefore, $ B $ is a terminal object in $ \CC $.
+\begin{solution}[\cref{exer:product-represent}]\label{sol:product-represent}
+\newcommand{\CP}{\CC(A+B,X)}
+\newcommand{\CQ}{\CC(A,X)\times\CC(B,X)}
+\newcommand{\PP}{\CC(X,A\times B)}
+\newcommand{\PQ}{\CC(X,A)\times\CC(X,B)}
+\newcommand{\pmap}[2]{ \langle #1, #2 \rangle }  % called \productmap in CT4P
+\newcommand{\cmap}[2]{ [ #1, #2 ] }           % called \coproductmap in CT4P
+  
+This means we are after the morphisms \[\alpha:\SET(\PP, \PQ)\] and its inverse \[\beta:\SET(\PQ, \PP)\]
+
+Note that the source and target of the hom-sets are reversed compared to the problem statement for coproducts. This is not a coincidence, as coproducts in one category have a direct correspondence with products in the opposite category -- which is the category with all morphisms reversed. This fact alone might be convincing enough to conclude that the morphisms we are after are the following:
+
+\[\alpha(k):=(\co {k} {\projl}, \co {k} {\projr})\] and \[\beta(a,b) := \pmap{a}{b}\] where $\pmap{a}{b}$, also known as the product map, is the unique morphism that makes the corresponding product triangles commute, as in the following diagram:
+
+\[
+\begin{tikzcd}
+A & A\times B \arrow[r, "\pi_r"] \arrow[l, "\pi_l"']                    & B \\
+  & X \arrow[u, "{<a,b>}" description] \arrow[ru, "b"'] \arrow[lu, "a"] &  
+\end{tikzcd}
+\]
+
+Or equivalently, the unique morphism s.t. 
+
+\begin{equation}
+\label{ga2}
+    \co {\pmap{a}{b}} {\projl} = a
+\end{equation}
+\begin{equation}
+\label{gb2}
+    \co {\pmap{a}{b}} {\projr} = b
+\end{equation}
+
+Note that the order of composition is reversed w.r.t. the order of composition in the coproducts case.\\
+
+To fully convince ourselves, without relying on the opposite category, we can construct a proof by applying the following substitutions to the proof for coproducts:
+
+\begin{itemize}
+    \item \textit{coproduct} becomes \textit{product}
+    \item $A+B$ becomes $A\times B$
+    \item $\CQ$ becomes $\PQ$
+    \item $\CP$ becomes $\PP$
+    \item $\co {\inl} {\_}$ becomes $\co {\_} {\projl}$
+    \item $\co {\inr} {\_}$ becomes $\co {\_} {\projr}$
+    \item $\cmap{a}{b}$ becomes $\pmap{a}{b}$
+\end{itemize}
 \end{solution}
 
 \begin{solution}[\cref{exer:cat-without-terminal}]\label{sol:cat-without-terminal}
