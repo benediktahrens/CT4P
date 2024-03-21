@@ -588,7 +588,7 @@ For $(X,\phi)$ an arbitrary $F$-coalgebra, we denote the unique morphism $(X,\ph
 \begin{exer} Spell out what it means for a coalgebra to be the terminal coalgebra.
 \end{exer}
 
-\begin{exer} Let $F:\CC\to\CC$ be an endofunctor and assume that the terminal coalgebra $(\Terminalcoalg{F}, \Out)$ exists. Show that the following properties holds:
+\begin{exer} Let $F:\CC\to\CC$ be an endofunctor and let $(\Terminalcoalg{F}, \Out)$ be a terminal coalgebra. Show that the following properties holds:
 \begin{enumerate}
 \item $\Id = \anam{\Out}$.
 \item For $F$-algebras $(X,\phi)$ and $(Y,\psi)$ and $f\in\CHom{\CC}{X}{Y}$, we have 
@@ -623,7 +623,7 @@ F\Terminalcoalg{F}
 \end{enumerate} 
 \end{exer}
 
-\begin{thm}[\textbf{Dual of Lambek's theorem}] Let $F:\CC\to\CC$ be an endofunctor and let $(\Terminalcoalg{F}, \Out)$ be a terminal coalgebra. Then is $\Out$ an isomorphism whose inverse is given by $\Inv{\Out} = \anam{F(\Out)}$.
+\begin{thm}[\textbf{Dual of Lambek's theorem}] Let $F:\CC\to\CC$ be an endofunctor and let $(\Terminalcoalg{F}, \Out)$ be a terminal coalgebra. Then $\Out$ is an isomorphism whose inverse is given by $\Inv{\Out} = \anam{F(\Out)}$.
 \end{thm}
 
 \begin{exer}
@@ -704,7 +704,9 @@ where $\star$ is the unique element of $1$.
 
 \begin{exer}[\cref{sol:stream-of-nats}]\label{exer:stream-of-nats}
   Define, as an anamorphism, the function $\nats : \NN \to \Stream(\NN)$ which returns the stream of all natural
-  numbers starting with the natural number given as the argument
+  numbers starting with the natural number given as the argument.
+
+  What do you need to change to obtain instead the stream listing \emph{every other} number starting with the given one?
 \end{exer}
 
 
@@ -712,6 +714,9 @@ where $\star$ is the unique element of $1$.
   Define, as an anamorphism, the function $\zip : \Stream(A) \times \Stream(B) \to \Stream(A \times B)$ that zips the argument streams together.
 \end{exer}
 
+\begin{exer}
+  Define, as an anamorphism, the function $\map : (A \to B) \to \Stream(A) \to \Stream(B)$.
+\end{exer}
 
 \begin{exer}
   For a fixed set $A$, consider the functor given on objects by $F(X) := 1 + A \times X$.
