@@ -722,10 +722,13 @@ where $\star$ is the unique element of $1$.
   For a fixed set $A$, consider the functor given on objects by $F(X) := 1 + A \times X$.
   Its terminal $F$-coalgebra is the datatype $\Colist(A)$ of potentially infinite lists over elements in $A$, with suitable destructors $\head$ and $\tail$ and an ``exception'' in case the colist is empty.
 
-  Define a function $\Colist(A) \to  \mathbb{N} + \{\infty\}$ counting the elements in a colist.
-  
+  Define a function $\Colist(A) \to  \mathbb{N} + \{\infty\}$ counting the elements in a colist.  
 \end{exer}
 
+\begin{exer}
+  Try to define $\filter : (A \to \Bool) \to \Stream(A) \to \Stream(A)$.
+  What goes wrong?
+\end{exer}
 
 %%% Local Variables:
 %%% mode: latex
