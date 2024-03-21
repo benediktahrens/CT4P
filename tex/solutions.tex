@@ -384,26 +384,24 @@ This category can not have an initial object: Suppose it has an initial object $
 \newcommand{\CQ}{\CC(A,X)\times\CC(B,X)}
 \newcommand{\PP}{\CC(X,A\times B)}
 \newcommand{\PQ}{\CC(X,A)\times\CC(X,B)}
-\newcommand{\pmap}[2]{ \langle #1, #2 \rangle }  % called \productmap in CT4P
-\newcommand{\cmap}[2]{ [ #1, #2 ] }           % called \coproductmap in CT4P
  We need to construct a morphism \[\alpha:\SET(\CP, \CQ)\] and its inverse \[\beta:\SET(\CQ, \CP)\]
 such that
 \begin{equation}
-\label{unit1}
+\label{coproduct-iso-1}
     \alpha \circ \beta = \Id[\CQ]
 \end{equation}
 \begin{equation}
-\label{unit2}
+\label{coproduct-iso-2}
     \beta \circ \alpha = \Id[\CP]
 \end{equation}
 %
 Note that $\alpha$ and $\beta$ are morphisms in the category of sets ($\SET$).\\
 
-We define \[\alpha(k):=(\co {\inl} {k}, \co {\inr} {k})\] to be our candidate function $\alpha$. And we define \[\beta(a,b):= \cmap{a}{b}\] to be our candidate function $\beta$. Here $[a,b]$ is also known as the coproduct map, which is exactly the unique morphism from $A+B$ into $X$ that makes the corresponding coproduct triangles commute, as in the following diagram:
+We define \[\alpha(k):=(\co {\inl} {k}, \co {\inr} {k})\] to be our candidate function $\alpha$. And we define \[\beta(a,b):= \outofcoproduct{a}{b}\] to be our candidate function $\beta$. Here $\outofcoproduct{a}{b}$ is also known as the coproduct map, which is exactly the unique morphism from $A+B$ into $X$ that makes the corresponding coproduct triangles commute, as in the following diagram:
 
 \[
 \begin{tikzcd}
-A \arrow[r, "\inl"] \arrow[rd, "a"'] & A+B \arrow[d, "{\cmap{a}{b}}" description] & B \arrow[l, "\inr"'] \arrow[ld, "b"] \\
+A \arrow[r, "\inl"] \arrow[rd, "a"'] & A+B \arrow[d, "{\outofcoproduct{a}{b}}" description] & B \arrow[l, "\inr"'] \arrow[ld, "b"] \\
                                     & X                                    &
 \end{tikzcd}
 \]
@@ -411,16 +409,16 @@ A \arrow[r, "\inl"] \arrow[rd, "a"'] & A+B \arrow[d, "{\cmap{a}{b}}" description
 Equivalently, it is the unique morphism s.t.
 
 \begin{equation}
-\label{ga}
-    \co {\inl} {\cmap{a}{b}} = a
+\label{coproduct-iso-inl}
+    \co {\inl} {\outofcoproduct{a}{b}} = a
 \end{equation}
 \begin{equation}
-\label{gb}
-    \co {\inr} {\cmap{a}{b}} = b
+\label{coproduct-iso-inr}
+    \co {\inr} {\outofcoproduct{a}{b}} = b
 \end{equation}
 
-To show that $\alpha$ is an isomorphism we have to show that equations \ref{unit1} and \ref{unit2} hold.
-\textbf{Claim $\co {\beta} {\alpha} = \Id[\CQ]$}(\cref{unit1})
+To show that $\alpha$ is an isomorphism we have to show that equations \cref{coproduct-iso-1} and \cref{coproduct-iso-2} hold.
+\textbf{Claim $\co {\beta} {\alpha} = \Id[\CQ]$}(\cref{coproduct-iso-1})
 \begin{proof}
 Fix $(a',b') \in \CQ$.
 \begin{align*}
@@ -428,10 +426,10 @@ Fix $(a',b') \in \CQ$.
 =&\qquad \text{\{ Function composition \}} \\
  &\quad \alpha(\beta((a',b'))) \\
 =&\qquad \text{\{ Definition of $\beta$ \}} \\
- &\quad \alpha(\cmap{a'}{b'}) \\
+ &\quad \alpha(\outofcoproduct{a'}{b'}) \\
 =&\qquad \text{\{ Definition of $\alpha$ \}} \\
- &\quad (\co {\inl} {\cmap{a'}{b'}}, \co {\inr} {\cmap{a'}{b'}}) \\
-=&\qquad \text{\{ Using \ref{ga} and \ref{gb} \}} \\
+ &\quad (\co {\inl} {\outofcoproduct{a'}{b'}}, \co {\inr} {\outofcoproduct{a'}{b'}}) \\
+=&\qquad \text{\{ Using \ref{coproduct-iso-inl} and \ref{coproduct-iso-inr} \}} \\
  &\quad (a', b') \\
 =&\qquad \text{\{ Identity on $\CQ$ \}} \\
  &\quad \Id[\CQ]((a', b')) \\
@@ -439,7 +437,7 @@ Fix $(a',b') \in \CQ$.
 \end{proof}
 We conclude $\co {\beta} {\alpha} = \Id[\CQ]$ (assuming functional extensionality).
 
-\textbf{Claim $\co {\alpha} {\beta} = \Id[\CP]$} (\cref{unit2}).
+\textbf{Claim $\co {\alpha} {\beta} = \Id[\CP]$} (\cref{coproduct-iso-2}).
 \begin{proof}
 Fix $k' \in \CP$.
 \begin{align*}
@@ -449,8 +447,8 @@ Fix $k' \in \CP$.
 =&\qquad \text{\{ Definition of $\alpha$ \}} \\
  &\quad \beta((\co {\inl} {k'}, \co {\inr} {k'}))\\
 =&\qquad \text{\{ Definition of $\beta$ \}} \\
- &\quad \cmap{\co {\inl} {k'}}{\co {\inr} {k'}}\\
-=&\qquad \text{\{ Uniqueness of $\cmap{\co {\inl} {k'}}{\co {\inr} {k'}} \in \CC(A+B,X) \}$} \\
+ &\quad \outofcoproduct{\co {\inl} {k'}}{\co {\inr} {k'}}\\
+=&\qquad \text{\{ Uniqueness of $\outofcoproduct{\co {\inl} {k'}}{\co {\inr} {k'}} \in \CC(A+B,X) \}$} \\
  &\quad k'\\
 =&\qquad \text{\{ Identity on $\CP$ \}} \\
  &\quad \Id[\CP] (k')
@@ -956,14 +954,12 @@ Thus, the left and right hand sides compute to the same term, hence they are equ
 \newcommand{\CQ}{\CC(A,X)\times\CC(B,X)}
 \newcommand{\PP}{\CC(X,A\times B)}
 \newcommand{\PQ}{\CC(X,A)\times\CC(X,B)}
-\newcommand{\pmap}[2]{ \langle #1, #2 \rangle }  % called \productmap in CT4P
-\newcommand{\cmap}[2]{ [ #1, #2 ] }           % called \coproductmap in CT4P
   
 This means we are after the morphisms \[\alpha:\SET(\PP, \PQ)\] and its inverse \[\beta:\SET(\PQ, \PP)\]
 
 Note that the source and target of the hom-sets are reversed compared to the problem statement for coproducts. This is not a coincidence, as coproducts in one category have a direct correspondence with products in the opposite category -- which is the category with all morphisms reversed. This fact alone might be convincing enough to conclude that the morphisms we are after are the following:
 
-\[\alpha(k):=(\co {k} {\projl}, \co {k} {\projr})\] and \[\beta(a,b) := \pmap{a}{b}\] where $\pmap{a}{b}$, also known as the product map, is the unique morphism that makes the corresponding product triangles commute, as in the following diagram:
+\[\alpha(k):=(\co {k} {\projl}, \co {k} {\projr})\] and \[\beta(a,b) := \intoproduct{a}{b}\] where $\intoproduct{a}{b}$, also known as the product map, is the unique morphism that makes the corresponding product triangles commute, as in the following diagram:
 
 \[
 \begin{tikzcd}
@@ -976,11 +972,11 @@ Or equivalently, the unique morphism s.t.
 
 \begin{equation}
 \label{ga2}
-    \co {\pmap{a}{b}} {\projl} = a
+    \co {\intoproduct{a}{b}} {\projl} = a
 \end{equation}
 \begin{equation}
 \label{gb2}
-    \co {\pmap{a}{b}} {\projr} = b
+    \co {\intoproduct{a}{b}} {\projr} = b
 \end{equation}
 
 Note that the order of composition is reversed w.r.t. the order of composition in the coproducts case.\\
@@ -994,7 +990,7 @@ To fully convince ourselves, without relying on the opposite category, we can co
     \item $\CP$ becomes $\PP$
     \item $\co {\inl} {\_}$ becomes $\co {\_} {\projl}$
     \item $\co {\inr} {\_}$ becomes $\co {\_} {\projr}$
-    \item $\cmap{a}{b}$ becomes $\pmap{a}{b}$
+    \item $\outofcoproduct{a}{b}$ becomes $\intoproduct{a}{b}$
 \end{itemize}
 \end{solution}
 
