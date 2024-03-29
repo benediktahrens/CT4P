@@ -611,7 +611,7 @@ We now show that the properties of a Kleisli triple hold:
   
   
 
-\item For each function $f:X\to Y$, we have to show $f^{*}(\eta_X(x)) = f(x)$, this indeed holds by the following computation:
+\item For each function $f:X\to \List Y$, we have to show $f^{*}(\eta_X(x)) = f(x)$, this indeed holds by the following computation:
 \[
 f^{*}(\eta_X(x)) = f^{*}(\cons(x,\nil)) = \cons(fx, f^{*}(\nil)) = \cons(fx, \nil),
 \]
@@ -690,7 +690,7 @@ We now show that the properties of a Kleisli triple hold:
 \]
 \end{itemize}
 
-\item For each function $f:X\to Y$, we have to show $f^{*}(\eta_X(a)) = f(a)$, this indeed holds by the following computation:
+\item For each function $f:X\to \BinTree Y$, we have to show $f^{*}(\eta_X(a)) = f(a)$, this indeed holds by the following computation:
 \[
 f^{*}(\eta_X(a)) = f^{*}(\Leaf{a}) = f(a).
 \]
@@ -702,13 +702,17 @@ g^{*}(f^{*}(t)) = (\co{f}{g^{*}})^{*}(t).
 That this equality holds follows by pattern matching:
 \begin{itemize}
 \item If $t= \Leaf{a}$, then
-\[
-g^{*}(f^{*}(t)) = g^{*}(f^{*}(\Leaf{a}) = g^{*}(f(a)) = (\co{f}{g^{*}})(a) = (\co{f}{g^{*}})^{*}(\Leaf{a}) = (\co{f}{g^{*}})^{*}(t).
-\]
+\begin{align*}
+	g^{*}(f^{*}(t)) & = g^{*}(f^{*}(\Leaf{a})) = g^{*}(f(a)) = (\co{f}{g^{*}})(a) = (\co{f}{g^{*}})^{*}(\Leaf{a}) \\
+	& = (\co{f}{g^{*}})^{*}(t).	
+\end{align*}
+
 \item If $t=\Branch{t_1}{t_2}$, then is the left-hand-side given by
-\[
-g^{*}(f^{*}(t)) = g^{*}(f^{*}(\Branch{t_1}{t_2})) = g^{*}\left(\Branch{f^{*}(t_1)}{f^{*}(t_2)}\right) = \Branch{g^{*}(f^{*}(t_1))}{g^{*}(f^{*}(t_2))}.
-\]
+\begin{align*}
+	g^{*}(f^{*}(t)) & = g^{*}(f^{*}(\Branch{t_1}{t_2})) = g^{*}\left(\Branch{f^{*}(t_1)}{f^{*}(t_2)}\right) \\
+	& = \Branch{g^{*}(f^{*}(t_1))}{g^{*}(f^{*}(t_2))}.	
+\end{align*}
+
 The right-hand-side is given by 
 \[
 (\co{f}{g^{*}})^{*}(t) = (\co{f}{g^{*}})^{*}(\Branch{t_1}{t_2}) = \Branch{(\co{f}{g^{*}})(t_1)}{(\co{f}{g^{*}})(t_2)}.
@@ -753,7 +757,7 @@ We now show that the properties of a Kleisli triple hold:
 \]
 \end{itemize}
 
-\item For each function $f:X\to Y$, we have to show $f^{*}(\eta_X(x)) = f(x)$ but this holds directly by the definition of $(-)^{*}$ since $\eta_X(x)=i_l^X(x)$.
+\item For each function $f:X\to Y + E$, we have to show $f^{*}(\eta_X(x)) = f(x)$ but this holds directly by the definition of $(-)^{*}$ since $\eta_X(x)=i_l^X(x)$.
 
 \item Let $f:X\to Y + E$ and $g:Y\to Z + E$ be functions, we have to show 
 \[
@@ -833,7 +837,7 @@ We now show that the properties of a Kleisli triple hold:
 \eta_X^{*}(A) = \bigcup_{a\in A} \eta_X(a) = \bigcup_{a\in A} \{a\} = A = \Id[\mathbb{P}_{fin}(X)](A).
 \]
 
-\item For each function $f:X\to Y$, we have to show $f^{*}(\eta_X(x)) = f(x)$ but this holds directly by the definition of $(-)^{*}$ since
+\item For each function $f:X\to \mathbb{P}_{fin}(Y)$, we have to show $f^{*}(\eta_X(x)) = f(x)$ but this holds directly by the definition of $(-)^{*}$ since
 \[
 f^{*}(\eta_X(x)) = f^{*}(\{x\}) = \bigcup_{a\in \{x\}} f(a) = f(x).
 \]
@@ -848,7 +852,7 @@ g^{*}(f^{*}(A)) = g^{*}\left( \bigcup_{a\in A} f(a) \right) = \bigcup_{b \in \bi
 \]
 The right-hand-side is given as:
 \[
-(\co{f}{g^{*}})^{*}(A) = \bigcup_{a\in A} (\co{f}{g^{*}})(a) = \bigcup_{a\in A} g^{*}(f(a)) = \bigcup_{a\in A} \bigcup_{b\in f(a)} g(f(a))
+(\co{f}{g^{*}})^{*}(A) = \bigcup_{a\in A} (\co{f}{g^{*}})(a) = \bigcup_{a\in A} g^{*}(f(a)) = \bigcup_{a\in A} \bigcup_{b\in f(a)} g(f(a)).
 \]
 Hence, both sides are equal.
 
@@ -871,10 +875,10 @@ Let $i\in Cont^R(X)$. We now show that this data satisfies the properties of a K
 \begin{enumerate}
 \item For each set $X$, we have to show $\eta_X^{*} = \Id[Cont^R(X)]$. Let $x\in X$. The claim then follows by the following computation:
 \[
-\eta_X^{*}(i) = \lambda j, i\left(\eta_X(-)(j)\right) = \lambda j, i\left(\lambda x, j(x)\right) = i
+\eta_X^{*}(i) = \lambda j, i\left(\eta_X(-)(j)\right) = \lambda j, i\left(\lambda x, j(x)\right) = i.
 \]
 
-\item For each function $f:X\to Y$, we have to show $f^{*}(\eta_X(x)) = f(x)$, this follows by the following computation:
+\item For each function $f:X\to Cont^R(Y)$, we have to show $f^{*}(\eta_X(x)) = f(x)$, this follows by the following computation:
 \[
 f^{*}(\eta_X(x)) = f^{*}(\lambda g,g(x)) = \lambda j, \left(\left(\lambda g,g(x)\right)(f(-)(j))\right) = \lambda j, (f(x)(j)) = f(x).
 \]
@@ -884,12 +888,14 @@ f^{*}(\eta_X(x)) = f^{*}(\lambda g,g(x)) = \lambda j, \left(\left(\lambda g,g(x)
 g^{*}(f^{*}(i)) = (\co{f}{g^{*}})^{*}(i).
 \] 
 The left-hand-side is given as:
-\[
-g^{*}(f^{*}(i)) = g^{*}\left(\lambda j, i\left(f(-)(j)\right)\right) = \lambda \tilde{j}, \left(\lambda j, i\left(f(-)(j)\right)\right)\left(g(-)(\tilde{j})\right) = \lambda \tilde{j}, i\left(f(-)\left(g(-)(\tilde{j})\right)\right).
-\]
+\begin{align*}
+	g^{*}(f^{*}(i)) & = g^{*}\left(\lambda j, i\left(f(-)(j)\right)\right) = \lambda \tilde{j}, \left(\lambda j, i\left(f(-)(j)\right)\right)\left(g(-)(\tilde{j})\right) \\
+	& = \lambda \tilde{j}, i\left(f(-)\left(g(-)(\tilde{j})\right)\right).
+\end{align*}
+
 The right-hand-side is given as:
 \[
-(\co{f}{g^{*}})^{*}(i) = \lambda j, i\left((\co{f}{g^{*}})(-)(j)\right)
+(\co{f}{g^{*}})^{*}(i) = \lambda j, i\left((\co{f}{g^{*}})(-)(j)\right).
 \]
 So to show that both sides are equal, it suffices to show that for each $j$, we have 
 \[
@@ -897,7 +903,7 @@ f(-)\left(g(-)(j)\right) = (\co{f}{g^{*}})(-)(j).
 \]
 Notice that these are functions $X\to R$. Hence we will show this pointwise for each $x\in X$. The left-hand-side is given by: 
 \[
-f(-)\left(g(-)(j)\right)(x) = f(x)\left(g(-)(j)\right) 
+f(-)\left(g(-)(j)\right)(x) = f(x)\left(g(-)(j)\right).
 \]
 The right-hand-side is given by:
 \begin{eqnarray*}
@@ -929,10 +935,12 @@ We now show that this data satisfies the properties of a Kleisli triple:
 \[
 \eta_X^{*}(g)(r) = \eta_X(g(r))(r) = (\lambda \_, g(r))(r) = g(r).
 \]
-\item For each $x\in X$ and $r\in R$, we have to show $\co{\eta_X}{f^{*}} = f$. The claim then follows by the following computation (using functional extensionality):
-\[
-f^{*}(\eta_X(x))(r) = f^{*}(\lambda \_,x)(r) = \left(\lambda r', f((\lambda \_, x)(r'))(r')\right)(r) = f((\lambda \_,x)(r))(r) = f(x)(r).
-\]
+\item Let $f: X\to (R\to Y)$. We have to show that $\co{\eta_X}{f^{*}} = f$, which follows from the following computation using functional extensionality. For each $x\in X$ and $r\in R$:
+\begin{align*}
+	f^{*}(\eta_X(x))(r) & = f^{*}(\lambda \_,x)(r) = \left(\lambda r', f((\lambda \_, x)(r'))(r')\right)(r) = f((\lambda \_,x)(r))(r) \\
+	& = f(x)(r).
+\end{align*}
+
 \item Let $f: X\to (R\to Y)$ and $g: Y\to (R\to Z)$. We have to show, by function extensionality, that for any $\phi\in R\to X$, we have 
 \[
 (\co{f}{g^{*}})^{*}(\phi) = g^{*}(f^{*}(\phi)).
