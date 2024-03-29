@@ -79,16 +79,19 @@ where $\BinTree(X)$ is the set of binary trees labelled with elements from $X$ a
 The resulting monad is called the \textbf{Tree monad}.
 \end{exer}
 
-
-
-\begin{exer}[\cref{sol:kleisli_triple_maybe}]\label{exer:kleisli_triple_maybe} Let $E$ be a set (considered as a set of \textit{exceptions}). Show how the following assignment induces a Kleisli triple over the category $\SET$:
+\begin{exer}[\cref{sol:kleisli_triple_exception}]\label{exer:kleisli_triple_exception} Let $E$ be a set (considered as a set of \textit{exceptions}). Show how the following assignment induces a Kleisli triple over the category $\SET$:
 \[
 X\mapsto (X + E),
 \]
 The resulting monad is called the \textbf{Exception monad}.
 \end{exer}
 
-
+\begin{exer}[\cref{sol:kleisli_triple_side_effects}]\label{exer:kleisli_triple_side_effects} Let $S$ be a set (considered as a set of states, e.g. a set of stores or a set of input/output sequences). Show how the following assignment induces a Kleisli triple over the category $\SET$:
+\[
+X\mapsto S \to (X \times S),
+\]
+The resulting monad is called the \textbf{Monad of side-effects}.
+\end{exer}
 
 \begin{exer}[\cref{sol:kleisli_triple_nondeterminism}]\label{exer:kleisli_triple_nondeterminism} Show how the following assignment induces a Kleisli triple over the category $\SET$:
 \[

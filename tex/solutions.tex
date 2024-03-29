@@ -719,8 +719,8 @@ Hence, by the induction hypothesis, the both sides are equal.
 \end{enumerate}
 \end{solution}
 
-\begin{solution}[\cref{exer:kleisli_triple_maybe}]
-\label{sol:kleisli_triple_maybe}
+\begin{solution}[\cref{exer:kleisli_triple_exception}]
+\label{sol:kleisli_triple_exception}
 Before we continue with this exercise, we first fix some notation. Since $X+E$ is the disjoint union of $X$ and $E$, we have the canonical inclusions which we denote by
 \[ i^X_l : X\to X + E, \quad i^X_r : E\to X+E. \] 
 Hence, a function whose domain is $X+E$ is completely determined by specifying where each $i^X_l(x)$ and each $i^X_r(e)$ are mapped to. \textit{Notice that this is precisely the notation and the universal property of the coproduct (in $\SET$)}.
@@ -773,6 +773,43 @@ g^{*}(f^{*}(z)) = g^{*}(f^{*}(i_l^X(e))) = g^{*}(i_l^Y(e)) = i_l^Z(e) = (\co{f}{
 
 \end{enumerate}
 \end{solution}
+
+\begin{solution}[\cref{exer:kleisli_triple_side_effects}]
+	\label{sol:kleisli_triple_side_effects}
+	For each set $X\in\Ob \SET$, we define:
+	\[
+	\eta_X : X \to S \to X \times S : x\mapsto (\lambda s: S, (x,s)).
+	\]
+	For each function $f\in\CHom{\Ob \SET}{X}{S \to Y \times S}$, and each $c : S \to X \times S$, we define:
+	\begin{align*}
+	f^{*} (c) : S & \to Y \times S  \\
+	s & \mapsto (f (\pi_l(c(s))) (\pi_r (c(s)))),
+	\end{align*}
+	where $\pi_l$ and $\pi_r$ are the left and right projections of the product. 
+	
+	We now show that the properties of a Kleisli triple hold:
+	\begin{enumerate}
+	\item For each set $X$, we have to show $\eta_X^{*} = \Id[S \to X \times S]$. For each $c : S \to X \times S$ and $s : S$ we have:
+	$$\eta^*_X (c) (s)= (\eta_X) (\pi_l (c(s))) (\pi_r (c(s))) = (\pi_l (c(s)), \pi_r (c(s))) = c (s).$$
+	
+	\item For each function $f:X\to S \to Y \times S$, we have to show $f^{*}(\eta_X(x)) = f(x)$ for all $x \in X$. For each $s : S$ we have: 
+	$$ f^* (\eta_X (x)) (s) = f^* (\lambda s: S, (x,s)) (s) = f (\pi_l (x,s)) (\pi_r (x,s)) = f (x)(s) $$
+	
+	\item Let $f:X\to S \to Y \times S$ and $g:Y\to S \to Z \times S$ be functions, we have to show for each $c : S \to X \times S$:
+	\[
+	g^{*}(f^{*}(c)) = (\co{f}{g^{*}})^{*}(c).
+	\] 
+	From the left hand side we have: 
+	\begin{align*}
+	g^* (f^* (c)) & = g^* (\lambda s : S, f (\pi_l (c(s))) (\pi_r (c(s)))) = (\lambda s : S, g^* (f (\pi_l (c(s))) (\pi_r (c(s))))) \\
+	& = (\lambda s : S, (g^* \circ f) (\pi_l (c(s))) (\pi_r (c(s)))),
+	\end{align*}
+	and from the right hand side we have:
+	$$ (g^* \circ f)^* (c) = (\lambda s : S, (g^* \circ f) (\pi_l (c(s))) (\pi_r (c(s)))).$$ 
+	Hence, the left and right hand sides are equal. 
+	\end{enumerate}
+	\end{solution}
+	
 
 \begin{solution}[\cref{exer:kleisli_triple_nondeterminism}]
   \label{sol:kleisli_triple_nondeterminism}
