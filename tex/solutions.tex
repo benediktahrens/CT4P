@@ -794,7 +794,7 @@ g^{*}(f^{*}(z)) = g^{*}(f^{*}(i_l^X(e))) = g^{*}(i_l^Y(e)) = i_l^Z(e) = (\co{f}{
 	We now show that the properties of a Kleisli triple hold:
 	\begin{enumerate}
 	\item For each set $X$, we have to show $\eta_X^{*} = \Id[S \to X \times S]$. For each $c : S \to X \times S$ and $s : S$ we have:
-	$$\eta^*_X (c) (s)= (\eta_X) (\pi_l (c(s))) (\pi_r (c(s))) = (\pi_l (c(s)), \pi_r (c(s))) = c (s).$$
+	\[\eta^*_X (c) (s)= (\eta_X) (\pi_l (c(s))) (\pi_r (c(s))) = (\pi_l (c(s)), \pi_r (c(s))) = c (s).\]
 	
 	\item For each function $f:X\to S \to Y \times S$, we have to show $f^{*}(\eta_X(x)) = f(x)$ for all $x \in X$. For each $s : S$ we have: 
 	$$ f^* (\eta_X (x)) (s) = f^* (\lambda s: S, (x,s)) (s) = f (\pi_l (x,s)) (\pi_r (x,s)) = f (x)(s) $$
