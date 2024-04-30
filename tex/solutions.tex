@@ -384,26 +384,24 @@ This category can not have an initial object: Suppose it has an initial object $
 \newcommand{\CQ}{\CC(A,X)\times\CC(B,X)}
 \newcommand{\PP}{\CC(X,A\times B)}
 \newcommand{\PQ}{\CC(X,A)\times\CC(X,B)}
-\newcommand{\pmap}[2]{ \langle #1, #2 \rangle }  % called \productmap in CT4P
-\newcommand{\cmap}[2]{ [ #1, #2 ] }           % called \coproductmap in CT4P
  We need to construct a morphism \[\alpha:\SET(\CP, \CQ)\] and its inverse \[\beta:\SET(\CQ, \CP)\]
 such that
 \begin{equation}
-\label{unit1}
+\label{coproduct-iso-1}
     \alpha \circ \beta = \Id[\CQ]
 \end{equation}
 \begin{equation}
-\label{unit2}
+\label{coproduct-iso-2}
     \beta \circ \alpha = \Id[\CP]
 \end{equation}
 %
 Note that $\alpha$ and $\beta$ are morphisms in the category of sets ($\SET$).\\
 
-We define \[\alpha(k):=(\co {\inl} {k}, \co {\inr} {k})\] to be our candidate function $\alpha$. And we define \[\beta(a,b):= \cmap{a}{b}\] to be our candidate function $\beta$. Here $[a,b]$ is also known as the coproduct map, which is exactly the unique morphism from $A+B$ into $X$ that makes the corresponding coproduct triangles commute, as in the following diagram:
+We define \[\alpha(k):=(\co {\inl} {k}, \co {\inr} {k})\] to be our candidate function $\alpha$. And we define \[\beta(a,b):= \outofcoproduct{a}{b}\] to be our candidate function $\beta$. Here $\outofcoproduct{a}{b}$ is also known as the coproduct map, which is exactly the unique morphism from $A+B$ into $X$ that makes the corresponding coproduct triangles commute, as in the following diagram:
 
 \[
 \begin{tikzcd}
-A \arrow[r, "\inl"] \arrow[rd, "a"'] & A+B \arrow[d, "{\cmap{a}{b}}" description] & B \arrow[l, "\inr"'] \arrow[ld, "b"] \\
+A \arrow[r, "\inl"] \arrow[rd, "a"'] & A+B \arrow[d, "{\outofcoproduct{a}{b}}" description] & B \arrow[l, "\inr"'] \arrow[ld, "b"] \\
                                     & X                                    &
 \end{tikzcd}
 \]
@@ -411,16 +409,16 @@ A \arrow[r, "\inl"] \arrow[rd, "a"'] & A+B \arrow[d, "{\cmap{a}{b}}" description
 Equivalently, it is the unique morphism s.t.
 
 \begin{equation}
-\label{ga}
-    \co {\inl} {\cmap{a}{b}} = a
+\label{coproduct-iso-inl}
+    \co {\inl} {\outofcoproduct{a}{b}} = a
 \end{equation}
 \begin{equation}
-\label{gb}
-    \co {\inr} {\cmap{a}{b}} = b
+\label{coproduct-iso-inr}
+    \co {\inr} {\outofcoproduct{a}{b}} = b
 \end{equation}
 
-To show that $\alpha$ is an isomorphism we have to show that equations \ref{unit1} and \ref{unit2} hold.
-\textbf{Claim $\co {\beta} {\alpha} = \Id[\CQ]$}(\cref{unit1})
+To show that $\alpha$ is an isomorphism we have to show that equations \cref{coproduct-iso-1} and \cref{coproduct-iso-2} hold.
+\textbf{Claim $\co {\beta} {\alpha} = \Id[\CQ]$}(\cref{coproduct-iso-1})
 \begin{proof}
 Fix $(a',b') \in \CQ$.
 \begin{align*}
@@ -428,10 +426,10 @@ Fix $(a',b') \in \CQ$.
 =&\qquad \text{\{ Function composition \}} \\
  &\quad \alpha(\beta((a',b'))) \\
 =&\qquad \text{\{ Definition of $\beta$ \}} \\
- &\quad \alpha(\cmap{a'}{b'}) \\
+ &\quad \alpha(\outofcoproduct{a'}{b'}) \\
 =&\qquad \text{\{ Definition of $\alpha$ \}} \\
- &\quad (\co {\inl} {\cmap{a'}{b'}}, \co {\inr} {\cmap{a'}{b'}}) \\
-=&\qquad \text{\{ Using \ref{ga} and \ref{gb} \}} \\
+ &\quad (\co {\inl} {\outofcoproduct{a'}{b'}}, \co {\inr} {\outofcoproduct{a'}{b'}}) \\
+=&\qquad \text{\{ Using \ref{coproduct-iso-inl} and \ref{coproduct-iso-inr} \}} \\
  &\quad (a', b') \\
 =&\qquad \text{\{ Identity on $\CQ$ \}} \\
  &\quad \Id[\CQ]((a', b')) \\
@@ -439,7 +437,7 @@ Fix $(a',b') \in \CQ$.
 \end{proof}
 We conclude $\co {\beta} {\alpha} = \Id[\CQ]$ (assuming functional extensionality).
 
-\textbf{Claim $\co {\alpha} {\beta} = \Id[\CP]$} (\cref{unit2}).
+\textbf{Claim $\co {\alpha} {\beta} = \Id[\CP]$} (\cref{coproduct-iso-2}).
 \begin{proof}
 Fix $k' \in \CP$.
 \begin{align*}
@@ -449,8 +447,8 @@ Fix $k' \in \CP$.
 =&\qquad \text{\{ Definition of $\alpha$ \}} \\
  &\quad \beta((\co {\inl} {k'}, \co {\inr} {k'}))\\
 =&\qquad \text{\{ Definition of $\beta$ \}} \\
- &\quad \cmap{\co {\inl} {k'}}{\co {\inr} {k'}}\\
-=&\qquad \text{\{ Uniqueness of $\cmap{\co {\inl} {k'}}{\co {\inr} {k'}} \in \CC(A+B,X) \}$} \\
+ &\quad \outofcoproduct{\co {\inl} {k'}}{\co {\inr} {k'}}\\
+=&\qquad \text{\{ Uniqueness of $\outofcoproduct{\co {\inl} {k'}}{\co {\inr} {k'}} \in \CC(A+B,X) \}$} \\
  &\quad k'\\
 =&\qquad \text{\{ Identity on $\CP$ \}} \\
  &\quad \Id[\CP] (k')
@@ -613,7 +611,7 @@ We now show that the properties of a Kleisli triple hold:
   
   
 
-\item For each function $f:X\to Y$, we have to show $f^{*}(\eta_X(x)) = f(x)$, this indeed holds by the following computation:
+\item For each function $f:X\to \List Y$, we have to show $f^{*}(\eta_X(x)) = f(x)$, this indeed holds by the following computation:
 \[
 f^{*}(\eta_X(x)) = f^{*}(\cons(x,\nil)) = \cons(fx, f^{*}(\nil)) = \cons(fx, \nil),
 \]
@@ -692,7 +690,7 @@ We now show that the properties of a Kleisli triple hold:
 \]
 \end{itemize}
 
-\item For each function $f:X\to Y$, we have to show $f^{*}(\eta_X(a)) = f(a)$, this indeed holds by the following computation:
+\item For each function $f:X\to \BinTree Y$, we have to show $f^{*}(\eta_X(a)) = f(a)$, this indeed holds by the following computation:
 \[
 f^{*}(\eta_X(a)) = f^{*}(\Leaf{a}) = f(a).
 \]
@@ -704,13 +702,17 @@ g^{*}(f^{*}(t)) = (\co{f}{g^{*}})^{*}(t).
 That this equality holds follows by pattern matching:
 \begin{itemize}
 \item If $t= \Leaf{a}$, then
-\[
-g^{*}(f^{*}(t)) = g^{*}(f^{*}(\Leaf{a}) = g^{*}(f(a)) = (\co{f}{g^{*}})(a) = (\co{f}{g^{*}})^{*}(\Leaf{a}) = (\co{f}{g^{*}})^{*}(t).
-\]
+\begin{align*}
+	g^{*}(f^{*}(t)) & = g^{*}(f^{*}(\Leaf{a})) = g^{*}(f(a)) = (\co{f}{g^{*}})(a) = (\co{f}{g^{*}})^{*}(\Leaf{a}) \\
+	& = (\co{f}{g^{*}})^{*}(t).	
+\end{align*}
+
 \item If $t=\Branch{t_1}{t_2}$, then is the left-hand-side given by
-\[
-g^{*}(f^{*}(t)) = g^{*}(f^{*}(\Branch{t_1}{t_2})) = g^{*}\left(\Branch{f^{*}(t_1)}{f^{*}(t_2)}\right) = \Branch{g^{*}(f^{*}(t_1))}{g^{*}(f^{*}(t_2))}.
-\]
+\begin{align*}
+	g^{*}(f^{*}(t)) & = g^{*}(f^{*}(\Branch{t_1}{t_2})) = g^{*}\left(\Branch{f^{*}(t_1)}{f^{*}(t_2)}\right) \\
+	& = \Branch{g^{*}(f^{*}(t_1))}{g^{*}(f^{*}(t_2))}.	
+\end{align*}
+
 The right-hand-side is given by 
 \[
 (\co{f}{g^{*}})^{*}(t) = (\co{f}{g^{*}})^{*}(\Branch{t_1}{t_2}) = \Branch{(\co{f}{g^{*}})(t_1)}{(\co{f}{g^{*}})(t_2)}.
@@ -721,8 +723,8 @@ Hence, by the induction hypothesis, the both sides are equal.
 \end{enumerate}
 \end{solution}
 
-\begin{solution}[\cref{exer:kleisli_triple_maybe}]
-\label{sol:kleisli_triple_maybe}
+\begin{solution}[\cref{exer:kleisli_triple_exception}]
+\label{sol:kleisli_triple_exception}
 Before we continue with this exercise, we first fix some notation. Since $X+E$ is the disjoint union of $X$ and $E$, we have the canonical inclusions which we denote by
 \[ i^X_l : X\to X + E, \quad i^X_r : E\to X+E. \] 
 Hence, a function whose domain is $X+E$ is completely determined by specifying where each $i^X_l(x)$ and each $i^X_r(e)$ are mapped to. \textit{Notice that this is precisely the notation and the universal property of the coproduct (in $\SET$)}.
@@ -755,7 +757,7 @@ We now show that the properties of a Kleisli triple hold:
 \]
 \end{itemize}
 
-\item For each function $f:X\to Y$, we have to show $f^{*}(\eta_X(x)) = f(x)$ but this holds directly by the definition of $(-)^{*}$ since $\eta_X(x)=i_l^X(x)$.
+\item For each function $f:X\to Y + E$, we have to show $f^{*}(\eta_X(x)) = f(x)$ but this holds directly by the definition of $(-)^{*}$ since $\eta_X(x)=i_l^X(x)$.
 
 \item Let $f:X\to Y + E$ and $g:Y\to Z + E$ be functions, we have to show 
 \[
@@ -775,6 +777,43 @@ g^{*}(f^{*}(z)) = g^{*}(f^{*}(i_l^X(e))) = g^{*}(i_l^Y(e)) = i_l^Z(e) = (\co{f}{
 
 \end{enumerate}
 \end{solution}
+
+\begin{solution}[\cref{exer:kleisli_triple_side_effects}]
+	\label{sol:kleisli_triple_side_effects}
+	For each set $X\in\Ob \SET$, we define:
+	\[
+	\eta_X : X \to S \to X \times S : x\mapsto (\lambda s: S, (x,s)).
+	\]
+	For each function $f\in\CHom{\Ob \SET}{X}{S \to Y \times S}$, and each $c : S \to X \times S$, we define:
+	\begin{align*}
+	f^{*} (c) : S & \to Y \times S  \\
+	s & \mapsto (f (\pi_l(c(s))) (\pi_r (c(s)))),
+	\end{align*}
+	where $\pi_l$ and $\pi_r$ are the left and right projections of the product. 
+	
+	We now show that the properties of a Kleisli triple hold:
+	\begin{enumerate}
+	\item For each set $X$, we have to show $\eta_X^{*} = \Id[S \to X \times S]$. For each $c : S \to X \times S$ and $s : S$ we have:
+	\[\eta^*_X (c) (s)= (\eta_X) (\pi_l (c(s))) (\pi_r (c(s))) = (\pi_l (c(s)), \pi_r (c(s))) = c (s).\]
+	
+	\item For each function $f:X\to S \to Y \times S$, we have to show $f^{*}(\eta_X(x)) = f(x)$ for all $x \in X$. For each $s : S$ we have: 
+	\[ f^* (\eta_X (x)) (s) = f^* (\lambda s: S, (x,s)) (s) = f (\pi_l (x,s)) (\pi_r (x,s)) = f (x)(s). \]
+	
+	\item Let $f:X\to S \to Y \times S$ and $g:Y\to S \to Z \times S$ be functions, we have to show for each $c : S \to X \times S$:
+	\[
+	g^{*}(f^{*}(c)) = (\co{f}{g^{*}})^{*}(c).
+	\] 
+	From the left hand side we have: 
+	\begin{align*}
+	g^* (f^* (c)) & = g^* (\lambda s : S, f (\pi_l (c(s))) (\pi_r (c(s)))) = (\lambda s : S, g^* (f (\pi_l (c(s))) (\pi_r (c(s))))) \\
+	& = (\lambda s : S, (g^* \circ f) (\pi_l (c(s))) (\pi_r (c(s)))),
+	\end{align*}
+	and from the right hand side we have:
+	\[ (g^* \circ f)^* (c) = (\lambda s : S, (g^* \circ f) (\pi_l (c(s))) (\pi_r (c(s)))).\]
+	Hence, the left and right hand sides are equal. 
+	\end{enumerate}
+	\end{solution}
+	
 
 \begin{solution}[\cref{exer:kleisli_triple_nondeterminism}]
   \label{sol:kleisli_triple_nondeterminism}
@@ -798,7 +837,7 @@ We now show that the properties of a Kleisli triple hold:
 \eta_X^{*}(A) = \bigcup_{a\in A} \eta_X(a) = \bigcup_{a\in A} \{a\} = A = \Id[\mathbb{P}_{fin}(X)](A).
 \]
 
-\item For each function $f:X\to Y$, we have to show $f^{*}(\eta_X(x)) = f(x)$ but this holds directly by the definition of $(-)^{*}$ since
+\item For each function $f:X\to \mathbb{P}_{fin}(Y)$, we have to show $f^{*}(\eta_X(x)) = f(x)$ but this holds directly by the definition of $(-)^{*}$ since
 \[
 f^{*}(\eta_X(x)) = f^{*}(\{x\}) = \bigcup_{a\in \{x\}} f(a) = f(x).
 \]
@@ -813,7 +852,7 @@ g^{*}(f^{*}(A)) = g^{*}\left( \bigcup_{a\in A} f(a) \right) = \bigcup_{b \in \bi
 \]
 The right-hand-side is given as:
 \[
-(\co{f}{g^{*}})^{*}(A) = \bigcup_{a\in A} (\co{f}{g^{*}})(a) = \bigcup_{a\in A} g^{*}(f(a)) = \bigcup_{a\in A} \bigcup_{b\in f(a)} g(f(a))
+(\co{f}{g^{*}})^{*}(A) = \bigcup_{a\in A} (\co{f}{g^{*}})(a) = \bigcup_{a\in A} g^{*}(f(a)) = \bigcup_{a\in A} \bigcup_{b\in f(a)} g(f(a)).
 \]
 Hence, both sides are equal.
 
@@ -824,7 +863,7 @@ Hence, both sides are equal.
 \label{sol:kleisli_triple_continuation}
 For each set $X\in\Ob \SET$, we define:
 \[
-\eta_X : X \to (X\to R)\to R : x\mapsto (\lambda f. f(x)).
+\eta_X : X \to (X\to R)\to R : x\mapsto (\lambda f, f(x)).
 \]
 For each function $f\in\CHom{\Ob \SET}{X}{Cont^R(Y)}$, we define:
 \begin{align*}
@@ -836,10 +875,10 @@ Let $i\in Cont^R(X)$. We now show that this data satisfies the properties of a K
 \begin{enumerate}
 \item For each set $X$, we have to show $\eta_X^{*} = \Id[Cont^R(X)]$. Let $x\in X$. The claim then follows by the following computation:
 \[
-\eta_X^{*}(i) = \lambda j, i\left(\eta_X(-)(j)\right) = \lambda j, i\left(\lambda x, j(x)\right) = i
+\eta_X^{*}(i) = \lambda j, i\left(\eta_X(-)(j)\right) = \lambda j, i\left(\lambda x, j(x)\right) = i.
 \]
 
-\item For each function $f:X\to Y$, we have to show $f^{*}(\eta_X(x)) = f(x)$, this follows by the following computation:
+\item For each function $f:X\to Cont^R(Y)$, we have to show $f^{*}(\eta_X(x)) = f(x)$, this follows by the following computation:
 \[
 f^{*}(\eta_X(x)) = f^{*}(\lambda g,g(x)) = \lambda j, \left(\left(\lambda g,g(x)\right)(f(-)(j))\right) = \lambda j, (f(x)(j)) = f(x).
 \]
@@ -849,12 +888,14 @@ f^{*}(\eta_X(x)) = f^{*}(\lambda g,g(x)) = \lambda j, \left(\left(\lambda g,g(x)
 g^{*}(f^{*}(i)) = (\co{f}{g^{*}})^{*}(i).
 \] 
 The left-hand-side is given as:
-\[
-g^{*}(f^{*}(i)) = g^{*}\left(\lambda j, i\left(f(-)(j)\right)\right) = \lambda \tilde{j}, \left(\lambda j, i\left(f(-)(j)\right)\right)\left(g(-)(\tilde{j})\right) = \lambda \tilde{j}, i\left(f(-)\left(g(-)(\tilde{j})\right)\right).
-\]
+\begin{align*}
+	g^{*}(f^{*}(i)) & = g^{*}\left(\lambda j, i\left(f(-)(j)\right)\right) = \lambda \tilde{j}, \left(\lambda j, i\left(f(-)(j)\right)\right)\left(g(-)(\tilde{j})\right) \\
+	& = \lambda \tilde{j}, i\left(f(-)\left(g(-)(\tilde{j})\right)\right).
+\end{align*}
+
 The right-hand-side is given as:
 \[
-(\co{f}{g^{*}})^{*}(i) = \lambda j, i\left((\co{f}{g^{*}})(-)(j)\right)
+(\co{f}{g^{*}})^{*}(i) = \lambda j, i\left((\co{f}{g^{*}})(-)(j)\right).
 \]
 So to show that both sides are equal, it suffices to show that for each $j$, we have 
 \[
@@ -862,7 +903,7 @@ f(-)\left(g(-)(j)\right) = (\co{f}{g^{*}})(-)(j).
 \]
 Notice that these are functions $X\to R$. Hence we will show this pointwise for each $x\in X$. The left-hand-side is given by: 
 \[
-f(-)\left(g(-)(j)\right)(x) = f(x)\left(g(-)(j)\right) 
+f(-)\left(g(-)(j)\right)(x) = f(x)\left(g(-)(j)\right).
 \]
 The right-hand-side is given by:
 \begin{eqnarray*}
@@ -894,10 +935,12 @@ We now show that this data satisfies the properties of a Kleisli triple:
 \[
 \eta_X^{*}(g)(r) = \eta_X(g(r))(r) = (\lambda \_, g(r))(r) = g(r).
 \]
-\item For each $x\in X$ and $r\in R$, we have to show $\co{\eta_X}{f^{*}} = f$. The claim then follows by the following computation (using functional extensionality):
-\[
-f^{*}(\eta_X(x))(r) = f^{*}(\lambda \_,x)(r) = \left(\lambda r', f((\lambda \_, x)(r'))(r')\right)(r) = f((\lambda \_,x)(r))(r) = f(x)(r).
-\]
+\item Let $f: X\to (R\to Y)$. We have to show that $\co{\eta_X}{f^{*}} = f$, which follows from the following computation using functional extensionality. For each $x\in X$ and $r\in R$:
+\begin{align*}
+	f^{*}(\eta_X(x))(r) & = f^{*}(\lambda \_,x)(r) = \left(\lambda r', f((\lambda \_, x)(r'))(r')\right)(r) = f((\lambda \_,x)(r))(r) \\
+	& = f(x)(r).
+\end{align*}
+
 \item Let $f: X\to (R\to Y)$ and $g: Y\to (R\to Z)$. We have to show, by function extensionality, that for any $\phi\in R\to X$, we have 
 \[
 (\co{f}{g^{*}})^{*}(\phi) = g^{*}(f^{*}(\phi)).
@@ -956,14 +999,12 @@ Thus, the left and right hand sides compute to the same term, hence they are equ
 \newcommand{\CQ}{\CC(A,X)\times\CC(B,X)}
 \newcommand{\PP}{\CC(X,A\times B)}
 \newcommand{\PQ}{\CC(X,A)\times\CC(X,B)}
-\newcommand{\pmap}[2]{ \langle #1, #2 \rangle }  % called \productmap in CT4P
-\newcommand{\cmap}[2]{ [ #1, #2 ] }           % called \coproductmap in CT4P
   
 This means we are after the morphisms \[\alpha:\SET(\PP, \PQ)\] and its inverse \[\beta:\SET(\PQ, \PP)\]
 
 Note that the source and target of the hom-sets are reversed compared to the problem statement for coproducts. This is not a coincidence, as coproducts in one category have a direct correspondence with products in the opposite category -- which is the category with all morphisms reversed. This fact alone might be convincing enough to conclude that the morphisms we are after are the following:
 
-\[\alpha(k):=(\co {k} {\projl}, \co {k} {\projr})\] and \[\beta(a,b) := \pmap{a}{b}\] where $\pmap{a}{b}$, also known as the product map, is the unique morphism that makes the corresponding product triangles commute, as in the following diagram:
+\[\alpha(k):=(\co {k} {\projl}, \co {k} {\projr})\] and \[\beta(a,b) := \intoproduct{a}{b}\] where $\intoproduct{a}{b}$, also known as the product map, is the unique morphism that makes the corresponding product triangles commute, as in the following diagram:
 
 \[
 \begin{tikzcd}
@@ -976,11 +1017,11 @@ Or equivalently, the unique morphism s.t.
 
 \begin{equation}
 \label{ga2}
-    \co {\pmap{a}{b}} {\projl} = a
+    \co {\intoproduct{a}{b}} {\projl} = a
 \end{equation}
 \begin{equation}
 \label{gb2}
-    \co {\pmap{a}{b}} {\projr} = b
+    \co {\intoproduct{a}{b}} {\projr} = b
 \end{equation}
 
 Note that the order of composition is reversed w.r.t. the order of composition in the coproducts case.\\
@@ -994,7 +1035,7 @@ To fully convince ourselves, without relying on the opposite category, we can co
     \item $\CP$ becomes $\PP$
     \item $\co {\inl} {\_}$ becomes $\co {\_} {\projl}$
     \item $\co {\inr} {\_}$ becomes $\co {\_} {\projr}$
-    \item $\cmap{a}{b}$ becomes $\pmap{a}{b}$
+    \item $\outofcoproduct{a}{b}$ becomes $\intoproduct{a}{b}$
 \end{itemize}
 \end{solution}
 
@@ -1356,7 +1397,7 @@ We wish to define $h : \Stream(A)\times\Stream(B)\to A\times B$ and $t: \Stream(
 	\Stream(A\times B) 
 		\arrow[rr, swap, "{\langle \head, \tail \rangle}"] 
 	&& 
-	{\Stream(A\times B)}
+	{A \times B \times \Stream(A\times B)}
 	\end{tikzcd}
 	\end{center}
 	
