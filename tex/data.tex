@@ -728,6 +728,12 @@ where $\star$ is the unique element of $1$.
 \begin{exer}
   Try to define $\filter : (A \to \Bool) \to \Stream(A) \to \Stream(A)$.
   What goes wrong?
+
+  One might think that $\filter : (A \to \Bool) \to \Stream(A) \to \Colist(A)$ works instead.
+  Does it?
+
+  What about $\filter : (A \to \Bool) \to \Stream(A) \to \Stream(A+1)$?
+  
 \end{exer}
 
 %%% Local Variables:
