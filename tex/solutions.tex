@@ -148,6 +148,13 @@ Similarly for each $n \in \NN$, an $n \times 0$ (resp. $0 \times n$) matrix corr
 \end{enumerate}
 \end{solution}
 
+\begin{solution}[\cref{exer:category_of_relations}] \label{sol:category_of_relations}
+Let $X$ and $Y$ be sets. The hom-set $\Hom X Y$ in $\REL$ consists of subsets of $X \times Y$. For each set $X$, the identity $\Id[X]$ can be defined as follows:
+\[ \Id[X] = \{ (x,x) \mid x \in X \} .\]
+For sets $X,Y$ and $Z$, relation $R_1 \subseteq X \times Y$ and relation $R_2 \subseteq Y \times Z$, the composition $R_2 \circ R_1$ can be defined as follows:
+\[ \{ (x,z) \in X \times Z \mid \exists y \in Y \text{ s.t. } (x,y) \in R_1 \wedge (y,z) \in R_2 \} . \]
+Using these definitions, it is straightforward to check that composition is associative and left and right unit laws hold.
+\end{solution}
 
 %% Section on isomorphisms
 \begin{solution}[\cref{exer:inverse-iso}]\label{sol:inverse-iso}
@@ -1087,6 +1094,10 @@ Thus, the left and right hand sides compute to the same term, hence they are equ
 \end{enumerate}
 \end{solution}
 
+\begin{solution}[\cref{exer:initial_rel}] \label{sol:initial_rel}
+	The initial object in $\REL$ is the empty set. For each set $X$, there is a unique relation from $\emptyset$ to $X$, the empty relation $\emptyset \subseteq \emptyset \times X = \emptyset$.
+\end{solution}
+
 \begin{solution}[\cref{exer:terminal_set}]\label{sol:terminal_set}
 	A terminal set in the category of sets is a one-element set $ \{ \star \} $. Given any set $ X $, we have a unique function $ X \to \star $, since any element of $ X $ must be sent to $ \star $.
 \end{solution}
@@ -1149,7 +1160,11 @@ This category can not have a terminal object: Suppose it has a terminal object $
 		\item $0$ is the terminal object in $\MAT$. Let $n \in \NN = \MAT_0$. There is a unique morphism from $n$ to $0$ as there is a unique $0 \times n$ matrix. 
 		Note that an $0 \times n$ matrix is a linear map from an n-dimensional vector space to the zero vector space, which is unique.
 	\end{enumerate}
-	\end{solution}
+\end{solution}
+
+\begin{solution}[\cref{exer:terminal_rel}]\label{sol:terminal_rel}
+	The terminal object in $\REL$ is the empty set. For each set $X$, there is a unique relation from $X$ to $\emptyset$, the empty relation $\emptyset \subseteq X \times \emptyset = \emptyset$.
+\end{solution}
 
 \begin{solution}[\cref{exer:product-represent}]\label{sol:product-represent}
 \newcommand{\CP}{\CC(A+B,X)}
@@ -1307,6 +1322,34 @@ which completes the proof.
 		To show uniqueness, we need to show that for each $(m+n) \times l$ matrix $N$ such that $P_l N = Q_l$ and $P_r N = Q_r$, we have $M=N$.
 		From $P_l N = Q_l$ we know that the first $m$ rows of $N$ are $Q_l$ which is equal to the first $m$ rows of $M$. From $P_r N = Q_r$ we know that rows $m+1$ to $m+n$ of $N$ are equal to $Q_r$, which are equal to rows $m+1$ to $m+n$ of $M$. Hence, all rows of $M$ and $N$ are equal and $M =N$.
 	\end{enumerate}
+\end{solution}
+
+\begin{solution}[\cref{exer:product_rel}]\label{sol:product_rel}
+	Let $X$ and $Y$ be sets. The product $X \times Y$ in $\REL$ is the disjoint union $X + Y$ of sets defined as:
+	\[ X + Y = \{ (x,0) \mid x \in X \} \cup  \{ (y,1) \mid y \in Y \}. \]
+	The left and right projections are defined as follows:
+	\[ \pi_l : \{ ((x,0),x) \mid x \in X \} \subseteq (X + Y) \times X, \]
+	\[ \pi_r : \{ ((y,1),y) \mid y \in Y \} \subseteq (X + Y) \times X. \]
+	Now we need to show that for each set $Z$ and relations $q_l \subseteq Z \times X$ and $q_r \subseteq Z \times Y$, there exists a unique relation $f \subseteq Z \times (X + Y)$ such that $\pi_l \circ f = q_l$ and $\pi_r \circ f = q_r$.
+	We define $f$ as follows:
+	\begin{align*}
+		f = & \{ (z,(x,0)) \mid z \in Z \wedge x \in X \wedge (z,x) \in q_l \} \cup \\
+			& \{ (z,(y,1)) \mid z \in Z \wedge y \in Y \wedge (z,y) \in q_r \} \subseteq Z \times (X + Y) .
+	\end{align*}
+	Using the definition of composition in $\REL$, we have that $f$ satisfies $\pi_l \circ f = q_l$ and $\pi_r \circ f = q_r$. 
+
+	To show uniqueness, we need to show that for each relation $g \subseteq Z \times (X + Y)$ such that $\pi_l \circ g = q_l$ and $\pi_r \circ g = q_r$. 
+	Using the definition of composition in $\REL$ we have: 
+	\begin{align*}
+		\pi_1 \circ g & = \{ (z,x) \in Z \times X \mid
+		\begin{aligned}[t]
+			& (\exists x' \in X \text{ s.t. } (z, (x',0)) \in g \wedge ((x',0),x) \in \pi_l) \vee \\ 
+			& (\exists y \in Y \text{ s.t } (z,(y,1)) \in g \wedge ((y,1),x) \in \pi_l) \} 
+		\end{aligned} \\
+		& = \{ (z,x) \in Z \times X \mid \exists x' \in X \text{ s.t. } (z, (x',0)) \in g \wedge ((x',0),x) \in \pi_l \} \\
+		& = \{ (z,x) \in Z \times X \mid (z, (x,0)) \in g \}. 
+	\end{align*}
+	Since $\pi_1 \circ g = q_l$, $q_l = \{ (z,x) \in Z \times X \mid (z, (x,0)) \in g \}$. Similarly, from $\pi_2 \circ g = q_r$, we get $q_r = \{ (z,y) \in Z \times Y \mid (z, (y,1)) \in g \}$. By substituting these in the definition of $f$, we get $f = g$.
 \end{solution}
 
 \begin{solution}[\cref{exer:product-unique}]\label{sol:product-unique}
