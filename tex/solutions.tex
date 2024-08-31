@@ -1185,6 +1185,268 @@ This category can not have a terminal object: Suppose it has a terminal object $
 	and in the same way, we have $ \projl \circ g \circ f = \projl $. Therefore, $ g \circ f = h = \Id[A \times B] $. In the same way, we have $ f \circ g = \Id[B \times A] $. Therefore, we conclude that $ f $ is the isomorphism we are looking for, with inverse $ g $.
 \end{solution}
 
+\begin{solution}[\cref{exer:natlist_is_initial}]\label{sol:natlist_is_initial}
+		We construct a category $\Cat{L}$ as follows
+		\begin{itemize}
+			\item objects are triples consisting of a set $X$, an element $x \in X$ and a function $l : \NN \times X \to X$
+			\item morphisms are functions $l: X \to X'$, such that they make the following diagrams commute
+      \[
+        \begin{tikzcd}
+          1 & X && {\NN \times X} & X \\
+          & {X'} && {\NN \times X'} & {X'}
+          \arrow["x", from=1-1, to=1-2]
+          \arrow["{x'}"', from=1-1, to=2-2]
+          \arrow["f"{description}, from=1-2, to=2-2]
+          \arrow["l"{description}, from=1-4, to=1-5]
+          \arrow["{l'}"{description}, from=2-4, to=2-5]
+          \arrow["f"{description}, from=1-5, to=2-5]
+          \arrow["{1_\NN \times f}"{description}, from=1-4, to=2-4]
+        \end{tikzcd}
+      \]
+			\item the identity morphisms $1_{(X, x, l)}$ is the identity function $1_X : X \to X$
+			\item morphism composition is just function composition
+		\end{itemize}
+		\begin{thm}
+			The identity function $1_X : X \to X$ makes the following diagrams commute
+			\[
+				\begin{tikzcd}
+					1 & X && {\NN \times X} & X \\
+					& X && {\NN \times X} & X
+					\arrow["x", from=1-1, to=1-2]
+					\arrow["{x}"', from=1-1, to=2-2]
+					\arrow["{1_X}"{description}, from=1-2, to=2-2]
+					\arrow["l"{description}, from=1-4, to=1-5]
+					\arrow["{l}"{description}, from=2-4, to=2-5]
+					\arrow["{1_X}"{description}, from=1-5, to=2-5]
+					\arrow["{1_\NN \times 1_X}"{description}, from=1-4, to=2-4]
+				\end{tikzcd}
+			\]
+			That is, the following equations hold:
+			\begin{align}
+				\label{goal:id-x-x} 1_X \circ x & = x                                     \\
+			  \label{goal:id-l-l-id} 1_X \circ l & = l \circ (1_\NN \times 1_X)
+			\end{align}
+		\end{thm}
+		\begin{proof}
+			\eqref{goal:id-x-x} holds since $1_X$ follows the \textit{left-identity} law.
+
+			\begin{lemma}
+				\label{lem:id-id}
+				Given a category $\CC$, two objects $A, B \in \CC_0$, and their product $(A \times B, \pi_1, \pi_2)$,
+        \[
+					1_{A \times B} = 1_A \times 1_B.
+				\]
+			\end{lemma}
+			\begin{proof}
+				We know that $1_A \times 1_B$ is a \textit{unique} morphism that makes the following diagram commute
+				\[
+					\begin{tikzcd}
+						A & {A \times B} & B \\
+						A & {A \times B} & B
+						\arrow["{\pi_1}"{description}, from=1-2, to=1-1]
+						\arrow["{\pi_2}"{description}, from=1-2, to=1-3]
+						\arrow["{1_A \times 1_B}"{description}, dashed, from=2-2, to=1-2]
+						\arrow["{1_B}"{description}, from=2-3, to=1-3]
+						\arrow["{1_A}"{description}, from=2-1, to=1-1]
+						\arrow["{\pi_1}"{description}, from=2-2, to=2-1]
+						\arrow["{\pi_2}"{description}, from=2-2, to=2-3]
+					\end{tikzcd}
+				\]
+				To prove our goal, we just need to show that $1_{A \times B}$ also makes the diagram commute.
+				For the left side we have
+				\begin{align*}
+					1_A \circ \pi_1 & = \pi_1                      & \text{by the \textit{left-identity} law}  \\
+					                & = \pi_1 \circ 1_{A \times B} & \text{by the \textit{right-identity} law}
+				\end{align*}
+				We can argue similarly for the right side.
+			\end{proof}
+
+			Now, proving \eqref{goal:id-l-l-id} is simply
+			\begin{align*}
+				1_X \circ l & = l                        & \text{by the \textit{left-identity} law}  \\
+				            & = l \circ 1_{A \times B}   & \text{by the \textit{right-identity} law} \\
+				            & = l \circ (1_A \times 1_B) & \text{by \cref{lem:id-id}}
+			\end{align*}
+		\end{proof}
+		\begin{thm}
+			Given three objects $(X,x,l), (X',x',l'), (X'', x'', l'') \in \Cat{L}_0$ and two morphisms $f \in \Cat{L}((X', x', l'), (X'', x'', l''))$ and $g \in \Cat{L}((X, x, l), (X', x', l'))$
+			The function $f \circ g$ satisfies
+			\[
+				\begin{tikzcd}
+          1 & X && {\NN \times X} & X \\
+            & X'' && {\NN \times X''} & X''
+					\arrow["x", from=1-1, to=1-2]
+					\arrow["x''"', from=1-1, to=2-2]
+					\arrow["{f \circ g}"{description}, from=1-2, to=2-2]
+					\arrow["l"{description}, from=1-4, to=1-5]
+					\arrow["l''"{description}, from=2-4, to=2-5]
+					\arrow["{f \circ g}"{description}, from=1-5, to=2-5]
+					\arrow["{1_\NN \times (f \circ g)}"{description}, from=1-4, to=2-4]
+				\end{tikzcd}
+			\]
+			that is
+			\begin{align}
+				(f \circ g) \circ x & = x'' \label{goal:fgx}                                         \\
+				(f \circ g) \circ l & = l'' \circ (1_\NN \times (f \circ g)) \label{goal:fgl}
+			\end{align}
+		\end{thm}
+		\begin{proof}
+			\eqref{goal:fgx} is just
+			\begin{align*}
+				(f \circ g) \circ x & = f \circ (g \circ x) & \text{by \textit{function associativity}} \\
+				                    & = f \circ x'          & \text{since $g$ is a morphism}            \\
+				                    & = x''                 & \text{since $f$ is a morphism}
+			\end{align*}
+			For \eqref{goal:fgl} we need
+			\begin{lemma}
+				\label{lem:id-fg}
+				Given category $\CC$,
+				objects $A,X,Y,Z \in \CC_0$
+				with products $(A \times X), (A \times Y), (A \times Z) \in \CC_0$,
+				and morphisms $f \in \CC(Y, Z)$, $g \in \CC(X, Y)$,
+				it holds that
+				\[
+					1_A \times (f \circ g) = (1_A \times f) \circ (1_A \times g).
+				\]
+			\end{lemma}
+			\begin{proof}
+				Here is an illustration of the situation
+				\[
+					\begin{tikzcd}
+						A && {A \times X} && X \\
+						\\
+						A && {A \times Y} && Y \\
+						\\
+						A && {A \times Z} && Z
+						\arrow["{1_A}"{description}, from=1-1, to=3-1]
+						\arrow["{1_A}"{description}, from=3-1, to=5-1]
+						\arrow["g"{description}, bend left, from=1-5, to=3-5]
+						\arrow["f"{description}, bend left, from=3-5, to=5-5]
+						\arrow["{f \circ g}"{description}, bend left, shift left=2, from=1-5, to=5-5]
+						\arrow["\pi_{11}"{description},from=1-3, to=1-1]
+						\arrow["\pi_{12}"{description},from=1-3, to=1-5]
+						\arrow["\pi_{21}"{description},from=3-3, to=3-1]
+						\arrow["\pi_{22}"{description},from=3-3, to=3-5]
+						\arrow["\pi_{31}"{description},from=5-3, to=5-1]
+						\arrow["\pi_{32}"{description},from=5-3, to=5-5]
+						\arrow["{1_A \times g}"{description}, bend left, dashed, from=1-3, to=3-3]
+						\arrow["{1_A \times f}"{description}, bend left, dashed, from=3-3, to=5-3]
+						\arrow["{1_A \times (f \circ g)}"{description, pos=0.6}, bend left, shift left=5, dashed, from=1-3, to=5-3]
+						\arrow["{(1_A \times f) \circ (1_B \times g)}"{description, pos=0.3}, shift right=4, bend right, from=1-3, to=5-3]
+					\end{tikzcd}
+				\]
+				We know that $1_A \times f$, $1_A \times g$ and $1_A \times (f \circ g)$ are unique, and satisfy
+				\begin{align}
+					1_A \circ \pi_{21} = \pi_{31} \circ (1_A \times f)           & \wedge f \circ \pi_{22} = \pi_{32} \circ (1_A \times f) \label{Hf}          \\
+					1_A \circ \pi_{11} = \pi_{21} \circ (1_A \times g)           & \wedge g \circ \pi_{12} = \pi_{22} \circ (1_A \times g) \label{Hg}          \\
+					1_A \circ \pi_{11} = \pi_{31} \circ (1_A \times (f \circ g)) & \wedge (f \circ g) \circ \pi_{12} = \pi_{32} \circ (1_A \times (f \circ g))
+				\end{align}
+
+				Since $1_A \times (f \circ g)$ is unique, to prove our statement it is enough to show that
+				\begin{align}
+					1_A \circ \pi_{11}         & = \pi_{31} \circ ((1_A \times f) \circ (1_B \times g)) \label{goal:left}  \\
+					(f \circ g) \circ \pi_{12} & = \pi_{32} \circ ((1_A \times f) \circ (1_B \times g)) \label{goal:right}
+				\end{align}
+
+				First, we show \eqref{goal:left}
+				\begin{align*}
+					1_A \circ \pi_{11} & = \pi_{21} \circ (1_A \times g)                          & \text{by \eqref{Hg}}                      \\
+					                   & = ( 1_A \circ \pi_{21} ) \circ (1_A \times g)            & \text{by the \textit{left-identity} law}  \\
+					                   & = ( \pi_{31} \circ (1_A \times f) ) \circ (1_A \times g) & \text{by \eqref{Hf}}                      \\
+					                   & = \pi_{31} \circ ((1_A \times f) \circ (1_B \times g))   & \text{by \textit{function associativity}}
+					.
+				\end{align*}
+
+				Finally, we show \eqref{goal:right}
+				\begin{align*}
+					(f \circ g) \circ \pi_{12} & = f \circ (g \circ \pi_{12})                           & \text{by \textit{function associativity}}  \\
+					                           & = f \circ (\pi_{22} \circ (1_A \times g))              & \text{by \eqref{Hg}}                       \\
+					                           & = (f \circ \pi_{22}) \circ (1_A \times g)              & \text{by \textit{function associativity}}  \\
+					                           & = (\pi_{32} \circ (1_A \times f)) \circ (1_A \times g) & \text{by \eqref{Hf}}                       \\
+					                           & = \pi_{32} \circ ((1_A \times f) \circ (1_B \times g)) & \text{by \textit{function associativity}}.
+				\end{align*}
+			\end{proof}
+
+			Now we can show \eqref{goal:fgl} as follows
+			\begin{align*}
+				(f \circ g) \circ l & = f \circ (g \circ l)                                               & \text{by \textit{function associativity}} \\
+				                    & = f \circ (l' \circ (1_\NN \times g))                        & \text{since $g$ is a morphism}            \\
+				                    & = (f \circ l') \circ (1_\NN \times g)                        & \text{by \textit{function associativity}} \\
+				                    & = (l'' \circ (1_\NN \times f)) \circ (1_\NN \times g) & \text{since $f$ is a morphism}            \\
+				                    & = l'' \circ ((1_\NN \times f) \circ (1_\NN \times g)) & \text{by \textit{function associativity}} \\
+				                    & = l'' \circ (1_\NN \times (f \circ g))                       & \text{by \cref{lem:id-fg}}.
+			\end{align*}
+		\end{proof}
+
+		Since the category $\Cat{L}$ uses functions as morphisms,
+		it satisfies the \textit{left-}, \textit{right-identity} and \textit{associativity} laws.
+
+		We can now finally start the proof for ($\mathsf{NatList}, \nil, \cons$) being an initial object.
+
+		\begin{proof}
+			To prove ($\mathsf{NatList}, \nil, \cons$) is initial we have to show
+			\[
+				\forall (X, x, l) \in \Cat{L}_0, \exists! f \in \Cat{L}((\mathsf{NatList}, \nil, \cons), (X, x, l)).
+			\]
+			First, we show that $f$ exists.
+			\[
+				f := nl \mapsto \begin{cases}
+          x             & \text{if $nl = \nil$ }             \\
+					l (n, f (ns)) & \text{if $nl = \cons (n, ns)$}
+				\end{cases}
+			\]
+			To fully show that this is indeed a morphism, we must show that the following diagram commutes.
+			\[
+				\begin{tikzcd}
+					1 & \mathsf{Natlist} && {\NN \times \mathsf{Natlist}} & \mathsf{Natlist} \\
+					& {X} && {\NN \times X} & {X}
+          \arrow["{\nil}"{description}, from=1-1, to=1-2]
+					\arrow["x"', from=1-1, to=2-2]
+					\arrow["f"{description}, from=1-2, to=2-2]
+          \arrow["{\cons}"{description}, from=1-4, to=1-5]
+					\arrow["l"{description}, from=2-4, to=2-5]
+					\arrow["f"{description}, from=1-5, to=2-5]
+					\arrow["{1_\NN \times f}"{description}, from=1-4, to=2-4]
+				\end{tikzcd}
+			\]
+			For the left diagram we have
+			\begin{align*}
+				f \circ \nil & = x & \text{by definition of $f$}.
+			\end{align*}
+			For the right diagram we have
+			\begin{align*}
+				(f \circ \cons) (n, ns) & = f (\cons (n, ns))                 & \text{by definition of $\circ$} \\
+				                                & = l (n, f(ns))                              & \text{by definition of $f$}     \\
+				                                & = l ((1_\NN \times f) (n, ns))       &                                 \\
+				                                & = (l \circ (1_\NN \times f)) (n, ns) & \text{by definition of $\circ$}
+			\end{align*}
+
+			Second, we have to show that it is unique.
+			If we have another function $g$ that is in the same hom set as $f$, we will show that it is the same function.
+			We will prove this using induction.
+			Base case is the mapping of $\nil$, since they both satisfy the condition for the morphisms, we know that
+			\[
+				f ( \nil ) = x = g ( \nil ).
+			\]
+			For the inductive case we must show that
+			\[
+				\forall\ \cons (n, ns) \in \texttt{natlist},
+				f\ ns = g\ ns \to f (\cons (n, ns)) = g (\cons (n, ns)).
+			\]
+			\begin{align*}
+				f (\cons (n, ns)) & = (f \circ \cons) (n, ns)           & \text{by definition of $\circ$} \\
+				                          & = (l \circ (1_\NN \times f)) (n, ns) & \text{since $f$ is a morphism}  \\
+				                          & = l (n, f\ ns)                              & \text{by definition of $\circ$} \\
+				                          & = l (n, g\ ns)                              & \text{by induction hypothesis}  \\
+				                          & = (l \circ 1_\NN \times g) (n, ns)   & \text{by definition of $\circ$} \\
+				                          & = (g \circ \cons) (n, ns)           & \text{since $g$ is a morphism}  \\
+				                          & = g (\cons (n, ns))                 & \text{by definition of $\circ$}
+			\end{align*}
+
+      With that we have proven that $f$ and $g$ are the same morphism, meaning $f$ is indeed unique.
+		\end{proof}
+\end{solution}
+
 \begin{solution}[\cref{exer:in_catamorphism_id}]\label{sol:in_catamorphism_id}
 	Let $ F: \CC \to \CC $ be an endofunctor and let $ (\Initalg F, \In) $ be an initial algebra. By definition, $ \catam{\In} $ is the unique morphism $ \Initalg F \to \Initalg F $ that makes the following diagram commute
 	\begin{center}
@@ -1261,7 +1523,6 @@ This category can not have a terminal object: Suppose it has a terminal object $
 
   When |(++) : [a] -> [a] -> [a]| is defined by recursion on the \emph{second} argument, both equations hold as well, with their proofs swapped compared to those given above.
 \end{solution}
-
 
 \begin{solution}[\cref{exer:initialalg_for_bifunctor_functor}]\label{sol:initialalg_for_bifunctor_functor}
 	Let $F:\CC\to\CC\to\CC$ be a bifunctor such that for any object $A\in\CC$, the initial algebra $ (\Initalg{F_A}, \In_A) $ for the functor induced by 
