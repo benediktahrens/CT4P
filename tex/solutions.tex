@@ -388,7 +388,7 @@ Hence an object $x$ is initial if and only if, $x\leq y$ for all $y\in X$, if an
 \end{solution}
 
 \begin{solution}[\cref{exer:initial-unique}]\label{sol:initial-unique}
-Let $A$ and $B$ be initial objects in $\CC$. By initiality of $A$ (resp. $B$), there exists a unique morphism $f \in \CHom{\CC}{A}{B}$ (resp. $g \in \CHom{\CC}{B}{A}$). That $f$ and $g$ are inverses follows because $\co{f}{g} \in \CHom{\CC}{A}{A}$ (resp. $\co{g}{f}\in \CHom{\CC}{B}{B}$). But by initiality of $A$ (resp. $B$), $\CHom{\CC}{A}{A}$ (resp. $\CHom{\CC}{B}{B}$) has a unique element, but both $\co{f}{g}, \Id[A] \in \CHom{\CC}{A}{A}$ (resp. $\co{g}{f}, \Id[B] \in \CHom{\CC}{B}{B}$), hence they must be equal.
+Let $A$ and $B$ be initial objects in $\CC$. By initiality of $A$ (resp. $B$), there exists a unique morphism $f \in \CHom{\CC}{A}{B}$ (resp. $g \in \CHom{\CC}{B}{A}$). Both $\Id[A]$ and $\co{f}{g}$ (resp. $\Id[B]$ and $\co{g}{f}$) are in $\CHom{\CC}{A}{A}$ (resp. $\CHom{\CC}{B}{B}$), but we know that there exists a unique morphism in $\CHom{\CC}{A}{A}$ (resp. $\CHom{\CC}{B}{B}$). Hence, $\Id[A] = \co{f}{g}$ (resp. $\Id[B] = \co{g}{f}$), which means that $f$ and $g$ are inverses.
 \end{solution}
 
 \begin{solution}[\cref{exer:initiality_preserved_by_iso}]\label{sol:initiality_preserved_by_iso}
