@@ -286,57 +286,40 @@ The notes include many problems and solutions.
 
 \section{Introduction}
 
-Category theory is a framework which allows one to formally describe and relate mathematical structures. By a mathematical structure, we mean, informally, a collection of \textit{things} (like types, sets, etc.) and something which transforms one \textit{thing} to another \textit{thing} (like a program, function, etc.).
-
-This framework started as a mathematical theory, but has now proven itself useful also in the world of Computer Science (and beyond). In this course we will introduce the necessary concepts from \textit{category theory} with the goal of understanding its applications in the \textit{realm} of programming.
-
-
-\subsection{About These Notes}
-
-These notes are not meant to give an exhaustive introduction to category theory.
-Instead, the aim is to develop just as much category theory as is necessary to discuss some interesting applications of category theory to computing, specifically, to programming.
-
-Throughout these notes, pointers to other sources, such as textbooks and research articles, are given;
-it is highly recommended to consult these sources.
-
-\subsection{About Category Theory}
-%\label{sec:about-cats}
 
 \emph{Category theory} is a mathematical area of endeavour and language developed to reconcile and unify mathematical phenomena from different disciplines.
 It was developed from the 1940s on, in particular by Samuel Eilenberg and Saunders Mac Lane.
-
-\emph{Computer science} is\ldots well, you know what it is.
-
-In this course, we learn about some fundamental applications of category theory to computer science, specifically, to programming.
-The power of category theory arises from \textbf{abstraction}:
+Category theory studies objects by studying the way they interact with other objects of the same kind.
+Its power arises from \emph{abstraction}:
 by boiling down constructions to their essence, analogous situations can be formally identified using category theory.
-One crucial concept provided by category theory to this end is that of \emph{universal property};
-we study some universal properties in \cref{sec:universal}.
-An application of universal properties to the theory of datatypes and structural recursion is studied in \cref{sec:initial-algs}.
 
-Another categorical concept that has proved particularly useful in programming is that of a \textbf{monad}.
-We study monads and their use in programming in \cref{sec:monads}.
-
-
+The objects we can study using category theory are diverse;
+while the origins of category theory lie in pure mathematics, it has now found applications throughout mathematics, computer science, and other areas of endeavor.
+In these notes we introduce some basic concepts from category theory.
+The choice of topics is guided by applications in the area of \emph{(functional) programming}; firstly, the structuring of effectful programs using \emph{monads} (see \cref{sec:monads}), and, secondly, the mathematical justification and derivation of \emph{recursion principles} such as \verb!fold! for the datatype of lists (see \cref{sec:initial-algs}).
+We also study infinite datatypes (see \cref{sec:coinductive}).
 
 
 \subsection{Learning Material on Category Theory}
 \label{sec:material}
 
-The scientific literature on category theory in computer science is vast.
-%We will only point to a few books, papers, and articles, for instance to this gem~\cite{goguen_thatcher_wagner_wright_1973}.
-We list some learning material on category theory.
 
-Pierce's book \cite{pierce} (available for free) gives a brief introduction to category theory with some applications to computing.
+There are many topics of category theory not discussed in these notes.
+Below, we list some resources that are freely available;
+a very extensive list of resources is given at \url{https://www.logicmatters.net/categories/}.
 
-Leinster's book \cite{leinster} (available for free online, under a free license) gives a concise introduction to category theory.
+\begin{itemize}
+\item Pierce's book \cite{pierce} (available for free) gives a brief introduction to category theory with some applications to computing.
+
+\item Leinster's book \cite{leinster} (available for free online, under a free license) gives a concise introduction to category theory.
 It is a good resource for the basic concepts, but does not feature many examples from computer science.
 
-The rather substantial textbook by Barr and Wells \cite{barr-wells} (available for free online) covers a lot more than we are going to discuss in these notes.
+\item The rather substantial textbook by Barr and Wells \cite{barr-wells} (available for free online) covers a lot more than we are going to discuss in these notes.
 
-The Catsters \cite{catsters} provide a lecture series on category theory on YouTube.
+\item The Catsters \cite{catsters} provide a lecture series on category theory on YouTube.
+\end{itemize}
 
-
+Throughout these notes, pointers to further sources, such as textbooks and research articles, are given.
 
 \subsection{Notations}
 \label{sec:notation}
