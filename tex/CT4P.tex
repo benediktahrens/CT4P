@@ -1586,6 +1586,25 @@ Moreover, this data should satisfy the following properties:
 \end{itemize}
 \end{dfn}
 
+\begin{rem}[Explanation]
+	A function from a set $X$ to a set $Y$ maps every element of $X$, to an element in $Y$.
+	Analogously, a \textit{functor} from a category $\CC$ to a category $\DD$ maps every objects of $\CC$, to an object in $\DD$.
+	(This is the first piece of data in the definition of a functor; made formal as a function between the underlying types/collections/sets of objects.)
+	However, a category does not only consists of a set of objects.
+	(Indeed, between every two objects $c_1, c_2 \in \Ob{\CC}$, we have a set of morphisms; denoted $\CHom{\CC}{x}{y}$).
+	Hence, a functor, as a transformation between categories, should also map every morphism in $\CC$, to a (suitably typed) morphism in $\DD$.
+	(This is the second piece of data in the definition of a functor.)
+	
+	In the examples and exercises below, the first piece (i.\,e.,\, the function between the collection of objects) is always given.
+	(Why? Because between fixed categories, there may be many, or none, functors.)
+	While the second piece of data is not uniquely determined by the function between the object-sets, there is often a canonical (obvious) choice.
+	Below, we ask the reader to find the canonical choice.
+	A functor is completely determined by the function (or action) on objects and morphisms.
+	However, in order to guarantee that these functions are well-behaved (w.\,r.\,t.,\, to the structure given by the categories), we furthermore require that the composition and identity are preserved.
+	These properties are not defined by the user. Nonetheless, they remain to be checked.
+	(Often, these properties hold by construction; that is, by unfolding the data, provided in the second piece.)
+\end{rem}
+
 \begin{exa} \label{example:functor_list} The \textbf{list-functor} (on sets), denoted by $\List$, is the functor from $\SET$ to $\SET$ defined by the following data:
 \begin{itemize}
 \item The function on objects is given by:
@@ -1641,7 +1660,7 @@ Since this holds for every such list, we indeed have that the composition is pre
   and show that this assignment satisfies the functor laws.
 \end{exer}
 
-\begin{exer}
+\begin{exer}[\cref{sol:functor_prod_on_left}]\label{exer:functor_prod_on_left}
   Let $A \in \Ob\SET$.
   Construct a functor $(\times A) : \SET \to \SET$ that, on objects, is given by
   \[ (\times A) X := X \times A. \]
