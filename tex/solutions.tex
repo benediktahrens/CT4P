@@ -1703,6 +1703,104 @@ which completes the proof.
 		\end{proof}
 \end{solution}
 
+\begin{solution}[\cref{exer:functor_prod_on_left}]\label{sol:functor_prod_on_left}
+	Given two sets, denoted $A$ and $X$, we can form a new set $A \times X$ (the set of all pairs).
+	Hence, by fixing $A$ and varying $X$, we have a function from the collection of all sets, to itself:
+	\[
+		(A \times -) : \Ob{\SET} \to \Ob{\SET} : X \mapsto (A \times X).	
+	\]
+	In this exercise, we are asked to make this function into a functor.
+	(Observe that the function/action on objects of the functor is given by the exercise!)
+	The data remaining, is to define the action of the morphisms.
+	That is, for every two sets (objects), denoted $X$ and $Y$, we have to construct a function
+	\[
+		\CHom{\SET}{X}{Y} \to \CHom{\SET}{A \times X}{A \times Y}.
+	\]
+	In order to define such a function, we need to specify to each element in the source (that is, a function from $X$ to $Y$), to an element in the target (that is a function from $A \times X$ to $A \times Y$).
+	Thus, we fix a function $f : \CHom{\SET}{X}{Y}$ (also denoted $f : X \to Y$).
+	Now, we have to construct/specify a function $(A \times f) : \CHom{\SET}{A \times X}{A \times Y}$.
+	That is, given an element in $(A \times X)$, i.\,e.,\, a pair $(a, x)$ with $a \in A$ and $x \in X$, we have to give an element in $A \times Y$.
+	An element in $A \times Y$ is a pair consisting of an element in $A$ and element in $Y$.
+	By assumption, $a \in A$. 
+	Furthermore, since $f$ is a function whose input type is $X$, we can apply $f$ to $x$.
+	That is $f(x) \in Y$.
+	Hence, $(a, f(x)) \in A \times Y$.
+	Thus, we have defined a function:
+	\[
+		(A \times f) : A \times X \to A \times Y : (a, x) \mapsto (a, f(x)).
+	\]
+	(Observe that $(a, f(x)) = (\Id{a}, f(x))$.)
+	As searched for, this defines a function
+	\[
+		\CHom{\SET}{X}{Y} \to \CHom{\SET}{A \times X}{A \times Y} : f \mapsto (A \times f).
+	\]
+	This concludes the (pieces of) data of a functor $(A \times -) : \SET \to \SET$.
+	Now, it remains to prove (check) the preservation properties.
+	\begin{enumerate}
+		\item The first preservation property says that the composition of functions (morphisms in $\SET$), is preserved.
+		That is, for every triple of sets $X, Y, Z \in \Ob{\SET}$, and functions $f : \SET(X, Y)$ and $g : \SET(Y, Z)$, we have to show the following:
+		On the one hand, we can apply our functor (or the data at least) to the composite $f \circ g$.
+		On the other, we can first apply our functor to $f$ (that is $A \times f = (A \times -)(f)$), and then (pre)compose with $A \times g = (A \times -)(g)$.
+		Diagrammatically, we have:
+		\[
+			\begin{tikzcd}
+				{A \times X} 
+					\arrow[rr, bend left, "{A \times (f \circ g)}"]
+					\arrow[rd, bend right, swap, "{A \times f}"] 
+					& & {A \times Z} \\
+				& {A \times Y} \arrow[ru, bend right, swap, "{A \times g}"] &
+			\end{tikzcd}	
+		\]
+		The preservation axiom asks that this diagram commutes; that is, these functions (morphisms) should be equal (coincide).
+		To proof that two functions are equal, it suffices to show that they are equal pointwise (or objectwise).
+		(This is called \textit{function extensionality}.)
+		That is, it suffices to check that these functions are equal after applying those functions to the same input arguments.
+		(Observe that the input argument is a pair.)
+		More formally, we have to show:
+		\[
+			\forall (a, x) \in {A \times X}, (A \times (f \circ g))(a, x) = \left((A \times g) \circ (A \times f)\right)(a, x).
+		\]
+		By unfolding the definition of $(A \times -)$ (on morphisms), we easily see that these are equal, indeed:
+		the left hand side reduces to:
+		\begin{eqnarray*}
+			(A \times (f \circ g))(a, x) 
+				&=& (a , (f \circ g)(x)), \quad \text{by definition of $A \times -$} \\
+				&=& (a, g(f(x))), \quad \text{by definition of function composition};
+		\end{eqnarray*}
+		the right hand side reduces to:
+		\begin{eqnarray*}
+			\left((A \times g) \circ (A \times f)\right)(a, x)
+				&=& (A \times g)\left((A \times f)(a, x)\right), \quad \text{by definition of function composition}\\
+				&=& (A \times g)\left(a, f(x))\right), \quad \text{by definition of $A \times f$}\\
+				&=& (a, g(f(x)), \quad \text{by definition of $A \times g$}.
+		\end{eqnarray*}
+		Hence, we see that both the left and right hand side reduce to the same expression.
+		Since $x$ is arbitrary, this concludes the preservation of the composition.
+		\item The second preservation property says that the identity is preserved.
+		That is, for every set $X \in \Ob{\SET}$, we have to show the following:
+		On the one hand, we can apply our functor to $\Id{X}$, which gives a function $A \times \Id{X} : \CHom{\SET}{A \times X}{A \times X}$
+		On the other, we have the identity function on $A \times X$.
+		The preservation law says that both functions are equal. 
+		That is, the following diagram commutes:
+		\[
+			\begin{tikzcd}
+				{A \times X} \arrow[r, bend left, "{A \times \Id{X}}"] \arrow[r, bend right, swap, "\Id{(A \times X)}"] & {A \times X}
+			\end{tikzcd}	
+		\]
+		Again, we apply function extensionality (pointwise equality) to show that these functions are equal.
+		Indeed, for every pair $(a, x) \in A \times X$, we have:
+		\begin{eqnarray*}
+			(A \times \Id{X})(a, x) 
+				&=& (a, \Id{X}(x)), \quad \text{by definition $A \times -$}\\
+				&=& (a, x), \quad \text{by definition of the identity function $\Id{X}$}\\
+				&=& \Id{A \times X}(a, x), \quad \text{by definition of the identity function $\Id{(A \times X)}$}.
+		\end{eqnarray*}
+	\end{enumerate}
+	This concludes the construction of the functor (and in particular, the proofs of preservation).
+	Observe in particular, that the main challenge is the construction of $(A \times f)$ (hence, the action of the morphisms.)
+	Indeed, the preservation laws follow by definition.
+\end{solution}
+
 \begin{solution}[\cref{exer:in_catamorphism_id}]\label{sol:in_catamorphism_id}
 	Let $ F: \CC \to \CC $ be an endofunctor and let $ (\Initalg F, \In) $ be an initial algebra. By definition, $ \catam{\In} $ is the unique morphism $ \Initalg F \to \Initalg F $ that makes the following diagram commute
 	\begin{center}
