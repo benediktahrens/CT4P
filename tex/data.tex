@@ -46,7 +46,7 @@ and the following  category:
   Show that the triple $(\NN, \Zero, \Succ)$ is an initial object in this category.
 \end{exer}
 
-\begin{exer}
+\begin{exer}\label{exer:aexp}
   Consider the datatype
 \begin{lstlisting}[mathescape=true]
 data Exp ::=
@@ -93,6 +93,11 @@ data Exp ::=
   \end{itemize}
   
     Show that the quadruple consisting of the type |Exp| together with the functions |Int|, |Plus|, and |Squared|, is an initial object in this category.
+\end{exer}
+
+\begin{exer}
+  Define an ``evaluation'' function $\mathsf{ev} : \mathsf{Exp} \to \mathbb{Z}$ that associates to any expression its ``semantics'' or ``denotation'', that is, the integer the expression denotes.
+  Specifically, define this function as a morphism in the category of \cref{exer:aexp}.
 \end{exer}
 
 \begin{exer}[\cref{sol:natlist_is_initial}]\label{exer:natlist_is_initial}
