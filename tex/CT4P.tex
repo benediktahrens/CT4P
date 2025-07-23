@@ -232,6 +232,7 @@ literate={→ }{\ARROW}1
 \newcommand{\Succ}{\ensuremath{\mathsf{succ}}}
 
 \newcommand{\Bool}{\ensuremath{\mathsf{Bool}}}
+\newcommand{\QQ}{\ensuremath{\mathbb{Q}}}
 
 \newcommand{\Leaf}[1]{\ensuremath{\mathsf{leaf}(#1)}}
 \newcommand{\Branch}[2]{\ensuremath{\mathsf{branch}(#1, #2)}}
@@ -326,24 +327,61 @@ Throughout these notes, pointers to further sources, such as textbooks and resea
 \chapter{Brief Summary of Logical Foundations}
 \label{sec:notation}
 
+In these notes, we use set theory, \emph{informally}, as the language in which we define the concepts of category theory.
+%Specifically, we talk about \emph{sets}, or \emph{collections}, of things.
+%Given two sets $X$ and $Y$, we also talk about \emph{functions} from $X$ to $Y$.
 
-\begin{itemize}
-\item If $X$ is a set and $x$ is an element of $X$, we write $x \in X$.
-\item If $X$ and $Y$ are sets
-\item If $X$ is a set and $P$ and $Q$ are properties dependent over the elements of $X$, we write $P\implies Q$ to express that if $P(x)$ holds for an element $x\in X$, then also $Q(x)$ should hold for the element $x$. Moreover, we write $P \iff Q$ if $P\implies Q$ and $Q\implies P$.
-\item If $X$ is a set and $P$ is a property dependent over the elements of $X$, we write:
-\begin{itemize}
-\item[(*)] $\forall x\in X: P(x)$ to express that for every element in $X$, the property $P$ holds.
-\item[(*)] $\exists x\in X: P(x)$ to express that there exists at least one element in $X$ for which the property holds.
-\item[(*)] $\exists! x\in X: P(x)$ to express that there exists a unique element in $X$ for which the property holds.
-\end{itemize}
-\item Let $X$ and $Y$ be sets. We denote:
-\begin{itemize}
-\item[(*)] $X\times Y$ for the (cartesian) product of $X$ and $Y$.
-\item[(*)] $X + Y$ for the disjoint union of $X$ and $Y$.
-\end{itemize}
-\end{itemize}
+\begin{description}
+\item [Sets/Collections] If $X$ is a set and $x$ is an element of $X$, we write $x \in X$.
+  To define a set, we usually specify its elements, in an informal way.
+  For instance, we consider the set $\NN$ of all natural numbers, with, e.g., $5 \in \NN$ and $37 \in \NN$.
+  The set $\QQ$ is the set of all rational numbers, with, e.g., $2/3 \in \QQ$.
 
+  We also consider a ``set of all sets''. Its elements are all sets.
+  Here, we should be careful, as the set of all sets cannot be an element of itself; see the Barber paradox.\footnote{\url{https://en.wikipedia.org/wiki/Barber_paradox}}
+  To fix this issue, we consider \emph{collections} in addition to \emph{sets};
+  the ``set'' of all sets is not a set, but a collection instead.
+
+  Of course, the collection of all collections gives rise to the same problem;
+  so, when considering foundations of mathematics very formally, one usually has an infinite hierarchy of sets or collections (or types, e.g., in Martin-Löf type theory).
+  
+\item [Functions] If $X$ and $Y$ are sets, we can consider the set of functions from $X$ to $Y$. This set is denoted $X \to Y$. We write $f \in X \to Y$, but also $f : X \to Y$, to say that $f$ is a function from $X$ to $Y$.
+  If $x \in X$, then $f(x) \in Y$ denotes the image of $x$ under $f$.
+  When defining a function, we use the notation $x \mapsto f(x)$ to describe the image of $x$ under $f$. For instance, we define the function
+  \begin{align*}
+    \_/3 : \NN &\to \QQ
+    \\
+    n & \mapsto n/3
+  \end{align*}
+  This function takes as input a natural number, say, $n \in \NN$, and gives as output the rational number $n/3 \in \QQ$.
+  
+\item [Cartesian Product] Given two sets $X$ and $Y$, we can form a new set $X\times Y$, the \emph{(cartesian) product} of $X$ and $Y$. Its elements are pairs, written $(x,y)$, of an element $x \in X$ and $y \in Y$.
+  For instance, we can write addition of natural numbers as a function
+  \begin{align*}
+    (+) : \NN\times \NN &\to \NN
+    \\
+    (m,n) & \mapsto m + n
+  \end{align*}
+\item[(Disjoint) Union] Given two sets $X$ and $Y$, we can form a new set $X + Y$, the disjoint union of $X$ and $Y$. Its elements are those of $X$ and those of $Y$, with information about whether an element ``comes from'' $X$ or $Y$. (To be more concrete, one could say that elements of $X+Y$ are of the form $(0,x)$ for $x\in X$ or $(1,y)$ for $y\in Y$.)
+\end{description}
+
+We also use logical connectives in the definition of categorical concepts.
+
+\begin{description}
+\item[Equality] Given a set $X$ and $a,b\in X$, we can ask whether $a$ is equal to $b$; we write $a = b$ to assert that $a$ is equal to $b$.
+  To \emph{prove} that two elements $a$ and $b$ of a set are equal, we have to understand what $a$ and $b$ are. For numbers $a$ and $b$, we intuitively know when they are equal.
+  When proving that two functions $f, g : X \to Y$ are equal, we use the \emph{axiom of function extensionality}: to show that $f = g$, it suffices to show that for any possible input $x \in X$, the functions $f$ and $g$ agree on that input, that is, $f(x) = g(x)$.
+\item [Implication] If $X$ is a set and $P$ and $Q$ are predicates on $X$, we write $P\implies Q$ to express that if $P(x)$ holds for an element $x\in X$, then also $Q(x)$  holds for the element $x$. Moreover, we write $P \iff Q$ if $P\implies Q$ and $Q\implies P$.
+\item If $X$ is a set and $P$ is a predicate on $X$, we write:
+\begin{description}
+\item[forall] $\forall x\in X: P(x)$ to express that for every element in $X$, the property $P$ holds.
+\item[exists] $\exists x\in X: P(x)$ to express that there exists at least one element in $X$ for which the property holds.
+\item[exists uniquely] $\exists! x\in X: P(x)$ to express that there exists a unique element in $X$ for which the property holds.
+\end{description}
+\end{description}
+
+As an example, we can write the axiom of function extensionality as
+\[ \big(\forall x \in X, f(x) = g(x)\big) \implies f = g \]
 
 
 \chapter{Categories}
@@ -432,7 +470,7 @@ We say that such a square \textbf{commutes} if $\co{f_1}{g_1} = \co{f_2}{g_2}$.
 \end{nota}
 
 
-\begin{exa}\label{example:set} The \textbf{Category of sets}, denoted by $\SET$, is the category specified by the following data:
+\begin{exa}\label{example:set} The \textbf{category of sets}, denoted by $\SET$, is the category specified by the following data:
 \begin{itemize}
 \item An object is a set.
 \item If $X$ and $Y$ are sets, then is $\CHom \SET X Y$ the set of all functions from $X$ to $Y$.
