@@ -12,7 +12,21 @@
 \usepackage{verbatim}
 \usepackage{ccicons}
 \usepackage{enumitem}
+
 \usepackage{bussproofs}
+\newcommand{\proofskip}{0.5em}
+\newcommand{\rulelabel}[1]{\hypertarget{#1}{\textsf{\scriptsize #1}}}
+\newcommand{\ruleref}[1]{\hyperlink{#1}{\textsf{#1}}}
+\newenvironment{bproof}
+{\leavevmode\hbox\bgroup}
+{\DisplayProof\egroup}
+\newcommand{\binaryRule}[4]{\begin{bproof}
+\AxiomC{\ensuremath{#1}}
+\AxiomC{\ensuremath{#2}}
+\RightLabel{\rulelabel{#4}}
+\BinaryInfC{\ensuremath{#3}}
+\end{bproof}\vspace{\proofskip}}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -212,7 +226,7 @@ literate={→ }{\ARROW}1
 
 \newcommand{\productmap}[2]{\ensuremath{ #1 \times #2 }}
 \newcommand{\coproductmap}[2]{\ensuremath{ #1 + #2 }}
-
+\newcommand{\rec}{\ensuremath{\mathsf{rec}}}
 
 \newcommand{\Initalg}[1]{\ensuremath{\mu^{#1}}}
 \newcommand{\Terminalcoalg}[1]{\ensuremath{\nu^{#1}}}
