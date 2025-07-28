@@ -7,18 +7,18 @@ The inequality $x\leq y$ (resp. $y\leq x$) means that we have a (unique) morphis
 Rephrased a little bit different, we get: The category $\PREtoCAT(X,\leq)$ has no non-trivial loops if $(X,\leq)$ is antisymmetric.
 \end{solution}
 
-\begin{solution}[\cref{exer:POS_isnt_a_posetcat}]\label{sol:POS_isnt_a_posetcat}
-That $\POS$ would be a preorder-category means that each of the hom-sets is either empty or a singleton. Hence, it is not a preorder-category if there exists $(X,\leq_X)$ and $(Y,\leq_Y)$ such that $\CHom{\POS}{(X,\leq_X)}{(Y,\leq_Y)}$ has more then one element.\\
-We choose $(X,\leq) := (\NN,\leq) =: (Y,\leq)$. A morphism $f\in \CHom{\POS}{(\NN,\leq)}{(\NN,\leq)}$ consists of a function $f:\NN\to\NN$ such that the following property holds:
-\[
-\forall n,m\in\NN: n\leq m \implies f(n)\leq f(m).
-\]
-But there are a lot of functions from $\NN$ to $\NN$ which satisfies this property, indeed: For any $k\in\NN$, we have that
-\[
-f_k : \NN\to\NN: n\mapsto n+k,
-\]
-is a morphism in $\POS$. Hence $\CHom{\POS}{(\NN,\leq)}{(\NN,\leq)}$ consists of an infinite amount of distinct morphisms.
-\end{solution} 
+% \begin{solution}[\cref{exer:POS_isnt_a_posetcat}]\label{sol:POS_isnt_a_posetcat}
+% That $\POS$ would be a preorder-category means that each of the hom-sets is either empty or a singleton. Hence, it is not a preorder-category if there exists $(X,\leq_X)$ and $(Y,\leq_Y)$ such that $\CHom{\POS}{(X,\leq_X)}{(Y,\leq_Y)}$ has more then one element.\\
+% We choose $(X,\leq) := (\NN,\leq) =: (Y,\leq)$. A morphism $f\in \CHom{\POS}{(\NN,\leq)}{(\NN,\leq)}$ consists of a function $f:\NN\to\NN$ such that the following property holds:
+% \[
+% \forall n,m\in\NN: n\leq m \implies f(n)\leq f(m).
+% \]
+% But there are a lot of functions from $\NN$ to $\NN$ which satisfies this property, indeed: For any $k\in\NN$, we have that
+% \[
+% f_k : \NN\to\NN: n\mapsto n+k,
+% \]
+% is a morphism in $\POS$. Hence $\CHom{\POS}{(\NN,\leq)}{(\NN,\leq)}$ consists of an infinite amount of distinct morphisms.
+% \end{solution} 
 
 \begin{solution}[\cref{exer:categories_coming_from_monoids}]\label{sol:categories_coming_from_monoids}
 A category $\CC$ is of the form $(M,m,e)$ if and only if $\CC$ has a unique object. Indeed, if $\CC$ has a unique object, lets denote this by $X$, then we can define a monoid $(M,m,e)$ as follows:
