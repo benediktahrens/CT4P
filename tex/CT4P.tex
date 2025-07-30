@@ -346,6 +346,8 @@ In these notes, we use set theory, \emph{informally}, as the language in which w
 %Specifically, we talk about \emph{sets}, or \emph{collections}, of things.
 %Given two sets $X$ and $Y$, we also talk about \emph{functions} from $X$ to $Y$.
 
+\section{About set theory}
+
 \begin{description}
 \item [Sets/Collections] If $X$ is a set and $x$ is an element of $X$, we write $x \in X$.
   To define a set, we usually specify its elements, in an informal way.
@@ -380,23 +382,64 @@ In these notes, we use set theory, \emph{informally}, as the language in which w
 \item[(Disjoint) Union] Given two sets $X$ and $Y$, we can form a new set $X + Y$, the disjoint union of $X$ and $Y$. Its elements are those of $X$ and those of $Y$, with information about whether an element ``comes from'' $X$ or $Y$. (To be more concrete, one could say that elements of $X+Y$ are of the form $(0,x)$ for $x\in X$ or $(1,y)$ for $y\in Y$.)
 \end{description}
 
+\section{About logic}
+
 We also use logical connectives in the definition of categorical concepts.
 
 \begin{description}
+\item[Definitions] When we write $x := y$, we define a new mathematical object $x$ to be given by $y$.
+  For instance, we could define a function doubling its input as follows:
+  \begin{align*}
+    \mathsf{double} &: \NN \to \NN
+    \\
+    \mathsf{double} &:=  x \mapsto x + x
+  \end{align*}
+  
 \item[Equality] Given a set $X$ and $a,b\in X$, we can ask whether $a$ is equal to $b$; we write $a = b$ to assert that $a$ is equal to $b$.
   To \emph{prove} that two elements $a$ and $b$ of a set are equal, we have to understand what $a$ and $b$ are. For numbers $a$ and $b$, we intuitively know when they are equal.
   When proving that two functions $f, g : X \to Y$ are equal, we use the \emph{axiom of function extensionality}: to show that $f = g$, it suffices to show that for any possible input $x \in X$, the functions $f$ and $g$ agree on that input, that is, $f(x) = g(x)$.
-\item [Implication] If $X$ is a set and $P$ and $Q$ are predicates on $X$, we write $P\implies Q$ to express that if $P(x)$ holds for an element $x\in X$, then also $Q(x)$  holds for the element $x$. Moreover, we write $P \iff Q$ if $P\implies Q$ and $Q\implies P$.
+  When showing that two monoid morphisms are equal, it suffices to show that their underlying functions are equal.
+  When showing that two matrices are equal, it suffices to show that they are equal in each component.
+\item [Implication]
+  Given propositions $A$ and $B$, we write $A \implies B$ to say that $A$ implies $B$.
+  
+  More generally, if $X$ is a set and $P$ and $Q$ are predicates on $X$, we write $P\implies Q$ to express that if $P(x)$ holds for an element $x\in X$, then also $Q(x)$  holds for the element $x$.
+  As an example, consider the predicates on natural numbers $n \in \NN$, ``$n$ is divisible by $4$'' and ``$n$ is even''.
+  Then ``divisible by $4$'' $\implies$ ``is even''.
+
+  Moreover, we write $P \iff Q$ if $P\implies Q$ and $Q\implies P$.
 \item If $X$ is a set and $P$ is a predicate on $X$, we write:
 \begin{description}
-\item[forall] $\forall x\in X: P(x)$ to express that for every element in $X$, the property $P$ holds.
-\item[exists] $\exists x\in X: P(x)$ to express that there exists at least one element in $X$ for which the property holds.
-\item[exists uniquely] $\exists! x\in X: P(x)$ to express that there exists a unique element in $X$ for which the property holds.
+\item[forall] $\forall x\in X, P(x)$ to express that for every element in $X$, the property $P$ holds.
+\item[exists] $\exists x\in X, P(x)$ to express that there exists at least one element in $X$ for which the property holds.
+  For instance, consider the predicate
+  \[  \mathsf{even}(n) := \exists k \in \NN, n = 2\times k.\]
+\item[exists uniquely] $\exists! x\in X, P(x)$ to express that there exists a unique element in $X$ for which the property holds.
 \end{description}
 \end{description}
 
 As an example, we can write the axiom of function extensionality as
 \[ \big(\forall x \in X, f(x) = g(x)\big) \implies f = g \]
+
+
+\section{About mathematical writing}
+
+Mathematical text is typically structured into numbered ``environments'', for instance, ``definitions'', ``lemmas'', ``theorems'', and ``proofs''.
+We briefly discuss each of these environments.
+
+\begin{description}
+\item[Definition] A definition introduces a new mathematical concept. You can think of a definition as an abbreviation, e.g., for a large structure consisting of many components.
+  For instance, in \cref{dfn:category}, we define a category to be a structure consisting of objects, morphisms, etc.
+  From then on, we use ``category'' as a shorthand for such a ``bundle'' of data satisfying the properties of a category.
+
+  In the beginning, \textbf{it is important to learn definitions by heart.} Later, when you have understood the concepts well, you will be able to reproduce their definitions without explicitly learning them by heart.
+\item[Example] An example is, usually, an instance of a definition. In \cref{example:set} (and \cref{lemma:set-category}), we look at specific data (sets and functions between them) and establish that they form a category.
+\item[Lemma/Theorem/Proposition] All of these environments serve to formulate, precisely, a mathematical statement.
+  The precise choice of environment signifies the status of the statement.
+  A lemma is often of technical nature, a theorem is important, and a proposition is less important.
+\item[Exercise] You are encouraged to think hard about every exercise in these notes. Some exercises are accompanied by solutions. It is worth first writing down your own solution, and then comparing it with the given solution.
+\end{description}
+
 
 
 \chapter{Categories}
@@ -413,19 +456,19 @@ The definition of categories is also given in \cite[\S 2.1]{barr-wells}. Plenty 
 \end{reading*}
 
 
-\section{Categories and Examples}
+\section{Definition}
 
 \begin{dfn}\label{dfn:category}
   A \textbf{category} $\CC$ consists of the following data:
 \begin{enumerate}
-\item A collection of objects, denoted by $\Ob{\CC}$.
-\item For any given objects $X,Y \in \Ob{\CC}$, a collection of morphisms from $X$ to $Y$, denoted by $\Hom[\CC]{X}{Y}$ (or $\Hom{X}{Y}$ when the category $\CC$ is clear, or $\CHom \CC X Y$ or $X \to Y$) and which is called a \textit{hom-set}.
-\item For each object $X\in \Ob{\CC}$, a morphism $\Id[X] \in \Hom[C]{X}{X}$, called the \textit{identity morphism} on $X$.
+\item A collection of objects, denoted by $\Ob{\CC}$;
+\item For any given objects $X,Y \in \Ob{\CC}$, a collection of morphisms from $X$ to $Y$, denoted by $\Hom[\CC]{X}{Y}$ (or $\Hom{X}{Y}$ when the category $\CC$ is clear, or $\CHom \CC X Y$ or $X \to Y$);
+\item For each object $X\in \Ob{\CC}$, a morphism $\Id[X] \in \Hom[C]{X}{X}$, called the \emph{identity morphism} on $X$;
 \item A binary operation
 \[
 (\co{}{})_{X,Y,Z} : \Hom{Y}{Z} \to \Hom X Y \to \Hom X Z,
 \]
-called the \textit{composition operator}, and written infix without the indices $X,Y,Z$ as in $\co{f}{g}$.
+called the \emph{composition}, and written infix without the indices $X,Y,Z$ as in $\co{f}{g}$.
 \end{enumerate}
 Moreover, this data should satisfy the following properties:
 \begin{enumerate}
@@ -484,38 +527,50 @@ We say that such a square \textbf{commutes} if $\co{f_1}{g_1} = \co{f_2}{g_2}$.
 \end{itemize}
 \end{nota}
 
+\section{Examples of categories}
 
 \begin{exa}\label{example:set} The \textbf{category of sets}, denoted by $\SET$, is the category specified by the following data:
 \begin{itemize}
 \item An object is a set.
 \item If $X$ and $Y$ are sets, then is $\CHom \SET X Y$ the set of all functions from $X$ to $Y$.
 \item The identity morphism $\Id[X]$ (on $X\in\Ob{\SET}$) is the identity function on $X$, i.e.
-\[
-\Id[X] : X\to X: x \mapsto x.
-\]
+\begin{align*}
+  \Id[X] : X &\to X
+  \\
+  x &\mapsto x.
+\end{align*}
 \item The composition of functions is given by the usual composition of functions, i.e. for $f\in \CHom \SET X Y$ and $g\in \CHom \SET Y Z$, the composition of $f$ and $g$ is:
-\[
-g \circ f : X\to Z: x\mapsto g(f(x)).
-\]
+\begin{align*}
+  g \circ f : X&\to Z
+  \\
+  x &\mapsto g(f(x)).
+\end{align*}
 \end{itemize}
 \end{exa}
-\begin{lemma} The data of $\SET$ satisfies the properties of a category; hence $\SET$ is indeed a category.
+\begin{lemma}\label{lemma:set-category}
+  The data of $\SET$ satisfies the properties of a category; hence $\SET$ is indeed a category.
+\end{lemma}
 \begin{proof}
-We first show that the left unit law holds. Let $X,Y\in \mathbf{Set}$ be sets and $f\in \CHom \SET X Y$ a function. We have to show that $\Id[X] \Comp f = f$; hence it suffices to show that they are pointwise equal, which holds by the following calculation:
+  We first show that the left unit law holds. Let $X,Y\in \mathbf{Set}$ be sets and $f\in \CHom \SET X Y$ a function. We have to show that $\Id[X] \Comp f = f$; hence it suffices to show that they are pointwise equal.
+  To show this, we fix an arbitrary $x \in X$, and compute
 \[
-\forall x\in X: (f\circ \Id[X])(x) = f\left(\Id[X](x)\right) = f(x),
+   (f\circ \Id[X])(x) = f\left(\Id[X](x)\right) = f(x),
 \]
 where the first (resp. second) equality holds by definition of the composition (resp. identity morphism).\\
-That the right unit law holds is analogous. To show that the associator law holds, let $X,Y,Z,W\in\mathbf{Set}$ and $f\in \CHom \SET X Y, g\in \CHom \SET Y Z$ and $h\in \CHom \SET Z W$. We have to show $h\circ (g\circ f) = (h\circ g)\circ f$; hence it suffices again to show that they are pointwise equal which holds by the following calculation:
+That the right unit law holds is analogous. To show that the associator law holds, let $X,Y,Z,W\in\mathbf{Set}$ and $f\in \CHom \SET X Y, g\in \CHom \SET Y Z$ and $h\in \CHom \SET Z W$. We have to show $h\circ (g\circ f) = (h\circ g)\circ f$; hence it suffices again to show that they are pointwise equal.
+To show this, we fix an arbitrary $x \in X$, and compute
 \begin{eqnarray*}
-\forall x\in X: \left(h\circ (g\circ f)\right)(x) &=& h\left((g\circ f)(x)\right), \\ 
-	&=& h(g(f(x))),\\ 
-	&=& (h\circ g)(f(x)),\\ 
-	&=& \left((h\circ g)\circ f\right)(x),
+  \left(h\circ (g\circ f)\right)(x) &=& h\left((g\circ f)(x)\right)
+  \\ 
+                                    &=& h(g(f(x)))
+  \\ 
+                                    &=& (h\circ g)(f(x))
+  \\ 
+                                    &=& \left((h\circ g)\circ f\right)(x),
 \end{eqnarray*}
 where the first (resp. second, third, fourth) equality holds by definition of the composition of $h$ and $g\circ f$ (resp. composition of $g$ and $f$, composition of $h$ and $g$, composition of $h\circ g$ and $f$).
 \end{proof}
-\end{lemma}
+
 
 We are now going to describe the category whose collection of objects is given by collection of Coq types:
 \begin{exa}\label{exa:coq-cat}
