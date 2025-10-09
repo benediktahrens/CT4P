@@ -542,52 +542,9 @@ We also write $(+1)$ for $\Succ$.
 \end{exer}
 
 
-\begin{exer}[{\cite[\S3.2]{DBLP:journals/jfp/Hutton99}}]
+\begin{exer}[{\cite[\S3.2]{DBLP:journals/jfp/Hutton99}}, \cref{sol:sum_plus_one_as_fold}]\label{exer:sum_plus_one_as_fold}
   Show that |(+1) . sum = fold (+) 1|, by using the fusion property of \cref{exer:fusion-property}.
 \end{exer}
-
-\begin{solution}
-  We also write $\sum$ for |sum|. Note that |sum| is defined as the catamorphism $\catam{[\Zero, (+)]}$.
-  The situation is summarized in the following diagram
-  
-  \[
-    \begin{tikzcd}[row sep = huge, column sep = huge]
-      \{*\} + \NN \times \List(\NN)
-      \ar[d, "\Id + \Id \times \sum" description]
-      \ar[r, "{[\nil, \cons]}"]
-      &
-      \List(\NN)
-      \ar[d, "\sum" description]
-      \ar[dd, bend left, "\catam{[1, (+)]}"]
-      \\
-      \{*\} + \NN \times \NN
-      \ar[r, "{[\Zero, (+)]}"]
-      \ar[d, "{\Id + \Id \times (+1)}" description]
-      &
-      \NN
-      \ar[d, "{(+1)}" description]
-      \\
-      \{*\} + \NN \times \NN
-      \ar[r, "{[1, (+)]}"]
-      &
-      \NN 
-    \end{tikzcd}
-  \]
-
-  In order to show that |(+1) . sum = fold (+) 1|, in the diagram expressed as $\co{\sum}{(+1)} = \catam{[1, (+)]}$, we need to show that the lower rectangle commutes---this is what  \cref{exer:fusion-property} says.
-
-  There are two cases to consider: the case of $*$, and the case of a pair $(m,n) \in \NN\times\NN$.
-  In the case of $*$, we obtain
-  \[
-    (+1)~0 = 1
-  \]
-  and in the case of $(m,n)$, we obtain
-  \[
-    (+1)~ ((+)~ m~ n) = (+)~ m~ ((+1)~n)
-  \]
-  both of which hold.
-  
-\end{solution}
 
 \begin{exer}
   Prove that |map g . map f = map (g . f)| using the fusion property.

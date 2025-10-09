@@ -1926,6 +1926,49 @@ which completes the proof.
 	Therefore, $ G(g \circ f) = G(g) \circ G(f) $.
 \end{solution}
 
+\begin{solution}[\cref{exer:sum_plus_one_as_fold}]\label{sol:sum_plus_one_as_fold}
+  We also write $\sum$ for |sum|. Note that |sum| is defined as the catamorphism $\catam{[\Zero, (+)]}$.
+  The situation is summarized in the following diagram
+  
+  \[
+    \begin{tikzcd}[row sep = huge, column sep = huge]
+      \{*\} + \NN \times \List(\NN)
+      \ar[d, "\Id + \Id \times \sum" description]
+      \ar[r, "{[\nil, \cons]}"]
+      &
+      \List(\NN)
+      \ar[d, "\sum" description]
+      \ar[dd, bend left, "\catam{[1, (+)]}"]
+      \\
+      \{*\} + \NN \times \NN
+      \ar[r, "{[\Zero, (+)]}"]
+      \ar[d, "{\Id + \Id \times (+1)}" description]
+      &
+      \NN
+      \ar[d, "{(+1)}" description]
+      \\
+      \{*\} + \NN \times \NN
+      \ar[r, "{[1, (+)]}"]
+      &
+      \NN 
+    \end{tikzcd}
+  \]
+
+  In order to show that |(+1) . sum = fold (+) 1|, in the diagram expressed as $\co{\sum}{(+1)} = \catam{[1, (+)]}$, we need to show that the lower rectangle commutes---this is what  \cref{exer:fusion-property} says.
+
+  There are two cases to consider: the case of $*$, and the case of a pair $(m,n) \in \NN\times\NN$.
+  In the case of $*$, we obtain
+  \[
+    (+1)~0 = 1
+  \]
+  and in the case of $(m,n)$, we obtain
+  \[
+    (+1)~ ((+)~ m~ n) = (+)~ m~ ((+1)~n)
+  \]
+  both of which hold.
+  
+\end{solution}
+
 \begin{solution}[\cref{exer:conatural_numbers_terminal_coalgebra}] \label{sol:conatural_numbers_terminal_coalgebra}
 	Let $ F: \SET \to \SET $ be the functor induced by $ X \mapsto 1 + X $ with $ 1 = \{ \star \} $.
 	We claim that $ (\mathbb N^c, f) $ is a terminal coalgebra for this functor, with $ \mathbb N^c = \mathbb N + \{ \infty \} $ and $ f: \mathbb N + \{ \infty \} \to 1 + \mathbb N + \{ \infty \} $ given by
