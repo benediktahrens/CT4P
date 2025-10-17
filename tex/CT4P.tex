@@ -1939,8 +1939,6 @@ When a category is considered as a model for a programming language, natural tra
 
 \section{Definition and First Examples}
 
-Polymorphic functions are functions 
-
 \begin{dfn} Let $F,G: \CC\to\DD$ be functors. A \textbf{natural transformation} $\alpha$ from $F$ to $G$ consists of the following data:
 \begin{itemize}
 \item For each $X\in \Ob{\CC}$, a morphism $\alpha_X \in \CHom{\DD}{F(X)}{G(X)}$.
@@ -1998,7 +1996,32 @@ Can you define a natural transformation that counts the number of elements in a 
 That is, for any set $X$, construct a function $len_X : \List(X) \to \NN$ and show that this is natural in $X$.
 \end{exer}
 
+\begin{exer}
+  Let $(M,m,e)$ be a monoid and let $\MONtoCAT(M,m,e)$ be its corresponding category. Recall from \cref{ex:monoid_functors} that a functor from $\MONtoCAT(M,m,e)$ to $\SET$ is a set $X$ together with an action of $M$ on $X$, i.e. a function $\mu: M\times X\to X$ such that 
+  \[
+    \forall x\in X: \mu(e,x) = x, \quad \forall n_1,n_2\in M, x\in X: \mu(n_1, \mu(n_2,x)) = \mu(m(n_1,n_2), x).
+  \]
+  We will call a set $ X $ with an action of $ M $ on $ X $ an $ M $-set.
+  Describe the natural transformations between $M$-sets.
+\end{exer}
+
+\begin{exer}
+  Let $(X,\leq_X)$ and $(Y,\leq_Y)$ be posets.
+  Recall from \cref{ex:poset_functors} that a functor between posets corresponds with an order-preserving function, i.e. $x_1 \leq_X x_2 \implies f(x_1) \leq_Y f(x_2)$.
+  Describe the natural transformations between order-preserving functions.
+\end{exer}
+
+\begin{exer}
+Let $\CC$ be a category and $\mathsf{bool}$ be the category with $2$ distinct objects $a,b$ and no non-trivial morphisms.
+For every two objects $x, y \in \CC$, there is a functor $J : \mathsf{bool} \to \CC$ with $J(a) := x$ and $J(b) := y$.
+
+Assume $x + y$ is a coproduct of $x$ and $y$.
+Construct a natural transformation $\alpha$ from $J$ to the constant functor $\mathsf{const}_{(x + y)} : \mathsf{Bool} \to \CC$.
+Furthermore, can you describe the universal property of the coproduct in terms of $\alpha$?
+\end{exer}
+
 \section{Functor Categories}
+
 \begin{dfn}\label{dfn:nattrans_id} Let $F:\CC\to\DD$ be a functor. The \textbf{identity natural transformation} $\Id[F]$ on $F$ is given by the following data:
 \[
 \forall X\in\Ob{\CC}: (\Id[F])_{X} := \Id[F(x)].
@@ -2057,31 +2080,6 @@ Show that a natural isomorphism from $F$ to $G$ is equivalent to an isomorphism 
 \forall X\in \Ob{\CC}: (\beta\bullet\alpha)_X = \co{\beta_{F(X)}}{\tilde{G}(\alpha_X)}.
 \]
 Hint: Write the equality as a (not-known commutative) square.
-\end{exer}
-
-\section{Exercises}
-\begin{exer}
-  Let $(M,m,e)$ be a monoid and let $\MONtoCAT(M,m,e)$ be its corresponding category. Recall from \cref{ex:monoid_functors} that a functor from $\MONtoCAT(M,m,e)$ to $\SET$ is a set $X$ together with an action of $M$ on $X$, i.e. a function $\mu: M\times X\to X$ such that 
-  \[
-    \forall x\in X: \mu(e,x) = x, \quad \forall n_1,n_2\in M, x\in X: \mu(n_1, \mu(n_2,x)) = \mu(m(n_1,n_2), x).
-  \]
-  We will call a set $ X $ with an action of $ M $ on $ X $ an $ M $-set.
-  Describe the natural transformations between $M$-sets.
-\end{exer}
-
-\begin{exer}
-  Let $(X,\leq_X)$ and $(Y,\leq_Y)$ be posets.
-  Recall from \cref{ex:poset_functors} that a functor between posets corresponds with an order-preserving function, i.e. $x_1 \leq_X x_2 \implies f(x_1) \leq_Y f(x_2)$.
-  Describe the natural transformations between order-preserving functions.
-\end{exer}
-
-\begin{exer}
-Let $\CC$ be a category and $\mathsf{bool}$ be the category with $2$ distinct objects $a,b$ and no non-trivial morphisms.
-For every two objects $x, y \in \CC$, there is a functor $J : \mathsf{bool} \to \CC$ with $J(a) := x$ and $J(b) := y$.
-
-Assume $x + y$ is a coproduct of $x$ and $y$.
-Construct a natural transformation $\alpha$ from $J$ to the constant functor $\mathsf{const}_{(x + y)} : \mathsf{Bool} \to \CC$.
-Furthermore, can you describe the universal property of the coproduct in terms of $\alpha$?
 \end{exer}
 
 \section{Equivalence of Categories}
