@@ -1,0 +1,467 @@
+\chapter{Categories}
+\label{sec:categories}
+
+\begin{reading*}
+The definition of categories is also given in \cite[\S 2.1]{barr-wells}. Plenty of examples of categories are given in \cite[\S\S 2.3--2.5]{barr-wells}.
+
+  The definition of categories is also given in \cite[\S 1.1]{leinster}, together with some examples.
+  There, also isomorphisms are discussed, which we define in \cref{sec:isos}.
+
+  The tutorial \cite{pierce} features the definition of categories in \cite[\S 2.1]{pierce}.
+  It also introduces the notion of ``diagram'', which we do not use in the present notes.
+\end{reading*}
+
+
+\section{Definition}
+
+\begin{dfn}\label{dfn:category}
+  A \textbf{category} $\CC$ consists of the following data:
+\begin{enumerate}
+\item A collection of objects, denoted by $\Ob{\CC}$;
+\item For any given objects $X,Y \in \Ob{\CC}$, a collection of morphisms from $X$ to $Y$, denoted by $\Hom[\CC]{X}{Y}$ (or $\Hom{X}{Y}$ when the category $\CC$ is clear, or $\CHom \CC X Y$ or $X \to Y$);
+\item For each object $X\in \Ob{\CC}$, a morphism $\Id[X] \in \Hom[C]{X}{X}$, called the \emph{identity morphism} on $X$;
+\item A binary operation
+\[
+(\co{}{})_{X,Y,Z} : \Hom{Y}{Z} \to \Hom X Y \to \Hom X Z,
+\]
+called the \emph{composition}, and written infix without the indices $X,Y,Z$ as in $\co{f}{g}$.
+\end{enumerate}
+Moreover, this data should satisfy the following properties:
+\begin{enumerate}
+\item (\textbf{Left unit law}) For any morphism $f \in \Hom X Y$, we have 
+\[
+ \co{\Id[X]} {f} = f.
+\]
+\item (\textbf{Right unit law}) For any morphism $f \in \Hom X Y$, we have 
+\[
+  \co f {\Id[Y]} = f.
+\]
+\item (\textbf{Associative law}) For any morphisms $f\in \Hom X Y$, $g\in \Hom Y Z$ and $h\in \Hom Z W$, we have
+\[
+     \co {(\co f g)}{h} =  \co f {(\co g  h)}.
+\]
+\end{enumerate}
+\end{dfn}
+
+% \begin{intu} So what does a category represent? There are (at least) $3$ possible ways how one can think about this definition:
+% \begin{enumerate}
+% \item A category represents a type system in the sense that the objects are the types and each hom-set is the type\footnote{In this case, each hom-set is a type, so isn't each hom-set an object again? Categories which satisfy such a property are called \textit{cartesian closed}.} of functions. See \cref{example:hask}.
+% \item A category represents a \textit{bag} of instances of a particular mathematical structure (e.g. sets with a notion of addition). The objects are then instances of such a mathematical theory (e.g. $(\mathbb{N},+)$) and the morphisms are structure preserving functions (e.g. functions $f$ which satisfy $f(x+y) = f(x) + f(y)$). See \cref{example:set,example:poset,monoidcategory}.
+% \item A category represents a directed graph in the sense that an object is a vertex and a morphism is an edge.
+% \item Anything (almost at least) can be seen as a category in some exotic way. 
+% \end{enumerate}
+% \end{intu}
+
+\begin{nota} Let $\CC$ be a category.
+\begin{itemize}
+\item We write $X\in\CC$ instead of $X\in \Ob{\CC}$. 
+\item Let $X,Y\in \CC$ be objects. A morphism $f\in\CHom{\CC}{X}{Y}$ can be visualized as \[ X \xrightarrow{f} Y. \]
+\item Let $X,Y, Z \in \Ob{\CC}$ objects in $\CC$ and consider the following morphisms:
+\[
+f\in\CHom{C}{X}{Y}, \quad g\in\CHom{C}{Y}{Z}, \quad h\in\CHom{C}{X}{Z}.
+\]
+These morphisms can be visualized as a triangle:
+\[
+\begin{tikzcd}
+X \arrow[r, "f"] \arrow[dr,swap, "h"] & Y \arrow[d, "g"] \\
+& Z
+\end{tikzcd}
+\]
+We say that such a triangle \textbf{commutes} if $h = \co{f}{g}$.
+\item Let $X,Y_1,Y_2, Z \in \Ob{\CC}$ objects in $\CC$ and consider the following morphisms:
+\[
+f_1\in\CHom{C}{X}{Y_1}, \quad f_2\in\CHom{C}{X}{Y_2}, \quad g_1\in\CHom{C}{Y_1}{Z}, \quad g_2\in\CHom{C}{Y_2}{Z}.
+\]
+These morphisms can be visualized as a square:
+\[
+\begin{tikzcd}
+X \arrow[r, "f_2"] \arrow[d,swap, "f_1"] & Y_2 \arrow[d, "g_2"] \\
+Y_1 \arrow[r, swap, "g_1"] & Z 
+\end{tikzcd}
+\]
+We say that such a square \textbf{commutes} if $\co{f_1}{g_1} = \co{f_2}{g_2}$.
+\end{itemize}
+\end{nota}
+
+\section{Examples of categories}
+
+\begin{exa}\label{example:set} The \textbf{category of sets}, denoted by $\SET$, is the category specified by the following data:
+\begin{itemize}
+\item An object is a set.
+\item If $X$ and $Y$ are sets, then is $\CHom \SET X Y$ the set of all functions from $X$ to $Y$.
+\item The identity morphism $\Id[X]$ (on $X\in\Ob{\SET}$) is the identity function on $X$, i.e.
+\begin{align*}
+  \Id[X] : X &\to X
+  \\
+  x &\mapsto x.
+\end{align*}
+\item The composition of functions is given by the usual composition of functions, i.e. for $f\in \CHom \SET X Y$ and $g\in \CHom \SET Y Z$, the composition of $f$ and $g$ is:
+\begin{align*}
+  g \circ f : X&\to Z
+  \\
+  x &\mapsto g(f(x)).
+\end{align*}
+\end{itemize}
+\end{exa}
+\begin{lemma}\label{lemma:set-category}
+  The data of $\SET$ satisfies the properties of a category; hence $\SET$ is indeed a category.
+\end{lemma}
+\begin{proof}
+  We first show that the left unit law holds. Let $X,Y\in \mathbf{Set}$ be sets and $f\in \CHom \SET X Y$ a function. We have to show that $\co {\Id[X]}{f} = f$; hence it suffices to show that they are pointwise equal.
+  To show this, we fix an arbitrary $x \in X$, and compute
+\[
+   (f\circ \Id[X])(x) = f\left(\Id[X](x)\right) = f(x),
+\]
+where the first (resp. second) equality holds by definition of the composition (resp. identity morphism).\\
+That the right unit law holds is analogous. To show that the associator law holds, let $X,Y,Z,W\in\mathbf{Set}$ and $f\in \CHom \SET X Y, g\in \CHom \SET Y Z$ and $h\in \CHom \SET Z W$. We have to show $h\circ (g\circ f) = (h\circ g)\circ f$; hence it suffices again to show that they are pointwise equal.
+To show this, we fix an arbitrary $x \in X$, and compute
+\begin{eqnarray*}
+  \left(h\circ (g\circ f)\right)(x) &=& h\left((g\circ f)(x)\right)
+  \\ 
+                                    &=& h(g(f(x)))
+  \\ 
+                                    &=& (h\circ g)(f(x))
+  \\ 
+                                    &=& \left((h\circ g)\circ f\right)(x),
+\end{eqnarray*}
+where the first (resp. second, third, fourth) equality holds by definition of the composition of $h$ and $g\circ f$ (resp. composition of $g$ and $f$, composition of $h$ and $g$, composition of $h\circ g$ and $f$).
+\end{proof}
+
+
+We are now going to describe the category whose collection of objects is given by collection of Coq types:
+\begin{exa}\label{exa:coq-cat}
+  Consider the following data: 
+\begin{itemize}
+\item An object is a Coq type (of some fixed universe).
+\item If $X$ and $Y$ are Coq types, then is $\CHom \COQ X Y$ the function type $X\to Y$.
+\item The identity morphism $\Id[X]$ (on $X\in \Ob{\COQ}$) is the identity function on $X$, i.e.
+\begin{lstlisting}
+Definition idfun {X} : X -> X := fun x => x.
+\end{lstlisting}
+\item The composition of functions is given by the composition of functions:
+\begin{lstlisting}
+Definition compfun {X Y Z} (f : X -> Y) (g : Y -> Z) : X -> Z
+:= fun x => g (f x).
+\end{lstlisting}
+\end{itemize}
+  Try it out, e.g., on \url{https://jscoq.github.io/scratchpad.html}:
+\begin{lstlisting}
+Eval compute in (compfun (fun x => x + 1) (fun x => x * 3) 5).
+\end{lstlisting}  
+% (You can get a pre-filled Lean input field by clicking here: \href{https://leanprover.github.io/live/latest/#code=%0Adef%20idfun%20(X%20:%20Type)%20:%20X%20%E2%86%92%20X%20:=%20%CE%BB%20x,%20x.%0Adef%20compfun%20%7BX%20Y%20Z%7D%20(f%20:%20X%20%E2%86%92%20Y)%20(g%20:%20Y%20%E2%86%92%20Z%20)%20:%20X%20%E2%86%92%20Z%0A:=%20%CE%BB%20x%20,%20g%20(%20f%20x%20)%0A%0A#eval%20compfun%20(+1)%20(%5E3)%205}{\textbf{ClickMe}}.)
+\end{exa}
+
+\begin{exer}
+  Prove (on paper) that the data defined in \cref{exa:coq-cat} defines a category.
+  That is, show that it satisfies the axioms of a category.
+  You might need to use the \textbf{axiom of functional extensionality}:
+\begin{lstlisting}
+Axiom functional_extensionality: forall {A B} (f g : A -> B),
+  (forall x, f x = g x) -> f = g.
+\end{lstlisting}
+\end{exer}
+
+\begin{exa}
+  We repeat the definitions of \cref{exa:coq-cat} in Haskell instead of Coq.
+  Does this data satisfies the axioms of a category?
+
+  Due to Haskell allowing for the |undefined| value in each type, the situation is slightly more complicated; consider the following two functions:
+\begin{lstlisting}
+undef1 :: a -> a
+undef1 = undefined
+
+undef2 :: a -> a
+undef2 = \x -> undefined
+\end{lstlisting}
+These are not equal by definition, but we have $\Id \Comp$ |undef1| $=$ |undef2|.
+So by the right unit law, we must have that |undef1| = |undef2| (as morphisms in our sought category).
+\end{exa}
+
+% \begin{exer}
+%   Compose the functions |undef1| and |undef2| with some other functions of your choice, and see what happens.
+% \end{exer}
+
+\begin{exer}
+  Read the Haskell wiki page on the category $\HASK$ \cite{haskell-wiki-hask}.
+\end{exer}
+
+
+However, when considering functions to be equal when they are \textbf{pointwise} equal, we can define a category of Haskell types:
+\begin{dfn}\label{example:hask} The \textbf{category of Haskell types}, denoted by $\HASK$, is the category specified by the following data:
+\begin{itemize}
+\item An object is a Haskell type.
+\item If $X$ and $Y$ are Haskell types, then is $\CHom \HASK X Y$ the collection of functions modulo the equivalence relation $\sim$ defined by identifying pointwise equal functions:
+\[
+f \sim g :\iff \forall x : X, f(x) = g(x).
+\]
+i.e. a morphism in $\HASK$ is an equivalence class of (Haskell) functions.
+\item The identity morphism $\Id[X]$ (on $X\in\HASK$) is the equivalence class of the identity function on $X$.
+\item The composition of (Haskell) functions is given by the equivalence class of the composition of functions, i.e., for $f\in \CHom \HASK X Y$ and $g\in \CHom \HASK Y Z$, the composition of $f$ and $g$ is the equivalence class of:
+\[g\circ f : X\to Z: \lambda x. g(f(x)).\]
+\end{itemize}
+\end{dfn}
+
+
+\begin{exa}\label{example:posetcategories}
+Recall that a \textit{preordered set} $(X,\leq)$ consists of a set $X$ together with a binary relation $(\leq)$ on $X$ which satisfies the following properties:
+\begin{itemize}
+\item \textbf{Reflexivity}: $\forall x\in X: x\leq x$.
+\item \textbf{Transitivity}: $\forall x,y,z\in X: \left(x\leq y \wedge y\leq z\right) \implies x\leq z$.
+\end{itemize}
+
+  Let $(X,\leq)$ be a preordered set. We define the category $\PREtoCAT(X,\leq)$ as follows:
+\begin{itemize}
+\item The objects are the elements of $X$.
+\item Let $x,y \in X$ be elements. The hom-set $\Hom x y$ consists of a unique element if $x\leq y$ and is empty otherwise.
+\item  We define an identity morphism for each $x\in X$.
+  By reflexivity (i.e., $x\leq x$), we have that $\Hom x x$ consists of a unique element, which we take to be the identity.
+\item We define, for each $x,y,z\in X$, a composition operator
+\[
+\Hom y z \to \Hom x y \to \Hom x z.
+\]
+By definition of the hom-sets, we only have to define it in case $x\leq y$ and $y\leq z$.
+But then, by transitivity (i.e. if $x\leq y$ and $y\leq z$, then $x\leq z$), we have that $\Hom x z$ consists of a unique element; that unique element is the composite.
+\end{itemize}
+%
+We are now going to show that the axioms of a category holds.
+To show the right unit law, we have to show that for each $x,y\in X$ and $f\in \Hom x y$, we have $\co{\Id[x]}{f} = f$.
+This indeed holds since every hom-set has a unique element, but both $\co{\Id[x]}{f}$ and $f$ live in the same hom-set; hence they must be equal.
+The proof that left unit law and associator law hold are analogous.
+\end{exa}
+
+\begin{exer}[\cref{sol:post_antisymmetry}]\label{exer:post_antisymmetry}
+  A \textbf{partially ordered set} (poset) is a preordered set $(X,\leq)$ satisfying the following additional axiom:
+  \begin{itemize}
+  \item \textbf{Antisymmetry}: $\forall x,y\in X: (x\leq y \wedge y\leq x) \implies x=y$.
+  \end{itemize}
+  What does this axiom say about $\PREtoCAT(X,\leq)$?
+\end{exer}
+
+\begin{rem}
+  To understand a definition in category theory, it is very helpful to think about what the definition means in a preordered set, viewed as a category. 
+\end{rem}
+
+\begin{exa}\label{example:poset} The category of posets, denoted by $\POS$, is the category specified by the following data:
+\begin{itemize}
+\item An object is a poset $(X,\leq)$.
+\item A morphism from a poset $(X,\leq_X)$ to $(Y,\leq_Y)$ consists of a function $f:X\to Y$ such that the following property holds:
+\[
+\forall x_1, x_2 \in X: x_1\leq_X x_2 \implies f(x_1)\leq_Y f(x_2).
+\]
+\item The identity morphism on $(X,\leq_X)$ is the identity function on $X$.
+\item The composition given by the composition of functions.
+\end{itemize}
+
+Before we can show that this data satisfies the axioms of a category, notice that the identity function is a morphism of posets and that the composition of poset morphisms is again a poset morphism, indeed: If $x_1\leq_X x_2$, then we also have $\Id[X](x_1) \leq_X \Id[X](x_2)$ because $\Id[X](x) = x$. If $f\in\CHom{\POS}{(X,\leq_X)}{(Y,\leq_Y)}$ and $g\in\CHom{\POS}{(Y,\leq_Y)} {(Z,\leq_Z)}$ are morphisms of posets, and $x_1,x_2\in X$, we have 
+\[
+  x_1\leq_X x_2 \implies f(x_1)\leq_Y f(x_2) \implies g(f(x_1))\leq_Z g(f(x_2)),
+\]
+where the first (resp. second) implication holds by $f$ (resp. $g$) being a morphism of posets. So our data is indeed well-defined.
+
+The axioms of a category are satisfied by this data; the proof is exactly the same proof as showing that $\SET$ is a category because the identity and composition are defined in the same way.
+\end{exa}
+
+% \begin{exer}[\cref{sol:POS_isnt_a_posetcat}]\label{exer:POS_isnt_a_posetcat}
+%   Is $\POS$ a preorder-category itself? That is, is there at most one morphism between any two objects?
+% \end{exer}
+
+% \begin{que}\label{que:posetcatstoallcats} In \cref{example:poset}, we have shown that $\POS$ is a category. However, by \cref{example:posetcategories}, we know that any poset also is a category. So we have that $\POS$ is a category whose objects are certain categories. Can we also have some category whose collection of objects is the collection of all categories, and if so, what are the morphisms of categories? 
+% \begin{proof}[Solution]
+% \cref{sec:functors} is devoted completely to this answer.
+% \end{proof}
+% \end{que}
+
+\begin{lemma}\label{lemma:uniqueid} Let $\CC$ be a category. For any object $X\in\CC$, $\Id[X]$ is the unique morphism which satisfies the following property: For any $Y\in\CC$ and $f\in\CHom \CC X Y$, we have 
+\[
+\co{\Id[X]} f = f.
+\]
+\begin{proof}
+Assume $\tilde{\Id[X]}$ also satisfies this property, in particular we have $\co {\tilde{\Id[X]}} {\Id[X]} = \Id[X]$. However, by the right unit law, we also must have $\co{\tilde{\Id[X]}}{\Id[X]} = \tilde{\Id[X]}$. Hence, $\Id[X] = \tilde{\Id[X]}$.
+\end{proof}
+\end{lemma}
+
+\begin{exa}\label{exa:monoidofrationalnumbers} In this example we are going to define a category which captures the multiplication of the rational numbers. Let $\CC$ be the category defined by the following data:
+\begin{itemize}
+\item There is a unique object $\star$.
+\item The (only) hom-set is given by
+\[
+\Hom{\star}{\star} = \mathbb{Q},
+\]
+i.e. each morphism corresponds with a rational number.
+\item The composition is defined by the multiplication of rational numbers:
+\[
+\mathbb{Q} \to\mathbb{Q}\to\mathbb{Q} : (p,q)\mapsto p\cdot q.
+\]
+\item The identity morphism (of $\star$) is given by $1$.
+\end{itemize}
+That $\CC$ is indeed a category follows because for each $p\in\mathbb{Q}$, we have $p\cdot 1 = p = 1\cdot p$ (which shows the unit laws) and by associativity of multiplication, i.e. $(p\cdot q)\cdot h = p\cdot (h \cdot q)$ (which shows the associativity of the composition).
+\end{exa}
+The construction in \cref{exa:monoidofrationalnumbers} uses no specific properties of the rational numbers, only that it has a multiplication which is associative and such that there is a special element which does not change an element when it is multiplied with this special element. Hence, \cref{exa:monoidofrationalnumbers} can be generalized as follows:
+\begin{dfn}\label{monoidcategory}
+Recall that a monoid is a set $M$ equipped with binary operation $m : M \to M \to M$ which is associative, i.e. 
+\[
+\forall x,y,z\in M: m(x,m(y,z)) = m(m(x,y),z),
+\]
+and such that there is an identity element, i.e. 
+\[
+\exists e\in M: \forall x\in M: m(e,x)=x=m(x,e).
+\]
+Let $(M,m,e)$ be a monoid. The category $\MONtoCAT(M,m,e)$ is defined by the following data:
+\begin{itemize}
+\item There is a unique object $\star$.
+\item The (only) hom-set is given by 
+\[
+\Hom{\star}{\star} = M.
+\]
+\item The identity morphism on $\star$ is the identity element $e$.
+\item The composition of morphisms $x$ and $y$ is given by $\co{x}{y} := m(x,y)$.
+\end{itemize}
+\end{dfn}
+
+That for each monoid $(M,m,e)$, $\MONtoCAT(M,m,e)$ is indeed a category, follows directly by the properties of being a monoid. Indeed, the axioms of a category become precisely:
+\begin{enumerate}
+\item $\forall x\in M: m(x,e)=x$,
+\item $\forall x\in M: m(e,x)=x$,
+\item $\forall x,y,z\in M: m(m(x,y),z) = m(x,m(y,z))$.
+\end{enumerate}
+
+\begin{rem} Notice that this category illustrates that there is no relation between the collection of objects and the hom-sets since there is now only one object and the collection of the hom-set can be as small or as large as possible.
+In fact, we can associate a different number of categories to a single monoid. We can for example consider an arbitrary set of objects $I$ and the defining the hom-sets as follows:
+\[
+\Hom{i}{j} := 
+\begin{cases}
+M ,\quad \text{ if } i=j,\\
+\emptyset, \quad \text{ if } i\not=j.
+\end{cases}
+\]
+\end{rem}
+
+\begin{exer}[\cref{sol:categories_coming_from_monoids}]\label{exer:categories_coming_from_monoids}
+  Let $\CC$ be a category. When does $\CC$ ``come from a monoid'', that is, when is there a monoid $(M,m,e)$ such that $\CC$ of the form $\MONtoCAT(M,m,e)$?
+\end{exer}
+
+\begin{exer}[\cref{sol:category_of_monoids}]\label{exer:category_of_monoids}
+  Define a category $\MON$ whose objects are monoids, i.e. define a suitable notion of morphism between monoids and moreover show that this indeed defines a category.
+\end{exer}
+
+\begin{exer}[\cref{sol:opposite}]\label{exer:opposite}
+  Let $\CC$ be a category. Define a category $\op\CC$ such that
+  \begin{itemize}
+  \item the objects of $\op\CC$ are the same as those of $\CC$; and
+  \item the morphisms $\CHom {\op\CC} X Y$ are morphisms $\CHom \CC Y X$.
+  \end{itemize}
+  The category $\op\CC$ is called the \textbf{opposite (category)} of $\CC$.
+\end{exer}
+
+\begin{exer} Let $G$ be a directed graph. Then $G$ induces a category $\mathbf{Graph}(G)$ as follows:
+\begin{itemize}
+\item The collection of objects $\Ob{\mathbf{Graph}(G)}$ is the set of vertices of $G$. 
+\item The morphisms between object are the (directed) paths, that is, finite sequences of composable edges, between them.
+\item For each object $x$ (i.e. vertex), the identity morphism on $x$ is the \textit{identity path}.
+\item The composition of morphisms is the composition of paths.
+\end{itemize}
+We call $\mathbf{Graph}(G)$ the \textbf{category generated by $G$}. Show that $\mathbf{Graph}(G)$ is indeed a category.
+\end{exer}
+
+\begin{exer} Argue why the morphisms are chosen to be paths and it is not sufficient to just take the edges. 
+\end{exer}
+
+\begin{exa}\label{exa:graph_terminalcat} Consider the following graph $G$:
+\[
+\begin{tikzcd}
+x
+\end{tikzcd}
+\]
+i.e. the graph with only object vertex and no edges. The category generated by $G$ is the category generated is the so-called \textit{terminal category}, that is, the category with a single object and a single morphism (the identity morphism of the unique object). 
+The terminal category is denoted by $\bullet$.
+\end{exa}
+
+\begin{exa}\label{exa:graph_intervalcat} Consider the following graph $G$:
+\[
+\begin{tikzcd}
+x \arrow[r] & y
+\end{tikzcd}
+\]
+The category generated by $G$ is the category generated is the so-called \textit{interval category}, that is, the category with two objects and, besides the identity morphisms, a unique morphism (living in $\Hom{x}{y}$).
+\end{exa}
+
+In the following example we use the following notation: 
+\begin{itemize}
+\item If $f$ is a morphism in a category, we denote $f^{2} := \co{f}{f}, f^{3} := \co{f}{f^2}$, etc.
+\item We also label the edges in order to refer to them.
+\end{itemize}
+\begin{exa}\label{exa:graph_xy_yx} Consider the following graph $G$:
+\[
+\begin{tikzcd}
+x \arrow[r, "f", bend left] & y \arrow[l, "g", bend left]
+\end{tikzcd}
+\]
+The category generated by $G$ consists of the following data:
+\begin{itemize}
+\item The collection of objects is $\{x,y\}$.
+\item The hom-sets are given as follows:
+\begin{itemize}
+\item $\Hom{x}{x}$ contains
+\[
+\Id[x], \co{f}{g}, (\co{f}{g})^2, (\co{f}{g})^3, \cdots,
+\]
+But these are not the only ones, we also have that each of these can be precomposed or postcomposed with $\Id[x]$, however, by the unit laws, we know that these don't give us any \textit{new} morphisms. The same remark holds for the associativity law. This comment also holds for the upcoming hom-sets.
+\item $\Hom{y}{y}$ contains
+\[
+\Id[y], \co{g}{f}, (\co{g}{f})^2, (\co{g}{f})^3, \cdots,
+\]
+\item $\Hom{x}{y}$ contains  
+\[
+f, \co{f}{(\co{g}{f})}, \co{f}{(\co{g}{f})^2}, \co{f}{(\co{g}{f})^3}, \cdots
+\]
+\item $\Hom{y}{x}$ contains
+\[
+g, \co{g}{(\co{f}{g})}, \co{g}{(\co{f}{g})^2}, \co{g}{(\co{f}{g})^3}, \cdots
+\] 
+\end{itemize}
+\end{itemize}
+\end{exa}
+
+\begin{exa}\label{exa:graph_yx_yz_zw} Consider the following graph $G$:
+\[
+\begin{tikzcd}
+& w & \\
+x & & z \arrow[lu] \\
+& y \arrow[lu] \arrow[ru] &
+\end{tikzcd}
+\]
+The category generated by $G$ has four objects (namely $x,y,z,w$) and the hom-sets are: 
+\begin{itemize}
+\item $\Hom{y}{x}, \Hom{y}{z}$ and $\Hom{z}{w}$ are singleton sets, 
+\item $\Hom{x}{y}, \Hom{z}{y}, \Hom{x}{w}, \Hom{w}{x}$ and $\Hom{w}{z}$ are all empty. 
+\item $\Hom{y}{w}$ consists of the path $y\to z\to w$.
+\item For each vertex $v$, we have that $\Hom{v}{v}$ consists only of the identity path on $v$.
+\end{itemize}
+\end{exa}
+
+\begin{exer}[\cref{sol:connection_graphs_preordersets}] \label{exer:connection_graphs_preordersets}
+Describe the connection between the categories generated by graphs and the categories associated to preordered sets. What does the property of anti-symmetry correspond to under this connection with graphs?
+\end{exer}
+
+\begin{exer} Define a category $\Catb{Aut}$ whose objects are (deterministic finite) automata. 
+\end{exer}
+
+\begin{exer}[\cref{sol:categories_with_natural_numbers}] \label{exer:categories_with_natural_numbers}
+  In this exercise, we study several different categories which all have the set of natural numbers as their collection of objects.
+  Define in detail the categories sketched below:
+  \begin{enumerate}
+  \item The category $\POS(\NN, \leq)$ generated by the preorder on natural numbers given by the ``less than or equal'' relation (the category that looks like this: $0 \to 1 \to 2 \to \ldots$).
+  \item The category $\SKELFINSET$, where a morphism $f : m \to n$ is a function from the ``standard finite set'' $[m]$ to the standard finite set $[n]$. Here, $[m] := \{0,\ldots,m-1\}$.
+  \item The category $\MAT$, where a morphism $f : m \to n$ is a real matrix of dimension $n \times m$ (with $n$ rows and $m$ columns).
+    Such matrices can represent linear maps between real vector spaces.
+    Composition in this category is given by matrix multiplication.
+
+    More generally for each field $\mathbb{F}$, one can define $\MAT_\mathbb{F}$, where a morphism $f : m \to n$ is a an $n \times m$ matrix over the field $\mathbb{F}$.
+  \end{enumerate}
+
+  Can you think of other categories that have natural numbers as their collection of objects? What about a category, where a morphism $f : m \to n$ is a monotonously increasing (decreasing) function from $[m]$ to $[n]$?
+\end{exer}
+
+\begin{exer}[\cref{sol:category_of_relations}] \label{exer:category_of_relations}
+  Define a category $\REL$ of sets and binary relations. Recall that given sets $X$ and $Y$ a binary relation $R$ is a subset of the cartesian product $X \times Y$ of the sets.
+\end{exer}
