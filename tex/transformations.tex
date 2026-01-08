@@ -1,0 +1,313 @@
+\chapter{Natural Transformations}
+\label{sec:nat-trans}
+
+Natural transformations are often considered the heart of category theory, and for good reason 
+— the very subject was originally developed to express such transformations.
+They provide the language to express many of the field's fundamental constructions.
+Moreover, in the context of programming, natural transformations are crucial: they serve as the mathematical model for parametric polymorphism when a category is used to represent a programming language.
+
+\section{Definition and First Examples}
+
+\begin{dfn} Let $F,G: \CC\to\DD$ be functors. A \textbf{natural transformation} $\alpha$ from $F$ to $G$ consists of the following data:
+\begin{itemize}
+\item For each $X\in \Ob{\CC}$, a morphism $\alpha_X \in \CHom{\DD}{F(X)}{G(X)}$.
+\end{itemize}
+Moreover, this data should satisfy the following \textit{naturality condition}:\\
+For each $f\in \CHom{\CC}{X}{Y}$, the following diagram should commute:
+\begin{center}
+\begin{tikzcd}
+F(X) \arrow[r, "\alpha_X"] \arrow[d,swap, "F(f)"] & G(X) \arrow[d, "G(f)"]\\
+F(Y) \arrow[r,swap, "\alpha_Y"] & G(Y)
+\end{tikzcd}
+\end{center}
+\end{dfn}
+
+\begin{nota} If $F,G:\CC\to\DD$ are functors, a natural transformation $\alpha$ from $F$ to $G$ is denoted as $\NatTrans{\alpha}{F}{G}$ or 
+\begin{center}
+\begin{tikzcd}[column sep=huge]
+\CC
+  \arrow[bend left=50]{r}[name=U,label=above:$\scriptstyle F$]{}
+  \arrow[bend right=50]{r}[name=D,label=below:$\scriptstyle G$]{} &
+\DD
+  \arrow[shorten <=5pt, Rightarrow,to path={(U) -- node[label=right:$\alpha$] {} (D)}]{}
+\end{tikzcd}
+\end{center}
+\end{nota}
+
+\begin{exer}
+Construct a natural transformation from the $\Maybe$ functor to the $\List$ functor, and conversely.
+\end{exer}
+
+\begin{exa} (\textbf{Currying}) Let $X$ be a set. Let $F := \SET(X, -)\times X : \SET\to\SET$ be the functor induced by the following data (on objects):
+\[
+Y\mapsto \SET(X,Y)\times X.
+\]
+The evaluation defines a natural transformation $\NatTrans{ev}{F}{\Id[\SET]}$ as follows:
+\[
+ev_Y : \SET(X,Y) \times X \to Y : (f,x) \mapsto f(x).
+\]
+Show that this indeed satisfies the naturality condition.
+\end{exa}
+
+\begin{exer}
+  Given two preordered sets $(X,\leq_X)$ and $(Y, \leq_Y)$ and two functors $f, g : \PREtoCAT(X,\leq_X) \to \PREtoCAT(Y,\leq_Y)$ between their associated categories, what is a natural transformation from $f$ to $g$?
+\end{exer}
+
+Recall that for every object $d : \DD$ in a category gives rise to the constant functor (see \cref{exer:const-functor}).
+
+\begin{exer}
+  Can you define a natural transformation that counts the occurrences of elements from $X$ in a list?
+  That is, for any set $X$, we would like to have a function of type $\List(X) \to X \to \NN$.
+\end{exer}
+
+\begin{exer}
+Can you define a natural transformation that counts the number of elements in a list?
+That is, for any set $X$, construct a function $len_X : \List(X) \to \NN$ and show that this is natural in $X$.
+\end{exer}
+
+\begin{exer}
+  Let $(M,m,e)$ be a monoid and let $\MONtoCAT(M,m,e)$ be its corresponding category. Recall from \cref{ex:monoid_functors} that a functor from $\MONtoCAT(M,m,e)$ to $\SET$ is a set $X$ together with an action of $M$ on $X$, i.e. a function $\mu: M\times X\to X$ such that 
+  \[
+    \forall x\in X: \mu(e,x) = x, \quad \forall n_1,n_2\in M, x\in X: \mu(n_1, \mu(n_2,x)) = \mu(m(n_1,n_2), x).
+  \]
+  We will call a set $ X $ with an action of $ M $ on $ X $ an $ M $-set.
+  Describe the natural transformations between $M$-sets.
+\end{exer}
+
+\begin{exer}
+  Let $(X,\leq_X)$ and $(Y,\leq_Y)$ be posets.
+  Recall from \cref{ex:poset_functors} that a functor between posets corresponds with an order-preserving function, i.e. $x_1 \leq_X x_2 \implies f(x_1) \leq_Y f(x_2)$.
+  Describe the natural transformations between order-preserving functions.
+\end{exer}
+
+\begin{exer}
+Let $\CC$ be a category and $\mathsf{bool}$ be the category with $2$ distinct objects $a,b$ and no non-trivial morphisms.
+For every two objects $x, y \in \CC$, there is a functor $J : \mathsf{bool} \to \CC$ with $J(a) := x$ and $J(b) := y$.
+
+Assume $x + y$ is a coproduct of $x$ and $y$.
+Construct a natural transformation $\alpha$ from $J$ to the constant functor $\mathsf{const}_{(x + y)} : \mathsf{Bool} \to \CC$.
+Furthermore, can you describe the universal property of the coproduct in terms of $\alpha$?
+\end{exer}
+
+\section{Functor Categories}
+
+\begin{dfn}\label{dfn:nattrans_id} Let $F:\CC\to\DD$ be a functor. The \textbf{identity natural transformation} $\Id[F]$ on $F$ is given by the following data:
+\[
+\forall X\in\Ob{\CC}: (\Id[F])_{X} := \Id[F(x)].
+\]
+\end{dfn}
+
+\begin{exer} Show that for any functor $F:\CC\to\DD$, the identity natural transformation $\Id[F]$ satisfies the properties of a natural transformation.
+\end{exer}
+
+\begin{dfn}\label{dfn:nattrans_comp} Let $F,G,H: \CC\to\DD$ be functors and $\NatTrans{\alpha}{F}{G}$, $\NatTrans{\beta}{G}{H}$ be natural transformations. The \textbf{(vertical) composition} of $\alpha$ and $\beta$ is the natural transformation $\Comp{\alpha}{\beta}$ is given by the following data:
+\[
+\forall X\in\Ob{\CC}: (\co{\alpha}{\beta})_{X} := \co{\alpha_X}{\beta_X}.
+\]
+\end{dfn}
+
+\begin{exer} Show that for any functors $F,G,H: \CC\to\DD$ and $\NatTrans{\alpha}{F}{G}$, $\NatTrans{\beta}{G}{H}$ natural transformations, the (vertical) composition of $\alpha$ and $\beta$ satisfies the properties of a natural transformation.
+\end{exer}
+
+\begin{dfn} Let $\CC,\DD$ be categories. The \textbf{category of functors} or the \textbf{functor category} from $\CC\to\DD$, denoted by $Fun(\CC,\DD)$ or $[\CC,\DD]$, is given by the following data:
+\begin{itemize}
+\item An object is a functor $F:\CC\to\DD$.
+\item Given functors $F, G:\CC\to\DD$, a morphism from $F$ to $G$ is a natural transformation $\NatTrans{\alpha}{F}{G}$.
+\item The identity morphism on $F$ is given by the identity natural transformation $\Id[F]$ defined in \cref{dfn:nattrans_id}.
+\item The composition of $\alpha$ and $\beta$ is given by the composition $\co{\alpha}{\beta}$ defined in \cref{dfn:nattrans_comp}.
+\end{itemize}
+\end{dfn}
+
+\begin{exer} Show that for any two categories $\CC$ and $\DD$, the functor category from $\CC$ to $\DD$ satisfies the properties of a category.
+\end{exer}
+
+\begin{exer}
+Let $\CC$ be the category generated by two objects $(V, E)$ and with $2$ morphisms $s, t : E \to V$.
+Can you describe the category $[\CC, \SET]$?
+\end{exer}
+
+\begin{dfn}
+A natural transformation $\alpha : F \Rightarrow G$ is a \textbf{natural isomorphism} if for each $X\in\Ob{\CC}$, we have that $\alpha_X$ is an isomorphism in $\DD$.
+\end{dfn}
+
+\begin{exer}
+Let $F, G : \CC \to \DD$ be functors.
+Show that a natural isomorphism from $F$ to $G$ is equivalent to an isomorphism between $F$ and $G$ in the functor category $[\CC, \DD]$.
+\end{exer}
+
+\begin{dfn}\label{dfn:nattrans_horcomp} Let $F,G : \CC\to\DD$ and $\tilde{F},\tilde{G}:\DD\to\EE$ be functors and $\NatTrans{\alpha}{F}{G}, \NatTrans{\beta}{\tilde{F}}{\tilde{G}}$ be natural transformations. The \textbf{horizontal composition} (also called the \textbf{Godement product}) of $\alpha$ and $\beta$, denoted by $\beta \bullet \alpha$, is defined as:
+\begin{equation}\label{eqn:nattrans_horcomp}
+\forall X\in \Ob{\CC}: (\beta\bullet\alpha)_X := \co{\tilde{F}(\alpha_X)}{\beta_{G(X)}}.
+\end{equation}
+\end{dfn}
+
+\begin{exer} Show that $\alpha\bullet\beta$ (defined as in \cref{dfn:nattrans_horcomp}), is indeed a natural transformation.
+\end{exer}
+
+\begin{exer} Show the following property: 
+\[
+\forall X\in \Ob{\CC}: (\beta\bullet\alpha)_X = \co{\beta_{F(X)}}{\tilde{G}(\alpha_X)}.
+\]
+Hint: Write the equality as a (not-known commutative) square.
+\end{exer}
+
+\section{Equivalence of Categories}
+Recall that objects $X,Y\in\Ob{\CC}$ are isomorphic if there exist morphisms $f\in\CHom{C}{X}{Y}$ and $g\in\CHom{C}{Y}{X}$ such that $\co{f}{g} = \Id[X]$ and $\co{g}{f} = \Id[Y]$. So in particular we have the notion of an isomorphism in the category $\CAT$ of categories. Spelled out, this means categories $\CC$ and $\DD$ are isomorphic if there exist functors $F:\CC\to\DD$ and $G:\CC\to\DD$ such that $\co{F}{G}= \Id[\CC]$ and $\co{G}{F} = \Id[\DD]$.\\
+However, the following exercise shows that isomorphism of categories is not the correct notion of \textit{equivalence/sameness} between categories:\\
+Let $\FINSET$ be the category whose objects are given by finite sets and whose morphisms are given by functions\footnote{Notice that the objects of $\FINSET$ form a subset of the objects of $\SET$, but given any two finite sets $X,Y \in \Ob{\FINSET}$, we have $\CHom{\FINSET}{X}{Y}$ = $\CHom{\SET}{X}{Y}$. We say in this case that $\FINSET$ is a (full) subcategory of $\SET$.}. That this is a category follows since $\SET$ is a category.\\
+Let $\Catb{FinOrd}$ be the category whose objects are given by sets of the form 
+\[
+[n] := \left\{0,1,\cdots,n-1\right\},
+\]
+and whose morphisms are given by functions between these sets.\\
+Every finite set $X$ is always in bijection with a set of the form $[n]$ (where $n$ is the size $\vert X\vert$ of $X$). For each set $X$, we fix a bijection $\phi^X: X\to [\vert X\vert]$. Consequently, we have a functor:
+\begin{dfn} Let $U: \FINSET\to \Catb{FinOrd}$ be the functor specified by the following data:
+\begin{itemize}
+\item For $X\in \Ob{\FINSET}$, we define $U(X) := [\vert X\vert]$.
+\item For $f\in \CHom{\FINSET}{X}{Y}$, we define $U(f): [\vert X\vert]\to [\vert Y\vert]$ as the unique function such that the following diagram commutes:
+\begin{center}
+\begin{tikzcd}
+X \arrow[r, "\phi^X"] \arrow[d,swap, "f"] & {[\vert X\vert]} \arrow[d, "U(f)"] \\
+Y \arrow[r,swap, "\phi^Y"] & {[\vert Y\vert]}
+\end{tikzcd}
+\end{center}
+\end{itemize}
+\end{dfn}
+
+\begin{exer} Show that $U: \FINSET\to \Catb{FinOrd}$ is indeed a functor. In particular, you have to show that $U$ is well-defined on the morphisms.
+\end{exer}
+
+In order to show that $U$ is not an isomorphism, one can use the following lemma/exercise:
+\begin{exer} Show that a functor $F:\CC\to\DD$ is an isomorphism if and only if $F$ satisfies the following properties:
+\begin{itemize}
+\item $F$ is injective on objects, i.e. 
+\[
+\forall X,Y\in\Ob{\CC}: F(X) = F(Y) \implies X=Y.
+\]
+\item $F$ is surjective on objects, i.e. 
+\[
+\forall Y\in\Ob{\DD}: \exists X\in\Ob{\CC} : F(X) = Y.
+\]
+\item $F$ is faithful, i.e. the following functions are injective
+\[
+\forall X,Y\in\Ob{\CC}: \CHom{\CC}{X}{Y} \xrightarrow{F_{X,Y}} \CHom{\DD}{F(X)}{F(Y)} : f\mapsto F(f)
+\]
+\item $F$ is full, i.e. for all $X,Y\in \Ob{\CC}$, $F_{X,Y}$ is surjective.
+\end{itemize}
+\end{exer}
+
+\begin{exer} Show that $U$ is not an isomorphism, i.e. state which part of an isomorphism fails and give a concrete example that it fails.
+\end{exer}
+
+\begin{rem} The problem with $U$ (in the sense that it is not an isomorphism) is that multiple (finite) sets are mapped to the same set. For this reason, a good notion of equivalence between categories should not be injective on objects. Also, which is not clear from this example, we should also weaken the condition of $F$ being surjective on objects. Instead, we need that $F$ is \textbf{essentially surjective on objects}:
+\[
+\forall Y\in\Ob{\DD}: \exists X\in\Ob{\CC} : F(X) \cong Y.
+\]
+\end{rem}
+Motivated by the remark, we define:
+\begin{dfn} Categories $\CC$ and $\DD$ are \textbf{equivalent} if there exists a pair of functors $(F:\CC\to\DD, G:\DD\to\CC)$ such that there exists natural isomorphisms 
+\[
+\co{F}{G} \to \Id[\CC], \quad \co{G}{F} \to \Id[\DD]
+\]
+\end{dfn}
+
+So, although $U$ is not an isomorphism, it does induce an equivalence of categories:
+\begin{exer} Show that $U$ induces an equivalence of categories.
+\end{exer}
+
+\begin{exer} Let $\CC$ be the category whose objects are categories with a unique object and whose morphisms are functors between these one-object categories, i.e. $\CC$ is the (full) subcategory of $\CAT$ generated by the categories with a unique object. Show that $\CC$ is equivalent to the category $\MON$ of monoids.
+\end{exer}
+\begin{exer}
+In the previous exercise, what happens if we do not consider $\CC$ to consist of those categories with a unique object, but with a unique object up to isomorphism? In other words, consider $\CC$ as the category whose objects are categories $\DD$ which satisfy the following property: 
+\[
+\forall X,Y \in \Ob{\DD}: X\cong Y.
+\]
+\end{exer}
+
+The following exercise gives a characterization of a functor being an equivalence. However, in order to show this, one has to use the axiom of choice which means (informally) that if the following property holds:
+\[ 
+\exists x: P(x),
+\]
+then we can fix some $x$ such that $P(x)$ holds.
+\begin{exer} Show that a functor $F:\CC\to\DD$ induces an equivalence of categories if and only if it is essentially surjective on objects and fully faithful.
+\end{exer}
+
+\begin{exer}
+  Show that the category $\MAT$ is equivalent to the category of finite-dimensional real vector spaces and linear maps.
+\end{exer}
+
+\section{Representable Functors}
+
+Representable functors are functors into $\SET$ which are isomorphic to the so-called hom-functors \cref{exer:covariant-hom,exer:contravariant-hom}.
+\cref{exer:coproducts-as-representable} illustrates that universal properties can be described in terms of representables.
+\cref{exer:forgetful-functor-is-representable} illustrates that free constructions can be described in terms of representables.
+\cref{exer:representables-on-posets} illustrates that objects in a category are completely determined by their representable functors.
+
+\begin{exer}
+\label{exer:covariant-hom}
+Let $\CC$ be a category and $x \in \CC$.
+Consider the function $\CC(x,-) : \Ob{\CC} \to \Ob{\SET}$ sending an object $y \in \CC$ to the hom-set $\CC(x,y)$.
+For $y, z \in \CC$ and $g \in \CC(y, z)$ define
+\[
+\CC(x, g) : \CC(x,y) \to \CC(x,z) : f \mapsto g \circ f.
+\]
+Show that this defines a functor $\CC(x,-) : \CC \to \SET$.
+This functor is called the \textbf{covariant hom-functor}.
+\end{exer}
+
+Recall that $\op{\CC}(x,y) := \CC(y,x)$.
+
+\begin{exer}
+\label{exer:contravariant-hom}
+Show that for every $y : \CC$, the function $\CC(-,y) : \Ob{\CC} \to \Ob{\SET}$ sending an object $x \in \CC$ to the hom-set $\CC(x,y)$ induces a functor of type $\CC(-,y) : \op{\CC} \to \SET$.
+This functor is called the \textbf{contravariant hom-functor}.
+\end{exer}
+
+\begin{exer}
+Show that every category $\CC$ induces a functor
+\[
+\CC(-,-) : \op{\CC} \times \CC \to \SET.
+\]
+\end{exer}
+
+\begin{exer}
+Let $F : \CC \to \DD$ be a functor.
+Can you construct a natural transformation from $\CC(-,-)$ to $\DD(-,-) \circ ({\op{F} \times F})$?
+\end{exer}
+
+\begin{dfn}
+A functor $F : \op{\CC} \to \SET$ is \textbf{representable} if there exists an object $c \in \CC$ and a natural isomorphism $\theta : \CC(-,c) \simeq F$.
+We say that $(c, \theta)$ is a \textbf{representation} for $F$.
+\end{dfn}
+
+\begin{lemma}
+A representation for a functor $F$ into $\SET$ is unique up to isomorphism.
+\end{lemma}
+
+\begin{exer}
+\label{exer:coproducts-as-representable}
+Let $\CC$ be a category and $x,y \in \CC$ objects.
+Show that the following are equivalent:
+\begin{enumerate}
+\item the coproduct of $x$ and $y$ exists;
+\item the functor $\CC(-,x) \times \CC(-,y)$ is representable.
+\end{enumerate}
+\end{exer}
+
+Recall that $\MON$ denotes the category of monoids and monoid homomorphisms.
+Observe that for every set $A$, $\List(A)$ has a monoid structure whose multiplication is given by the concatenation of lists and whose unit is the empty/nil list.
+See \cref{ch:forgetful-free} for more details.
+\begin{exer}[\cref{sol:forgetful-functor-is-representable}]\label{exer:forgetful-functor-is-representable}
+Show that the forgetful functor $U : \MON \to \SET$ is representable.
+Furthermore, show that for every set $A$ the functor 
+\[
+\SET(A, U-) : \MON \to \SET,
+\]
+is representable.
+\end{exer}
+
+\begin{exer}[\cref{sol:representables-on-posets}]
+\label{exer:representables-on-posets}
+Let $L := (L,\leq)$ be a poset and $\mathcal{L} := \POS(L,\leq)$ be its associated category.
+Describe the representable functors on $\mathcal{L}$.
+\end{exer}

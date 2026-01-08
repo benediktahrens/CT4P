@@ -10,6 +10,13 @@ Afterwards, we study a general framework that allows us to discuss many datatype
 \section{Examples}
 \label{sec:examples}
 
+In \cref{sec:universal}, it was discussed how the empty type, the unit type, the product type, and the sum type can be interpreted in a category.
+Those type constructors were completely determined by how they interact with the other objects in the category.
+Furthermore, as \cref{exer:coproduct_iff_initial_in_subcategory} illustrates, the aforementioned type constructors can all be described as initial objects.
+It turns out that these observations are not specific to those type constructors, but this principle applies to many data types one uses in a functional language.
+That this is indeed the case will be illustrated in this section with a couple of examples.
+First, we look at the type of natural numbers (\cref{exer:nat-initial}), then we will see that the same can be done for more complex types such as those used in the development of programming languages (\cref{exer:aexp}).
+
 \begin{exer}\label{exer:nat-initial}
   Consider the datatype
 \begin{lstlisting}[mathescape=true]
@@ -19,7 +26,14 @@ data $\NN$ ::=
 \end{lstlisting}
 %
 %
-This inductive datatype comes with a recursion principle to define functions from the natural numbers to any other type $X$,
+This type is defined recursively.
+First, $\NN$ contains an element called $\Zero$.
+Second, for every element (natural number) $n$ there is a new element $\Succ(n)$, which corresponds to $n + 1$.
+That is, $\NN$ is closed under the successor.
+Alternatively, we can say that $\NN$ is the minimal type/set which is closed under these constructors.
+
+Since $\NN$ is defined recursively, this implies that functions out of $\NN$ can also be defined recursively.
+That is, this inductive datatype comes with a recursion principle to define functions from the natural numbers to any other type $X$,
 \[
   \binaryRule
   {z \in X}
@@ -31,7 +45,13 @@ such that
 \begin{equation}\label{eq:computation-rules-nat}
   \rec(z,s)(\Zero) = z \quad\text{ and }\quad \rec(z,s)(\Succ(n)) = s (\rec(z,s)(n)).
 \end{equation}
-Furthermore, it satisfies the following induction principle:
+
+The recursion principle can be stated more generally.
+Indeed, $z \in X$ is a proposition $P$ dependent on $z$, that is $P(z) := z \in X$.
+Furthermore, the function $s : X \to X$ is used to witness that if $n \in \NN$ is mapped to $x_n \in X$, then $\Succ(n)$ is mapped to $x_{\Succ(n)} \in X$. 
+Hence, $s : X \to X$ can be rewritten as $\forall n \in \NN, P(n) \Rightarrow P(\Succ(n))$.
+Hence, the recursion principle can be stated more generally via its induction principle:
+%Furthermore, it satisfies the following induction principle:
 \[
   \binaryRule
   {P(\Zero)}
@@ -40,7 +60,9 @@ Furthermore, it satisfies the following induction principle:
   {ind}
 \]
 
-and the following  category:
+The recursion principle can be summarized as saying that for every set $X$ together with a chosen element $z \in X$ and a function $s : X \to X$, there is a unique function $f$ from $\NN$ to $X$ such that $f(\Zero) = z$ and $f(\Succ(n)) = s(f(n))$.
+The unique existence means precisely that $\NN$, together with its constructors, is initial among those triples $(X, z, s)$.
+This is made precise by considering the following category:
 \begin{itemize}
 \item Objects are triples $(X, z \in X, s : X \to X)$ with $X$ a set;
 \item Morphisms from $(X, z \in X, s : X \to X)$ to $(X', z' \in X', s' : X' \to X')$ are functions
@@ -160,17 +182,21 @@ We show that the datatype of expressions, together with its constructors, forms 
 \section{Datatypes as Initial Algebras}
 \label{sec:datatypes-as-initial}
 
-
-
 \begin{reading*}
   This chapter is strongly inspired by Varmo Vene's Ph.D.\ thesis \cite[Chapter 2]{vene_phd}.
-
   A good explanation of recursion on lists is given in Graham Hutton's tutorial paper \cite{DBLP:journals/jfp/Hutton99}.
-
   The tutorial on (co)algebras and (co)induction by Jacobs and Rutten \cite{jacobs-rutten-tutorial} provides an excellent overview to the categorical view on inductive and coinductive datatypes.
 \end{reading*}
 
-In this section we introduce (initial) algebras which allows us to define inductive data types.
+In \cref{sec:examples}, it was discussed how inductively defined data types naturally give rise to a category where the data type is the initial object in that category, and that the initiality correspond to the recursion principle.
+Even though different types lead to different categories, those categories are all tuples consisting of a set together with morphisms (modeling the constructor) into the set.
+In this section, we generalize the construction of those categories.
+In particular, this generalization allows us to compute the recursion principle for inductively defined data types.
+
+To model the constructors, observe that multiple functions $A_0 \to X, \cdots, A_n \to X$ with the same codomain can be equivalently described as one function $(A_0 + \cdots + A_n) \to X$ (see \cref{exer:coproduct-represent}).
+For example, an object in the category which models the natural numbers is equivalently a pair $(X \in \SET, [z,s] : 1 + X \to X)$.
+
+%In this section we introduce (initial) algebras which allows us to define inductive data types.
 
 \begin{dfn} Let $F:\CC\to \CC$ be an endofunctor. An \textbf{$F$-algebra} consists of the following data:
 \begin{enumerate}
@@ -284,7 +310,7 @@ FY
 
 We are interested in \textbf{initial objects of $\ALG{F}$}, if they exist.
 We call these ``initial $F$-algebras''.
-For a general endofunctor $F$, an initial $F$-algebra does not exist;
+For a general endofunctor $F$, an initial $F$-algebra does not need to exist;
 but for many interesting choices of $F$, such an initial object does exist.
 Before coming to the general definition (see \cref{dfn:initial-alg}),
 we consider an example.
@@ -320,6 +346,11 @@ FX
 The morphism $\catam{\phi}$ is called the \emph{catamorphism} generated by $\phi$.
 \end{dfn}
 
+\begin{exer}
+Let $F : \CC \to \CC$ be an endofunctor.
+The initial $F$-algebra, if it exists, is unique up to isomorphism.
+\end{exer}
+
 \begin{exer}[\cref{sol:in_catamorphism_id}]\label{exer:in_catamorphism_id}
   Let $F:\CC\to\CC$ be an endofunctor and let $(\Initalg F, \In)$ be an initial algebra.
   Show that
@@ -337,6 +368,8 @@ The morphism $\catam{\phi}$ is called the \emph{catamorphism} generated by $\phi
   Moreover, show that $(\mathsf{Bool}, \mathsf{True}, \mathsf{False})$ is an initial object in $\ALG{F}$.
 \end{exer}
 
+Observe that $\mathbf{Bool}$ is the coproduct $1 + 1$.
+Hence, more generally:
 \begin{exer}\label{exer:coproduct_as_initial_algebra}
   The disjoint union (i.e., the coproduct) of two sets $X$ and $Y$ can also be described as an inductive data type; indeed, it is generated by the following two constructors:
 \begin{lstlisting}
@@ -367,45 +400,6 @@ n+1,\quad  \text{ if } x := n\in\mathbb{N},\\
 \end{cases}
 \end{align*}
 form a $\Maybe$-algebra. However, show that $(\mathbb{N}^{c},zero^{c},succ^{c})$ is not an initial $\Maybe$-algebra.
-\end{exer}
-
-\begin{exer}[\textbf{Fusion property}, \cref{sol:fusion-property}]\label{exer:fusion-property}
-  Let $F:\CC\to\CC$ be an endofunctor and let $(\Initalg F, \In)$ be an initial algebra. Show that
-  for $F$-algebras $(X,\phi)$ and $(Y,\psi)$ and $f\in\CHom{\CC}{X}{Y}$, we have 
-\[
-\co{\phi}{f} = \co{F(f)}{\psi} \implies \co{\catam{\phi}}{f} = \catam{\psi}.
-\]
-This is summarized in the following diagram:
-\begin{equation}\label{eq:initial-f-alg-composition}
-\begin{tikzcd}
-F\Initalg{F} 
-\arrow[r, "\In"] 
-\arrow[d,swap, "F\catam{\phi}"]
-\ar[dd, bend right=60, "F\catam{\psi}"']
-&
-\Initalg{F}
-\arrow[d, "\catam{\phi}"]
-\ar[dd, bend left=60, "\catam{\psi}"]
-\\
-FX
-\arrow[r, swap, "\phi"]
-\ar[d, "Ff"'] 
-&
-X \ar[d, "f"]
-\\
-FY \ar[r, "\psi"']
-&
-Y
-\end{tikzcd}
-\end{equation}
-\end{exer}
-
-\begin{thm}[\textbf{Lambek's theorem}]
-  Let $F:\CC\to\CC$ be an endofunctor and let $(\mu^F, \In)$ be an initial algebra. Then, $\In$ is an isomorphism whose inverse is given by $\Inv{\In} = \catam{F(\In)}$.
-\end{thm}
-
-\begin{exer} 
-  Prove Lambek's theorem. 
 \end{exer}
 
 \begin{exer}[\cref{sol:initialalg_for_idfun_with_initialob}]\label{exer:initialalg_for_idfun_with_initialob} Let $\CC$ be a category with an initial object $\bot$. Show that $(\bot, \Id[\bot])$ is the initial algebra for the identity (endo)functor on $\CC$.
@@ -456,21 +450,6 @@ Compare it to a definition of a function $f : \List(A) \to X$ by pattern matchin
   Solutions are given in \cite[\S2]{DBLP:journals/jfp/Hutton99}.
 
   Hint: a systematic approach to reformulating functions on lists defined by explicit recursion in terms of |fold| is described in \cite[\S3.3]{DBLP:journals/jfp/Hutton99}.
-\end{exer}
-
-\begin{exer}[\cref{sol:list-concat-nil}, see also \cite{DBLP:journals/scp/Malcolm90}]
-  \label{exer:list-concat-nil}
-  Consider the function |(++) :: [a] →  [a] →  [a]| defined in \cref{exer:list-functions-as-fold},
-  and |l :: [a]|.
-  \begin{enumerate}
-  \item Show that |nil ++ l = l|.
-    
-  \item Show that |l ++ nil = l|.
-  \end{enumerate}
-\end{exer}
-
-\begin{exer}[{\cite[\S3.1]{DBLP:journals/jfp/Hutton99}}]
-  Show that |(+1) . sum = fold (+) 1|, by showing that |(+1) . sum| makes Diagram~\ref{eq:initial-f-alg} of \cref{dfn:initial-alg} commute.
 \end{exer}
 
 % \begin{exer}
@@ -529,6 +508,60 @@ We are going to exemplify this using the datatypes of lists and of natural numbe
 Recall that $(\NN, [\Zero,\Succ])$ is the initial $\Maybe$-algebra.
 We also write $(+1)$ for $\Succ$.
 
+\begin{exer}[\textbf{Fusion property}, \cref{sol:fusion-property}]\label{exer:fusion-property}
+  Let $F:\CC\to\CC$ be an endofunctor and let $(\Initalg F, \In)$ be an initial algebra. Show that
+  for $F$-algebras $(X,\phi)$ and $(Y,\psi)$ and $f\in\CHom{\CC}{X}{Y}$, we have 
+\[
+\co{\phi}{f} = \co{F(f)}{\psi} \implies \co{\catam{\phi}}{f} = \catam{\psi}.
+\]
+This is summarized in the following diagram:
+\begin{equation}\label{eq:initial-f-alg-composition}
+\begin{tikzcd}
+F\Initalg{F} 
+\arrow[r, "\In"] 
+\arrow[d,swap, "F\catam{\phi}"]
+\ar[dd, bend right=60, "F\catam{\psi}"']
+&
+\Initalg{F}
+\arrow[d, "\catam{\phi}"]
+\ar[dd, bend left=60, "\catam{\psi}"]
+\\
+FX
+\arrow[r, swap, "\phi"]
+\ar[d, "Ff"'] 
+&
+X \ar[d, "f"]
+\\
+FY \ar[r, "\psi"']
+&
+Y
+\end{tikzcd}
+\end{equation}
+\end{exer}
+
+\begin{thm}[\textbf{Lambek's theorem}]
+  Let $F:\CC\to\CC$ be an endofunctor and let $(\mu^F, \In)$ be an initial algebra. Then, $\In$ is an isomorphism whose inverse is given by $\Inv{\In} = \catam{F(\In)}$.
+\end{thm}
+
+\begin{exer} 
+  Prove Lambek's theorem. 
+\end{exer}
+
+\begin{exer}[\cref{sol:list-concat-nil}, see also \cite{DBLP:journals/scp/Malcolm90}]
+  \label{exer:list-concat-nil}
+  Consider the function |(++) :: [a] →  [a] →  [a]| defined in \cref{exer:list-functions-as-fold},
+  and |l :: [a]|.
+  \begin{enumerate}
+  \item Show that |nil ++ l = l|.
+    
+  \item Show that |l ++ nil = l|.
+  \end{enumerate}
+\end{exer}
+
+\begin{exer}[{\cite[\S3.1]{DBLP:journals/jfp/Hutton99}}]
+  Show that |(+1) . sum = fold (+) 1|, by showing that |(+1) . sum| makes Diagram~\ref{eq:initial-f-alg} of \cref{dfn:initial-alg} commute.
+\end{exer}
+
 \begin{reading*}
   The content of this section is very much inspired by \cite[\S3.2]{DBLP:journals/jfp/Hutton99}.
   You are strongly encouraged to read that section before reading the present section.
@@ -571,8 +604,9 @@ We also write $(+1)$ for $\Succ$.
   The paper \cite{DBLP:journals/scp/Malcolm90} by Malcolm contains further examples.
 \end{reading*}
 
-
-In this section we introduce (terminal) coalgebras which allows us to define coinductive data types.
+In \cref{sec:initial-algs}, we introduce (initial) algebras to model inductive types.
+In this section, we introduce the dual notion thereof.
+That is, we introduce (terminal) coalgebras which allows us to define coinductive data types.
 
 \begin{dfn} Let $F:\CC\to \CC$ be an endofunctor. An \textbf{$F$-coalgebra} consists of the following data:
 \begin{itemize}

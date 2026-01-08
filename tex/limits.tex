@@ -1,0 +1,548 @@
+\chapter{Universal Properties}\label{sec:universal}
+
+In category theory, we study objects of a category by studying the ``interactions'' they have with other objects in the category.
+What does this mean?
+The only interactions we know between objects are the morphisms of the category.
+Given an object of a category, we can ask what the morphisms out of this object, and into this object, are.
+More generally, we can ask what the morphisms out of, or into, an object are that make some given diagrams commute.
+We usually are interested in objects such that there exists a unique morphism out of it, or into it, such that a given diagram commutes.
+We say that this object satisfies a ``universal property''.
+
+This description is very vague and abstract; it will hopefully be clearer once we have looked at some specific universal properties.
+The first universal property is that of \emph{initiality}.
+
+\begin{reading*}
+  On initial and terminal objects, see also \cite[\S 2.7.16]{barr-wells} and \cite[p. 48ff]{leinster}.
+
+  Products and coproducts, other special limits and colimits, and the general definition of limits and colimits, are discussed in \cite[\S\S 5.1, 5.2]{leinster}.
+
+  Pierce's tutorial discusses the (co)limits defined here in \cite[\S\S 2.3--2.4]{pierce}, and further (co)limits in  \cite[\S\S 2.5--2.7]{pierce}.
+
+  
+\end{reading*}
+
+\section{Initial Objects}
+\label{sec:initial-objects}
+
+We say that an object of a category $\CC$ is \emph{initial} if it has a unique morphism to any object in the category:
+
+\begin{dfn}
+  Let $\CC$ be a category. An object $A \in \Ob{\CC}$ is \textbf{initial} if there is exactly one morphism from $A$ to any object $B \in \Ob{\CC}$.
+\end{dfn}
+
+\begin{explanation}[about \textbf{Unique Existence}]
+  When you need to show that there exists a unique thing with some property, there are two things to prove:
+  \begin{description}
+  \item[Existence] You need to construct a thing and show that it has the desired property.
+  \item[Uniqueness] You need to show that any (abstract) thing that has the desired property is equal to the thing you have constructed. Equivalently, you can show that any two abstract things with the desired property are equal.
+  \end{description}
+\end{explanation}
+
+
+We look at some specific categories, and try to identify initial objects in them.
+These examples might seem a tad boring to you;
+indeed, in ``simple'' categories, initial objects are usually quite simple as well.
+However, in more complicated categories---that is, in categories where the objects and morphisms are complicated---an initial object can be very interesting; see, for instance, \cref{sec:initial-algs}.
+
+\begin{exer}
+  Does the category $\bullet$ (the terminal category defined in \cref{exa:graph_terminalcat}) have an initial object?
+\end{exer}
+
+\begin{exer}
+  Does the category 
+  \[ 
+  \begin{tikzcd}
+  	A & B
+  \end{tikzcd}  
+   \] 
+  have an initial object?
+\end{exer}
+
+
+\begin{exer}
+  Does the category $A \to B$ have an initial object?
+\end{exer}
+
+\begin{exer}
+  Does the category $A \rightleftarrows B$ have an initial object? (Here, the morphism $A \to B$ is inverse to the morphism $B \to A$.)
+\end{exer}
+
+\begin{exer}
+  Does the category $A \rightrightarrows B$ have an initial object?
+\end{exer}
+
+\begin{exer}
+  Does the category 
+  \[
+  \begin{tikzcd}
+  A \arrow[r] \arrow[loop, swap, looseness=4, "f"] & B
+  \end{tikzcd}
+  \]
+  have an initial object? (Here, the morphism $f$ is different from $\Id[A]$).
+\end{exer}
+
+\begin{exer}[\cref{sol:initial_set}]\label{exer:initial_set}
+  Identify an initial object in the category $\SET$ of sets.
+  Prove that it is indeed initial.
+\end{exer}
+
+\begin{exer}
+  Identify an initial object in the category $\COQ$ of Coq types.
+  Prove that it is indeed initial.
+\end{exer}
+
+\begin{exer}[\cref{sol:initial_posetcat}]\label{exer:initial_posetcat}
+  Let $(X,\leq)$ be a poset. Describe what an initial object looks like in  $\POS(X,\leq)$.
+\end{exer}
+
+\begin{exer}[\cref{sol:initial-unique}]\label{exer:initial-unique}
+  Let $A$ and $A'$ be initial objects in $\CC$. Construct an isomorphism $i : A \cong A'$.
+\end{exer}
+
+\begin{exer}[\cref{sol:initiality_preserved_by_iso}]\label{exer:initiality_preserved_by_iso}
+  Let $A$ be an initial object in $\CC$, and let $A'$ be isomorphic to $A$ (via an isomorphism $i : A \cong A'$).
+  Show that $A'$ is an initial object of $\CC$.
+\end{exer}
+
+\begin{rem}
+  \Cref{exer:initial-unique} shows that initial objects in a category $\CC$ are \textbf{essentially unique}, that is, they are \textbf{unique up to (unique) isomorphism}.
+
+  
+  This justifies using the determinate article: we will say that $A$ is \textbf{the} initial object of $\CC$.
+
+  
+  This is more generally the case for any object with a universal property, see, e.g., \cref{exer:terminal-unique,exer:product-unique}.
+\end{rem}
+
+\begin{exer}[\cref{sol:cat-without-initial}]\label{exer:cat-without-initial}
+  Construct a category that does not have an initial object.
+\end{exer}
+
+\begin{exer}[\cref{sol:initial_pointset}]\label{exer:initial_pointset} Let $\PTSET$ be the category of pointed sets, that is the category whose objects are pairs $(X,x)$ with $X$ a set and $x\in X$ and a morphism from $(X,x)$ to $(Y,y)$ is defined as a function $f:X\to Y$ such that $f(x)=y$. Identify an initial object in $\PTSET$.
+\end{exer}
+
+\begin{exer}[\cref{sol:initial_cats_of_nats}]\label{exer:initial_cats_of_nats}
+Do the categories $\POS(\NN, \leq)$, $\SKELFINSET$ and $\MAT$ have initial objects? If yes, what does an initial object look like in these categories?
+\end{exer}
+
+\begin{exer}[\cref{sol:initial_rel}] \label{exer:initial_rel}
+Identify an initial object in the category $\REL$ and show that it is initial.
+\end{exer}
+
+\begin{rem}
+  The concept of initial object seems trivial and boring in the categories considered above.
+  However, in complicated categories, initial objects can be complicated and exciting;
+  we will see this in \cref{sec:initial-algs}.
+\end{rem}
+
+\section{Terminal Objects}
+\label{sec:terminal-objects}
+
+
+
+\begin{dfn}
+  Let $\CC$ be a category. An object $B \in \Ob{\CC}$ is \textbf{terminal} (or \textbf{final}) if there is exactly one morphism to $B$ from any object $A \in \Ob{\CC}$.
+  A terminal object in a category is denoted by \textbf{1}.
+\end{dfn}
+
+\begin{exer}
+  Does the category $\bullet$ have a terminal object?
+\end{exer}
+
+\begin{exer}
+  Does the category $A \to B$ have a terminal object?
+\end{exer}
+
+\begin{exer}
+  Does the category $A \rightleftarrows B$ have a terminal object?
+\end{exer}
+
+\begin{exer}
+  Does the category $A \rightrightarrows B$ have a terminal object?
+\end{exer}
+
+
+
+\begin{exer}[\cref{sol:terminal_set}]\label{exer:terminal_set}
+  Identify a terminal object in the category $\SET$ of sets.
+  Prove that it is indeed terminal.
+\end{exer}
+
+\begin{exer}
+  Identify a terminal object in the category $\COQ$ of Coq types.
+  Prove that it is indeed terminal.
+\end{exer}
+
+\begin{exer}[\cref{sol:terminal_posetcat}]\label{exer:terminal_posetcat}
+  Let $(X,\leq)$ be a poset. Describe what a terminal object looks like in  $\POS(X,\leq)$.
+\end{exer}
+
+\begin{exer}[\cref{sol:terminal-unique}]\label{exer:terminal-unique}
+  Let $B$ and $B'$ be terminal objects in $\CC$. Construct an isomorphism $i : B \cong B'$.
+\end{exer}
+
+\begin{exer}[\cref{sol:terminality_preserved_by_iso}]\label{exer:terminality_preserved_by_iso}
+  Let $B$ be a terminal object in $\CC$, and let $B'$ be isomorphic to $B$ (via an isomorphism $i : B \cong B'$).
+  Show that $B'$ is a terminal object of $\CC$.
+\end{exer}
+
+\begin{exer}[\cref{sol:terminal_iff_initial_op}]\label{exer:terminal_iff_initial_op}
+  Show that $\CC$ has a terminal object if and only if $\op\CC$ has an initial object.
+\end{exer}
+
+\begin{exer}[\cref{sol:cat-without-terminal}]\label{exer:cat-without-terminal}
+  Construct a category that does not have an terminal object.
+\end{exer}
+
+\begin{exer}[\cref{sol:terminal_cats_of_nats}]\label{exer:terminal_cats_of_nats}
+  Do the categories $\POS(\NN, \leq)$, $\SKELFINSET$ and $\MAT$ have terminal objects? If yes, what does a terminal object look like in these categories?
+\end{exer}
+
+\begin{exer}[\cref{sol:terminal_rel}] \label{exer:terminal_rel}
+  Identify a terminal object in the category $\REL$ and show that it is terminal.
+\end{exer}
+
+\section{(Binary) Products}
+\label{sec:products}
+
+
+
+\begin{dfn}\label{def:binproduct}
+  Let $\CC$ be a category and let $A,B \in \Ob\CC$ be objects of $\CC$.
+
+  A triple $(P,\projl : P \to A ,\projr : P \to B)$ is called a \textbf{product of $A$ and $B$} if for any triple $(Q,q_1 : Q \to A, q_2 : Q \to B)$ there is exactly one morphism $f : Q \to P$ such that the following diagram commutes:
+  \[
+    \begin{tikzcd}
+      &
+      Q \ar[ld, "q_1"'] \ar[rd, "q_2"] \ar[d, dashed, "f"]
+      &
+      \\
+      A
+      &
+      P \ar[l, "\projl"] \ar[r, "\projr"']
+      &
+      B
+    \end{tikzcd}
+  \]
+  If $A$ and $B$ have a specified product $(P,\projl : P \to A ,\projr : P \to B)$, then the object $P$ is often called $A \times B$.
+  The morphism $f : Q \to A \times B$ determined by $(Q, q_1, q_2)$ is denoted by $\intoproduct { q_1} {q_2}$.
+\end{dfn}
+
+
+
+\begin{exer}
+  Does the category $\bullet$ have products?
+\end{exer}
+
+\begin{exer}
+  Does the category $A \to B$ have products?
+\end{exer}
+
+\begin{exer}
+  Does the category $A \rightleftarrows B$ have products?
+\end{exer}
+
+\begin{exer}
+  Does the category $A \rightrightarrows B$ have products?
+\end{exer}
+
+\begin{exer}[\cref{sol:product-represent}]\label{exer:product-represent}
+  Let $\CC$ be a category, let $A,B\in\Ob{\CC}$ and let $(A\times B,\projl,\projr)$ be a product of $A$ and $B$ in $\CC$. Fix an object $X\in\Ob{\CC}$. Construct an isomorphism between the set $\CC(X, A\times B)$ and the set $\CC(X,A)\times\CC(X,B)$.  
+\end{exer}
+
+\begin{exer}[\cref{sol:product_set}]\label{exer:product_set}
+  Identify a product of sets $X$ and $Y$ in the category $\SET$ of sets.
+  Prove that it is indeed a product.
+\end{exer}
+
+\begin{exer}
+  Identify a product of types $A$ and $B$ in the category $\COQ$ of Coq types.
+  Prove that it is indeed a product.
+\end{exer}
+
+\begin{exer}[\cref{sol:product_posetcat}]\label{exer:product_posetcat}
+  Let $(X,\leq)$ be a poset. Describe what a product looks like in  $\POS(X,\leq)$.
+\end{exer}
+
+\begin{exer}[\cref{sol:product_cats_of_nats}]\label{exer:product_cats_of_nats}
+  Do the categories $\POS(\NN, \leq)$, $\SKELFINSET$ and $\MAT$ have products? If yes, describe what a product looks like in these categories. 
+\end{exer}
+
+\begin{exer}[\cref{sol:product_rel}] \label{exer:product_rel}
+  Identify a product of sets $X$ and $Y$ in the category $\REL$. Prove that it is a product. 
+\end{exer}
+
+\begin{exer}[\cref{sol:product-unique}]\label{exer:product-unique}
+  Given two products of $A$ and $B$ in a category $\CC$, construct an isomorphism between them, that is, between their underlying objects.
+\end{exer}
+
+\begin{exer}[\cref{sol:product_preserved_by_iso}]\label{exer:product_preserved_by_iso}
+  Given a product $(P,\projl : P \to A ,\projr : P \to B)$ of $A$ and $B$ in $\CC$, and an object $P'$ that is isomorphic to $P$ via an isomorphism $i : P \cong P'$, construct a product with object $P'$ of $A$ and $B$.
+\end{exer}
+
+\begin{exer}[\cref{sol:product_with_terminal}]\label{exer:product_with_terminal} Let $\CC$ be a category and $T\in\Ob{\CC}$ a terminal object.
+  For any object $A\in \Ob{\CC}$, construct a product of $A$ and $T$.
+
+  Hint: to form an idea what the object $A \times T$ should be, solve the exercise first in a specific category, e.g., in the category of sets or in a category coming from a preordered set.
+\end{exer}
+
+
+
+
+\begin{exer}[\cref{sol:product_iff_terminal_in_subcategory}]\label{exer:product_iff_terminal_in_subcategory} Let $\CC$ be a category and $A,B\in\Ob{\CC}$ be objects. Show that the product of $A$ and $B$ exists if and only if the following category has a terminal object:
+\begin{itemize}
+\item The objects are triples $(P,p_l: P\to A, p_r:P\to B)$.
+\item A morphism from $(P,p_l,p_r)$ to $(Q,q_l,q_r)$ is a morphism $f : P \to Q$ such that the following diagram commutes:
+\[
+\begin{tikzcd}
+& P \arrow[ld,swap, "p_l"] \arrow[rd, "p_r"] \arrow[d, "f"] & \\
+A & Q \arrow[l, "q_l"]  \arrow[r,swap, "q_r"] & B
+\end{tikzcd}
+\]
+\item The composition and identity are inherited from the structure of $\CC$.
+\end{itemize}
+\end{exer}
+
+\begin{exer}[\cref{sol:product_of_morphisms}]\label{exer:product_of_morphisms}
+  Let $\CC$ be a category with a choice of product $(A\times B, \projl, \projr)$ for any two objects $A,B\in \Ob{\CC}$.
+  Given morphisms $f : A \to C$ and $g : B \to D$ in $\CC$, construct a morphism
+  \[ f \times g : A \times B \to C \times D.\]
+\end{exer}
+
+
+\begin{exer}[\cref{sol:swap_binary_product}]\label{exer:swap_binary_product}
+  Let $\CC$ be a category with a choice of product $(A\times B, \projl, \projr)$ for any two objects $A,B\in \Ob{\CC}$.
+  For any $A, B \in \Ob\CC$, construct an isomorphism
+  \[ A \times B \cong B \times A. \]
+\end{exer}
+
+\begin{exer}[Equational reasoning for products]
+  Let $\CC$ be a category with binary products.
+  Consider the following objects and morphisms in $\CC$.
+
+  \[
+    \begin{tikzcd}[column sep=large]
+      &
+      &
+      A \ar[r, "h"]
+      &
+      C \ar[r, "h'"]
+      &
+      E
+      \\
+      Y \ar[r, "j"]
+      &
+      Z \ar[ru, "f"] \ar[rd, "g"'] %\ar[r, "\intoproduct{f}{g}" description]
+      &
+      A\times B \ar[u, "\pi_A"'] \ar[d, "\pi_B"]
+      &
+      C \times D  \ar[u] \ar[d]
+      &
+      E \times F  \ar[u] \ar[d]
+      \\
+      &
+      &
+      B \ar[r,"k"]
+      &
+      D \ar[r,"k'"]
+      &
+      F
+    \end{tikzcd}
+  \]
+  
+  Prove the following equations:
+  \begin{align}
+    \co{j}{\intoproduct{f}{g}} &= \intoproduct{\co j f}{\co j g}
+    \\
+    \intoproduct{\co f h}{\co g k} &= \co {\intoproduct f g} {(\productmap h k)} 
+    \\
+    \productmap{(\co h {h'})}{(\co k {k'})} &= \co {(\productmap h k)}{(\productmap {h'} {k'})} 
+    \\
+    \intoproduct{\pi_A}{\pi_B} &= \Id[A \times B]
+  \end{align}
+\end{exer}
+
+
+\section{(Binary) Coproducts}
+\label{sec:coproducts}
+
+\begin{dfn}
+   Let $\CC$ be a category and let $A,B \in \Ob\CC$ be objects of $\CC$.
+
+  A triple $(C,\inl : A \to C,\inr : B \to C)$ is called a \textbf{coproduct of $A$ and $B$} if for any triple $(D,i_l : A \to D, i_r : B \to D)$ there is exactly one morphism $f : C \to D$ such that the following diagram commutes:
+  \[
+    \begin{tikzcd}
+      A \ar[r, "\inl"] \ar[rd, "i_l"']
+      &
+      C  \ar[d, dashed, "f"]
+      &
+      B \ar[l, "\inr"'] \ar[ld, "i_r"]
+      \\
+      &
+      D %\ar[ld, "q_1"'] \ar[rd, "q_2"] \ar[d, "f"]
+    \end{tikzcd}
+  \]
+  If $A$ and $B$ have a specified coproduct $(C,\inl : A \to C,\inr : B \to C)$, then the object $C$ is often called $A + B$.
+  The morphism $f : A + B \to D$ determined by $(D, i_l, i_r)$ is denoted by $\outofcoproduct{i_l}{i_r}$.
+  
+\end{dfn}
+
+\begin{exer}
+  Does the category $\bullet$ have coproducts?
+\end{exer}
+
+\begin{exer}
+  Does the category $A \to B$ have coproducts?
+\end{exer}
+
+\begin{exer}
+  Does the category $A \rightleftarrows B$ have coproducts?
+\end{exer}
+
+\begin{exer}
+  Does the category $A \rightrightarrows B$ have coproducts?
+\end{exer}
+
+
+\begin{lemma}
+\label{lemma}
+Given category $\CC$ with choice of coproduct, objects $A,B\in \Ob{\CC}$, their coproduct $(A+B,\inl,\inr)$ and a morphism $f:A+B\to A+B$. If $\co {\inl} {f}=\inl$ and $\co {\inr} {f}=\inr$, then $f=\Id[A+B]$.
+\end{lemma}
+\begin{proof}
+By definition of coproduct $A+B$ we know there is a unique $g: A+B \to A+B$, s.t. $\co {\inl} {g}=\inl$ and $\co {\inr} {g}=\inr$. Since it is unique, $f$ and $g$ must be the same morphism. Furthermore, we know that the identity morphism $\Id[A+B]: A+B \to A+B$ exists, and satisfies the equations $\co {\inl} {\Id[A+B]} = \inl$ and $\co {\inr} {\Id[A+B]} = \inr$. Again because of uniqueness of $g$, $\Id[A+B]$ must be the same as $g$, therefore $f=g=\Id[A+B]$.
+\end{proof}
+
+
+\begin{exer}[\cref{sol:coproduct-represent}] \label{exer:coproduct-represent}
+Let $\CC$ be a category, let $A,B\in\Ob{\CC}$ and let $(A+B,\inl,\inr)$ be a coproduct of $A$ and $B$ in $\CC$. Fix an object $X\in\Ob{\CC}$. Construct an isomorphism between the set $\CC(A+B,X)$ and the set $\CC(A,X)\times\CC(B,X)$.
+\end{exer}
+
+
+
+\begin{exer}\label{exer:coproduct_set}
+  Identify a coproduct of sets $X$ and $Y$ in the category $\SET$ of sets.
+  Prove that it is indeed a coproduct.
+\end{exer}
+
+\begin{exer}
+  Identify a coproduct of types $A$ and $B$ in the category $\COQ$ of Coq types.
+  Prove that it is indeed a coproduct.
+\end{exer}
+
+\begin{exer}\label{exer:coproduct_posetcat}
+  Let $(X,\leq)$ be a poset. Describe what a coproduct looks like in  $\POS(X,\leq)$.
+\end{exer}
+
+\begin{exer}[\cref{sol:coproduct_cats_of_nats}]\label{exer:coproduct_cats_of_nats}
+  Do the categories $\POS(\NN, \leq)$, $\SKELFINSET$ and $\MAT$ have coproducts? If yes, describe what a coproduct looks like in these categories. 
+\end{exer}
+
+\begin{exer}\label{exer:coproduct_rel}
+  Identify a coproduct of sets $X$ and $Y$ in the category $\REL$. Prove that it is a coproduct. 
+\end{exer}
+
+\begin{exer}\label{exer:coproduct-unique}
+  Given two coproducts of $A$ and $B$ in a category $\CC$, construct an isomorphism between them, that is, between their underlying objects.
+\end{exer}
+
+\begin{exer}\label{exer:coproduct_preserved_by_iso}
+  Given a coproduct $(C,\inl : A \to C ,\inr : B \to C)$ of $A$ and $B$ in $\CC$, and an object $C'$ that is isomorphic to $C$ via an isomorphism $i : C \cong C'$, construct a coproduct with object $C'$ of $A$ and $B$.
+\end{exer}
+
+\begin{exer}\label{exer:coproduct_with_initial} Let $\CC$ be a category and $I\in\Ob{\CC}$ an initial object.
+  For any object $A\in \Ob{\CC}$, construct a coproduct of $A$ and $I$.
+
+  Hint: To form an idea what the object $A + I$ should be, solve the exercise first in a specific category, e.g., in the category of sets or in a category coming from a preordered set.
+\end{exer}
+
+\begin{exer}\label{exer:coproduct_iff_initial_in_subcategory} Let $\CC$ be a category and $A,B\in\Ob{\CC}$ be objects. Show that the coproduct of $A$ and $B$ exists if and only if the following category has an initial object:
+\begin{itemize}
+\item The objects are triples $(C,c_l: A\to C, c_r:B\to C)$.
+\item A morphism from $(C,c_l,c_r)$ to $(D,d_l,d_r)$ is a morphism $f : C \to D$ such that the following diagram commutes:
+\[
+    \begin{tikzcd}
+      A \ar[r, "c_l"] \ar[rd, "d_l"']
+      &
+      C  \ar[d, "f"]
+      &
+      B \ar[l, "c_r"'] \ar[ld, "d_r"]
+      \\
+      &
+      D
+    \end{tikzcd}
+  \]
+\item The composition and identity are inherited from the structure of $\CC$.
+\end{itemize}
+\end{exer}
+
+\begin{exer}\label{exer:coproduct_of_morphisms}
+  Let $\CC$ be a category with a choice of coproduct $(A + B, \inl, \inr)$ for any two objects $A,B\in \Ob{\CC}$.
+  Given morphisms $f : A \to C$ and $g : B \to D$ in $\CC$, construct a morphism
+  \[ f + g : A + B \to C + D.\]
+\end{exer}
+
+\begin{exer}[\cref{sol:swap_binary_coproduct}]\label{exer:swap_binary_coproduct}
+  Let $\CC$ be a category with a choice of coproduct $(A+ B, \inl, \inr)$ for any two objects $A,B\in \Ob{\CC}$.
+  For any $A, B \in \Ob\CC$, construct an isomorphism
+  \[ A + B \cong B + A. \]
+\end{exer}
+
+
+\begin{exer}[Equational reasoning for coproducts]
+  Let $\CC$ be a category with binary coproducts.
+  Consider the following objects and morphisms in $\CC$.
+
+  \[
+    \begin{tikzcd}[column sep=large]
+      E \ar[r, "h'"] \ar[d]
+      &
+      A \ar[r, "h"] \ar[d, "\iota_A"]
+      &
+      C  \ar[d] \ar[rd, "f"]
+      \\
+      E + F
+      &
+      A+ B
+      &
+      C + D 
+      &
+      Y \ar[r, "j"]
+      &
+      Z
+      \\
+      F \ar[r, "k'"] \ar[u]
+      &
+      B \ar[u, "\iota_B"] \ar[r,"k"]
+      &
+      D \ar[u] \ar[ru, "g"']
+    \end{tikzcd}
+  \]
+  
+  Prove the following equations:
+  \begin{align}
+    \co{\outofcoproduct{f}{g}}{j} &= \outofcoproduct{\co f j}{\co g j}
+    \\
+    \outofcoproduct{\co h f}{\co k g} &= \co {(\coproductmap h k)} {\outofcoproduct f g}
+    \\
+    \coproductmap{(\co {h'} h)}{(\co {k'} k)} &= \co {(\coproductmap {h'} {k'}) }{(\coproductmap h k)}
+    \\
+    \outofcoproduct{\iota_A}{\iota_B} &= \Id[A + B]
+  \end{align}
+\end{exer}
+
+
+\begin{exer}
+  Consider the category with one object and the rational numbers $\mathbb{Q}$ as morphisms.
+  Can you construct an initial object in this category? A terminal object? Products? Coproducts?
+\end{exer}
+
+\begin{rem}
+  Initial and terminal objects and products and coproducts are special cases of \textbf{limits and colimits}.
+  We are not studying, in these notes, the general notion of (co)limit.
+  However, the examples above should suffice for you to understand, in your own time, other (co)limits, such as
+  \begin{itemize}
+  \item pullbacks and pushouts;
+  \item products and coproducts of families of objects (not just of pairs of objects); and
+  \item equalizers and coequalizers.
+  \end{itemize}
+\end{rem}

@@ -1,0 +1,252 @@
+\chapter{Functors}\label{sec:functors}
+An important aspect in computer programming is the transformation of data. For example, if you have a data type $X$, then one can consider also the data type $\List(X)$ of lists with values in $X$. If one thinks of the objects in a category to be data types, then we can ask even more. If $f:X\to Y$ is a function (between the data types), then this also induces  a function from the $X$-valued lists to the $Y$-valued lists as follows:
+\begin{align}\label{eqn:function_on_list}
+  \List(f) : \List(X)&\to \List(Y)
+  \\
+  [x_1,\ldots x_n] &\mapsto [f(x_1),\ldots,f(x_n)]. \notag
+\end{align}
+
+\begin{rem}
+  The ``\ldots'' above are informal --- a formal definition would define $\List(f)$ by structural recursion on lists, of course.
+\end{rem}
+
+A \textit{functor} formalizes this phenomenon:
+\begin{dfn} Let $\CC$ and $\DD$ be categories. A \textbf{functor} $F$ from $\CC$ to $\DD$ consists of the following data:
+\begin{itemize}
+\item A function 
+\[
+\Ob{\CC} \to \Ob{\DD},
+\]
+written as $X\mapsto F(X)$.
+\item For each $X,Y\in \Ob{\CC}$, a function
+\[
+\CHom{\CC}{X}{Y} \to \CHom{\DD}{F(X)}{F(Y)},
+\]
+written as $f\mapsto F(f)$.
+\end{itemize}
+Moreover, this data should satisfy the following properties:
+\begin{itemize}
+\item (\textbf{Preserves composition}) For $f\in \Hom[\CC]{X}{Y}$ and $g\in \Hom[\CC]{Y}{Z}$, we have $F(\co f g) = \co {Ff}{Fg}$.
+\item (\textbf{Preserves identity}) For $X\in\CC$, we have $F(\Id[X]) = \Id[F(X)]$.
+\end{itemize}
+\end{dfn}
+
+\begin{rem}[Explanation]
+	A function from a set $X$ to a set $Y$ maps every element of $X$, to an element in $Y$.
+	Analogously, a \emph{functor} from a category $\CC$ to a category $\DD$ maps every object of $\CC$ to an object in $\DD$.
+	(This is the first piece of data in the definition of a functor; made formal as a function between the underlying types/collections/sets of objects.)
+	However, a category does not only consist of a set of objects.
+	(Indeed, between every two objects $c_1, c_2 \in \Ob{\CC}$, we have a set of morphisms; denoted $\CHom{\CC}{x}{y}$).
+	Hence, a functor, as a ``morphism'' between categories, should also map every morphism in $\CC$ to a morphism in $\DD$ (while suitably preserving domain and codomain of the morphism).
+	(This is the second piece of data in the definition of a functor.)
+	
+	In the examples and exercises below, the first piece (i.\,e.,\, the function between the collection of objects) is always given.
+	(Why? Because between fixed categories, there may be many functors, or none.)
+	While the second piece of data is not uniquely determined by the function between the object-sets, there is often a canonical (obvious) choice.
+	Below, we ask the reader to find the canonical choice.
+	A functor is completely determined by the function (or action) on objects and morphisms.
+	However, in order to guarantee that these functions are well-behaved (w.\,r.\,t.,\, to the structure given by the categories), we furthermore require that the composition and identity are preserved.
+They need to be checked to complete the definition of a functor.
+	(Often, these properties hold by construction; that is, by unfolding the data, provided in the second piece.)
+\end{rem}
+
+\begin{exa} \label{example:functor_list} The \textbf{list-functor} (on sets), denoted by $\List$, is the functor from $\SET$ to $\SET$ defined by the following data:
+\begin{itemize}
+\item The function on objects is given by:
+\[
+\Ob{\SET}\to \Ob{\SET}: X\mapsto \List(X).
+\]
+\item For each $X,Y\in\SET$, the function on morphisms is given by
+\[
+\CHom{\SET}{X}{Y} \to \CHom{\SET}{\List(X)}{\List(Y)}: f\mapsto \List(f),
+\]
+where $\mathbf{List}(f)$ is given in \cref{eqn:function_on_list}.
+\end{itemize}
+
+
+\begin{comment}
+\begin{proof}
+The data is clearly well-defined since we work with \textit{mere} sets, i.e. no extra structure. That $\List$ would preserve the identity means that $\List(\Id[X]) = \Id[\List(X)]$, i.e. we have to show that for each $X$-valued list $\ell$, we have:
+\[
+\List(\Id[X])(\ell)) = \Id[\List(X)](A)(\ell).
+\] 
+The lefthand-side of the equation is given by:
+$$\mathbf{List}(\Id[X])(\{x_i\}_i) = \{\Id[X] (x_i)\}_i = \{x_i\}_i,$$
+where the first (resp. second) equality holds by definition of $\mathbf{List}$ on morphisms (resp. by definition of $\Id[X]$).\\
+The righthand-side of the equation is given by:
+$$\Id[\mathbf{List}(X)](A)(\{x_i\}_i) = \{x_i\}_i,$$
+by definition of the identity morphism in $\SET$. Hence, the left and right hand side are equal which shows that $\mathbf{List}$ indeed preserves the identity.\\
+We now show that $\mathbf{List}$ preserves composition. Let $f\in \CHom{\SET}{X}{Y}$ and $g\in \CHom{\SET}{Y}{Z}$ be functions. By definition of the composition in $\SET$ and by definition of $\mathbf{List}$ on morphisms, we have for each $X$-valued list $\{x_i\}_i$:
+\begin{eqnarray}\label{eqn:functor_list_comp1}
+\mathbf{List}(f\Comp g)(\{x_i\}_i) = \{(f\Comp g)(x_i)\}_i = \{g(f(x_i)\}_i.
+\end{eqnarray}
+Again by definition of the composition in $\SET$ and by definition of $\mathbf{List}$ on morphisms, we have for each $X$-valued list $\{x_i\}_i$:
+\begin{eqnarray}\label{eqn:functor_list_comp2}
+\left(\mathbf{List}(f)\Comp \mathbf{List}(g)\right)(\{x_i\}_i) = \mathbf{List}(g)\left(\{f(x_i)\}_i\right) = \{g(f(x_i)\}_i.
+\end{eqnarray}
+Hence, by combining \cref{eqn:functor_list_comp1, eqn:functor_list_comp2}, we conclude that for each $X$-valued list $\{x_i\}_i$ we have
+\[
+\mathbf{List}(f\Comp g)(\{x_i\}_i) = \left(\mathbf{List}(f)\Comp \mathbf{List}(g)\right)(\{x_i\}_i).
+\]
+Since this holds for every such list, we indeed have that the composition is preserved.
+\end{proof}
+\end{comment}
+\end{exa}
+
+\begin{exer}
+  Show that $\List$ is a  functor, that is, show that it preserves identity and composition of functions.
+  Hint: use structural induction on lists.
+\end{exer}
+
+\begin{exer}
+  Consider the function $\Ob{\Maybe} : \Ob\SET \to \Ob\SET$ sending a set $X$ to $X + \{*\}$.
+  For any two sets $X$ and $Y$ and $f : X \to Y$, define a function
+  \[ \Maybe(f) : \Ob\Maybe X \to \Ob\Maybe Y\]
+  and show that this assignment satisfies the functor laws.
+\end{exer}
+
+\begin{exer}[\cref{sol:functor_prod_on_left}]\label{exer:functor_prod_on_left}
+  Let $A \in \Ob\SET$.
+  Construct a functor $(\times A) : \SET \to \SET$ that, on objects, is given by
+  \[ (\times A) X := X \times A. \]
+\end{exer}
+
+
+\begin{exer}
+  Let $\CC$ be a category with chosen products, and let $A \in \Ob\CC$.
+  Construct a functor $(\times A) : \CC \to \CC$ that, on objects, is given by
+  \[ (\times A) X := X \times A. \]
+\end{exer}
+
+\begin{exer}
+  Let $A \in \Ob\SET$.
+  Construct a functor $(+ A) : \SET \to \SET$ that, on objects, is given by
+  \[ (+ A) X := X + A. \]
+\end{exer}
+
+\begin{exer}
+  Let $\CC$ be a category with chosen coproducts, and let $A \in \Ob\CC$.
+  Construct a functor $(+ A) : \CC \to \CC$ that, on objects, is given by
+  \[ (+ A) X := X + A. \]
+\end{exer}
+
+\begin{exer}
+  Let $R \in \Ob\SET$ be a set.
+  Construct a functor $(R \to) : \SET \to \SET$ that, on objects, is given by
+  \[ (R \to) X := R \to X. \]
+\end{exer}
+
+\begin{exer}
+  Let $\CC$ be a category and let $R \in \Ob\CC$.
+  Construct a functor $\CHom \CC R - : \CC \to \SET$ that, on objects, is given by
+  \[ (\CHom \CC R -) X := \CHom \CC R X. \]
+\end{exer}
+
+
+\begin{exer}\label{ex:poset_functors}
+  Let $(X,\leq_X)$ and $(Y,\leq_Y)$ be preordered sets.
+  Describe the functors from $\PREtoCAT(X,\leq_X)$ to $\PREtoCAT(Y,\leq_Y)$.
+  Before writing out the definitions, what would you expect the answer to be?
+\end{exer}
+
+\begin{exer}
+  Let $\CC$ be a category with chosen products $(A\times B, \pi_A, \pi_B)$ for any two objects $A$ and $B$.
+  Construct a functor
+  \[ (\times) : \CC\times \CC \to \CC\]
+  from the product category $\CC\times \CC$ to $\CC$.
+  The objects of $\CC\times \CC$ are pairs of objects in $\CC$, and morphisms $\CHom{(\CC\times\CC)}{(X,X')}{(Y,Y')}$ are pairs $(f : X \to Y, f' : X' \to Y')$ of morphisms in $\CC$.
+\end{exer}
+
+\begin{exer}
+  Let $\CC$ be a category with chosen coproducts $(A + B, \iota_A, \iota_B)$ for any two objects $A$ and $B$.
+  Construct a functor
+  \[ (+) : \CC\times \CC \to \CC\]
+  from the product category $\CC\times \CC$ to $\CC$.
+\end{exer}
+
+\begin{exer}
+\label{exer:const-functor}
+Let $\CC$ and $\DD$ be categories and $d : \DD$.
+Construct a functor $\const_d : \CC \to \DD$ that, on objects, is given by $\const_d(c) := d$.
+\end{exer}
+
+
+\begin{exer}\label{ex:monoid_functors}
+  Let $(M,m,e)$ be a monoid and let $\MONtoCAT(M,m,e)$ be its corresponding category as defined in \cref{monoidcategory}.
+  Describe the functors from $\MONtoCAT(M,m,e)$ to $\SET$.
+\end{exer}
+
+
+\begin{reading*}
+  We do not discuss here whether/when/how (co)limits can be transported along functors.
+  You can find some information on this in \cite[\S 5.3]{leinster}.
+\end{reading*}
+
+
+\section{Categories as Objects of a Category?}
+Notice that a functor is a function between categories which preserves the structure of a category. So by the \textit{philosophy} of category theory, this would define a category whose objects are categories and whose morphisms are functors. In order to make this precise, we would also need a \textit{identity functor} and we should have a \textit{composition of functors}.
+
+\begin{exa}\label{example:functor_id} Let $\CC$ be a category. The \textbf{identity functor on $\CC$}, denoted by $\Id[\CC]$, is the functor specified by the following data:
+\begin{itemize}
+\item The function on objects is given by
+\[
+\Ob{\CC}\to \Ob{\CC}: X\mapsto X.
+\]
+\item For each $X,Y\in\CC$, the function on morphisms is given by
+\[
+\CHom \CC X Y\to \CHom \CC X Y: f\mapsto f.
+\]
+\end{itemize}
+\end{exa}
+
+\begin{exer} Show that $\Id[\CC]$ (defined in \cref{example:functor_id}) satisfies the properties of a functor, i.e. $\Id[\CC]$ is indeed a functor.
+\end{exer}
+
+\begin{exa}\label{example:functor_comp} Let $\CC,\DD$ and $\EE$ be  categories and $F:\CC\to\DD$ and $G:\DD\to\EE$ functors. The \textbf{composition functor of $F$ with $G$}, denoted by $F\Comp G$, is the functor specified by the following data:
+\begin{itemize}
+\item The function on objects is given by
+\[
+\Ob{\CC}\to \Ob{\EE}: X\mapsto G(F(X)).
+\]
+\item For each $X,Y\in\CC$, the function on morphisms is given by
+\[
+\CHom \CC X Y\to \CHom{\EE}{G(F(X))}{G(F(Y))}: f\mapsto G(F(f)).
+\]
+\end{itemize}
+\end{exa}
+
+\begin{exer} Show that $F\Comp G$ (defined in \cref{example:functor_comp}) satisfies the properties of a functor, i.e. $F\Comp G$ is indeed a functor.
+\end{exer}
+
+\begin{dfn} The \textbf{category of categories}, denoted by $\CAT$, is the category specified by the following data:
+\begin{itemize}
+\item An object is a category.
+\item If $\CC, \DD\in\CAT$ are categories, then is $\CHom \CAT \CC \DD$ the collection of all functors from $\CC$ to $\DD$.
+\item The identity morphism on a category $\CC$ is the identity functor on $\CC$ defined in \cref{example:functor_id}.
+\item The composition of morphisms, i.e. functors, is the composition of functors defined in \cref{example:functor_comp}.
+\end{itemize} 
+\end{dfn}
+
+\begin{exer} Show that $\CAT$ satisfies the property of a category, i.e. $\CAT$ is indeed a category.
+\end{exer}
+
+\begin{rem}
+  When showing that $\CAT$ is a category, one is forced to consider \emph{equality of objects} when showing that two functors are equal.
+  This goes against the spirit of category theory, where we only ever consider \emph{equality of (parallel) morphisms}.
+  We want to consider two objects ``the same'' when they are \emph{isomorphic}, not when they are \emph{equal}. Of course, any two equal objects are isomorphic to each other, but not the other way round; for instance, in the category of sets, the cartesian product $A \times B$ is isomorphic to $B \times A$, but they are not equal.
+
+  To stay within the spirit of category theory, one can instead consider $\CAT$ as a \textbf{bicategory}.%
+  \footnote{See, e.g.,   \url{https://ncatlab.org/nlab/show/bicategory\#detailedDefn} for a definition of bicategories.}
+  In a bicategory, one has one more layer of things: objects, morphisms, and 2-cells between parallel morphisms. One also calls objects ``0-cells'' and morphisms ``1-cells'', for consistency.
+  Importantly, in a bicategory, the laws concerning 1-cells (as stated in \cref{dfn:category}) do not hold up to equality, but only up to isomorphism of 2-cells.
+
+  An important example is the bicategory given by the following data, which we only list partially:
+  \begin{enumerate}
+  \item 0-cells are categories;
+  \item 1-cells are functors;
+  \item 2-cells are natural transformations (see \cref{sec:nat-trans});
+  \item composition and identity of 1-cells is composition and identity of functors.
+  \end{enumerate}
+
+  We do not delve into bicategories in these notes; an introductory text is, for instance, Leinster's \cite{leinster:basic-bicats}.
+\end{rem}
