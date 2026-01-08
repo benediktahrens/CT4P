@@ -261,6 +261,8 @@ literate={→ }{\ARROW}1
 \newcommand{\zip}{\ensuremath{\mathsf{zip}}}
 \newcommand{\map}{\ensuremath{\mathsf{map}}}
 \newcommand{\filter}{\ensuremath{\mathsf{filter}}}
+
+\newcommand{\const}{\ensuremath{\mathsf{const}}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -1837,6 +1839,12 @@ Since this holds for every such list, we indeed have that the composition is pre
   from the product category $\CC\times \CC$ to $\CC$.
 \end{exer}
 
+\begin{exer}
+\label{exer:const-functor}
+Let $\CC$ and $\DD$ be categories and $d : \DD$.
+Construct a functor $\const_d : \CC \to \DD$ that, on objects, is given by $\const_d(c) := d$.
+\end{exer}
+
 
 \begin{exer}\label{ex:monoid_functors}
   Let $(M,m,e)$ be a monoid and let $\MONtoCAT(M,m,e)$ be its corresponding category as defined in \cref{monoidcategory}.
@@ -1924,6 +1932,13 @@ Notice that a functor is a function between categories which preserves the struc
 \chapter{Natural Transformations}
 \label{sec:nat-trans}
 
+Natural transformations are often considered the heart of category theory, and for good reason 
+— the very subject was originally developed to express such transformations.
+They provide the language to express many of the field's fundamental constructions.
+Moreover, in the context of programming, natural transformations are crucial: they serve as the mathematical model for parametric polymorphism when a category is used to represent a programming language.
+
+\section{Definition and First Examples}
+
 \begin{dfn} Let $F,G: \CC\to\DD$ be functors. A \textbf{natural transformation} $\alpha$ from $F$ to $G$ consists of the following data:
 \begin{itemize}
 \item For each $X\in \Ob{\CC}$, a morphism $\alpha_X \in \CHom{\DD}{F(X)}{G(X)}$.
@@ -1936,7 +1951,6 @@ F(X) \arrow[r, "\alpha_X"] \arrow[d,swap, "F(f)"] & G(X) \arrow[d, "G(f)"]\\
 F(Y) \arrow[r,swap, "\alpha_Y"] & G(Y)
 \end{tikzcd}
 \end{center}
-Moreover, we call $\alpha$ a \textbf{natural isomorphism} if for each $X\in\Ob{\CC}$, we have that $\alpha_X$ is an isomorphism in $\DD$.
 \end{dfn}
 
 \begin{nota} If $F,G:\CC\to\DD$ are functors, a natural transformation $\alpha$ from $F$ to $G$ is denoted as $\NatTrans{\alpha}{F}{G}$ or 
@@ -1950,6 +1964,10 @@ Moreover, we call $\alpha$ a \textbf{natural isomorphism} if for each $X\in\Ob{\
 \end{tikzcd}
 \end{center}
 \end{nota}
+
+\begin{exer}
+Construct a natural transformation from the $\Maybe$ functor to the $\List$ functor, and conversely.
+\end{exer}
 
 \begin{exa} (\textbf{Currying}) Let $X$ be a set. Let $F := \SET(X, -)\times X : \SET\to\SET$ be the functor induced by the following data (on objects):
 \[
@@ -1966,12 +1984,44 @@ Show that this indeed satisfies the naturality condition.
   Given two preordered sets $(X,\leq_X)$ and $(Y, \leq_Y)$ and two functors $f, g : \PREtoCAT(X,\leq_X) \to \PREtoCAT(Y,\leq_Y)$ between their associated categories, what is a natural transformation from $f$ to $g$?
 \end{exer}
 
+Recall that for every object $d : \DD$ in a category gives rise to the constant functor (see \cref{exer:const-functor}).
+
 \begin{exer}
   Can you define a natural transformation that counts the occurrences of elements from $X$ in a list?
   That is, for any set $X$, we would like to have a function of type $\List(X) \to X \to \NN$.
 \end{exer}
 
-\subsection{Functor Categories}
+\begin{exer}
+Can you define a natural transformation that counts the number of elements in a list?
+That is, for any set $X$, construct a function $len_X : \List(X) \to \NN$ and show that this is natural in $X$.
+\end{exer}
+
+\begin{exer}
+  Let $(M,m,e)$ be a monoid and let $\MONtoCAT(M,m,e)$ be its corresponding category. Recall from \cref{ex:monoid_functors} that a functor from $\MONtoCAT(M,m,e)$ to $\SET$ is a set $X$ together with an action of $M$ on $X$, i.e. a function $\mu: M\times X\to X$ such that 
+  \[
+    \forall x\in X: \mu(e,x) = x, \quad \forall n_1,n_2\in M, x\in X: \mu(n_1, \mu(n_2,x)) = \mu(m(n_1,n_2), x).
+  \]
+  We will call a set $ X $ with an action of $ M $ on $ X $ an $ M $-set.
+  Describe the natural transformations between $M$-sets.
+\end{exer}
+
+\begin{exer}
+  Let $(X,\leq_X)$ and $(Y,\leq_Y)$ be posets.
+  Recall from \cref{ex:poset_functors} that a functor between posets corresponds with an order-preserving function, i.e. $x_1 \leq_X x_2 \implies f(x_1) \leq_Y f(x_2)$.
+  Describe the natural transformations between order-preserving functions.
+\end{exer}
+
+\begin{exer}
+Let $\CC$ be a category and $\mathsf{bool}$ be the category with $2$ distinct objects $a,b$ and no non-trivial morphisms.
+For every two objects $x, y \in \CC$, there is a functor $J : \mathsf{bool} \to \CC$ with $J(a) := x$ and $J(b) := y$.
+
+Assume $x + y$ is a coproduct of $x$ and $y$.
+Construct a natural transformation $\alpha$ from $J$ to the constant functor $\mathsf{const}_{(x + y)} : \mathsf{Bool} \to \CC$.
+Furthermore, can you describe the universal property of the coproduct in terms of $\alpha$?
+\end{exer}
+
+\section{Functor Categories}
+
 \begin{dfn}\label{dfn:nattrans_id} Let $F:\CC\to\DD$ be a functor. The \textbf{identity natural transformation} $\Id[F]$ on $F$ is given by the following data:
 \[
 \forall X\in\Ob{\CC}: (\Id[F])_{X} := \Id[F(x)].
@@ -2002,6 +2052,20 @@ Show that this indeed satisfies the naturality condition.
 \begin{exer} Show that for any two categories $\CC$ and $\DD$, the functor category from $\CC$ to $\DD$ satisfies the properties of a category.
 \end{exer}
 
+\begin{exer}
+Let $\CC$ be the category generated by two objects $(V, E)$ and with $2$ morphisms $s, t : E \to V$.
+Can you describe the category $[\CC, \SET]$?
+\end{exer}
+
+\begin{dfn}
+A natural transformation $\alpha : F \Rightarrow G$ is a \textbf{natural isomorphism} if for each $X\in\Ob{\CC}$, we have that $\alpha_X$ is an isomorphism in $\DD$.
+\end{dfn}
+
+\begin{exer}
+Let $F, G : \CC \to \DD$ be functors.
+Show that a natural isomorphism from $F$ to $G$ is equivalent to an isomorphism between $F$ and $G$ in the functor category $[\CC, \DD]$.
+\end{exer}
+
 \begin{dfn}\label{dfn:nattrans_horcomp} Let $F,G : \CC\to\DD$ and $\tilde{F},\tilde{G}:\DD\to\EE$ be functors and $\NatTrans{\alpha}{F}{G}, \NatTrans{\beta}{\tilde{F}}{\tilde{G}}$ be natural transformations. The \textbf{horizontal composition} (also called the \textbf{Godement product}) of $\alpha$ and $\beta$, denoted by $\beta \bullet \alpha$, is defined as:
 \begin{equation}\label{eqn:nattrans_horcomp}
 \forall X\in \Ob{\CC}: (\beta\bullet\alpha)_X := \co{\tilde{F}(\alpha_X)}{\beta_{G(X)}}.
@@ -2016,22 +2080,6 @@ Show that this indeed satisfies the naturality condition.
 \forall X\in \Ob{\CC}: (\beta\bullet\alpha)_X = \co{\beta_{F(X)}}{\tilde{G}(\alpha_X)}.
 \]
 Hint: Write the equality as a (not-known commutative) square.
-\end{exer}
-
-\section{Exercises}
-\begin{exer}
-  Let $(M,m,e)$ be a monoid and let $\MONtoCAT(M,m,e)$ be its corresponding category. Recall from \cref{ex:monoid_functors} that a functor from $\MONtoCAT(M,m,e)$ to $\SET$ is a set $X$ together with an action of $M$ on $X$, i.e. a function $\mu: M\times X\to X$ such that 
-  \[
-    \forall x\in X: \mu(e,x) = x, \quad \forall n_1,n_2\in M, x\in X: \mu(n_1, \mu(n_2,x)) = \mu(m(n_1,n_2), x).
-  \]
-  We will call a set $ X $ with an action of $ M $ on $ X $ an $ M $-set.
-  Describe the natural transformations between $M$-sets.
-\end{exer}
-
-\begin{exer}
-  Let $(X,\leq_X)$ and $(Y,\leq_Y)$ be posets.
-  Recall from \cref{ex:poset_functors} that a functor between posets corresponds with an order-preserving function, i.e. $x_1 \leq_X x_2 \implies f(x_1) \leq_Y f(x_2)$.
-  Describe the natural transformations between order-preserving functions.
 \end{exer}
 
 \section{Equivalence of Categories}
@@ -2119,6 +2167,81 @@ then we can fix some $x$ such that $P(x)$ holds.
   Show that the category $\MAT$ is equivalent to the category of finite-dimensional real vector spaces and linear maps.
 \end{exer}
 
+\section{Representable Functors}
+
+Representable functors are functors into $\SET$ which are isomorphic to the so-called hom-functors \cref{exer:covariant-hom,exer:contravariant-hom}.
+\cref{exer:coproducts-as-representable} illustrates that universal properties can be described in terms of representables.
+\cref{exer:forgetful-functor-is-representable} illustrates that free constructions can be described in terms of representables.
+\cref{exer:representables-on-posets} illustrates that objects in a category are completely determined by their representable functors.
+
+\begin{exer}
+\label{exer:covariant-hom}
+Let $\CC$ be a category and $x \in \CC$.
+Consider the function $\CC(x,-) : \Ob{\CC} \to \Ob{\SET}$ sending an object $y \in \CC$ to the hom-set $\CC(x,y)$.
+For $y, z \in \CC$ and $g \in \CC(y, z)$ define
+\[
+\CC(x, g) : \CC(x,y) \to \CC(x,z) : f \mapsto g \circ f.
+\]
+Show that this defines a functor $\CC(x,-) : \CC \to \SET$.
+This functor is called the \textbf{covariant hom-functor}.
+\end{exer}
+
+Recall that $\op{\CC}(x,y) := \CC(y,x)$.
+
+\begin{exer}
+\label{exer:contravariant-hom}
+Show that for every $y : \CC$, the function $\CC(-,y) : \Ob{\CC} \to \Ob{\SET}$ sending an object $x \in \CC$ to the hom-set $\CC(x,y)$ induces a functor of type $\CC(-,y) : \op{\CC} \to \SET$.
+This functor is called the \textbf{contravariant hom-functor}.
+\end{exer}
+
+\begin{exer}
+Show that every category $\CC$ induces a functor
+\[
+\CC(-,-) : \op{\CC} \times \CC \to \SET.
+\]
+\end{exer}
+
+\begin{exer}
+Let $F : \CC \to \DD$ be a functor.
+Can you construct a natural transformation from $\CC(-,-)$ to $\DD(-,-) \circ ({\op{F} \times F})$?
+\end{exer}
+
+\begin{dfn}
+A functor $F : \op{\CC} \to \SET$ is \textbf{representable} if there exists an object $c \in \CC$ and a natural isomorphism $\theta : \CC(-,c) \simeq F$.
+We say that $(c, \theta)$ is a \textbf{representation} for $F$.
+\end{dfn}
+
+\begin{lemma}
+A representation for a functor $F$ into $\SET$ is unique up to isomorphism.
+\end{lemma}
+
+\begin{exer}
+\label{exer:coproducts-as-representable}
+Let $\CC$ be a category and $x,y \in \CC$ objects.
+Show that the following are equivalent:
+\begin{enumerate}
+\item the coproduct of $x$ and $y$ exists;
+\item the functor $\CC(-,x) \times \CC(-,y)$ is representable.
+\end{enumerate}
+\end{exer}
+
+Recall that $\MON$ denotes the category of monoids and monoid homomorphisms.
+Observe that for every set $A$, $\List(A)$ has a monoid structure whose multiplication is given by the concatenation of lists and whose unit is the empty/nil list.
+See \cref{ch:forgetful-free} for more details.
+\begin{exer}[\cref{sol:forgetful-functor-is-representable}]\label{exer:forgetful-functor-is-representable}
+Show that the forgetful functor $U : \MON \to \SET$ is representable.
+Furthermore, show that for every set $A$ the functor 
+\[
+\SET(A, U-) : \MON \to \SET,
+\]
+is representable.
+\end{exer}
+
+\begin{exer}[\cref{sol:representables-on-posets}]
+\label{exer:representables-on-posets}
+Let $L := (L,\leq)$ be a poset and $\mathcal{L} := \POS(L,\leq)$ be its associated category.
+Describe the representable functors on $\mathcal{L}$.
+\end{exer}
 
 \input{adjunctions}
 
