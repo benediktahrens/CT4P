@@ -13,6 +13,11 @@ declare -a aux_files=("data.tex"
 		      "contravariant.tex"
 		      "adjunctions.tex"
 		      "forget-free.tex"
+		      "categories.tex"
+		      "morphisms.tex"
+		      "limits.tex"
+		      "functors.tex"
+		      "transformations.tex"
 		     )
 	 
 
