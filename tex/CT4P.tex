@@ -741,6 +741,31 @@ For a preordered set $(X,\leq)$, we will often write $\POS(X,\leq)$ instead of $
   To understand a definition in category theory, it is very helpful to think about what the definition means in a preordered set, viewed as a category.
 \end{rem}
 
+\begin{exa}[Divisibility]\label{exa:divisibility}
+  For natural numbers $m, n \in \NN$, we say that $m$ \textbf{divides} $n$,
+  written $m \mid n$, if there is some $k \in \NN$ with $n = k \cdot m$.
+  The relation $\mid$ is reflexive and transitive, so $(\NN, \mid)$ is a
+  preordered set; it is even a poset, since $m \mid n$ and $n \mid m$ imply
+  $m = n$.
+  We hence obtain a category $\POS(\NN, \mid)$: its objects are the natural
+  numbers, and there is a (unique) morphism $m \to n$ if and only if $m$
+  divides $n$.
+  Note that $1$ divides every natural number, and that every natural number
+  divides $0$.
+\end{exa}
+
+\begin{exa}[Truth values]\label{exa:truthvalues}
+  Let $\mathbb{B} := \{\mathsf{false}, \mathsf{true}\}$, ordered by
+  $\mathsf{false} \leq \mathsf{true}$.
+  The associated category $\POS(\mathbb{B}, \leq)$ has two objects and, besides
+  the identities, exactly one morphism $\mathsf{false} \to \mathsf{true}$;
+  it is the interval category of \cref{exa:graph_intervalcat}.
+  It is fruitful to think of a morphism $P \to Q$ as ``$P$ implies $Q$'':
+  falsehood implies truth, but not conversely.
+  More generally, logical propositions, preordered by implication, form a
+  category.
+\end{exa}
+
 \begin{exa}\label{example:poset} The category of posets, denoted by $\POS$, is the category specified by the following data:
 \begin{itemize}
 \item An object is a poset $(X,\leq)$.
@@ -1174,6 +1199,12 @@ Identify an initial object in the category $\REL$ and show that it is initial.
   Hint: constant functions are continuous.
 \end{exer}
 
+\begin{exer}[\cref{sol:initial_divisibility}]\label{exer:initial_divisibility}
+  Identify an initial object in the divisibility category $\POS(\NN, \mid)$ of
+  \cref{exa:divisibility}, and in the category $\POS(\mathbb{B}, \leq)$ of
+  truth values of \cref{exa:truthvalues}.
+\end{exer}
+
 \begin{rem}
   The concept of initial object seems trivial and boring in the categories considered above.
   However, in complicated categories, initial objects can be complicated and exciting;
@@ -1249,6 +1280,30 @@ Identify an initial object in the category $\REL$ and show that it is initial.
 
 \begin{exer}[\cref{sol:terminal_dcpo}]\label{exer:terminal_dcpo}
   Identify a terminal object in the category $\DCPO$ and show that it is indeed terminal.
+\end{exer}
+
+\begin{exer}[\cref{sol:terminal_divisibility}]\label{exer:terminal_divisibility}
+  Identify a terminal object in the divisibility category $\POS(\NN, \mid)$,
+  and in the category $\POS(\mathbb{B}, \leq)$ of truth values.
+\end{exer}
+
+\begin{dfn}\label{dfn:zero-object}
+  Let $\CC$ be a category. An object $Z \in \Ob{\CC}$ is a \textbf{zero object}
+  if it is both initial and terminal.
+\end{dfn}
+
+\begin{exer}[\cref{sol:zero_set}]\label{exer:zero_set}
+  Does the category $\SET$ have a zero object?
+\end{exer}
+
+\begin{exer}[\cref{sol:zero_ptset}]\label{exer:zero_ptset}
+  Show that the category $\PTSET$ of pointed sets has a zero object.
+  (For the initial object, see \cref{exer:initial_pointset}.)
+\end{exer}
+
+\begin{exer}[\cref{sol:zero_mon}]\label{exer:zero_mon}
+  Show that the trivial monoid $(\{e\}, m, e)$ --- with the only possible
+  multiplication --- is a zero object in the category $\MON$ of monoids.
 \end{exer}
 
 \chapter{Datatypes as Initial Objects: First Examples}
@@ -1755,6 +1810,19 @@ In this chapter, we study two further universal properties: that of a
   is a pointed dcpo, and that it is a product of $D$ and $E$ in $\DCPO$.
 \end{exer}
 
+\begin{exer}[\cref{sol:product_divisibility}]\label{exer:product_divisibility}
+  Describe products in the divisibility category $\POS(\NN, \mid)$, and in the
+  category $\POS(\mathbb{B}, \leq)$ of truth values.
+
+  Hint: by \cref{exer:product_posetcat}, a product in a poset is a greatest
+  lower bound.
+\end{exer}
+
+\begin{exer}[\cref{sol:product_ptset}]\label{exer:product_ptset}
+  Let $(X, x_0)$ and $(Y, y_0)$ be pointed sets.
+  Construct a product of $(X,x_0)$ and $(Y,y_0)$ in $\PTSET$.
+\end{exer}
+
 \begin{exer}[\cref{sol:product-unique}]\label{exer:product-unique}
   Given two products of $A$ and $B$ in a category $\CC$, construct an isomorphism between them, that is, between their underlying objects.
 \end{exer}
@@ -2010,6 +2078,30 @@ Let $\CC$ be a category, let $A,B\in\Ob{\CC}$ and let $(A+B,\inl,\inr)$ be a cop
   preserving $\bot$), the \emph{coalesced sum} --- the disjoint union with the
   two least elements identified --- is a genuine coproduct, and the one-point
   dcpo becomes an initial object.
+\end{rem}
+
+\begin{exer}[\cref{sol:coproduct_divisibility}]\label{exer:coproduct_divisibility}
+  Describe coproducts in the divisibility category $\POS(\NN, \mid)$, and in
+  the category $\POS(\mathbb{B}, \leq)$ of truth values.
+\end{exer}
+
+\begin{exer}[\cref{sol:coproduct_ptset}]\label{exer:coproduct_ptset}
+  Let $(X, x_0)$ and $(Y, y_0)$ be pointed sets.
+  Construct a coproduct of $(X,x_0)$ and $(Y,y_0)$ in $\PTSET$.
+
+  Hint: in the disjoint union $X + Y$, the two base points must become equal.
+  The resulting construction is called the \textbf{wedge sum};
+  compare it with the coalesced sum of pointed dcpos discussed after
+  \cref{exer:coproduct_dcpo}.
+\end{exer}
+
+\begin{rem}
+  \Cref{exer:product_divisibility,exer:coproduct_divisibility} show that
+  universal properties subsume classical constructions:
+  in $\POS(\NN,\mid)$, the product is the greatest common divisor and the
+  coproduct is the least common multiple;
+  in the category of truth values, the product is conjunction and the
+  coproduct is disjunction.
 \end{rem}
 
 
@@ -2391,6 +2483,45 @@ F_A:\SET\to\SET : X\mapsto A + (X\times X).
 Show that the initial $F_A$-algebra is given by the set $\BinTree(A)$ of $A$-valued binary trees.
 \end{exer}
 
+\begin{exer}[\cref{sol:initialalg_node_btree}]\label{exer:initialalg_node_btree}
+  Let $A$ be a set and define $F_A$ to be the functor induced by
+  \[
+  F_A : \SET \to \SET : X \mapsto 1 + (X \times A \times X).
+  \]
+  Show that the initial $F_A$-algebra is given by the set $\mathsf{Tree}(A)$ of
+  binary trees carrying an element of $A$ at each \emph{internal node} (and
+  nothing at the leaves), with constructors
+  $\mathsf{leaf} : 1 \to \mathsf{Tree}(A)$ and
+  $\mathsf{node} : \mathsf{Tree}(A) \times A \times \mathsf{Tree}(A) \to \mathsf{Tree}(A)$.
+
+  In Haskell, this datatype is given by:
+\begin{lstlisting}
+data Tree a = Leaf | Node (Tree a) a (Tree a)
+\end{lstlisting}
+  Compare with \cref{exer:initialalg_for_btree}, where the labels sit at the
+  leaves instead.
+\end{exer}
+
+\begin{exer}[\cref{sol:initialalg_rose}]\label{exer:initialalg_rose}
+  Let $A$ be a set and define $F_A$ to be the functor induced by
+  \[
+  F_A : \SET \to \SET : X \mapsto A \times \List(X).
+  \]
+  Note that $F_A$ is a composition of functors we know: the list functor of
+  \cref{example:functor_list} followed by the functor $(A \times -)$ of
+  \cref{exer:functor_prod_on_left}.
+
+  Show that the initial $F_A$-algebra is given by the set $\mathsf{Rose}(A)$ of
+  \emph{rose trees}: finitely branching trees with an element of $A$ at each
+  node, with constructor
+  $\mathsf{node} : A \times \List(\mathsf{Rose}(A)) \to \mathsf{Rose}(A)$.
+
+  In Haskell:
+\begin{lstlisting}
+data Rose a = Node a [Rose a]
+\end{lstlisting}
+\end{exer}
+
 \begin{rem} Notice that in \cref{exer:initialalg_for_list} and \cref{exer:initialalg_for_btree}, we can consider the functor $F_A$ as a bifunctor where we vary $A$, i.e.
 \[
 F: \SET\to \SET\to \SET: (A,X)\mapsto F_A(X).
@@ -2693,6 +2824,37 @@ where $\star$ is the unique element of $1$.
   Its terminal $F$-coalgebra is the datatype $\Colist(A)$ of potentially infinite lists over elements in $A$, with suitable destructors $\head$ and $\tail$ and an ``exception'' in case the colist is empty.
 
   Define a function $\Colist(A) \to  \mathbb{N} + \{\infty\}$ counting the elements in a colist.
+\end{exer}
+
+\begin{exa}[Moore machines]\label{exa:moore}
+  Fix sets $A$ (of \emph{inputs}) and $B$ (of \emph{outputs}), and consider the
+  functor given on objects by
+  \[
+  F(X) := B \times (A \to X),
+  \]
+  a combination of the functors $(B \times -)$ and $(A \to)$ from
+  \cref{sec:functors}.
+  An $F$-coalgebra $\langle \mathsf{out}, \mathsf{next}\rangle : X \to B \times (A \to X)$
+  is precisely a \textbf{Moore machine}: a set $X$ of states, a function
+  $\mathsf{out} : X \to B$ assigning to every state an observable output, and a
+  transition function $\mathsf{next} : X \to (A \to X)$ assigning to every
+  state $x$ and input $a$ a successor state $\mathsf{next}(x)(a)$.
+
+  For $A = 1$, we have $F(X) \cong B \times X$, and we recover streams over
+  $B$: a Moore machine with trivial input is a stream of outputs.
+\end{exa}
+
+\begin{exer}[\cref{sol:moore_terminal}]\label{exer:moore_terminal}
+  Let $A^{*}$ denote the set of finite words over $A$ (that is, of lists over
+  $A$); we write $\epsilon$ for the empty word and $aw$ for the word $w$
+  prepended with $a \in A$.
+  Show that the terminal $F$-coalgebra for the functor $F$ of \cref{exa:moore}
+  is given by the set $A^{*} \to B$ of \emph{behaviours}, with structure map
+  \[
+  \phi \mapsto \big(\phi(\epsilon),\; \lambda a. \lambda w. \phi(aw)\big).
+  \]
+  What does the anamorphism of a Moore machine
+  $(X, \langle \mathsf{out}, \mathsf{next}\rangle)$ compute?
 \end{exer}
 
 \begin{exer}
@@ -4395,6 +4557,32 @@ Since $f : A+B \to B+A$ is an isomorphism with $g : B+A \to A+B$ as its inverse,
   Hence no two pointed dcpos have a coproduct in $\DCPO$.
 \end{solution}
 
+\begin{solution}[\cref{exer:coproduct_divisibility}]\label{sol:coproduct_divisibility}
+  Dually to \cref{sol:product_divisibility}, a coproduct in a poset category is
+  a least upper bound.
+  In $\POS(\NN,\mid)$, an upper bound of $m$ and $n$ is a common multiple, and
+  the least common multiple $\operatorname{lcm}(m,n)$ is the common multiple
+  dividing every other common multiple; hence the coproduct of $m$ and $n$ is
+  $\operatorname{lcm}(m,n)$.
+  In $\POS(\mathbb{B},\leq)$, the least upper bound of $P$ and $Q$ is the
+  disjunction $P \vee Q$.
+\end{solution}
+
+\begin{solution}[\cref{exer:coproduct_ptset}]\label{sol:coproduct_ptset}
+  Define the \emph{wedge sum} $(X,x_0) \vee (Y,y_0)$ as the quotient of the
+  disjoint union $X + Y$ by the identification $\inl(x_0) = \inr(y_0)$, pointed
+  by this identified element; write $[z]$ for the class of $z \in X + Y$.
+  The functions $x \mapsto [\inl(x)]$ and $y \mapsto [\inr(y)]$ are morphisms of
+  pointed sets.
+  Given morphisms $f : (X,x_0) \to (Z,z_0)$ and $g : (Y,y_0) \to (Z,z_0)$, the
+  cotupling $[f,g] : X + Y \to Z$ of \cref{exer:coproduct_set} satisfies
+  $[f,g](\inl(x_0)) = f(x_0) = z_0 = g(y_0) = [f,g](\inr(y_0))$, so it descends
+  to a function on the wedge sum; this function is a morphism of pointed sets
+  and makes the coproduct triangles commute.
+  Uniqueness follows from uniqueness of $[f,g]$ in $\SET$, since the quotient
+  map $X + Y \to (X,x_0) \vee (Y,y_0)$ is surjective.
+\end{solution}
+
 %% Solutions to monads
 
 \begin{solution}[\cref{exer:kleisli_triple_list}]
@@ -4823,6 +5011,15 @@ Thus, the left and right hand sides compute to the same term, hence they are equ
   we see that $\CHom{\DCPO}{I}{D}$ is not a singleton, so $I$ is not initial.
 \end{solution}
 
+\begin{solution}[\cref{exer:initial_divisibility}]\label{sol:initial_divisibility}
+  By \cref{sol:initial_posetcat}, an initial object in a poset category is a
+  least element.
+  In $\POS(\NN,\mid)$, the least element with respect to divisibility is $1$,
+  since $1 \mid n$ for every $n \in \NN$.
+  In $\POS(\mathbb{B},\leq)$, the least element is $\mathsf{false}$:
+  ``ex falso quodlibet''.
+\end{solution}
+
 \begin{solution}[\cref{exer:terminal_set}]\label{sol:terminal_set}
 	A terminal set in the category of sets is a one-element set $ \{ \star \} $. Given any set $ X $, we have a unique function $ X \to \{\star\} $, since any element of $ X $ must be sent to $ \star $.
 \end{solution}
@@ -4896,6 +5093,45 @@ This category can not have a terminal object: Suppose it has a terminal object $
   For any pointed dcpo $D$ there is exactly one function $D \to \{\bot\}$, and it
   is continuous: it is monotone, and it preserves least upper bounds of directed
   subsets since $\{\bot\}$ has only one element.
+\end{solution}
+
+\begin{solution}[\cref{exer:terminal_divisibility}]\label{sol:terminal_divisibility}
+  By \cref{sol:terminal_posetcat}, a terminal object in a poset category is a
+  greatest element.
+  In $\POS(\NN,\mid)$, the greatest element with respect to divisibility is
+  $0$, since $n \mid 0$ for every $n \in \NN$.
+  In $\POS(\mathbb{B},\leq)$, the greatest element is $\mathsf{true}$:
+  everything implies truth.
+\end{solution}
+
+\begin{solution}[\cref{exer:zero_set}]\label{sol:zero_set}
+  No. The initial object of $\SET$ is the empty set, and the terminal objects
+  are the one-element sets (\cref{exer:initial_set,exer:terminal_set}).
+  The empty set is not terminal, since there is no function
+  $\{\star\} \to \emptyset$ at all; and a one-element set is not initial, since,
+  e.g., there are two functions $\{\star\} \to \Bool$.
+  Since initial and terminal objects are unique up to isomorphism, no set can
+  be both.
+\end{solution}
+
+\begin{solution}[\cref{exer:zero_ptset}]\label{sol:zero_ptset}
+  By \cref{sol:initial_pointset}, $(\{\star\},\star)$ is an initial object of
+  $\PTSET$.
+  It is also terminal: for any pointed set $(X,x)$, a morphism
+  $(X,x) \to (\{\star\},\star)$ is a function $X \to \{\star\}$ mapping $x$ to
+  $\star$; there is exactly one function $X \to \{\star\}$, and it maps $x$ to
+  $\star$.
+  Hence $(\{\star\},\star)$ is a zero object.
+\end{solution}
+
+\begin{solution}[\cref{exer:zero_mon}]\label{sol:zero_mon}
+  Let $(M, m_M, e_M)$ be a monoid.
+  A morphism of monoids $(\{e\},m,e) \to (M,m_M,e_M)$ must map $e$ to $e_M$,
+  and the function $e \mapsto e_M$ is indeed a morphism of monoids; hence the
+  trivial monoid is initial.
+  Conversely, there is exactly one function $M \to \{e\}$; it preserves the
+  multiplication and the identity element, so it is the unique morphism of
+  monoids $(M,m_M,e_M) \to (\{e\},m,e)$; hence the trivial monoid is terminal.
 \end{solution}
 
 \begin{solution}[\cref{exer:product-represent}]\label{sol:product-represent}
@@ -5100,6 +5336,29 @@ which completes the proof.
   follows since least upper bounds in $D \times E$ are computed componentwise.
   Uniqueness follows as in $\SET$, since a function into $D\times E$ is
   determined by its two components.
+\end{solution}
+
+\begin{solution}[\cref{exer:product_divisibility}]\label{sol:product_divisibility}
+  By \cref{exer:product_posetcat}, a product of $m$ and $n$ in a poset category
+  is a greatest lower bound of $m$ and $n$.
+  In $\POS(\NN,\mid)$, a lower bound of $m$ and $n$ is a common divisor, and
+  the greatest common divisor $\gcd(m,n)$ is precisely the common divisor that
+  is divided by every other common divisor.
+  Hence the product of $m$ and $n$ is $\gcd(m,n)$.
+  In $\POS(\mathbb{B},\leq)$, the greatest lower bound of $P$ and $Q$ is the
+  conjunction $P \wedge Q$: it implies both $P$ and $Q$, and any truth value
+  implying both $P$ and $Q$ implies $P \wedge Q$.
+\end{solution}
+
+\begin{solution}[\cref{exer:product_ptset}]\label{sol:product_ptset}
+  A product of $(X,x_0)$ and $(Y,y_0)$ is the pointed set
+  $(X \times Y, (x_0,y_0))$, together with the projections $\projl$ and
+  $\projr$, which are morphisms of pointed sets since they map $(x_0,y_0)$ to
+  $x_0$ and $y_0$, respectively.
+  Given morphisms $q_1 : (Q,q_0) \to (X,x_0)$ and $q_2 : (Q,q_0) \to (Y,y_0)$,
+  the unique mediating function is $q \mapsto (q_1(q), q_2(q))$, as in $\SET$
+  (\cref{sol:product_set}); it maps $q_0$ to $(x_0,y_0)$, so it is a morphism
+  of pointed sets, and uniqueness follows as in $\SET$.
 \end{solution}
 
 \begin{solution}[\cref{exer:product-unique}]\label{sol:product-unique}
@@ -5675,6 +5934,38 @@ which completes the proof.
 	Therefore, $ G(g \circ f) = G(g) \circ G(f) $.
 \end{solution}
 
+\begin{solution}[\cref{exer:initialalg_node_btree}]\label{sol:initialalg_node_btree}
+  An $F_A$-algebra consists of a set $X$, an element $x_0 \in X$
+  (the image of the unique element of $1$), and a function
+  $\phi : X \times A \times X \to X$.
+  Given such an algebra, define $h : \mathsf{Tree}(A) \to X$ by recursion:
+  \[
+  h(\mathsf{leaf}) := x_0,
+  \qquad
+  h(\mathsf{node}(l, a, r)) := \phi(h(l), a, h(r)).
+  \]
+  By construction, $h$ is a morphism of $F_A$-algebras.
+  For uniqueness, let $g$ be another morphism of algebras from
+  $(\mathsf{Tree}(A), [\mathsf{leaf}, \mathsf{node}])$ to $(X, [x_0, \phi])$;
+  then $g(\mathsf{leaf}) = x_0$ and
+  $g(\mathsf{node}(l,a,r)) = \phi(g(l), a, g(r))$, so $g = h$ follows by
+  structural induction on trees.
+\end{solution}
+
+\begin{solution}[\cref{exer:initialalg_rose}]\label{sol:initialalg_rose}
+  An $F_A$-algebra consists of a set $X$ and a function
+  $\phi : A \times \List(X) \to X$.
+  Given such an algebra, define $h : \mathsf{Rose}(A) \to X$ by recursion:
+  \[
+  h(\mathsf{node}(a, ts)) := \phi\big(a, \List(h)(ts)\big),
+  \]
+  where $\List(h)$ applies $h$ to every tree in the list $ts$ of subtrees.
+  By construction, $h$ is a morphism of $F_A$-algebras, and any morphism of
+  algebras satisfies the same equation, so uniqueness follows by structural
+  induction on rose trees (using that a rose tree is strictly larger than each
+  of its subtrees).
+\end{solution}
+
 \begin{solution}[\cref{exer:sum_plus_one_as_fold}]\label{sol:sum_plus_one_as_fold}
   We also write $\sum$ for |sum|. Note that |sum| is defined as the catamorphism $\catam{[\Zero, (+)]}$.
   The situation is summarized in the following diagram
@@ -5836,6 +6127,36 @@ We wish to define $h : \Stream(A)\times\Stream(B)\to A\times B$ and $t: \Stream(
   \end{align*}
   This function can, therefore, be defined as $\anam{ {\langle \head \times \head, \tail \times \tail \rangle} }$.
   %Draw a diagram to convince yourself that this is correct.
+\end{solution}
+
+\begin{solution}[\cref{exer:moore_terminal}]\label{sol:moore_terminal}
+  Write $\mathsf{Beh} := (A^{*} \to B)$ and
+  $\Out : \mathsf{Beh} \to B \times (A \to \mathsf{Beh})$ for the structure map
+  $\Out(\phi) := (\phi(\epsilon), \lambda a. \lambda w. \phi(aw))$.
+
+  Let $(X, \langle \mathsf{out}, \mathsf{next}\rangle)$ be an $F$-coalgebra.
+  Define $\mathsf{beh} : X \to \mathsf{Beh}$ by recursion on the length of
+  words:
+  \[
+  \mathsf{beh}(x)(\epsilon) := \mathsf{out}(x),
+  \qquad
+  \mathsf{beh}(x)(aw) := \mathsf{beh}\big(\mathsf{next}(x)(a)\big)(w).
+  \]
+  Then $\mathsf{beh}$ is a morphism of coalgebras: the first component of
+  $\Out(\mathsf{beh}(x))$ is $\mathsf{beh}(x)(\epsilon) = \mathsf{out}(x)$, and
+  for every $a \in A$, we have
+  $\lambda w. \mathsf{beh}(x)(aw) = \mathsf{beh}(\mathsf{next}(x)(a))$ by
+  definition.
+
+  For uniqueness, let $g : X \to \mathsf{Beh}$ be any morphism of coalgebras.
+  The two components of the coalgebra morphism square say precisely that
+  $g(x)(\epsilon) = \mathsf{out}(x)$ and
+  $g(x)(aw) = g(\mathsf{next}(x)(a))(w)$; these equations determine $g$
+  uniquely by induction on the length of words, so $g = \mathsf{beh}$.
+
+  The anamorphism of a Moore machine therefore assigns to every state its
+  \emph{behaviour}: the function mapping each input word to the output
+  observed after processing that word starting in the given state.
 \end{solution}
 
 \begin{solution}[\cref{exer:forgetful-functor-is-representable}]\label{sol:forgetful-functor-is-representable}
