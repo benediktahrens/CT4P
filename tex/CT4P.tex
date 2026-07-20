@@ -1168,6 +1168,12 @@ Do the categories $\POS(\NN, \leq)$, $\SKELFINSET$ and $\MAT$ have initial objec
 Identify an initial object in the category $\REL$ and show that it is initial.
 \end{exer}
 
+\begin{exer}[\cref{sol:initial_dcpo}]\label{exer:initial_dcpo}
+  Does the category $\DCPO$ (defined in \cref{example:hask}) have an initial object?
+
+  Hint: constant functions are continuous.
+\end{exer}
+
 \begin{rem}
   The concept of initial object seems trivial and boring in the categories considered above.
   However, in complicated categories, initial objects can be complicated and exciting;
@@ -1239,6 +1245,10 @@ Identify an initial object in the category $\REL$ and show that it is initial.
 
 \begin{exer}[\cref{sol:terminal_rel}] \label{exer:terminal_rel}
   Identify a terminal object in the category $\REL$ and show that it is terminal.
+\end{exer}
+
+\begin{exer}[\cref{sol:terminal_dcpo}]\label{exer:terminal_dcpo}
+  Identify a terminal object in the category $\DCPO$ and show that it is indeed terminal.
 \end{exer}
 
 \chapter{Datatypes as Initial Objects: First Examples}
@@ -1738,6 +1748,13 @@ In this chapter, we study two further universal properties: that of a
   Identify a product of sets $X$ and $Y$ in the category $\REL$. Prove that it is a product.
 \end{exer}
 
+\begin{exer}[\cref{sol:product_dcpo}]\label{exer:product_dcpo}
+  Let $D$ and $E$ be pointed dcpos.
+  Show that the cartesian product $D \times E$, ordered componentwise, i.e.
+  \[ (d_1,e_1) \sqsubseteq (d_2,e_2) :\iff d_1 \sqsubseteq_D d_2 \text{ and } e_1 \sqsubseteq_E e_2, \]
+  is a pointed dcpo, and that it is a product of $D$ and $E$ in $\DCPO$.
+\end{exer}
+
 \begin{exer}[\cref{sol:product-unique}]\label{exer:product-unique}
   Given two products of $A$ and $B$ in a category $\CC$, construct an isomorphism between them, that is, between their underlying objects.
 \end{exer}
@@ -1965,6 +1982,35 @@ Let $\CC$ be a category, let $A,B\in\Ob{\CC}$ and let $(A+B,\inl,\inr)$ be a cop
   For any $A, B \in \Ob\CC$, construct an isomorphism
   \[ A + B \cong B + A. \]
 \end{exer}
+
+\begin{exer}[\cref{sol:coproduct_dcpo}]\label{exer:coproduct_dcpo}
+  Show that the category $\DCPO$ does not have binary coproducts.
+
+  Hint: Let $\mathbb{O} := \{\bot \sqsubseteq \top\}$ be the two-element dcpo.
+  Assuming a coproduct $(C, \inl, \inr)$ of pointed dcpos $A$ and $B$ exists,
+  first show that $\bot_C$ must lie in the image of one of the injections
+  (otherwise cotupling two constant functions into $\mathbb{O}$ does not have a
+  \emph{unique} mediating morphism).
+  Then derive a contradiction by cotupling a constant-$\top$ and a
+  constant-$\bot$ function into $\mathbb{O}$.
+\end{exer}
+
+\begin{rem}
+  The failure of \cref{exer:coproduct_dcpo} is instructive for the modelling of
+  Haskell's |Either a b|.
+  The natural candidate is the \emph{separated sum} $(D + E)_\bot$: the disjoint
+  union of $D$ and $E$ with a new least element $\bot$ adjoined --- this matches
+  Haskell, where the values of |Either a b| are |Left x|, |Right y|, and the
+  non-terminating computation.
+  The separated sum admits injections and, for all $f : D \to C$ and
+  $g : E \to C$, a mediating morphism $h$ with $\co{\inl}{h} = f$ and
+  $\co{\inr}{h} = g$ --- but $h$ is not unique, since $h(\bot)$ may be any
+  element below the images: it is only a \emph{weak} coproduct.
+  In the subcategory of $\DCPO$ of \emph{strict} continuous functions (those
+  preserving $\bot$), the \emph{coalesced sum} --- the disjoint union with the
+  two least elements identified --- is a genuine coproduct, and the one-point
+  dcpo becomes an initial object.
+\end{rem}
 
 
 \begin{exer}[Equational reasoning for coproducts]
@@ -4316,6 +4362,39 @@ Combining $\co {\inl} {(\co {f} {g})} = \inl$ and $\co {\inr} {(\co {f} {g})} = 
 Since $f : A+B \to B+A$ is an isomorphism with $g : B+A \to A+B$ as its inverse, we have successfully constructed our desired isomorphism $A+B \cong B+A$.
 \end{solution}
 
+\begin{solution}[\cref{exer:coproduct_dcpo}]\label{sol:coproduct_dcpo}
+  Suppose, for contradiction, that pointed dcpos $A$ and $B$ have a coproduct
+  $(C, \inl, \inr)$ in $\DCPO$.
+  Write $\mathbb{O} = \{\bot \sqsubseteq \top\}$.
+
+  \textbf{Step 1: $\bot_C$ lies in the image of $\inl$ or of $\inr$.}
+  Suppose not.
+  Consider the constant functions $\const_\top : A \to \mathbb{O}$ and
+  $\const_\top : B \to \mathbb{O}$.
+  The constant function $h = \const_\top : C \to \mathbb{O}$ satisfies
+  $\co{\inl}{h} = \const_\top$ and $\co{\inr}{h} = \const_\top$.
+  But so does the function $h' : C \to \mathbb{O}$ with $h'(\bot_C) := \bot$ and
+  $h'(c) := \top$ for $c \neq \bot_C$:
+  it agrees with $h$ on the images of the injections by assumption;
+  it is monotone since $\bot_C$ is the least element of $C$;
+  and it preserves directed least upper bounds, since the only directed subset
+  of $C$ with least upper bound $\bot_C$ is $\{\bot_C\}$.
+  Since $h \neq h'$, this contradicts the uniqueness in the universal property.
+
+  \textbf{Step 2: deriving the contradiction.}
+  By Step 1 we may assume $\bot_C = \inl(a_0)$ for some $a_0 \in A$ (the other
+  case is symmetric).
+  Consider $f := \const_\top : A \to \mathbb{O}$ and
+  $g := \const_\bot : B \to \mathbb{O}$.
+  Any morphism $h : C \to \mathbb{O}$ with $\co{\inl}{h} = f$ satisfies
+  $h(\bot_C) = h(\inl(a_0)) = \top$, and hence, by monotonicity, $h(c) = \top$
+  for \emph{every} $c \in C$.
+  But then $\co{\inr}{h} = \const_\top \neq g$, since $B$ is non-empty.
+  So no mediating morphism for $(f,g)$ exists --- contradicting the universal
+  property.
+  Hence no two pointed dcpos have a coproduct in $\DCPO$.
+\end{solution}
+
 %% Solutions to monads
 
 \begin{solution}[\cref{exer:kleisli_triple_list}]
@@ -4733,6 +4812,17 @@ Thus, the left and right hand sides compute to the same term, hence they are equ
 	The initial object in $\REL$ is the empty set. For each set $X$, there is a unique relation from $\emptyset$ to $X$, the empty relation $\emptyset \subseteq \emptyset \times X = \emptyset$.
 \end{solution}
 
+\begin{solution}[\cref{exer:initial_dcpo}]\label{sol:initial_dcpo}
+  The category $\DCPO$ does not have an initial object.
+  First, note that every pointed dcpo is non-empty, since it contains $\bot$.
+  Now let $I$ be any pointed dcpo.
+  For every pointed dcpo $D$ and every element $d \in D$, the constant function
+  $\const_d : I \to D$ is continuous.
+  Hence $\CHom{\DCPO}{I}{D}$ has at least as many elements as $D$.
+  Choosing $D$ with at least two elements, e.g., $\mathbb{O} = \{\bot \sqsubseteq \top\}$,
+  we see that $\CHom{\DCPO}{I}{D}$ is not a singleton, so $I$ is not initial.
+\end{solution}
+
 \begin{solution}[\cref{exer:terminal_set}]\label{sol:terminal_set}
 	A terminal set in the category of sets is a one-element set $ \{ \star \} $. Given any set $ X $, we have a unique function $ X \to \{\star\} $, since any element of $ X $ must be sent to $ \star $.
 \end{solution}
@@ -4799,6 +4889,13 @@ This category can not have a terminal object: Suppose it has a terminal object $
 
 \begin{solution}[\cref{exer:terminal_rel}]\label{sol:terminal_rel}
 	The terminal object in $\REL$ is the empty set. For each set $X$, there is a unique relation from $X$ to $\emptyset$, the empty relation $\emptyset \subseteq X \times \emptyset = \emptyset$.
+\end{solution}
+
+\begin{solution}[\cref{exer:terminal_dcpo}]\label{sol:terminal_dcpo}
+  A terminal object is the one-point dcpo $\{\bot\}$.
+  For any pointed dcpo $D$ there is exactly one function $D \to \{\bot\}$, and it
+  is continuous: it is monotone, and it preserves least upper bounds of directed
+  subsets since $\{\bot\}$ has only one element.
 \end{solution}
 
 \begin{solution}[\cref{exer:product-represent}]\label{sol:product-represent}
@@ -4985,6 +5082,24 @@ which completes the proof.
 		& = \{ (z,x) \in Z \times X \mid (z, (x,0)) \in g \}.
 	\end{align*}
 	Since $\pi_1 \circ g = q_l$, $q_l = \{ (z,x) \in Z \times X \mid (z, (x,0)) \in g \}$. Similarly, from $\pi_2 \circ g = q_r$, we get $q_r = \{ (z,y) \in Z \times Y \mid (z, (y,1)) \in g \}$. By substituting these in the definition of $f$, we get $f = g$.
+\end{solution}
+
+\begin{solution}[\cref{exer:product_dcpo}]\label{sol:product_dcpo}
+  The componentwise order makes $D \times E$ a partially ordered set with least
+  element $(\bot_D, \bot_E)$.
+  If $A \subseteq D \times E$ is directed, then so are its projections
+  $A_1 \subseteq D$ and $A_2 \subseteq E$, and one checks that
+  $\bigsqcup A = (\bigsqcup A_1, \bigsqcup A_2)$.
+  Hence $D \times E$ is a pointed dcpo, and the projections $\projl, \projr$
+  preserve directed least upper bounds, i.e., they are continuous.
+
+  Given continuous functions $q_1 : Q \to D$ and $q_2 : Q \to E$, the unique
+  function $f : Q \to D \times E$ with $\co{f}{\projl} = q_1$ and
+  $\co{f}{\projr} = q_2$ is $f(q) := (q_1(q), q_2(q))$, exactly as in $\SET$
+  (\cref{sol:product_set}); it remains to observe that $f$ is continuous, which
+  follows since least upper bounds in $D \times E$ are computed componentwise.
+  Uniqueness follows as in $\SET$, since a function into $D\times E$ is
+  determined by its two components.
 \end{solution}
 
 \begin{solution}[\cref{exer:product-unique}]\label{sol:product-unique}
