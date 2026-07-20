@@ -204,6 +204,7 @@ literate={→ }{\ARROW}1
 \newcommand{\MONtoCAT}{\Catb{Mon2Cat}}
 \newcommand{\MON}{\Catb{Mon}}
 \newcommand{\HASK}{\Catb{Hask}}
+\newcommand{\DCPO}{\Catb{DCPO}}
 \newcommand{\LEAN}{\Catb{LEAN}}
 \newcommand{\COQ}{\Catb{Coq}}
 \newcommand{\MAT}{\Catb{Mat}}
@@ -214,7 +215,7 @@ literate={→ }{\ARROW}1
 \newcommand{\Ob}[1]{{#1}_0}
 \newcommand{\Hom}[3][]{\cfont{hom}_{#1}(#2,#3)}
 \newcommand{\CHom}[3]{{#1}(#2,#3)}
-\newcommand{\Id}[1][]{\cfont{Id}_{#1}}
+\newcommand{\Id}[1][]{\cfont{id}_{#1}}
 \newcommand{\Comp}{\cdot}
 \newcommand{\NatTrans}[3]{#1 : #2 \Rightarrow #3}
 \newcommand{\op}[1]{\ensuremath{{#1}^\text{op}}}
@@ -606,11 +607,12 @@ Axiom functional_extensionality: forall {A B} (f g : A -> B),
 \end{lstlisting}
 \end{exer}
 
-\begin{exa}
-  We repeat the definitions of \cref{exa:coq-cat} in Haskell instead of Coq.
-  Does this data satisfy the axioms of a category?
-
-  Due to Haskell allowing for the |undefined| value in each type, the situation is slightly more complicated; consider the following two functions:
+\begin{exa}[The category of Haskell types]\label{example:hask}
+  Analogously to \cref{exa:coq-cat}, we would like to organize Haskell types and
+  Haskell functions into a category.
+  However, in Haskell the situation is more complicated than in Coq.
+  Due to general recursion, every Haskell type contains the value |undefined|
+  (a non-terminating computation); consider the following two functions:
 \begin{lstlisting}
 undef1 :: a -> a
 undef1 = undefined
@@ -618,33 +620,82 @@ undef1 = undefined
 undef2 :: a -> a
 undef2 = \x -> undefined
 \end{lstlisting}
-These are not equal by definition, but we have $\Id \Comp$ |undef1| $=$ |undef2|.
-So by the right unit law, we must have that |undef1| = |undef2| (as morphisms in our sought category).
+  These two programs are different: evaluating |undef1| does not terminate,
+  whereas |undef2| immediately returns a function (each of whose applications
+  fails to terminate).
+  But we have $\Id \Comp$ |undef1| $=$ |undef2|, so in a category of types and
+  functions, the unit law forces |undef1| $=$ |undef2|.
+  Hence Haskell types and Haskell programs, with equality of programs, do
+  \emph{not} form a category.
+
+  A first repair is to consider functions equal when they are \textbf{pointwise}
+  equal, that is, to take as morphisms from $X$ to $Y$ equivalence classes of
+  functions under
+  \[ f \sim g :\iff \forall x : X,\; f(x) = g(x). \]
+  This identifies |undef1| and |undef2|.
+  But it raises a new question: what does it mean for two \emph{values} $f(x)$
+  and $g(x)$ to be equal, when values may themselves be partial --- think of two
+  non-terminating computations, or of two infinite lists?
+
+  \emph{Domain theory} gives a precise answer.
+  A \textbf{directed-complete partial order (dcpo)} is a partially ordered set
+  $(D, \sqsubseteq)$ in which every directed subset $A \subseteq D$ (a non-empty
+  subset such that any two of its elements have an upper bound in $A$) has a
+  least upper bound $\bigsqcup A$; it is \textbf{pointed} if it has a least
+  element $\bot$.
+  A function between pointed dcpos is \textbf{(Scott-)continuous} if it is
+  monotone and preserves least upper bounds of directed subsets.
+  We write $\DCPO$ for the category whose objects are pointed dcpos and whose
+  morphisms are continuous functions; identity and composition are those of
+  functions (see \cref{exer:dcpo-cat}).
+
+  The category $\DCPO$ is a good category for modelling Haskell types:
+  \begin{itemize}
+  \item A Haskell type $T$ is interpreted as a pointed dcpo
+    $\llbracket T \rrbracket$: the order $\sqsubseteq$ compares values by their
+    \emph{information content}, and the least element $\bot$ represents a
+    non-terminating computation.
+    For instance, |Bool| is interpreted as the ``flat'' dcpo
+    $\{\bot, \mathsf{True}, \mathsf{False}\}$ with
+    $\bot \sqsubseteq \mathsf{True}$ and $\bot \sqsubseteq \mathsf{False}$,
+    and $\mathsf{True}$, $\mathsf{False}$ incomparable.
+  \item The function type |a -> b| is interpreted as the set of continuous
+    functions from $\llbracket$|a|$\rrbracket$ to $\llbracket$|b|$\rrbracket$,
+    ordered pointwise; this is again a pointed dcpo.
+  \item Continuity captures computation on infinite data: the output of a
+    program on an infinite input (say, an infinite list) is the least upper
+    bound of its outputs on the finite approximations of that input.
+  \item Recursive definitions are interpreted by \emph{least fixed points}:
+    every continuous $f : D \to D$ on a pointed dcpo has a least fixed point,
+    given by $\bigsqcup_{n\in\NN} f^{n}(\bot)$.
+    This interprets general recursion --- precisely the language feature that
+    introduced $\bot$ in the first place.
+  \end{itemize}
+  We therefore \emph{define} $\HASK$ to be the category $\DCPO$, with Haskell
+  types and programs interpreted as its objects and morphisms.
+  In this interpretation, |undef1| and |undef2| denote the \emph{same} morphism
+  --- the least element $\lambda x.\bot$ of the function space --- so the
+  identification forced by the category axioms is validated by the model.
+  (The price is that $\DCPO$ does not model Haskell's |seq| primitive, which
+  distinguishes |undef1| from |undef2|; modelling |seq| faithfully requires a
+  more refined category.)
 \end{exa}
 
-% \begin{exer}
-%   Compose the functions |undef1| and |undef2| with some other functions of your choice, and see what happens.
-% \end{exer}
-
-\begin{exer}
-  Read the Haskell wiki page on the category $\HASK$ \cite{haskell-wiki-hask}.
+\begin{exer}\label{exer:dcpo-cat}
+  Show that $\DCPO$ is indeed a category: show that identity functions are
+  continuous, and that the composition of two continuous functions is
+  continuous.
 \end{exer}
 
-
-However, when considering functions to be equal when they are \textbf{pointwise} equal, we can define a category of Haskell types:
-\begin{dfn}\label{example:hask} The \textbf{category of Haskell types}, denoted by $\HASK$, is the category specified by the following data:
-\begin{itemize}
-\item An object is a Haskell type.
-\item If $X$ and $Y$ are Haskell types, then $\CHom \HASK X Y$ is the collection of functions modulo the equivalence relation $\sim$ defined by identifying pointwise equal functions:
-\[
-f \sim g :\iff \forall x : X, f(x) = g(x).
-\]
-i.e. a morphism in $\HASK$ is an equivalence class of (Haskell) functions.
-\item The identity morphism $\Id[X]$ (on $X\in\HASK$) is the equivalence class of the identity function on $X$.
-\item The composition of (Haskell) functions is given by the equivalence class of the composition of functions, i.e., for $f\in \CHom \HASK X Y$ and $g\in \CHom \HASK Y Z$, the composition of $f$ and $g$ is the equivalence class of:
-\[g\circ f : X\to Z: \lambda x. g(f(x)).\]
-\end{itemize}
-\end{dfn}
+\begin{reading*}
+  The category $\HASK$ of Haskell types is discussed on the Haskell wiki
+  \cite{haskell-wiki-hask}.
+  An introduction to domain theory is given in the handbook chapter by Abramsky
+  and Jung \cite{abramsky-jung}.
+  Danielsson et al.\ \cite{DBLP:conf/popl/DanielssonHJG06} justify why it is
+  nevertheless ``morally correct'' to reason about Haskell programs as if
+  Haskell types formed a category of sets and total functions.
+\end{reading*}
 
 
 \begin{exa}\label{example:posetcategories}
