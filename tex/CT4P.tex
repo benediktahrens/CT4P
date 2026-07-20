@@ -358,7 +358,7 @@ In these notes, we use set theory, \emph{informally}, as the language in which w
   The set $\QQ$ is the set of all rational numbers, with, e.g., $2/3 \in \QQ$.
 
   We also consider a ``set of all sets''. Its elements are all sets.
-  Here, we should be careful, as the set of all sets cannot be an element of itself; see the Barber paradox.\footnote{\url{https://en.wikipedia.org/wiki/Barber_paradox}}
+  Here, we should be careful, as the set of all sets cannot be an element of itself; see Russell's paradox\footnote{\url{https://en.wikipedia.org/wiki/Russell's_paradox}}, a popular illustration of which is the Barber paradox.\footnote{\url{https://en.wikipedia.org/wiki/Barber_paradox}}
   To fix this issue, we consider \emph{collections} in addition to \emph{sets};
   the ``set'' of all sets is not a set, but a collection instead.
 
@@ -464,7 +464,7 @@ The definition of categories is also given in \cite[\S 2.1]{barr-wells}. Plenty 
 \begin{enumerate}
 \item A collection of objects, denoted by $\Ob{\CC}$;
 \item For any given objects $X,Y \in \Ob{\CC}$, a collection of morphisms from $X$ to $Y$, denoted by $\Hom[\CC]{X}{Y}$ (or $\Hom{X}{Y}$ when the category $\CC$ is clear, or $\CHom \CC X Y$ or $X \to Y$);
-\item For each object $X\in \Ob{\CC}$, a morphism $\Id[X] \in \Hom[C]{X}{X}$, called the \emph{identity morphism} on $X$;
+\item For each object $X\in \Ob{\CC}$, a morphism $\Id[X] \in \Hom[\CC]{X}{X}$, called the \emph{identity morphism} on $X$;
 \item A binary operation
 \[
 (\co{}{})_{X,Y,Z} : \Hom{Y}{Z} \to \Hom X Y \to \Hom X Z,
@@ -503,7 +503,7 @@ Moreover, this data should satisfy the following properties:
 \item Let $X,Y\in \CC$ be objects. A morphism $f\in\CHom{\CC}{X}{Y}$ can be visualized as \[ X \xrightarrow{f} Y. \]
 \item Let $X,Y, Z \in \Ob{\CC}$ objects in $\CC$ and consider the following morphisms:
 \[
-f\in\CHom{C}{X}{Y}, \quad g\in\CHom{C}{Y}{Z}, \quad h\in\CHom{C}{X}{Z}.
+f\in\CHom{\CC}{X}{Y}, \quad g\in\CHom{\CC}{Y}{Z}, \quad h\in\CHom{\CC}{X}{Z}.
 \]
 These morphisms can be visualized as a triangle:
 \[
@@ -515,7 +515,7 @@ X \arrow[r, "f"] \arrow[dr,swap, "h"] & Y \arrow[d, "g"] \\
 We say that such a triangle \textbf{commutes} if $h = \co{f}{g}$.
 \item Let $X,Y_1,Y_2, Z \in \Ob{\CC}$ objects in $\CC$ and consider the following morphisms:
 \[
-f_1\in\CHom{C}{X}{Y_1}, \quad f_2\in\CHom{C}{X}{Y_2}, \quad g_1\in\CHom{C}{Y_1}{Z}, \quad g_2\in\CHom{C}{Y_2}{Z}.
+f_1\in\CHom{\CC}{X}{Y_1}, \quad f_2\in\CHom{\CC}{X}{Y_2}, \quad g_1\in\CHom{\CC}{Y_1}{Z}, \quad g_2\in\CHom{\CC}{Y_2}{Z}.
 \]
 These morphisms can be visualized as a square:
 \[
@@ -533,7 +533,7 @@ We say that such a square \textbf{commutes} if $\co{f_1}{g_1} = \co{f_2}{g_2}$.
 \begin{exa}\label{example:set} The \textbf{category of sets}, denoted by $\SET$, is the category specified by the following data:
 \begin{itemize}
 \item An object is a set.
-\item If $X$ and $Y$ are sets, then is $\CHom \SET X Y$ the set of all functions from $X$ to $Y$.
+\item If $X$ and $Y$ are sets, then $\CHom \SET X Y$ is the set of all functions from $X$ to $Y$.
 \item The identity morphism $\Id[X]$ (on $X\in\Ob{\SET}$) is the identity function on $X$, i.e.
 \begin{align*}
   \Id[X] : X &\to X
@@ -558,7 +558,7 @@ We say that such a square \textbf{commutes} if $\co{f_1}{g_1} = \co{f_2}{g_2}$.
    (f\circ \Id[X])(x) = f\left(\Id[X](x)\right) = f(x),
 \]
 where the first (resp. second) equality holds by definition of the composition (resp. identity morphism).\\
-That the right unit law holds is analogous. To show that the associator law holds, let $X,Y,Z,W\in\mathbf{Set}$ and $f\in \CHom \SET X Y, g\in \CHom \SET Y Z$ and $h\in \CHom \SET Z W$. We have to show $h\circ (g\circ f) = (h\circ g)\circ f$; hence it suffices again to show that they are pointwise equal.
+That the right unit law holds is analogous. To show that the associative law holds, let $X,Y,Z,W\in\mathbf{Set}$ and $f\in \CHom \SET X Y, g\in \CHom \SET Y Z$ and $h\in \CHom \SET Z W$. We have to show $h\circ (g\circ f) = (h\circ g)\circ f$; hence it suffices again to show that they are pointwise equal.
 To show this, we fix an arbitrary $x \in X$, and compute
 \begin{eqnarray*}
   \left(h\circ (g\circ f)\right)(x) &=& h\left((g\circ f)(x)\right)
@@ -578,7 +578,7 @@ We are now going to describe the category whose collection of objects is given b
   Consider the following data:
 \begin{itemize}
 \item An object is a Coq type (of some fixed universe).
-\item If $X$ and $Y$ are Coq types, then is $\CHom \COQ X Y$ the function type $X\to Y$.
+\item If $X$ and $Y$ are Coq types, then $\CHom \COQ X Y$ is the function type $X\to Y$.
 \item The identity morphism $\Id[X]$ (on $X\in \Ob{\COQ}$) is the identity function on $X$, i.e.
 \begin{lstlisting}
 Definition idfun {X} : X -> X := fun x => x.
@@ -608,7 +608,7 @@ Axiom functional_extensionality: forall {A B} (f g : A -> B),
 
 \begin{exa}
   We repeat the definitions of \cref{exa:coq-cat} in Haskell instead of Coq.
-  Does this data satisfies the axioms of a category?
+  Does this data satisfy the axioms of a category?
 
   Due to Haskell allowing for the |undefined| value in each type, the situation is slightly more complicated; consider the following two functions:
 \begin{lstlisting}
@@ -635,7 +635,7 @@ However, when considering functions to be equal when they are \textbf{pointwise}
 \begin{dfn}\label{example:hask} The \textbf{category of Haskell types}, denoted by $\HASK$, is the category specified by the following data:
 \begin{itemize}
 \item An object is a Haskell type.
-\item If $X$ and $Y$ are Haskell types, then is $\CHom \HASK X Y$ the collection of functions modulo the equivalence relation $\sim$ defined by identifying pointwise equal functions:
+\item If $X$ and $Y$ are Haskell types, then $\CHom \HASK X Y$ is the collection of functions modulo the equivalence relation $\sim$ defined by identifying pointwise equal functions:
 \[
 f \sim g :\iff \forall x : X, f(x) = g(x).
 \]
@@ -669,10 +669,14 @@ But then, by transitivity (i.e. if $x\leq y$ and $y\leq z$, then $x\leq z$), we 
 \end{itemize}
 %
 We are now going to show that the axioms of a category holds.
-To show the right unit law, we have to show that for each $x,y\in X$ and $f\in \Hom x y$, we have $\co{\Id[x]}{f} = f$.
+To show the left unit law, we have to show that for each $x,y\in X$ and $f\in \Hom x y$, we have $\co{\Id[x]}{f} = f$.
 This indeed holds since every hom-set has a unique element, but both $\co{\Id[x]}{f}$ and $f$ live in the same hom-set; hence they must be equal.
-The proof that left unit law and associator law hold are analogous.
+The proof that the right unit law and the associative law hold is analogous.
 \end{exa}
+
+\begin{nota}
+For a preordered set $(X,\leq)$, we will often write $\POS(X,\leq)$ instead of $\PREtoCAT(X,\leq)$ for the associated category, in particular when $(X,\leq)$ is a poset.
+\end{nota}
 
 \begin{exer}[\cref{sol:post_antisymmetry}]\label{exer:post_antisymmetry}
   A \textbf{partially ordered set} (poset) is a preordered set $(X,\leq)$ satisfying the following additional axiom:
@@ -739,11 +743,11 @@ i.e. each morphism corresponds with a rational number.
 \]
 \item The identity morphism (of $\star$) is given by $1$.
 \end{itemize}
-That $\CC$ is indeed a category follows because for each $p\in\mathbb{Q}$, we have $p\cdot 1 = p = 1\cdot p$ (which shows the unit laws) and by associativity of multiplication, i.e. $(p\cdot q)\cdot h = p\cdot (h \cdot q)$ (which shows the associativity of the composition).
+That $\CC$ is indeed a category follows because for each $p\in\mathbb{Q}$, we have $p\cdot 1 = p = 1\cdot p$ (which shows the unit laws) and by associativity of multiplication, i.e. $(p\cdot q)\cdot r = p\cdot (q \cdot r)$ (which shows the associativity of the composition).
 \end{exa}
 The construction in \cref{exa:monoidofrationalnumbers} uses no specific properties of the rational numbers, only that it has a multiplication which is associative and such that there is a special element which does not change an element when it is multiplied with this special element. Hence, \cref{exa:monoidofrationalnumbers} can be generalized as follows:
 \begin{dfn}\label{monoidcategory}
-Recall that a monoid is a set $M$ equipped with binary operation $m : M \to M \to M$ which is associative, i.e.
+Recall that a monoid is a set $M$ equipped with a binary operation $m : M \to M \to M$ which is associative, i.e.
 \[
 \forall x,y,z\in M: m(x,m(y,z)) = m(m(x,y),z),
 \]
@@ -771,7 +775,7 @@ That for each monoid $(M,m,e)$, $\MONtoCAT(M,m,e)$ is indeed a category, follows
 \end{enumerate}
 
 \begin{rem} Notice that this category illustrates that there is no relation between the collection of objects and the hom-sets since there is now only one object and the collection of the hom-set can be as small or as large as possible.
-In fact, we can associate a different number of categories to a single monoid. We can for example consider an arbitrary set of objects $I$ and the defining the hom-sets as follows:
+In fact, we can associate different categories to a single monoid. We can for example consider an arbitrary set of objects $I$ and define the hom-sets as follows:
 \[
 \Hom{i}{j} :=
 \begin{cases}
@@ -782,7 +786,7 @@ M ,\quad \text{ if } i=j,\\
 \end{rem}
 
 \begin{exer}[\cref{sol:categories_coming_from_monoids}]\label{exer:categories_coming_from_monoids}
-  Let $\CC$ be a category. When does $\CC$ ``come from a monoid'', that is, when is there a monoid $(M,m,e)$ such that $\CC$ of the form $\MONtoCAT(M,m,e)$?
+  Let $\CC$ be a category. When does $\CC$ ``come from a monoid'', that is, when is there a monoid $(M,m,e)$ such that $\CC$ is of the form $\MONtoCAT(M,m,e)$?
 \end{exer}
 
 \begin{exer}[\cref{sol:category_of_monoids}]\label{exer:category_of_monoids}
@@ -817,7 +821,7 @@ We call $\mathbf{Graph}(G)$ the \textbf{category generated by $G$}. Show that $\
 x
 \end{tikzcd}
 \]
-i.e. the graph with only object vertex and no edges. The category generated by $G$ is the category generated is the so-called \textit{terminal category}, that is, the category with a single object and a single morphism (the identity morphism of the unique object).
+i.e. the graph with only one vertex and no edges. The category generated by $G$ is the so-called \textit{terminal category}, that is, the category with a single object and a single morphism (the identity morphism of the unique object).
 The terminal category is denoted by $\bullet$.
 \end{exa}
 
@@ -827,7 +831,7 @@ The terminal category is denoted by $\bullet$.
 x \arrow[r] & y
 \end{tikzcd}
 \]
-The category generated by $G$ is the category generated is the so-called \textit{interval category}, that is, the category with two objects and, besides the identity morphisms, a unique morphism (living in $\Hom{x}{y}$).
+The category generated by $G$ is the so-called \textit{interval category}, that is, the category with two objects and, besides the identity morphisms, a unique morphism (living in $\Hom{x}{y}$).
 \end{exa}
 
 In the following example we use the following notation:
@@ -878,9 +882,9 @@ x & & z \arrow[lu] \\
 The category generated by $G$ has four objects (namely $x,y,z,w$) and the hom-sets are:
 \begin{itemize}
 \item $\Hom{y}{x}, \Hom{y}{z}$ and $\Hom{z}{w}$ are singleton sets,
-\item $\Hom{x}{y}, \Hom{z}{y}, \Hom{x}{w}, \Hom{w}{x}$ and $\Hom{w}{z}$ are all empty.
 \item $\Hom{y}{w}$ consists of the path $y\to z\to w$.
 \item For each vertex $v$, we have that $\Hom{v}{v}$ consists only of the identity path on $v$.
+\item All other hom-sets between distinct objects are empty.
 \end{itemize}
 \end{exa}
 
@@ -901,7 +905,7 @@ Describe the connection between the categories generated by graphs and the categ
     Such matrices can represent linear maps between real vector spaces.
     Composition in this category is given by matrix multiplication.
 
-    More generally for each field $\mathbb{F}$, one can define $\MAT_\mathbb{F}$, where a morphism $f : m \to n$ is a an $n \times m$ matrix over the field $\mathbb{F}$.
+    More generally for each field $\mathbb{F}$, one can define $\MAT_\mathbb{F}$, where a morphism $f : m \to n$ is an $n \times m$ matrix over the field $\mathbb{F}$.
   \end{enumerate}
 
   Can you think of other categories that have natural numbers as their collection of objects? What about a category, where a morphism $f : m \to n$ is a monotonously increasing (decreasing) function from $[m]$ to $[n]$?
@@ -915,7 +919,7 @@ Describe the connection between the categories generated by graphs and the categ
 \label{sec:isos}
 
 \begin{reading*}
-  In this section, we study properties of arrows in a category.
+  In this chapter, we study properties of arrows in a category.
   More information on this topic is given in \cite[\S 2.7]{barr-wells}.
 
   Also, \cite[\S 2.2]{pierce} briefly discusses isomorphisms.
@@ -984,7 +988,7 @@ x & & z \arrow[lu, bend left] \arrow[lu,bend right] \\
 Show that the only isomorphisms in $\mathcal{G}$ are the identity morphisms (i.e. the identity paths).
 \end{exer}
 
-\begin{exer}[\cref{sol:iso_in_posetcategory}] \label{exer:iso_in_cats_of_nats}
+\begin{exer}[\cref{sol:iso_in_cats_of_nats}] \label{exer:iso_in_cats_of_nats}
   Describe the isomorphisms in $\POS(\NN,\leq)$, $\SKELFINSET$ and $\MAT$.
 \end{exer}
 
@@ -1181,7 +1185,7 @@ Identify an initial object in the category $\REL$ and show that it is initial.
 \end{exer}
 
 \begin{exer}[\cref{sol:cat-without-terminal}]\label{exer:cat-without-terminal}
-  Construct a category that does not have an terminal object.
+  Construct a category that does not have a terminal object.
 \end{exer}
 
 \begin{exer}[\cref{sol:terminal_cats_of_nats}]\label{exer:terminal_cats_of_nats}
@@ -1538,7 +1542,7 @@ Let $\CC$ be a category, let $A,B\in\Ob{\CC}$ and let $(A+B,\inl,\inr)$ be a cop
 \end{rem}
 
 \chapter{Functors}\label{sec:functors}
-An important aspect in computer programming is the transformation of data. For example, if you have a data type $X$, then one can consider also the data type $\List(X)$ of lists with values in $X$. If one thinks of the objects in a category to be data types, then we can ask even more. If $f:X\to Y$ is a function (between the data types), then this also induces  a function from the $X$-valued lists to the $Y$-valued lists as follows:
+An important aspect in computer programming is the transformation of data. For example, if you have a data type $X$, then one can consider also the data type $\List(X)$ of lists with values in $X$. If one thinks of the objects in a category as data types, then we can ask even more. If $f:X\to Y$ is a function (between the data types), then this also induces a function from the $X$-valued lists to the $Y$-valued lists as follows:
 \begin{align}\label{eqn:function_on_list}
   \List(f) : \List(X)&\to \List(Y)
   \\
@@ -1575,7 +1579,7 @@ Moreover, this data should satisfy the following properties:
 	Analogously, a \emph{functor} from a category $\CC$ to a category $\DD$ maps every object of $\CC$ to an object in $\DD$.
 	(This is the first piece of data in the definition of a functor; made formal as a function between the underlying types/collections/sets of objects.)
 	However, a category does not only consist of a set of objects.
-	(Indeed, between every two objects $c_1, c_2 \in \Ob{\CC}$, we have a set of morphisms; denoted $\CHom{\CC}{x}{y}$).
+	(Indeed, between every two objects $c_1, c_2 \in \Ob{\CC}$, we have a set of morphisms; denoted $\CHom{\CC}{c_1}{c_2}$).
 	Hence, a functor, as a ``morphism'' between categories, should also map every morphism in $\CC$ to a morphism in $\DD$ (while suitably preserving domain and codomain of the morphism).
 	(This is the second piece of data in the definition of a functor.)
 
@@ -1584,7 +1588,7 @@ Moreover, this data should satisfy the following properties:
 	While the second piece of data is not uniquely determined by the function between the object-sets, there is often a canonical (obvious) choice.
 	Below, we ask the reader to find the canonical choice.
 	A functor is completely determined by the function (or action) on objects and morphisms.
-	However, in order to guarantee that these functions are well-behaved (w.\,r.\,t.,\, to the structure given by the categories), we furthermore require that the composition and identity are preserved.
+	However, in order to guarantee that these functions are well-behaved (w.\,r.\,t.\ the structure given by the categories), we furthermore require that the composition and identity are preserved.
 They need to be checked to complete the definition of a functor.
 	(Often, these properties hold by construction; that is, by unfolding the data, provided in the second piece.)
 \end{rem}
@@ -1723,7 +1727,7 @@ Construct a functor $\const_d : \CC \to \DD$ that, on objects, is given by $\con
 
 
 \section{Categories as Objects of a Category?}
-Notice that a functor is a function between categories which preserves the structure of a category. So by the \textit{philosophy} of category theory, this would define a category whose objects are categories and whose morphisms are functors. In order to make this precise, we would also need a \textit{identity functor} and we should have a \textit{composition of functors}.
+Notice that a functor is a function between categories which preserves the structure of a category. So by the \textit{philosophy} of category theory, this would define a category whose objects are categories and whose morphisms are functors. In order to make this precise, we would also need an \textit{identity functor} and we should have a \textit{composition of functors}.
 
 \begin{exa}\label{example:functor_id} Let $\CC$ be a category. The \textbf{identity functor on $\CC$}, denoted by $\Id[\CC]$, is the functor specified by the following data:
 \begin{itemize}
@@ -1760,13 +1764,13 @@ Notice that a functor is a function between categories which preserves the struc
 \begin{dfn} The \textbf{category of categories}, denoted by $\CAT$, is the category specified by the following data:
 \begin{itemize}
 \item An object is a category.
-\item If $\CC, \DD\in\CAT$ are categories, then is $\CHom \CAT \CC \DD$ the collection of all functors from $\CC$ to $\DD$.
+\item If $\CC, \DD\in\CAT$ are categories, then $\CHom \CAT \CC \DD$ is the collection of all functors from $\CC$ to $\DD$.
 \item The identity morphism on a category $\CC$ is the identity functor on $\CC$ defined in \cref{example:functor_id}.
 \item The composition of morphisms, i.e. functors, is the composition of functors defined in \cref{example:functor_comp}.
 \end{itemize}
 \end{dfn}
 
-\begin{exer} Show that $\CAT$ satisfies the property of a category, i.e. $\CAT$ is indeed a category.
+\begin{exer} Show that $\CAT$ satisfies the properties of a category, i.e. $\CAT$ is indeed a category.
 \end{exer}
 
 \begin{rem}
@@ -1838,11 +1842,13 @@ such that
   \rec(z,s)(\Zero) = z \quad\text{ and }\quad \rec(z,s)(\Succ(n)) = s (\rec(z,s)(n)).
 \end{equation}
 
-The recursion principle can be stated more generally.
-Indeed, $z \in X$ is a proposition $P$ dependent on $z$, that is $P(z) := z \in X$.
-Furthermore, the function $s : X \to X$ is used to witness that if $n \in \NN$ is mapped to $x_n \in X$, then $\Succ(n)$ is mapped to $x_{\Succ(n)} \in X$.
-Hence, $s : X \to X$ can be rewritten as $\forall n \in \NN, P(n) \Rightarrow P(\Succ(n))$.
-Hence, the recursion principle can be stated more generally via its induction principle:
+The recursion principle is closely related to the \emph{induction principle} for $\NN$.
+To pass from recursion to induction, we replace the set $X$ by a predicate $P$ on $\NN$.
+The element $z \in X$ is replaced by a proof of the base case $P(\Zero)$, and the
+function $s : X \to X$ is replaced by a proof of the inductive step: for every
+$n \in \NN$, from $P(n)$ we can derive $P(\Succ(n))$.
+The conclusion, a function $\NN \to X$, is replaced by a proof that $P(n)$ holds
+for every $n \in \NN$:
 %Furthermore, it satisfies the following induction principle:
 \[
   \binaryRule
@@ -1904,7 +1910,7 @@ data Exp ::=
 \end{lstlisting}
   and consider the following category:
   \begin{itemize}
-  \item Objects are quadruples $(X, I : \mathbb{Z} \to X, P : X \to X \to X, S : X \to X)$ with $X$ a set/type;
+  \item Objects are quadruples $(X, I : \mathbb{Z} \to X, P : X \times X \to X, S : X \to X)$ with $X$ a set/type;
   \item Morphisms from $(X, I, P, S)$ to $(X', I', P', S')$ are functions
     $f : X \to X'$ such that the following diagrams commute:
     \[
@@ -1960,11 +1966,11 @@ We show that the datatype of expressions, together with its constructors, forms 
 \begin{lstlisting}[mathescape=true]
   data NatList ::=
   | nil     : NatList
-  | cons    : $\NN$ $\to$ NatList $\to$ Natlist
+  | cons    : $\NN$ $\to$ NatList $\to$ NatList
 \end{lstlisting}
 
   \begin{enumerate}
-  \item Write down the recursion and induction principles for |Natlist|.
+  \item Write down the recursion and induction principles for |NatList|.
   \item  Write down the computation rules (the analogs of \cref{eq:computation-rules-nat}) for |NatList|, and draw them as diagrams.
   \item Construct a suitable category $\Cat{L}$ and show that ($\mathsf{NatList}, \nil, \cons$) is initial in that category.
   \end{enumerate}
@@ -1980,7 +1986,7 @@ We show that the datatype of expressions, together with its constructors, forms 
   The tutorial on (co)algebras and (co)induction by Jacobs and Rutten \cite{jacobs-rutten-tutorial} provides an excellent overview to the categorical view on inductive and coinductive datatypes.
 \end{reading*}
 
-In \cref{sec:examples}, it was discussed how inductively defined data types naturally give rise to a category where the data type is the initial object in that category, and that the initiality correspond to the recursion principle.
+In \cref{sec:examples}, it was discussed how inductively defined data types naturally give rise to a category where the data type is the initial object in that category, and that the initiality corresponds to the recursion principle.
 Even though different types lead to different categories, those categories are all tuples consisting of a set together with morphisms (modeling the constructor) into the set.
 In this section, we generalize the construction of those categories.
 In particular, this generalization allows us to compute the recursion principle for inductively defined data types.
@@ -2024,7 +2030,7 @@ Here, think of ``$z$'' standing for ``zero'', and ``$s$'' standing for ``success
   \\
   X &\mapsto 1 + (X\times X).
 \end{align*}
-An $F$-algebra consists of a set $X\in\SET$ together with a function $\phi:\CHom{\SET}{1 + (X\times X)}{X}$. Since $\phi$ is function from the disjoint union, we have that $\phi$ corresponds uniquely to two functions:
+An $F$-algebra consists of a set $X\in\SET$ together with a function $\phi\in\CHom{\SET}{1 + (X\times X)}{X}$. Since $\phi$ is a function from the disjoint union, we have that $\phi$ corresponds uniquely to two functions:
 \begin{align*}
 e &: 1\to X
 \\
@@ -2350,7 +2356,7 @@ Y
   \end{enumerate}
 \end{exer}
 
-\begin{exer}[{\cite[\S3.1]{DBLP:journals/jfp/Hutton99}}]
+\begin{exer}[{\cite[\S3.1]{DBLP:journals/jfp/Hutton99}}]\label{exer:sum_plus_one_via_diagram}
   Show that |(+1) . sum = fold (+) 1|, by showing that |(+1) . sum| makes Diagram~\ref{eq:initial-f-alg} of \cref{dfn:initial-alg} commute.
 \end{exer}
 
@@ -2368,7 +2374,7 @@ Y
 
 
 \begin{exer}[{\cite[\S3.2]{DBLP:journals/jfp/Hutton99}}, \cref{sol:sum_plus_one_as_fold}]\label{exer:sum_plus_one_as_fold}
-  Show that |(+1) . sum = fold (+) 1|, by using the fusion property of \cref{exer:fusion-property}.
+  Redo \cref{exer:sum_plus_one_via_diagram}, that is, show that |(+1) . sum = fold (+) 1|, this time by using the fusion property of \cref{exer:fusion-property}.
 \end{exer}
 
 \begin{exer}
@@ -2396,9 +2402,9 @@ Y
   The paper \cite{DBLP:journals/scp/Malcolm90} by Malcolm contains further examples.
 \end{reading*}
 
-In \cref{sec:initial-algs}, we introduce (initial) algebras to model inductive types.
+In \cref{sec:initial-algs}, we introduced (initial) algebras to model inductive types.
 In this section, we introduce the dual notion thereof.
-That is, we introduce (terminal) coalgebras which allows us to define coinductive data types.
+That is, we introduce (terminal) coalgebras, which allow us to define coinductive data types.
 
 \begin{dfn} Let $F:\CC\to \CC$ be an endofunctor. An \textbf{$F$-coalgebra} consists of the following data:
 \begin{itemize}
@@ -2435,10 +2441,10 @@ For $(X,\phi)$ an arbitrary $F$-coalgebra, we denote the unique morphism $(X,\ph
 \begin{exer} Spell out what it means for a coalgebra to be the terminal coalgebra.
 \end{exer}
 
-\begin{exer} Let $F:\CC\to\CC$ be an endofunctor and let $(\Terminalcoalg{F}, \Out)$ be a terminal coalgebra. Show that the following properties holds:
+\begin{exer} Let $F:\CC\to\CC$ be an endofunctor and let $(\Terminalcoalg{F}, \Out)$ be a terminal coalgebra. Show that the following properties hold:
 \begin{enumerate}
 \item $\Id = \anam{\Out}$.
-\item For $F$-algebras $(X,\phi)$ and $(Y,\psi)$ and $f\in\CHom{\CC}{X}{Y}$, we have
+\item For $F$-coalgebras $(X,\phi)$ and $(Y,\psi)$ and $f\in\CHom{\CC}{X}{Y}$, we have
 \[
   \co f \psi   = \co \phi {F(f)} \implies \co{f}{\anam{\psi}} = \anam{\phi}.
 \]
@@ -2623,7 +2629,7 @@ F(Y) \arrow[r,swap, "\alpha_Y"] & G(Y)
 Construct a natural transformation from the $\Maybe$ functor to the $\List$ functor, and conversely.
 \end{exer}
 
-\begin{exa} (\textbf{Currying}) Let $X$ be a set. Let $F := \SET(X, -)\times X : \SET\to\SET$ be the functor induced by the following data (on objects):
+\begin{exa}[Currying]\label{exa:currying} Let $X$ be a set. Let $F := \SET(X, -)\times X : \SET\to\SET$ be the functor induced by the following data (on objects):
 \[
 Y\mapsto \SET(X,Y)\times X.
 \]
@@ -2631,14 +2637,17 @@ The evaluation defines a natural transformation $\NatTrans{ev}{F}{\Id[\SET]}$ as
 \[
 ev_Y : \SET(X,Y) \times X \to Y : (f,x) \mapsto f(x).
 \]
-Show that this indeed satisfies the naturality condition.
 \end{exa}
+
+\begin{exer}
+Show that $ev$ (defined in \cref{exa:currying}) indeed satisfies the naturality condition.
+\end{exer}
 
 \begin{exer}
   Given two preordered sets $(X,\leq_X)$ and $(Y, \leq_Y)$ and two functors $f, g : \PREtoCAT(X,\leq_X) \to \PREtoCAT(Y,\leq_Y)$ between their associated categories, what is a natural transformation from $f$ to $g$?
 \end{exer}
 
-Recall that for every object $d : \DD$ in a category gives rise to the constant functor (see \cref{exer:const-functor}).
+Recall that every object $d \in \DD$ gives rise to the constant functor (see \cref{exer:const-functor}).
 
 \begin{exer}
   Can you define a natural transformation that counts the occurrences of elements from $X$ in a list?
@@ -2670,7 +2679,7 @@ Let $\CC$ be a category and $\mathsf{bool}$ be the category with $2$ distinct ob
 For every two objects $x, y \in \CC$, there is a functor $J : \mathsf{bool} \to \CC$ with $J(a) := x$ and $J(b) := y$.
 
 Assume $x + y$ is a coproduct of $x$ and $y$.
-Construct a natural transformation $\alpha$ from $J$ to the constant functor $\mathsf{const}_{(x + y)} : \mathsf{Bool} \to \CC$.
+Construct a natural transformation $\alpha$ from $J$ to the constant functor $\mathsf{const}_{(x + y)} : \mathsf{bool} \to \CC$.
 Furthermore, can you describe the universal property of the coproduct in terms of $\alpha$?
 \end{exer}
 
@@ -2678,14 +2687,14 @@ Furthermore, can you describe the universal property of the coproduct in terms o
 
 \begin{dfn}\label{dfn:nattrans_id} Let $F:\CC\to\DD$ be a functor. The \textbf{identity natural transformation} $\Id[F]$ on $F$ is given by the following data:
 \[
-\forall X\in\Ob{\CC}: (\Id[F])_{X} := \Id[F(x)].
+\forall X\in\Ob{\CC}: (\Id[F])_{X} := \Id[F(X)].
 \]
 \end{dfn}
 
 \begin{exer} Show that for any functor $F:\CC\to\DD$, the identity natural transformation $\Id[F]$ satisfies the properties of a natural transformation.
 \end{exer}
 
-\begin{dfn}\label{dfn:nattrans_comp} Let $F,G,H: \CC\to\DD$ be functors and $\NatTrans{\alpha}{F}{G}$, $\NatTrans{\beta}{G}{H}$ be natural transformations. The \textbf{(vertical) composition} of $\alpha$ and $\beta$ is the natural transformation $\Comp{\alpha}{\beta}$ is given by the following data:
+\begin{dfn}\label{dfn:nattrans_comp} Let $F,G,H: \CC\to\DD$ be functors and $\NatTrans{\alpha}{F}{G}$, $\NatTrans{\beta}{G}{H}$ be natural transformations. The \textbf{(vertical) composition} of $\alpha$ and $\beta$ is the natural transformation $\co{\alpha}{\beta}$ given by the following data:
 \[
 \forall X\in\Ob{\CC}: (\co{\alpha}{\beta})_{X} := \co{\alpha_X}{\beta_X}.
 \]
@@ -2726,7 +2735,7 @@ Show that a natural isomorphism from $F$ to $G$ is equivalent to an isomorphism 
 \end{equation}
 \end{dfn}
 
-\begin{exer} Show that $\alpha\bullet\beta$ (defined as in \cref{dfn:nattrans_horcomp}), is indeed a natural transformation.
+\begin{exer} Show that $\beta\bullet\alpha$ (defined as in \cref{dfn:nattrans_horcomp}), is indeed a natural transformation.
 \end{exer}
 
 \begin{exer} Show the following property:
@@ -2737,7 +2746,7 @@ Hint: Write the equality as a (not-known commutative) square.
 \end{exer}
 
 \section{Equivalence of Categories}
-Recall that objects $X,Y\in\Ob{\CC}$ are isomorphic if there exist morphisms $f\in\CHom{C}{X}{Y}$ and $g\in\CHom{C}{Y}{X}$ such that $\co{f}{g} = \Id[X]$ and $\co{g}{f} = \Id[Y]$. So in particular we have the notion of an isomorphism in the category $\CAT$ of categories. Spelled out, this means categories $\CC$ and $\DD$ are isomorphic if there exist functors $F:\CC\to\DD$ and $G:\CC\to\DD$ such that $\co{F}{G}= \Id[\CC]$ and $\co{G}{F} = \Id[\DD]$.\\
+Recall that objects $X,Y\in\Ob{\CC}$ are isomorphic if there exist morphisms $f\in\CHom{\CC}{X}{Y}$ and $g\in\CHom{\CC}{Y}{X}$ such that $\co{f}{g} = \Id[X]$ and $\co{g}{f} = \Id[Y]$. So in particular we have the notion of an isomorphism in the category $\CAT$ of categories. Spelled out, this means categories $\CC$ and $\DD$ are isomorphic if there exist functors $F:\CC\to\DD$ and $G:\DD\to\CC$ such that $\co{F}{G}= \Id[\CC]$ and $\co{G}{F} = \Id[\DD]$.\\
 However, the following exercise shows that isomorphism of categories is not the correct notion of \textit{equivalence/sameness} between categories:\\
 Let $\FINSET$ be the category whose objects are given by finite sets and whose morphisms are given by functions\footnote{Notice that the objects of $\FINSET$ form a subset of the objects of $\SET$, but given any two finite sets $X,Y \in \Ob{\FINSET}$, we have $\CHom{\FINSET}{X}{Y}$ = $\CHom{\SET}{X}{Y}$. We say in this case that $\FINSET$ is a (full) subcategory of $\SET$.}. That this is a category follows since $\SET$ is a category.\\
 Let $\Catb{FinOrd}$ be the category whose objects are given by sets of the form
@@ -2790,9 +2799,9 @@ In order to show that $U$ is not an isomorphism, one can use the following lemma
 \]
 \end{rem}
 Motivated by the remark, we define:
-\begin{dfn} Categories $\CC$ and $\DD$ are \textbf{equivalent} if there exists a pair of functors $(F:\CC\to\DD, G:\DD\to\CC)$ such that there exists natural isomorphisms
+\begin{dfn} Categories $\CC$ and $\DD$ are \textbf{equivalent} if there exists a pair of functors $(F:\CC\to\DD, G:\DD\to\CC)$ such that there exist natural isomorphisms
 \[
-\co{F}{G} \to \Id[\CC], \quad \co{G}{F} \to \Id[\DD]
+\co{F}{G} \cong \Id[\CC], \quad \co{G}{F} \cong \Id[\DD].
 \]
 \end{dfn}
 
@@ -2862,7 +2871,8 @@ Can you construct a natural transformation from $\CC(-,-)$ to $\DD(-,-) \circ ({
 
 \begin{dfn}
 A functor $F : \op{\CC} \to \SET$ is \textbf{representable} if there exists an object $c \in \CC$ and a natural isomorphism $\theta : \CC(-,c) \simeq F$.
-We say that $(c, \theta)$ is a \textbf{representation} for $F$.
+Dually, a functor $F : \CC \to \SET$ is \textbf{representable} if there exists an object $c \in \CC$ and a natural isomorphism $\theta : \CC(c,-) \simeq F$.
+In either case, we say that $(c, \theta)$ is a \textbf{representation} for $F$.
 \end{dfn}
 
 \begin{lemma}
@@ -2905,7 +2915,7 @@ Describe the representable functors on $\mathcal{L}$.
 \alpha_{X,Y} : \CHom{\DD}{F(X)}{Y} \to \CHom{\CC}{X}{G(Y)},
 \]
 which are moreover natural in both $X$ and $Y$, i.e. for each $f\in\CHom{\CC}{X_1}{X_2}$ and $g\in\CHom{\DD}{Y_1}{Y_2}$, the following diagrams commute:
-\begin{eqnarray}
+\begin{eqnarray*}
 \begin{tikzcd}
 \CHom{\DD}{F(X_2)}{Y} \arrow[r, "\alpha_{X_2,Y}"] \arrow[d,swap, "\co{F(f)}{-}"] & \CHom{\CC}{X_2}{G(Y)} \arrow[d, "\co{f}{-}"] \\
 \CHom{\DD}{F(X_1)}{Y} \arrow[r,swap, "\alpha_{X_1,Y}"] & \CHom{\CC}{X_1}{G(Y)}
@@ -2914,14 +2924,15 @@ which are moreover natural in both $X$ and $Y$, i.e. for each $f\in\CHom{\CC}{X_
 \CHom{\DD}{F(X)}{Y_1} \arrow[r, "\alpha_{X,Y_1}"] \arrow[d,swap, "\co{-}{g}"] & \CHom{\CC}{X}{G(Y_1)} \arrow[d, "\co{-}{G(g)}"] \\
 \CHom{\DD}{F(X)}{Y_2} \arrow[r,swap, "\alpha_{X,Y_2}"] & \CHom{\CC}{X}{G(Y_2)}
 \end{tikzcd}
-\end{eqnarray}
+\end{eqnarray*}
 If $(F,G)$ is an adjoint pair, we call $F$ the \textbf{left adjoint} of $G$ and we call $G$ the \textbf{right adjoint} of $F$ and we denote $F \dashv G$.
 \end{dfn}
 
 \begin{exer} Let $F:\CC\to\DD$ be a functor. Show that if $F$ has a left (resp. right) adjoint $G$, then $G$ must be unique up to isomorphism\footnote{Isomorphism w.r.t the functor category.}.
 \end{exer}
 
-\begin{exer} Let $U:\MON\to \SET$ be the forgetful functor (defined in \cref{example:forgetful_montoset}) which maps a monoid to its underlying set and let $F : \SET\to\MON$ be the functor which maps a set to the free monoid of this set (defined in \cref{exa:freemonoids}). Then is $(F,U)$ an adjoint pair. (Hint: Use \cref{prop:UVP_forget_montoset}).
+The forgetful and free functors between $\MON$ and $\SET$, and the universal property used in the following exercise, are defined in \cref{ch:forgetful-free}.
+\begin{exer} Let $U:\MON\to \SET$ be the forgetful functor (defined in \cref{example:forgetful_montoset}) which maps a monoid to its underlying set and let $F : \SET\to\MON$ be the functor which maps a set to the free monoid of this set (defined in \cref{exa:freemonoids}). Show that $(F,U)$ is an adjoint pair. (Hint: Use \cref{prop:UVP_forget_montoset}).
 \end{exer}
 
 \begin{exer}\label{exer:adjunction_homtensor_currying} Let $Y$ be a set. Show that the functor (induced by the following mapping on objects)
@@ -2938,7 +2949,7 @@ Is there an analogous statement in the category $\COQ$ instead of $\SET$?
 \begin{thm} Let $(F,G)$ be a pair of functors $F : \CC\to\DD, G: \DD\to\CC$. The following statements are equivalent:
 \begin{enumerate}
 \item $(F,G)$ is an adjoint pair.
-\item There exists natural transformations
+\item There exist natural transformations
 \[
 \NatTrans{\eta}{\Id[\CC]}{\co{F}{G}}, \quad \NatTrans{\epsilon}{\co{G}{F}}{\Id[\DD]},
 \]
@@ -2971,10 +2982,10 @@ Y \arrow[rr, swap, "{\alpha_{Y,FY}(\Id[FY])}"] && G(F(Y))
 \]
 That this square is indeed commutative follows from the following computation:
 \begin{equation}\label{eqn:unitnaturality_fromhomsetadj}
-\co{f}{\alpha(\Id[FY])} = \alpha(\co{F(f)}{\Id[FY]}) = \alpha(F(f)) =  \alpha(\co{\Id[FX]}{F(f)}) = \co{\alpha(\Id[Fx])}{G(F(f))},
+\co{f}{\alpha(\Id[FY])} = \alpha(\co{F(f)}{\Id[FY]}) = \alpha(F(f)) =  \alpha(\co{\Id[FX]}{F(f)}) = \co{\alpha(\Id[FX])}{G(F(f))},
 \end{equation}
 where the first and last equality hold by naturality of $\alpha$.
-\item \textbf{Counit}: For each $Y\in\Ob{\DD}$, we the counit $\epsilon_Y \in \CHom{\DD}{F(G(Y))}{Y}$ is defined as the image of $\Id[G(Y)]$ of the bijection
+\item \textbf{Counit}: For each $Y\in\Ob{\DD}$, the counit $\epsilon_Y \in \CHom{\DD}{F(G(Y))}{Y}$ is defined as the image of $\Id[G(Y)]$ of the bijection
 \[
 \alpha^{-1}_{GY,Y} : \CHom{\CC}{GY}{GY}\to \CHom{\DD}{F(G(Y))}{Y}.
 \]
@@ -3014,9 +3025,9 @@ That $\alpha$ and $\alpha^{-1}$ are inverses of each other follows from the foll
 	=& \co{f}{(\co{\eta_{GY}}{G\epsilon_Y})} &\text{ by associativity}\\
 	=& f &\text{by triangle identity}.
 \end{eqnarray*}
-The other equality is shown analogous by using functoriality of $F$, naturality of $\epsilon$ and the other triangle identity.
+The other equality is shown analogously by using functoriality of $F$, naturality of $\epsilon$ and the other triangle identity.
 
-It remains to show the naturality of $\alpha$ in both $x$ and $y$ which is left to the reader as a good exercise on diagram chasing. %\KW{TODO: Give the proof of the naturality}
+It remains to show the naturality of $\alpha$ in both $X$ and $Y$ which is left to the reader as a good exercise on diagram chasing. %\KW{TODO: Give the proof of the naturality}
 \end{proof}
 \end{thm}
 
@@ -3050,13 +3061,13 @@ and one called ``monad'' (\cref{def:monad}).
 %The formulation of monads uses the fact that the arguments to |(>>=)| can be reordered.
 
 \begin{dfn}\label{def:kleisli-triple}
-  A \textbf{Kleisli triple} over a category $\CC$ is  consisting of the following data:
+  A \textbf{Kleisli triple} over a category $\CC$ consists of the following data:
 \begin{enumerate}
 \item A function $T: \Ob{\CC}\to \Ob{\CC}$.
 \item For each $X\in\Ob{\CC}$, a morphism $\eta_X \in \CHom{\CC}{X}{T(X)}$.
 \item For each $f\in\CHom{\CC}{X}{T(Y)}$, a morphism $f^{*} \in \CHom{\CC}{T(X)}{T(Y)}$.
 \end{enumerate}
-such that the following properties holds:
+such that the following properties hold:
 \begin{enumerate}[resume]
 \item For each $X \in \Ob\CC$, we have $\eta_X^{*} = \Id[T(X)]$.
 \item For each $f\in\CHom{\CC}{X}{T(Y)}$, the following diagram commutes:
@@ -3082,7 +3093,7 @@ We denote a Kleisli triple as $(T,\eta, (-)^{*})$.
 \end{exer}
 
 \begin{exer}
-  Consider the assignment $\Ob{\Maybe} : \Ob{\SET}\to \Ob{\SET}$ with $\Ob{\Maybe}(X) := X + 1$.
+  Consider the assignment $\Ob{\Maybe} : \Ob{\SET}\to \Ob{\SET}$ with $\Ob{\Maybe}(X) := 1 + X$.
   Define a Kleisli triple with this function as the first component.
 \end{exer}
 
@@ -3232,13 +3243,309 @@ The choice of topics was guided by the applications to programming we considered
 \appendix
 
 
+\chapter{More on Special Morphisms}
+\label{ch:more-special-morphisms}
+
+In this appendix we study two further classes of special morphisms, complementing the isomorphisms of \cref{sec:isos}: sections and retractions, and mono- and epimorphisms.
+
+\section{Sections and Retractions}
+\label{sec:sections}
+
+
+\begin{dfn}[Section, Retraction]
+  A pair $(s,r)$ of morphisms $s : a \to b$ and $r : b \to a$ in $\CC$ is called a \textbf{section-retraction pair} if $\co{s}{r} = \Id[a]$.
+
+  In such a case, we call $s$ a section and $r$ a retraction.
+\end{dfn}
+
+\begin{rem}
+  Note that a morphism can be a retraction in more than one way, that is, there can be more than one section $s$ such that $\co{s}{r} = \Id$.
+\end{rem}
+
+Intuitively, a section-retraction pair $(s,r)$ of morphisms $s : a \to b$ and $r : b \to a$ in a category $\CC$ provides a way for $a$ to ``live inside'' $b$.
+Note that for a given $a$ and $b$ there can be many ways for $a$ to live inside $b$.
+
+\begin{exer}[\cref{sol:section-retraction-bool-int}]\label{exer:section-retraction-bool-int}
+  Construct two different section-retraction pairs between the type |Bool| of booleans and the type |Int| of integers (e.g., in Haskell).
+\end{exer}
+
+
+
+\begin{exer}
+ Show that the type |Maybe a| is a retract of the type |[a]|.
+
+ Hint: The idea is that |Nothing| corresponds to the empty list |[]| and that |Just x| corresponds to the one-element list |[x]|. Make this idea precise by writing back and forth functions between these types so that they exhibit |Maybe a| as a retract of |[a]|.
+\end{exer}
+
+
+\section{Monomorphisms and Epimorphisms}
+\label{sec:mono-epi}
+
+\begin{reading*}
+See also \cite[p. 134]{leinster} and \cite[\S\S 2.8--2.9]{barr-wells}.
+Also, \cite[\S 2.2]{pierce} briefly discusses monomorphisms and epimorphisms.
+\end{reading*}
+
+From undergraduate mathematics courses you know what injective and surjective functions between sets are.
+The definitions of ``injective'' and ``surjective'' do not carry over to any category (though they do for categories that are, in some sense, ``similar'' to the category of sets).
+In this section, we study two properties of morphisms in a category that, in the category of sets, are equivalent to ``injective'' and ``surjective'', respectively.
+
+
+
+\begin{dfn}[Monomorphism]
+  Let $f : a \to b$ be a morphism in $\CC$. We say that $f$ is a \textbf{monomorphism} if, for any two morphisms $g_1, g_2 : z \to a$, like in the following diagram,
+  \begin{center}
+    \begin{tikzcd}
+    z \arrow[r, "g_2"', shift right] \arrow[r, "g_1", shift left] & a \arrow[r, "f"] & b
+    \end{tikzcd}
+  \end{center}
+  we have
+  \[ \co{g_1}{f} = \co{g_2}{f} \text{ implies } g_1 = g_2 .\]
+\end{dfn}
+
+\begin{exer}[\cref{sol:mono-inj}]\label{ex:mono-inj}
+  In the category of sets, show that a morphism $f : X \to Y$ is a monomorphism if and only if it is injective.
+\end{exer}
+
+\begin{dfn}[Epi]
+  Let $f : a \to b$ be a morphism in $\CC$. We say that $f$ is an \textbf{epimorphism} if, for any two morphisms $g_1, g_2 : b \to z$, like in the following diagram,
+  \begin{center}
+    \begin{tikzcd}
+    a \arrow[r, "f"] & b \arrow[r, "g_2"', shift right] \arrow[r, "g_1", shift left] & z
+    \end{tikzcd}
+  \end{center}
+  we have
+  \[ \co{f}{g_1} = \co{f}{g_2} \text{ implies } g_1 = g_2 .\]
+\end{dfn}
+
+\begin{exer}\label{ex:epi-surj}
+  In the category of sets, show that a morphism $f : X \to Y$ is an epimorphism if and only if it is surjective.
+\end{exer}
+
+
+\begin{exer}[\cref{sol:sections_in_set_injective}]\label{exer:sections_in_set_injective}
+  In the category of sets, show that if $(s,r)$ is a section-retraction pair, then the section $s$ is injective.
+  Hint: you can use \cref{ex:mono-inj}.
+\end{exer}
+\begin{exer}
+  In the category of sets, show that if $(s,r)$ is a section-retraction pair, then the retraction $r$ is surjective.
+    Hint: you can use \cref{ex:epi-surj}.
+\end{exer}
+
+\begin{exer}[\cref{sol:iso_to_monoepi}]\label{exer:iso_to_monoepi}
+  Show that any isomorphism $f : a\cong b$ (in some arbitrary category $\CC$) is both a monomorphism and an epimorphism.
+\end{exer}
+
+\begin{exer}[\cref{sol:counterexample_monoepi_not_iso}]\label{exer:counterexample_monoepi_not_iso}
+  Show that the converse of \cref{exer:iso_to_monoepi} does not hold in general, i.e. give an example of a category where there exists a morphism which is both an epi- and a monomorphism, but which is not an isomorphism.
+
+Hint: Consider a preordered set.
+\end{exer}
+
+\begin{exer} Let $\mathcal{G}_1$ (resp. $\mathcal{G}_2$ and $\mathcal{G}_3$) be the category generated by the following graph:
+\[
+\begin{tikzcd}
+& w & \\
+x & & z \arrow[lu] \\
+& y \arrow[lu] \arrow[ru] &
+\end{tikzcd}
+\]
+resp.
+\[
+\begin{tikzcd}
+& w & \\
+x & & z \arrow[lu, bend left] \arrow[lu,bend right] \\
+& y \arrow[lu] \arrow[ru] &
+\end{tikzcd}
+\]
+resp.
+\[
+\begin{tikzcd}
+& w \arrow[rd,bend left] & \\
+x & & z \arrow[lu, bend left] \\
+& y \arrow[lu] \arrow[ru] &
+\end{tikzcd}
+\]
+
+Describe the mono- and epimorphisms in these categories.
+\end{exer}
+
+\begin{exer} Describe the monomorphisms, epimorphisms and isomorphisms in the category generated by the following graph:
+\[
+\begin{tikzcd}
+x \arrow[r] & y
+\end{tikzcd}
+\]
+\end{exer}
+
+
+\chapter{Forgetful and Free Functors}
+\label{ch:forgetful-free}
+
+A lot of (mathematical) structures are defined as some other kind of mathematical structure, but where extra structure is added. An example of this is the following:\\
+Recall that a monoid is a set $M$ together with a binary operation $m:M\to M\to M$ which is associative and such that there is an identity element $e$ (see \cref{monoidcategory}). In particular, any monoid has an underlying set and any morphism of monoids has an underlying function (between those sets). So forgetting the binary operation and identity element defines a functor from $\MON$ to $\SET$ which is called a \textit{forgetful functor}:
+\begin{exa}\label{example:forgetful_montoset} The \textbf{forgetful functor from $\MON$ to $\SET$} is the functor specified by the following data:
+\begin{itemize}
+\item The function on objects is given by
+\[
+\Ob{\MON}\to \Ob{\SET}: (M,m,e)\mapsto M.
+\]
+\item The function on morphisms is given by
+\[
+\CHom{\MON}{(M_1,m_1,e_1)}{(M_2,m_2,e_2)} \to \CHom{\SET}{M_1}{M_2} : f\mapsto f.
+\]
+\end{itemize}
+\end{exa}
+Notice that if one defines a category whose objects are sets $M$ together with an associative binary operation $m:M\to M\to M$, then one could analogously also define a forgetful functor from $\MON$ to this category by only forgetting the neutral element.
+
+\begin{lemma} The forgetful functor from $\MON$ to $\SET$ satisfies the properties of a functor.
+\begin{proof}
+We clearly have that everything is well-defined since the codomain is $\SET$.\\
+That the identity morphism is preserved holds by definition because the identity morphism of $(M,m,e)$ (in $\MON$) is given by the identity function and the identity morphism of $M$ (in $\SET$) is also given by the identity function.\\
+That the composition of morphisms is preserved also holds by definition because the composition of morphisms (in $\MON$) is given by the composition of the underlying functions which is also the composition in $\SET$.
+\end{proof}
+\end{lemma}
+
+The forgetful functor $Forget$ from $\MON$ to $\SET$ forgets the \textit{algebraic} structure of a monoid and since there are multiple monoid structures on the same set (give an example!), we do not have that there exists some functor $G: \SET\to \MON$ such that $Forget\Comp G$ is the identity on $\MON$. However, to each set, one can define a monoid which satisfies an important property (this is \cref{prop:UVP_forget_montoset}). The associated monoid is called the \textit{free monoid}:
+\begin{exa} Let $X$ be a set. The \textbf{free monoid generated by $X$}, denoted by $Free(X)$, is specified by the following data:
+\begin{itemize}
+\item The underlying set consists of all finite sequences/strings of elements in $X$ (including the empty sequence).
+\item The multiplication is defined by concatenating the sequences, i.e.
+\[
+m\left((x_1,\cdots,x_n),(y_1,\cdots,y_m)\right) := (x_1,\cdots,x_n,y_1,\cdots,y_m).
+\]
+\item The identity element is given by the empty sequence.
+\end{itemize}
+\end{exa}
+
+\begin{exa}\label{exa:freemonoids} The \textbf{free functor from $\SET$ to $\MON$} is specified by the following data:
+\begin{itemize}
+\item The function on objects is given by
+\[
+\Ob{\SET}\to \Ob{\MON}: X\mapsto Free(X).
+\]
+\item The function on morphisms is given as follows: A morphism $f \in \CHom{\SET}{X}{Y}$ (i.e. a function) is mapped to the monoidal morphism which is given by pointwise application of $f$, i.e.
+\[
+Free(f)(x_1,\cdots,x_n) := (f(x_1),\cdots, f(x_n)).
+\]
+\end{itemize}
+\end{exa}
+
+\begin{exer} Show that $Free$ satisfies the properties of a functor.
+\end{exer}
+
+For any set $X$, we have the \textit{canonical function}
+\[
+Free^{X}_{!}: X\to Free(X): x\mapsto (x).
+\]
+This function satisfies the property that any function from $X$ to an arbitrary monoid corresponds with a unique morphism (of monoids) from the free monoid generated by $X$ to that monoid:
+\begin{prop}\label{prop:UVP_forget_montoset} Let $(M,m,e)$ be a monoid and $X$ be a set. For any morphism $f \in \CHom{\SET}{X}{M}$ (i.e. a function), there exists a unique  morphism $\phi^{f} \in \CHom{\MON}{Free(X)}{(M,m,e)}$, such that $f = Free^{X}_{!}\Comp \phi^{f}$.
+\begin{proof}
+For elements $a,b\in M$, we denote their multiplication by $a\times b := m(a,b)$ (note that by associativity we have that $a_1\times a_2\times\cdots\times a_n$ is well-defined). Let $f\in \CHom{\SET}{X}{M}$ be a function. Define
+\[
+\phi^{f}: Free(X)\to (M,m,e): (x_1,\cdots,x_n)\mapsto f(x_1) \times\cdots \times f(x_n),
+\]
+We have to define separately what happens with the empty sequence. The empty sequence we map to the identity element $e$, so in particular we have that the identity element is preserved under $\phi^{f}$, so in order to conclude that $\phi^{f}$ is a morphism of monoids, it remains to show that it preserves the binary operation but this is clear by definition.\\
+That $f = Free^{X}_{!}\Comp \phi^{f}$ holds follows immediately by the definition of $Free^{X}_{!}$ and $\phi^{f}$, indeed:
+\[
+\left(Free^{X}_{!}\Comp \phi^{f}\right)(x) = \phi^{f}\left((x)\right) = f(x).
+\]
+So it only remains to show uniqueness. Assume that $\psi$ also satisfies $Free^{X}_{!}\Comp \psi = f$. The claim now follows because $\psi$ is a morphism of monoids, indeed: Since $\psi$ is a morphism of monoids, we have that it preserves the multiplication, but the multiplication is given by concatenation, hence, we have that $\psi$ is uniquely determined by the images of the sequences of length $1$ (and length $0$, but this sequence of length $0$ should be mapped under $\psi$ to $e$). But a sequence of length $1$ is of the form $(x) = Free^{X}_{!}(x)$. So the claim indeed follows by the following computation:
+\[
+\psi((x)) = \psi(Free^{X}_{!}(x)) = f(x) = \phi^{f}(Free^{X}_{!}(x)) = \phi^{f}((x)).
+\]
+\end{proof}
+\end{prop}
+
+The following exercise shows that there is a special connection between the forgetful functor $\mathit{forget}: \MON\to\SET$ and the free functor $\mathit{free}: \SET\to\MON$. This connection expresses that these form a so-called \textit{adjoint pair} (see \cref{sec:adjunctions}).
+\begin{exer}\label{exer:preadjunction_monset}
+Show that for any set $X$ and monoid $(M,m,e)$, there exist bijections between the hom-sets:
+\[
+\alpha_{X}^{(M,m,e)} : \CHom{\MON}{Free(X)}{(M,m,e)} \to \CHom{\SET}{X}{forget(M,m,e)}.
+\]
+Hint: use \cref{prop:UVP_forget_montoset}.
+\end{exer}
+
+\begin{exer} Define a forgetful functor from the category $\POS$ of posets (defined in \cref{example:poset}) to $\SET$ analogous to the forgetful functor from $\MON$ to $\SET$ (defined in \cref{example:forgetful_montoset}).
+\end{exer}
+\begin{rem} The story about free monoids cannot be repeated for posets, i.e. there is no free poset structure on all sets. But in order to prove this one needs more machinery.
+\end{rem}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "CT4P"
+%%% End:
+
+\chapter{Contravariant Functors}
+
+A variation on functors are \textbf{contravariant functors}.
+A contravariant functor consists of a map on objects, just like a functor.
+However, the \textbf{map on morphisms turns the morphisms around}.
+We give the formal definition:
+
+\begin{dfn} Let $\CC$ and $\DD$ be categories. A \textbf{contravariant functor} $F$ from $\CC$ to $\DD$ consists of the following data:
+\begin{itemize}
+\item A function
+\[
+\Ob{\CC} \to \Ob{\DD},
+\]
+written as $X\mapsto F(X)$.
+\item For each $X,Y\in \Ob{\CC}$, a function
+\[
+\CHom{\CC}{X}{Y} \to \CHom{\DD}{F(Y)}{F(X)},
+\]
+written as $f\mapsto F(f)$.
+\end{itemize}
+Moreover, this data should satisfy the following properties:
+\begin{itemize}
+\item (\textbf{Preserves composition}) For $f\in \Hom[\CC]{X}{Y}$ and $g\in \Hom[\CC]{Y}{Z}$, we have $F(\co f g) =  \co {F(g)}{F(f)}$.
+\item (\textbf{Preserves identity}) For $X\in\CC$, we have $F(\Id[X]) = \Id[F(X)]$.
+\end{itemize}
+\end{dfn}
+
+\begin{exer} Notice that the preservation of composition has now changed; why is this the case?
+\end{exer}
+
+An example of a contravariant functor is given by the powerset-functor:
+\begin{exa} \label{example:powersetfunctor} Recall that the powerset of a set $X$, denoted by $\mathbb{P}(X)$, is the set of all subsets of $X$, i.e.
+\[
+\mathbb{P}(X) :=  \left\{A \mid A\subseteq X\right\}.
+\]
+The contravariant \textbf{powerset-functor}\footnote{Since a function is mapped to the inverse-image function, one also calls the powerset-functor an inverse image-functor} (on sets), denoted by $\mathbb{P}$, is the functor from $\SET$ to $\SET$ defined by the following data:
+\begin{itemize}
+\item The function on objects is given by:
+\[
+\Ob{\SET}\to \Ob{\SET}: X\mapsto \mathbb{P}(X).
+\]
+\item For each $X,Y\in\SET$, the function on morphisms is given by
+\[
+\CHom{\SET}{X}{Y} \to \CHom{\SET}{\mathbb{P}(Y)}{\mathbb{P}(X)}: f\mapsto f^{-1},
+\]
+where $f^{-1}$ given by
+\[
+f^{-1}:\mathbb{P}(Y)\to \mathbb{P}(X): B\mapsto f^{-1}(B) := \left\{x\in X \mid f(x)\in B\right\}.
+\]
+\end{itemize}
+\end{exa}
+
+\begin{exer} Show that $\mathbb{P}$, defined in \cref{example:powersetfunctor} satisfies the properties of a contravariant functor.
+\end{exer}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "CT4P"
+%%% End:
+
 \chapter{Solutions to Selected Exercises}
 \label{sec:solutions}
 
 \begin{solution}[\cref{exer:post_antisymmetry}]\label{sol:post_antisymmetry}
-The inequality $x\leq y$ (resp. $y\leq x$) means that we have a (unique) morphism from $f\in \Hom{x}{y}$ (resp. $g\in \Hom{y}{x}$). Consequently, we get a \textit{loop} $\co{f}{g} \in \Hom{x}{x}$. Since the hom-sets are either empty or a singleton, we have $\co{f}{g} = \Id[x]$. Hence, antisymmetry means that if $\Id[X] = \co{f}{g}$ for some $f\in \Hom{x}{y}$ and $g\in \Hom{y}{x}$, we must have
+The inequality $x\leq y$ (resp. $y\leq x$) means that we have a (unique) morphism $f\in \Hom{x}{y}$ (resp. $g\in \Hom{y}{x}$). Consequently, we get a \textit{loop} $\co{f}{g} \in \Hom{x}{x}$. Since the hom-sets are either empty or a singleton, we have $\co{f}{g} = \Id[x]$. Hence, antisymmetry means that if $\Id[x] = \co{f}{g}$ for some $f\in \Hom{x}{y}$ and $g\in \Hom{y}{x}$, we must have
 \[x=y,\quad f = \Id[x] = g.\]
-Rephrased a little bit different, we get: The category $\PREtoCAT(X,\leq)$ has no non-trivial loops if $(X,\leq)$ is antisymmetric.
+Rephrased a little bit differently, we get: The category $\PREtoCAT(X,\leq)$ has no non-trivial loops if $(X,\leq)$ is antisymmetric.
 \end{solution}
 
 % \begin{solution}[\cref{exer:POS_isnt_a_posetcat}]\label{sol:POS_isnt_a_posetcat}
@@ -3255,7 +3562,7 @@ Rephrased a little bit different, we get: The category $\PREtoCAT(X,\leq)$ has n
 % \end{solution}
 
 \begin{solution}[\cref{exer:categories_coming_from_monoids}]\label{sol:categories_coming_from_monoids}
-A category $\CC$ is of the form $(M,m,e)$ if and only if $\CC$ has a unique object. Indeed, if $\CC$ has a unique object, lets denote this by $X$, then we can define a monoid $(M,m,e)$ as follows:
+A category $\CC$ is of the form $\MONtoCAT(M,m,e)$ if and only if $\CC$ has a unique object. Indeed, if $\CC$ has a unique object, let us denote it by $X$, then we can define a monoid $(M,m,e)$ as follows:
 \begin{itemize}
 \item The underlying set of the monoid is $M := \CHom{\CC}{X}{X}$.
 \item The multiplication $m$ is given by $m(f,g) := \co{f}{g}$.
@@ -3265,7 +3572,7 @@ That $(M,m,e)$ is indeed a monoid, i.e. satisfies the monoid laws, is just a tra
 \end{solution}
 
 \begin{solution}[\cref{exer:category_of_monoids}]\label{sol:category_of_monoids}
-Since a monoid consists of a set $M$ together with a binary operation $m:M\to M\to M$ (called the \textit{multiplication}) and a \textit{identity} element $e\in M$, a suitable \textit{morphism of monoids}, from $(M_1,m_1,e_1)$ to $(M_2,m_2,e_2)$ should consists of a function $f:M\to N$ which preserves the structure (i.e. the multiplication and the identity element). More precisely:
+Since a monoid consists of a set $M$ together with a binary operation $m:M\to M\to M$ (called the \textit{multiplication}) and an \textit{identity} element $e\in M$, a suitable \textit{morphism of monoids}, from $(M_1,m_1,e_1)$ to $(M_2,m_2,e_2)$ should consist of a function $f:M_1\to M_2$ which preserves the structure (i.e. the multiplication and the identity element). More precisely:
 \begin{itemize}
 \item Preservation of the multiplication:
 \[
@@ -3292,7 +3599,7 @@ Before we show that this data satisfies the properties of a category, we first h
 \forall x,y\in M &:& \Id[M](m(x,y)) = m(x,y) = m(\Id[M](x),\Id[M](y)),\\
 && \Id[M](e) = e.
 \end{eqnarray*}
-The equalities holds because $\Id[M]$ is the identity function on $M$.
+The equalities hold because $\Id[M]$ is the identity function on $M$.
 \item That the composition of morphism of monoids is again a morphism of monoids follows by the following calculations:
 \begin{itemize}
 \item Composition preserves multiplication: for any $x,y \in M_1$, we have
@@ -3309,7 +3616,7 @@ Composition preserves identity element by:
 where the second (resp. third) equality holds since $f$ (resp. $g$) preserves the identity element.
 \end{itemize}
 \end{itemize}
-So everything is indeed well-defined. So we are now ready to show that composition of some morphism of monoids $f$ with the identity morphism is again $f$ (both on the left and right) and that the composition of morphisms of monoids is associative. This follows immediate since everything is defined using functions and we know that functions satisfy these properties.
+So everything is indeed well-defined. So we are now ready to show that composition of some morphism of monoids $f$ with the identity morphism is again $f$ (both on the left and right) and that the composition of morphisms of monoids is associative. This follows immediately since everything is defined using functions and we know that functions satisfy these properties.
 \end{solution}
 
 \begin{solution}[\cref{exer:opposite}]\label{sol:opposite}
@@ -3339,10 +3646,26 @@ The right unit law holds analogously by the left unit law of $\CC$.
 \end{solution}
 
 \begin{solution}[\cref{exer:connection_graphs_preordersets}]\label{sol:connection_graphs_preordersets}
-Any preordered set $(X,\leq)$ can be described by a graph where the vertices are given by the elements of $X$ and there exists an edge from $x$ to $y$ if and only if $x \leq y$. Hence, if we denote by $G$ the corresponding graph of $(X,\leq)$, we have that $\POS(X,\leq) = \mathbf{Graph}(G)$.\\
-In particular we have that the number of edges is either $0$ or $1$. Hence, a category generated by a graph comes from a preordered set if and only if the number of morphisms in any fixed hom-set is either $0$ or $1$.
+Any preordered set $(X,\leq)$ can be described by a graph $G$ where the vertices are
+given by the elements of $X$ and there is an edge from $x$ to $y$ if and only if
+$x \leq y$.
+Note, however, that the category $\mathbf{Graph}(G)$ generated by this graph is in
+general \emph{not} the category $\PREtoCAT(X,\leq)$ associated to the preordered set:
+in $\mathbf{Graph}(G)$, the morphisms are \emph{paths}, so a hom-set can contain
+several distinct morphisms. For instance, if $x \leq y \leq z$ and $x \leq z$, then
+the edge $x \to z$ and the path $x \to y \to z$ are two different morphisms in
+$\CHom{\mathbf{Graph}(G)}{x}{z}$.
+Instead, the category $\PREtoCAT(X,\leq)$ is obtained from $\mathbf{Graph}(G)$ by
+identifying any two parallel morphisms, i.e., morphisms with the same source and
+the same target.
 
-If $(X,\leq)$ is a poset, i.e. we have antisymmetry, then we have that the corresponding graph (and consequently the corresponding category) have no (non-trivial) loops.
+Conversely, a category generated by a graph is the category associated to a
+preordered set if and only if every hom-set of the generated category contains at
+most one morphism, that is, if and only if any two parallel paths in the graph
+coincide.
+
+If $(X,\leq)$ is a poset, i.e. we have antisymmetry, then the corresponding graph
+(and consequently the corresponding category) has no non-trivial cycles.
 \end{solution}
 
 
@@ -3367,9 +3690,9 @@ For each $l, m, n\in \NN$, the composition operator is of the form
 \[
 \Hom m n \to \Hom l m \to \Hom l n.
 \]
-Given morphisms $f : m \to n$ and $g : l \to m $, i.e. functions $f$ form $[m]$ to $[n]$ and $g$ from $[l]$ to $[m]$, the composition of morphisms $\co{g}{f}$ is defined to be the composition of functions $\co{g}{f}$.
+Given morphisms $f : m \to n$ and $g : l \to m $, i.e. functions $f$ from $[m]$ to $[n]$ and $g$ from $[l]$ to $[m]$, the composition of morphisms $\co{g}{f}$ is defined to be the composition of functions $\co{g}{f}$.
 Function composition is associative; hence, so is the composition of morphisms.
-\item Let $n\in \NN$ be a natural number. The identity morphism on $n$ is an element of $\CHom{\CC}{n}{n}$, which is the set of $n\times n$-matrices.
+\item Let $n\in \NN$ be a natural number. The identity morphism on $n$ is an element of $\CHom{\MAT}{n}{n}$, which is the set of $n\times n$-matrices.
 Hence, we can take $\Id[n]$ to be the identity $n\times n$-matrix, i.e. all elements are zero except on the diagonal where all the elements are $1$.
 
 Let $l,m,n \in\NN$ be natural numbers and $M$ (resp. $N$) be a $l\times m$-matrix (resp. $m\times n$-matrix). The composition $\co{N}{M}$ should be an $l\times n$-matrix, hence we define $\co{N}{M}$ as the matrix multiplication of $M$ and $N$, i.e. $MN$.
@@ -3403,11 +3726,11 @@ Let $f:a\to b$ be an isomorphism. That $f$ has a unique inverse means that if $g
 then we must have $g = h$.\\
 So assume $g$ and $h$ satisfy the condition of being an inverse of $f$. Then we have:
 \begin{eqnarray*}
-g =& \co{g}{\Id[b]} &,\text{ by left unit law},\\
+g =& \co{g}{\Id[a]} &,\text{ by right unit law},\\
 	=& \co{g}{(\co{f}{h})} &, \text{ since $h$ is inverse of $f$},\\
 	=& \co{(\co{g}{f})}{h} &, \text{ by associativity},\\
-	=& \co{\Id[a]}{h} &, \text{ since $g$ is inverse of $f$}\\
-	=& h &, \text{ by right unit law}
+	=& \co{\Id[b]}{h} &, \text{ since $g$ is inverse of $f$}\\
+	=& h &, \text{ by left unit law}
 \end{eqnarray*}
 \end{solution}
 
@@ -3419,9 +3742,9 @@ Let $f: a\to b$ and $g:b\to c$ be isomorphisms. Denote their (unique) inverses b
 We define $h := \co{g^{-1}}{f^{-1}}$. The left equality then holds by the following computation:
 \begin{eqnarray*}
 \co{(\co{f}{g})}{h} =& \co{(\co{f}{g})}{(\co{g^{-1}}{f^{-1}})} &\\
-	=& \co{f^{-1}}{\co{(\co{g}{g^{-1}})}{f}} &\text{ by associativity,}\\
-	=& \co{f^{-1}}{\co{\Id[b]}{f}} &\text{ since $g^{-1}$ inverse of $g$,}\\
-	=& \co{f^{-1}}{f} &\text{ by unit law,}\\
+	=& \co{f}{\co{(\co{g}{g^{-1}})}{f^{-1}}} &\text{ by associativity,}\\
+	=& \co{f}{\co{\Id[b]}{f^{-1}}} &\text{ since $g^{-1}$ inverse of $g$,}\\
+	=& \co{f}{f^{-1}} &\text{ by unit law,}\\
 	=& \Id[a] &\text{ since $f^{-1}$ inverse of $f$.}
 \end{eqnarray*}
 The right equality holds analogously.
@@ -3439,7 +3762,7 @@ The first isomorphism, denoted by $f_1$, is given by $f_1(Black)=True$ and $f_1(
 g_1 (f_1 (White)) = White, \quad g_1 (f_1 (Black)) = Black.
 \]
 These equalities holds by definition of $f_1$ and $g_1$.\\
-The second isomorphism, denoted by $f_2$, is given by $f_2(Black)=False$ and $f_2(White) = True$. Its inverse (denoted by $g_2$) is given by $g_2(False) = Black$ and $g_1(True) = White$. That $g_2$ is the inverse of $f_2$ is also immediate.
+The second isomorphism, denoted by $f_2$, is given by $f_2(Black)=False$ and $f_2(White) = True$. Its inverse (denoted by $g_2$) is given by $g_2(False) = Black$ and $g_2(True) = White$. That $g_2$ is the inverse of $f_2$ is also immediate.
 \end{solution}
 
 \begin{solution}[\cref{exer:iso_in_sets}]\label{sol:iso_in_sets}
@@ -3447,7 +3770,7 @@ The isomorphisms in $\SET$ are precisely the bijective functions, indeed:
 \begin{itemize}
 \item Assume $f: X\to Y$ is a bijection, i.e.
 \[
-\forall y\in Y: \exists! x_{y}\in X: f(x)=y
+\forall y\in Y: \exists! x_{y}\in X: f(x_y)=y
 \]
 We show that the inverse of $f$ is given by:
 \[
@@ -3482,7 +3805,7 @@ Assume $f(x_1)\leq_Y f(x_2)$. Since $g \in\CHom{\POS}{(Y,\leq_Y)}{(X,\leq_X)}$, 
 \end{solution}
 
 \begin{solution}[\cref{exer:iso_in_posetcategory}]\label{sol:iso_in_posetcategory}
-First, let $(X,\leq_Y)$ be a preorder. A morphism $f:x\to y$ is an isomorphism if and only if there exists a morphism $g: y\to x$ such that $\co{f}{g}=\Id[x]$ and $\co{g}{f}=\Id[y]$. But, in a preorder category, each hom-set has a unique element if it is non-empty. So, for any $g\in \Hom{y}{x}$ and $f\in \Hom{x}{y}$, we always have $\co{f}{g}=\Id[x]$ and $\co{g}{f}=\Id[y]$. Hence a morphism $f:x\to y$ in a preorder-category is an isomorphism if and only if there exists a morphism $g:y\to x$. The existence of a morphism $f:x\to y$ means precisely that $x\leq y$. Hence, isomorphisms in a preorder-category corresponds with a pair of elements $(x,y)$ in $X$ such that $x\leq y$ and $y\leq x$.\\
+First, let $(X,\leq_X)$ be a preorder. A morphism $f:x\to y$ is an isomorphism if and only if there exists a morphism $g: y\to x$ such that $\co{f}{g}=\Id[x]$ and $\co{g}{f}=\Id[y]$. But, in a preorder category, each hom-set has a unique element if it is non-empty. So, for any $g\in \Hom{y}{x}$ and $f\in \Hom{x}{y}$, we always have $\co{f}{g}=\Id[x]$ and $\co{g}{f}=\Id[y]$. Hence a morphism $f:x\to y$ in a preorder-category is an isomorphism if and only if there exists a morphism $g:y\to x$. The existence of a morphism $f:x\to y$ means precisely that $x\leq y$. Hence, isomorphisms in a preorder-category corresponds with a pair of elements $(x,y)$ in $X$ such that $x\leq y$ and $y\leq x$.\\
 If $(X,\leq_X)$ is a poset, i.e. satisfies antisymmetry, then if $x\leq y$ and $y\leq x$, we must have $x=y$. Consequently, in a poset-category, the only isomorphisms are the identity morphisms (i.e. corresponding with $x\leq x$).
 \end{solution}
 
@@ -3491,7 +3814,9 @@ If $(X,\leq_X)$ is a poset, i.e. satisfies antisymmetry, then if $x\leq y$ and $
 	\begin{enumerate}
 		\item $\leq$ is a preorder on the natural numbers; hence, as explained in \cref{sol:iso_in_posetcategory}, the isomorphisms in $\POS(\NN,\leq)$ are the identity morphisms.
 		\item Let $m$ and $n$ be natural numbers. A morphism $f : m \to n$ in $\SKELFINSET$ is a function from $[m]$ to $[n]$. A function $f$ has an inverse if there exists a function $g$ from $[n]$ to $[m]$ such that $\co{f}{g}$ is the identity function on $[m]$ and $\co{g}{f}$ is the identity function on $[n]$.
-		Such a function $g$ is a morphism from $[n]$ to $[m]$, and this requirement is precisely the requirement for $f$ being an isomorphism in $\SKELFINSET$ are the invertible functions. A function is invertible if and only if it is bijective.
+		Such a function $g$ is a morphism from $n$ to $m$, and this requirement is precisely the requirement for $f$ being an isomorphism in $\SKELFINSET$.
+		Hence, the isomorphisms in $\SKELFINSET$ are the invertible functions.
+		A function is invertible if and only if it is bijective.
 		Thus, we can equivalently say that isomorphisms in $\SKELFINSET$ are bijective functions.
 		\item  Let $m$ and $n$ be natural numbers.
 		A morphism $M : m \to n$ in $\MAT$ is an $n \times m$ matrix. A matrix $M$ has an inverse if there exists a matrix $N$ such that $MN = NM = I$, where $I$ is the identity matrix of the appropriate size.
@@ -3595,30 +3920,30 @@ g_1 = \co{\Id[b]}{g_1} =& \co{(\co{f^{-1}}{f})}{g_1} & \text{ since $f : a\cong 
 \end{solution}
 
 \begin{solution}[\cref{exer:counterexample_monoepi_not_iso}]\label{sol:counterexample_monoepi_not_iso}
-Let $(X,\leq_X)$ be a preordered set. Any morphism $f \in \POS(X,\leq_X)(x,y)$ is always both a monomorphism and an epimorphism because hom-sets have at most on element. But, by \cref{exer:iso_in_posetcategory}, we know that in a poset (not a preordered set!), the only isomorphisms are the identity morphisms. Hence, if $x\leq y$ but $x\not=y$ (living in a poset), then the corresponding morphism in $\Hom{x}{y}$ is both an epimorphism and monomorphisms but not an isomorphism.\\
+Let $(X,\leq_X)$ be a preordered set. Any morphism $f \in \POS(X,\leq_X)(x,y)$ is always both a monomorphism and an epimorphism because hom-sets have at most one element. But, by \cref{exer:iso_in_posetcategory}, we know that in a poset (not a preordered set!), the only isomorphisms are the identity morphisms. Hence, if $x\leq y$ but $x\not=y$ (living in a poset), then the corresponding morphism in $\Hom{x}{y}$ is both an epimorphism and a monomorphism but not an isomorphism.\\
 A concrete example is given by e.g. the poset of truth values $\{0, 1\}$. We have $0\leq 1$ and those are not equal.
 \end{solution}
 
 %% Universal properties
 \begin{solution}[\cref{exer:initial_set}] \label{sol:initial_set}
-An initial object (and the only one), is the emptyset $\emptyset$, indeed: Let $X$ be a set. Then there is clearly a unique function $\emptyset\to X$.
+An initial object (and the only one) is the empty set $\emptyset$, indeed: Let $X$ be a set. Then there is clearly a unique function $\emptyset\to X$.
 \end{solution}
 
 \begin{solution}[\cref{exer:initial_posetcat}]\label{sol:initial_posetcat}
-A initial object in $\POS(X,\leq)$ is the minimal object, that is an element $\bot\in X$ such that
+An initial object in $\POS(X,\leq)$ is the least element, that is an element $\bot\in X$ such that
 \begin{equation}
 \forall y\in X: \bot \leq y.
 \end{equation}
-Indeed: Assume $x$ is an initial object in $(X,\leq)$, i.e. for any other element $y\in X$, there exists a (unique) morphism $x\to y$, i.e. hence, by definition of the hom-sets, we have $x\leq y$. So $x$ is indeed the minimal object.
+Indeed: Assume $x$ is an initial object in $(X,\leq)$, i.e. for any other element $y\in X$, there exists a (unique) morphism $x\to y$, hence, by definition of the hom-sets, we have $x\leq y$. So $x$ is indeed the least element.
 
-Conversely, assume $\bot$ is a minimal element, hence, for each $y\in X$, we have $\bot\leq y$. Hence $\Hom{\bot}{y}$ is non-empty. So it must contain exactly one element. This means precisely that it is initial.
+Conversely, assume $\bot$ is a least element, hence, for each $y\in X$, we have $\bot\leq y$. Hence $\Hom{\bot}{y}$ is non-empty. So it must contain exactly one element. This means precisely that it is initial.
 
 
 A somewhat \textit{more compact} solution is as follows: By definition of $\POS(X,\leq)$, for each $x\in X$, we have:
 \[
 \forall y\in X: \left(x\leq y \iff \exists! f\in \Hom{x}{y}\right).
 \]
-Hence an object $x$ is initial if and only if, $x\leq y$ for all $y\in X$, if and only if it is minimal.
+Hence an object $x$ is initial if and only if, $x\leq y$ for all $y\in X$, if and only if it is the least element.
 \end{solution}
 
 \begin{solution}[\cref{exer:initial-unique}]\label{sol:initial-unique}
@@ -3889,7 +4214,7 @@ And starting from equation \ref{co_f2}, we derive
  &\quad \co {\inl'} {(\co {g} {f})} = \inl'
 \end{align*}
 \noindent
-Combining $\co {\inr'} {(\co {g} {f})} = \inl'$ and $\co {\inl'} {(\co {g} {f})} = \inl'$ with Lemma \ref{lemma}, we conclude $\co {g} {f}=\Id[B+A]$.
+Combining $\co {\inr'} {(\co {g} {f})} = \inr'$ and $\co {\inl'} {(\co {g} {f})} = \inl'$ with Lemma \ref{lemma}, we conclude $\co {g} {f}=\Id[B+A]$.
 \end{proof}
 
 \noindent
@@ -3966,9 +4291,9 @@ We now show that the properties of a Kleisli triple hold:
 
 \item For each function $f:X\to \List(Y)$, we have to show $f^{*}(\eta_X(x)) = f(x)$, this indeed holds by the following computation:
 \[
-f^{*}(\eta_X(x)) = f^{*}(\cons(x,\nil)) = \cons(fx, f^{*}(\nil)) = \cons(fx, \nil),
+f^{*}(\eta_X(x)) = f^{*}(\cons(x,\nil)) = f(x) + f^{*}(\nil) = f(x) + \nil = f(x),
 \]
-where the first equality holds by definition of $\eta_X$ and the second equality holds by definition of $f^{*}$.
+where the first equality holds by definition of $\eta_X$, the second and third equalities hold by definition of $f^{*}$, and the last equality holds since concatenating with the empty list gives back the list.
 \item Let $f:X\to \List(Y)$ and $g:Y\to \List(Z)$ be functions, we have to show
 \[
 g^{*}(f^{*}(\ell)) = (\co{f}{g^{*}})^{*}(\ell),
@@ -3992,7 +4317,7 @@ where the first equality holds by definition of $(\co{f}{g^{*}})^{*}$ and the se
 g^{*}(f(x) + f^{*}(xs)) = g^{*}(f(x)) + g^{*}(f^{*}(xs)).
 \end{align}
 
-We do a pattern matching on $f(x)$ to show \cref{eqn:bind_distributes}:
+We show \cref{eqn:bind_distributes} by induction on the list $f(x)$:
 \begin{itemize}
 \item In case $f(x) = \nil$, we have
 \[
@@ -4001,13 +4326,13 @@ g^{*}(\nil + f^{*}(xs)) = g^{*}(f^{*}(xs)) = \nil + g^{*}(f^{*}(xs)) = g^{*}(\ni
 where the third equality holds by \cref{eq:list-bind-nil}.
 \item In case $f(x) = \cons(y,u)$, with $y\in Y$ and $u\in \List(Y)$, we have:
 \begin{eqnarray*}
-g^{*}(\cons(f(x),f^{*}(s))) =& g^{*}(\cons(\cons(y,u), f^{*}(xs))), \\
+g^{*}(f(x) + f^{*}(xs)) =& g^{*}(\cons(y,u) + f^{*}(xs)), \\
 	=& g^{*}(\cons(y, u + f^{*}(xs))),\\
 	=& g(y) + g^{*}(u + f^{*}(xs)),\\
 	=& g(y) + g^{*}(u) + g^{*}(f^{*}(xs)),\\
 	=& g^{*}(\cons(y,u)) + g^{*}(f^{*}(xs)).
 \end{eqnarray*}
-where the second equality holds by definition of $\cons$, the third and fifth by definition of $g^{*}$ and the fourth by the induction hypothesis.
+where the second equality holds by definition of concatenation, the third and fifth by definition of $g^{*}$ and the fourth by the inner induction hypothesis.
 
 \end{itemize}
 \end{itemize}
@@ -4060,7 +4385,7 @@ That this equality holds follows by pattern matching:
 	& = (\co{f}{g^{*}})^{*}(t).
 \end{align*}
 
-\item If $t=\Branch{t_1}{t_2}$, then is the left-hand-side given by
+\item If $t=\Branch{t_1}{t_2}$, then the left-hand-side is given by
 \begin{align*}
 	g^{*}(f^{*}(t)) & = g^{*}(f^{*}(\Branch{t_1}{t_2})) = g^{*}\left(\Branch{f^{*}(t_1)}{f^{*}(t_2)}\right) \\
 	& = \Branch{g^{*}(f^{*}(t_1))}{g^{*}(f^{*}(t_2))}.
@@ -4068,7 +4393,7 @@ That this equality holds follows by pattern matching:
 
 The right-hand-side is given by
 \[
-(\co{f}{g^{*}})^{*}(t) = (\co{f}{g^{*}})^{*}(\Branch{t_1}{t_2}) = \Branch{(\co{f}{g^{*}})(t_1)}{(\co{f}{g^{*}})(t_2)}.
+(\co{f}{g^{*}})^{*}(t) = (\co{f}{g^{*}})^{*}(\Branch{t_1}{t_2}) = \Branch{(\co{f}{g^{*}})^{*}(t_1)}{(\co{f}{g^{*}})^{*}(t_2)}.
 \]
 Hence, by the induction hypothesis, the both sides are equal.
 \end{itemize}
@@ -4106,7 +4431,7 @@ We now show that the properties of a Kleisli triple hold:
 \]
 \item If $z=i^X_r(e)$, then
 \[
-\eta_X^{*}(e) = \eta_X^{*}(i^X_r(e)) = i^X_r(e) = z = \Id[X+E](z).
+\eta_X^{*}(z) = \eta_X^{*}(i^X_r(e)) = i^X_r(e) = z = \Id[X+E](z).
 \]
 \end{itemize}
 
@@ -4124,7 +4449,7 @@ g^{*}(f^{*}(z)) = g^{*}(f^{*}(i_l^X(x))) = g^{*}(f(x)) = (\co{f}{g^{*}})^{*}(i_l
 \]
 \item If $z=i^X_r(e)$, then
 \[
-g^{*}(f^{*}(z)) = g^{*}(f^{*}(i_l^X(e))) = g^{*}(i_l^Y(e)) = i_l^Z(e) = (\co{f}{g^{*}})^{*}(i_l^X(e)) = (\co{f}{g^{*}})^{*}(z).
+g^{*}(f^{*}(z)) = g^{*}(f^{*}(i_r^X(e))) = g^{*}(i_r^Y(e)) = i_r^Z(e) = (\co{f}{g^{*}})^{*}(i_r^X(e)) = (\co{f}{g^{*}})^{*}(z).
 \]
 \end{itemize}
 
@@ -4156,13 +4481,18 @@ g^{*}(f^{*}(z)) = g^{*}(f^{*}(i_l^X(e))) = g^{*}(i_l^Y(e)) = i_l^Z(e) = (\co{f}{
 	\[
 	g^{*}(f^{*}(c)) = (\co{f}{g^{*}})^{*}(c).
 	\]
-	From the left hand side we have:
+	Write $d := f^{*}(c) : S \to Y \times S$, so that
+	$d(s) = f(\pi_l(c(s)))(\pi_r(c(s)))$ for each $s : S$.
+	For the left-hand side we have, for each $s : S$,
+	\[ g^{*}(f^{*}(c))(s) = g^{*}(d)(s) = g\left(\pi_l(d(s))\right)\left(\pi_r(d(s))\right). \]
+	For the right-hand side we have, for each $s : S$,
 	\begin{align*}
-	g^* (f^* (c)) & = g^* (\lambda s : S, f (\pi_l (c(s))) (\pi_r (c(s)))) = (\lambda s : S, g^* (f (\pi_l (c(s))) (\pi_r (c(s))))) \\
-	& = (\lambda s : S, (g^* \circ f) (\pi_l (c(s))) (\pi_r (c(s)))),
+	(\co{f}{g^{*}})^{*}(c)(s) & = (\co{f}{g^{*}})(\pi_l(c(s)))(\pi_r(c(s)))
+	  = g^{*}\left(f(\pi_l(c(s)))\right)(\pi_r(c(s)))\\
+	& = g\left(\pi_l\big(f(\pi_l(c(s)))(\pi_r(c(s)))\big)\right)
+	     \left(\pi_r\big(f(\pi_l(c(s)))(\pi_r(c(s)))\big)\right)
+	  = g\left(\pi_l(d(s))\right)\left(\pi_r(d(s))\right).
 	\end{align*}
-	and from the right hand side we have:
-	\[ (g^* \circ f)^* (c) = (\lambda s : S, (g^* \circ f) (\pi_l (c(s))) (\pi_r (c(s)))).\]
 	Hence, the left and right hand sides are equal.
 	\end{enumerate}
 	\end{solution}
@@ -4201,11 +4531,11 @@ g^{*}(f^{*}(A)) = (\co{f}{g^{*}})^{*}(A).
 \]
 Let $A\in \mathbb{P}_{fin}(X)$, the left-hand-side is given as:
 \[
-g^{*}(f^{*}(A)) = g^{*}\left( \bigcup_{a\in A} f(a) \right) = \bigcup_{b \in \bigcup_{a\in A} f(a)} g(f(a)) = \bigcup_{a\in A} \bigcup_{b\in f(a)} g(f(a)).
+g^{*}(f^{*}(A)) = g^{*}\left( \bigcup_{a\in A} f(a) \right) = \bigcup_{b \in \bigcup_{a\in A} f(a)} g(b) = \bigcup_{a\in A} \bigcup_{b\in f(a)} g(b).
 \]
 The right-hand-side is given as:
 \[
-(\co{f}{g^{*}})^{*}(A) = \bigcup_{a\in A} (\co{f}{g^{*}})(a) = \bigcup_{a\in A} g^{*}(f(a)) = \bigcup_{a\in A} \bigcup_{b\in f(a)} g(f(a)).
+(\co{f}{g^{*}})^{*}(A) = \bigcup_{a\in A} (\co{f}{g^{*}})(a) = \bigcup_{a\in A} g^{*}(f(a)) = \bigcup_{a\in A} \bigcup_{b\in f(a)} g(b).
 \]
 Hence, both sides are equal.
 
@@ -4226,7 +4556,7 @@ Notice that this is indeed well-defined: Let $i\in Cont^R(X)$, i.e. $i:(X\to R)\
 
 Let $i\in Cont^R(X)$. We now show that this data satisfies the properties of a Kleisli triple:
 \begin{enumerate}
-\item For each set $X$, we have to show $\eta_X^{*} = \Id[Cont^R(X)]$. Let $x\in X$. The claim then follows by the following computation:
+\item For each set $X$, we have to show $\eta_X^{*} = \Id[Cont^R(X)]$. The claim follows by the following computation:
 \[
 \eta_X^{*}(i) = \lambda j, i\left(\eta_X(-)(j)\right) = \lambda j, i\left(\lambda x, j(x)\right) = i.
 \]
@@ -4316,12 +4646,12 @@ Thus, the left and right hand sides compute to the same term, hence they are equ
 
 
 \begin{solution}[\cref{exer:initial_pointset}]\label{sol:initial_pointset}
-	An initial object is a one-element set $ (\{ \star \}, \star) $. Let $ (X, x) $ be a pointed set. Then we have a unique function $ \star \to X $ that sends $ \star $, the chosen (and only) point of $ \{ \star \} $, to $ x $, the chosen point of $ X $, namely $ f: \star \mapsto x $.
+	An initial object is a one-element set $ (\{ \star \}, \star) $. Let $ (X, x) $ be a pointed set. Then we have a unique function $ \{\star\} \to X $ that sends $ \star $, the chosen (and only) point of $ \{ \star \} $, to $ x $, the chosen point of $ X $, namely $ f: \star \mapsto x $.
 \end{solution}
 
 \begin{solution}[\cref{exer:initial_cats_of_nats}]\label{sol:initial_cats_of_nats}
 \begin{enumerate}
-	\item $0$ is the initial object in $\POS(\NN,\leq)$. As explained in \cref{sol:initial_posetcat}, the initial object in $\POS(X,\leq)$ is the minimal object in $X$, which in this case is $0$.
+	\item $0$ is the initial object in $\POS(\NN,\leq)$. As explained in \cref{sol:initial_posetcat}, the initial object in $\POS(X,\leq)$ is the least element of $X$, which in this case is $0$.
 	\item $0$ is the initial object in $\SKELFINSET$. Let $n \in \NN = \SKELFINSET_0$. There is a unique function from $[0]$ to $[n]$, as $[0]$ is $\emptyset$ and there is a unique function of the form $\emptyset \to \{0, 1, \dots, n-1\}$.
 	\item $0$ is the initial object in $\MAT$. Let $n \in \NN = \MAT_0$. There is a unique morphism from $0$ to $n$ as there is a unique $n \times 0$ matrix.
      Note that an $n \times 0$ matrix is a linear map from the zero vector space to an n-dimensional vector space, which is unique and maps 0 to 0.
@@ -4333,12 +4663,12 @@ Thus, the left and right hand sides compute to the same term, hence they are equ
 \end{solution}
 
 \begin{solution}[\cref{exer:terminal_set}]\label{sol:terminal_set}
-	A terminal set in the category of sets is a one-element set $ \{ \star \} $. Given any set $ X $, we have a unique function $ X \to \star $, since any element of $ X $ must be sent to $ \star $.
+	A terminal set in the category of sets is a one-element set $ \{ \star \} $. Given any set $ X $, we have a unique function $ X \to \{\star\} $, since any element of $ X $ must be sent to $ \star $.
 \end{solution}
 
 \begin{solution}[\cref{exer:terminal_posetcat}]\label{sol:terminal_posetcat}
-	Given a poset $ (X, \leq) $, a terminal object in the category $ \POS(X, \leq) $ is exactly a maximal element in $ X $. Indeed, given such a maximal element $ x \in X = \POS(X, \leq)_0 $, we have for all $ y \in \POS(X, \leq)_0 $, since $ x $ is maximal, that $ y \leq x $. Therefore, we have a morphism $ f: x \to y $. By the definition of the hom-sets in $ \POS(X, \leq) $, $ f $ is unique and we conclude that $ x $ is a terminal object.
-	Conversely, unfolding the definition of terminal object shows that a terminal object yields a maximal element.
+	Given a poset $ (X, \leq) $, a terminal object in the category $ \POS(X, \leq) $ is exactly a greatest element in $ X $. Indeed, given such a greatest element $ x \in X = \POS(X, \leq)_0 $, we have for all $ y \in \POS(X, \leq)_0 $, since $ x $ is greatest, that $ y \leq x $. Therefore, we have a morphism $ f: y \to x $. By the definition of the hom-sets in $ \POS(X, \leq) $, $ f $ is unique and we conclude that $ x $ is a terminal object.
+	Conversely, unfolding the definition of terminal object shows that a terminal object yields a greatest element.
 \end{solution}
 
 \begin{solution}[\cref{exer:terminal-unique}]\label{sol:terminal-unique}
@@ -4415,7 +4745,7 @@ Note that the source and target of the hom-sets are reversed compared to the pro
 \[
 \begin{tikzcd}
 A & A\times B \arrow[r, "\pi_r"] \arrow[l, "\pi_l"']                    & B \\
-	& X \arrow[u, "{<a,b>}" description] \arrow[ru, "b"'] \arrow[lu, "a"] &
+	& X \arrow[u, "{\langle a,b\rangle}" description] \arrow[ru, "b"'] \arrow[lu, "a"] &
 \end{tikzcd}
 \]
 
@@ -4483,7 +4813,7 @@ which completes the proof.
 
 		\textbf{Case 1: $m\neq 0$ and $n \neq 0$}
 
-		Without loss of generality, we can assume $m \geq n$. The projection maps are defined as follows:
+		The projection maps are defined as follows:
 		\begin{align*}
 			\pi_l : [mn] &\to [m] \\
 			k &\mapsto \lfloor k / n \rfloor, \\
@@ -4495,7 +4825,7 @@ which completes the proof.
 		\[
 			\begin{tikzcd}
 			  &
-			  l \ar[ld, "q_1"'] \ar[rd, "q_2"] \ar[d, dashed, "f"]
+			  l \ar[ld, "q_l"'] \ar[rd, "q_r"] \ar[d, dashed, "f"]
 			  &
 			  \\
 			  m
@@ -4525,13 +4855,13 @@ which completes the proof.
 		\begin{equation} \label{eq:prod_cats_of_nats_2}
 			g(k) = nq + q_r(k),
 		\end{equation}
-		for some $q \in \NN$. From the division theorem we know that for each $a, b \in \NN$ there exist unique $q \in \NN$ and $r \in \NN$ such that $r < n$ that satisfy $a = bq + r$. Using \cref{eq:prod_cats_of_nats_1,eq:prod_cats_of_nats_2} and $q_r(k) \in [n]$, we get $q = q_l(k)$, $r = q_r(k)$. This implies $g(k) = n q_l(k) + q_r(k)$.
+		for some $q \in \NN$. From the division theorem we know that for each $a, b \in \NN$ there exist unique $q \in \NN$ and $r \in \NN$ such that $r < b$ that satisfy $a = bq + r$. Using \cref{eq:prod_cats_of_nats_1,eq:prod_cats_of_nats_2} and $q_r(k) \in [n]$, we get $q = q_l(k)$, $r = q_r(k)$. This implies $g(k) = n q_l(k) + q_r(k)$.
 		Hence, $g(k) = f(k)$ and by functional extensionality $g = f$.
 
 		\textbf{Case 2: $m = 0$ or $n = 0$}
 
 		In this case the product is 0, and all the morphisms involved are the empty function out of the empty set. This gives us a product, as $l$ (from the figure above) can only be 0 and it holds trivially that there exists a unique function of the form $[0] \to [0]$ that makes the corresponding diagrams commute.
-		\item Let $m,n \in \NN$. The product $m \times n$ in $\MAT$ is the sum of the natural number $m + n$. The left and right projections correspond to the $m \times (m+n)$ matrix $P_l$ and the $n \times (m + n)$ matrix $P_r$ respectively, which are defined as follows:
+		\item Let $m,n \in \NN$. The product $m \times n$ in $\MAT$ is the sum of the natural numbers $m + n$. The left and right projections correspond to the $m \times (m+n)$ matrix $P_l$ and the $n \times (m + n)$ matrix $P_r$ respectively, which are defined as follows:
 		\[
 		P_l =
 		\begin{bmatrix}
@@ -4632,7 +4962,7 @@ which completes the proof.
 	To prove existence, we take $ f = l $. Then we have $ \projl \circ f = \Id[A] \circ l = l $. Since $ T $ is a terminal object, the morphism $ B \to T $ is unique, so $ l = \projr \circ f $.
 
 	To prove uniqueness of $ f $, suppose that there exists also another morphism, $ f^\prime: B \to A $ such that $ \projl \circ f^\prime = l $. Then we have
-	\[ f^\prime = \Id{A} \circ f^\prime = \projl \circ f^\prime = l = f, \]
+	\[ f^\prime = \Id[A] \circ f^\prime = \projl \circ f^\prime = l = f, \]
 	which concludes the proof.
 \end{solution}
 
@@ -4670,7 +5000,7 @@ which completes the proof.
 
 	We have the products $ (A \times B, \projl, \projr) $ and $ (B \times A, \projl^\prime, \projr^\prime) $. By the universal properties of the products $ A \times B $ and $ B \times A $, we get morphisms $ f: A \times B \to B \times A $ and $ g: B \times A \to A \times B $, which make the diagram commute.
 
-	By the universal property of the product $ A \times B $, there exists a unique morphism $ h: A \times B \to A \times B $ such that $ \projl \circ h = \projl $ and $ \projr \circ h = \projr $. Since $ \Id[A \times B] $ satisfies this, we have $ h = A \times B $. We also have the morphism $ g \circ f: A \times B \to A \times B $. We have
+	By the universal property of the product $ A \times B $, there exists a unique morphism $ h: A \times B \to A \times B $ such that $ \projl \circ h = \projl $ and $ \projr \circ h = \projr $. Since $ \Id[A \times B] $ satisfies this, we have $ h = \Id[A \times B] $. We also have the morphism $ g \circ f: A \times B \to A \times B $. We have
 	\[ \projr \circ g \circ f = \projl^\prime \circ f = \projr \]
 	and in the same way, we have $ \projl \circ g \circ f = \projl $. Therefore, $ g \circ f = h = \Id[A \times B] $. In the same way, we have $ f \circ g = \Id[B \times A] $. Therefore, we conclude that $ f $ is the isomorphism we are looking for, with inverse $ g $.
 \end{solution}
@@ -4754,8 +5084,8 @@ which completes the proof.
 			Now, proving \eqref{goal:id-l-l-id} is simply
 			\begin{align*}
 				1_X \circ l & = l                        & \text{by the \textit{left-identity} law}  \\
-				            & = l \circ 1_{A \times B}   & \text{by the \textit{right-identity} law} \\
-				            & = l \circ (1_A \times 1_B) & \text{by \cref{lem:id-id}}
+				            & = l \circ 1_{\NN \times X}   & \text{by the \textit{right-identity} law} \\
+				            & = l \circ (1_\NN \times 1_X) & \text{by \cref{lem:id-id}}
 			\end{align*}
 		\end{proof}
 		\begin{thm}
@@ -4822,7 +5152,7 @@ which completes the proof.
 						\arrow["{1_A \times g}"{description}, bend left, dashed, from=1-3, to=3-3]
 						\arrow["{1_A \times f}"{description}, bend left, dashed, from=3-3, to=5-3]
 						\arrow["{1_A \times (f \circ g)}"{description, pos=0.6}, bend left, shift left=5, dashed, from=1-3, to=5-3]
-						\arrow["{(1_A \times f) \circ (1_B \times g)}"{description, pos=0.3}, shift right=4, bend right, from=1-3, to=5-3]
+						\arrow["{(1_A \times f) \circ (1_A \times g)}"{description, pos=0.3}, shift right=4, bend right, from=1-3, to=5-3]
 					\end{tikzcd}
 				\]
 				We know that $1_A \times f$, $1_A \times g$ and $1_A \times (f \circ g)$ are unique, and satisfy
@@ -4834,8 +5164,8 @@ which completes the proof.
 
 				Since $1_A \times (f \circ g)$ is unique, to prove our statement it is enough to show that
 				\begin{align}
-					1_A \circ \pi_{11}         & = \pi_{31} \circ ((1_A \times f) \circ (1_B \times g)) \label{goal:left}  \\
-					(f \circ g) \circ \pi_{12} & = \pi_{32} \circ ((1_A \times f) \circ (1_B \times g)) \label{goal:right}
+					1_A \circ \pi_{11}         & = \pi_{31} \circ ((1_A \times f) \circ (1_A \times g)) \label{goal:left}  \\
+					(f \circ g) \circ \pi_{12} & = \pi_{32} \circ ((1_A \times f) \circ (1_A \times g)) \label{goal:right}
 				\end{align}
 
 				First, we show \eqref{goal:left}
@@ -4843,7 +5173,7 @@ which completes the proof.
 					1_A \circ \pi_{11} & = \pi_{21} \circ (1_A \times g)                          & \text{by \eqref{Hg}}                      \\
 					                   & = ( 1_A \circ \pi_{21} ) \circ (1_A \times g)            & \text{by the \textit{left-identity} law}  \\
 					                   & = ( \pi_{31} \circ (1_A \times f) ) \circ (1_A \times g) & \text{by \eqref{Hf}}                      \\
-					                   & = \pi_{31} \circ ((1_A \times f) \circ (1_B \times g))   & \text{by \textit{function associativity}}
+					                   & = \pi_{31} \circ ((1_A \times f) \circ (1_A \times g))   & \text{by \textit{function associativity}}
 					.
 				\end{align*}
 
@@ -4853,7 +5183,7 @@ which completes the proof.
 					                           & = f \circ (\pi_{22} \circ (1_A \times g))              & \text{by \eqref{Hg}}                       \\
 					                           & = (f \circ \pi_{22}) \circ (1_A \times g)              & \text{by \textit{function associativity}}  \\
 					                           & = (\pi_{32} \circ (1_A \times f)) \circ (1_A \times g) & \text{by \eqref{Hf}}                       \\
-					                           & = \pi_{32} \circ ((1_A \times f) \circ (1_B \times g)) & \text{by \textit{function associativity}}.
+					                           & = \pi_{32} \circ ((1_A \times f) \circ (1_A \times g)) & \text{by \textit{function associativity}}.
 				\end{align*}
 			\end{proof}
 
@@ -4888,7 +5218,7 @@ which completes the proof.
 			To fully show that this is indeed a morphism, we must show that the following diagram commutes.
 			\[
 				\begin{tikzcd}
-					1 & \mathsf{Natlist} && {\NN \times \mathsf{Natlist}} & \mathsf{Natlist} \\
+					1 & \mathsf{NatList} && {\NN \times \mathsf{NatList}} & \mathsf{NatList} \\
 					& {X} && {\NN \times X} & {X}
           \arrow["{\nil}"{description}, from=1-1, to=1-2]
 					\arrow["x"', from=1-1, to=2-2]
@@ -4920,7 +5250,7 @@ which completes the proof.
 			\]
 			For the inductive case we must show that
 			\[
-				\forall\ \cons (n, ns) \in \texttt{natlist},
+				\forall\ \cons (n, ns) \in \mathsf{NatList},
 				f\ ns = g\ ns \to f (\cons (n, ns)) = g (\cons (n, ns)).
 			\]
 			\begin{align*}
@@ -4963,7 +5293,6 @@ which completes the proof.
 	\[
 		(A \times f) : A \times X \to A \times Y : (a, x) \mapsto (a, f(x)).
 	\]
-	(Observe that $(a, f(x)) = (\Id{a}, f(x))$.)
 	As searched for, this defines a function
 	\[
 		\CHom{\SET}{X}{Y} \to \CHom{\SET}{A \times X}{A \times Y} : f \mapsto (A \times f).
@@ -4973,13 +5302,13 @@ which completes the proof.
 	\begin{enumerate}
 		\item The first preservation property says that the composition of functions (morphisms in $\SET$), is preserved.
 		That is, for every triple of sets $X, Y, Z \in \Ob{\SET}$, and functions $f : \SET(X, Y)$ and $g : \SET(Y, Z)$, we have to show the following:
-		On the one hand, we can apply our functor (or the data at least) to the composite $f \circ g$.
+		On the one hand, we can apply our functor (or the data at least) to the composite $g \circ f$.
 		On the other, we can first apply our functor to $f$ (that is $A \times f = (A \times -)(f)$), and then (pre)compose with $A \times g = (A \times -)(g)$.
 		Diagrammatically, we have:
 		\[
 			\begin{tikzcd}
 				{A \times X}
-					\arrow[rr, bend left, "{A \times (f \circ g)}"]
+					\arrow[rr, bend left, "{A \times (g \circ f)}"]
 					\arrow[rd, bend right, swap, "{A \times f}"]
 					& & {A \times Z} \\
 				& {A \times Y} \arrow[ru, bend right, swap, "{A \times g}"] &
@@ -4992,42 +5321,42 @@ which completes the proof.
 		(Observe that the input argument is a pair.)
 		More formally, we have to show:
 		\[
-			\forall (a, x) \in {A \times X}, (A \times (f \circ g))(a, x) = \left((A \times g) \circ (A \times f)\right)(a, x).
+			\forall (a, x) \in {A \times X}, (A \times (g \circ f))(a, x) = \left((A \times g) \circ (A \times f)\right)(a, x).
 		\]
 		By unfolding the definition of $(A \times -)$ (on morphisms), we easily see that these are equal, indeed:
 		the left hand side reduces to:
 		\begin{eqnarray*}
-			(A \times (f \circ g))(a, x)
-				&=& (a , (f \circ g)(x)), \quad \text{by definition of $A \times -$} \\
+			(A \times (g \circ f))(a, x)
+				&=& (a , (g \circ f)(x)), \quad \text{by definition of $A \times -$} \\
 				&=& (a, g(f(x))), \quad \text{by definition of function composition};
 		\end{eqnarray*}
 		the right hand side reduces to:
 		\begin{eqnarray*}
 			\left((A \times g) \circ (A \times f)\right)(a, x)
 				&=& (A \times g)\left((A \times f)(a, x)\right), \quad \text{by definition of function composition}\\
-				&=& (A \times g)\left(a, f(x))\right), \quad \text{by definition of $A \times f$}\\
-				&=& (a, g(f(x)), \quad \text{by definition of $A \times g$}.
+				&=& (A \times g)\left((a, f(x))\right), \quad \text{by definition of $A \times f$}\\
+				&=& (a, g(f(x))), \quad \text{by definition of $A \times g$}.
 		\end{eqnarray*}
 		Hence, we see that both the left and right hand side reduce to the same expression.
 		Since $x$ is arbitrary, this concludes the preservation of the composition.
 		\item The second preservation property says that the identity is preserved.
 		That is, for every set $X \in \Ob{\SET}$, we have to show the following:
-		On the one hand, we can apply our functor to $\Id{X}$, which gives a function $A \times \Id{X} : \CHom{\SET}{A \times X}{A \times X}$
+		On the one hand, we can apply our functor to $\Id[X]$, which gives a function $A \times \Id[X] : \CHom{\SET}{A \times X}{A \times X}$
 		On the other, we have the identity function on $A \times X$.
 		The preservation law says that both functions are equal.
 		That is, the following diagram commutes:
 		\[
 			\begin{tikzcd}
-				{A \times X} \arrow[r, bend left, "{A \times \Id{X}}"] \arrow[r, bend right, swap, "\Id{(A \times X)}"] & {A \times X}
+				{A \times X} \arrow[r, bend left, "{A \times \Id[X]}"] \arrow[r, bend right, swap, "{\Id[A \times X]}"] & {A \times X}
 			\end{tikzcd}
 		\]
 		Again, we apply function extensionality (pointwise equality) to show that these functions are equal.
 		Indeed, for every pair $(a, x) \in A \times X$, we have:
 		\begin{eqnarray*}
-			(A \times \Id{X})(a, x)
-				&=& (a, \Id{X}(x)), \quad \text{by definition $A \times -$}\\
-				&=& (a, x), \quad \text{by definition of the identity function $\Id{X}$}\\
-				&=& \Id{A \times X}(a, x), \quad \text{by definition of the identity function $\Id{(A \times X)}$}.
+			(A \times \Id[X])(a, x)
+				&=& (a, \Id[X](x)), \quad \text{by definition of $A \times -$}\\
+				&=& (a, x), \quad \text{by definition of the identity function $\Id[X]$}\\
+				&=& \Id[A \times X](a, x), \quad \text{by definition of the identity function $\Id[A \times X]$}.
 		\end{eqnarray*}
 	\end{enumerate}
 	This concludes the construction of the functor (and in particular, the proofs of preservation).
@@ -5213,22 +5542,22 @@ which completes the proof.
 	\end{align*}
 	We need to show that for all $ F $-coalgebras $ (X, g) $, there exists a unique $ F $-coalgebra morphism $ \varphi: (X, g) \to (\mathbb N^c , f) $. To this end, take an arbitrary $ F $-coalgebra $ (X, g) $.
 
-	We first show existence. Borrowing some notation from monads, given the morphism $ g: X \to F X $, we write $ g^* $ for the induced morphism $ g^*: F X \to F X $ and we write $ (g^*)^n = g^* \circ g^* \circ \dots \circ g^* $. We define $ \varphi: X \to \mathbb N^c $ as follows: For $ x \in X $, if for some $ n \in \mathbb N $, $ (g^*)^n(x) \in X $ and $ (g^*)^{s(n)}(x) = \star $, we set $ \varphi(x) = n $. Else, we set $ \varphi(x) = \infty $. We need to show that the following diagram commutes:
+	We first show existence. Borrowing some notation from monads, given the morphism $ g: X \to F X $, we write $ g^* $ for the induced morphism $ g^*: F X \to F X $ given by $g^{*}(\star) := \star$ and $g^{*}(x) := g(x)$ for $x \in X$, and we write $ (g^*)^n = g^* \circ g^* \circ \dots \circ g^* $. We define $ \varphi: X \to \mathbb N^c $ as follows: For $ x \in X $, if for some $ n \in \mathbb N $, $ (g^*)^n(x) \in X $ and $ (g^*)^{s(n)}(x) = \star $, we set $ \varphi(x) = n $. Else, we set $ \varphi(x) = \infty $. We need to show that the following diagram commutes:
 	\begin{center}
 		\begin{tikzcd}
 			X \arrow[r, "g"] \arrow[d, "\varphi"] & 1 + X \arrow[d, "{\Id[1] + \varphi}"]\\
 			\mathbb N + \{ \infty \} \arrow[r, "f"] & 1 + \mathbb N + \{ \infty \}
 		\end{tikzcd}
 	\end{center}
-	To that end, take $ x \in X $. Suppose that $ (\Id[1] + \varphi)(g(x)) = \star $. Then $ g^1(x) = \star $, so $ \varphi(x) = 0 $ and $ f(\varphi(x)) = \star $. Suppose that $ (\Id[1] + \varphi)(g(x)) = \infty $. Then (by the definition of $ \varphi $) for all $ n \in \mathbb N $, $ (g^*)^{s(n)} = (x)(g^*)^n(g(x)) \in X $, so $ \varphi(x) = \infty $ and $ f(\varphi(x)) = \infty $. Lastly, suppose that $ (\Id[1] + \varphi)(g(x)) = n $. Then (by the definition of $ \varphi $), $ (g^*)^{s(n)}(x) = (g^*)^{n}(g(x)) \in X $ and $ (g^*)^{s(s(n))}(x) = (g^*)^{s(n)}(g(x)) = \star $. By the definition of $ \varphi $, we then have $ \varphi(x) = s(n) $. Then $ f(\varphi(x)) = n $ and we conclude that the diagram commutes and $ \varphi $ is a $ F $-coalgebra morphism.
+	To that end, take $ x \in X $. Suppose that $ (\Id[1] + \varphi)(g(x)) = \star $. Then $ g^1(x) = \star $, so $ \varphi(x) = 0 $ and $ f(\varphi(x)) = \star $. Suppose that $ (\Id[1] + \varphi)(g(x)) = \infty $. Then (by the definition of $ \varphi $) for all $ n \in \mathbb N $, $ (g^*)^{s(n)}(x) = (g^*)^n(g(x)) \in X $, so $ \varphi(x) = \infty $ and $ f(\varphi(x)) = \infty $. Lastly, suppose that $ (\Id[1] + \varphi)(g(x)) = n $. Then (by the definition of $ \varphi $), $ (g^*)^{s(n)}(x) = (g^*)^{n}(g(x)) \in X $ and $ (g^*)^{s(s(n))}(x) = (g^*)^{s(n)}(g(x)) = \star $. By the definition of $ \varphi $, we then have $ \varphi(x) = s(n) $. Then $ f(\varphi(x)) = n $ and we conclude that the diagram commutes and $ \varphi $ is a $ F $-coalgebra morphism.
 
 	For uniqueness, suppose that we also have a morphism $ \psi: X \to \mathbb N^c $ that makes the diagram commute.
 
 	Suppose that for some $ x \in X $, $ g(x) = \star $. Then, to make the diagram commute, we must have $ f(\psi(x)) = (\Id[1] + \psi)(\star) = \star $, so by the definition of $ f $, we must have $ \psi(x) = 0 $.
 
-	By induction on $ n $, we will show that for all $ x \in X $, if $ (g^*)^n(x) \in X $ and $ (g^*)^{s(n)} = \star $, we have $ \psi(x) = n $ (which equals $ \varphi(x) $). Since we just showed the case for $ n = 0 $, we will now show the induction step: suppose that it holds for some $ n $. Take $ x \in X $. If $ (g^*)^n(g(x)) = (g^*)^{s(n)}(x) \in X $ and $ (g^*)^{s(n)}(g(x)) = (g^*)^{s(s(n))}(x) = \star $, we have $ \psi(g(x)) = n $. Then we have $ f(\psi(x)) = (\Id[1] + \psi)(g(x)) = n $. Therefore, $ f(\psi(x)) = s(n) $, which proves the induction step.
+	By induction on $ n $, we will show that for all $ x \in X $, if $ (g^*)^n(x) \in X $ and $ (g^*)^{s(n)}(x) = \star $, we have $ \psi(x) = n $ (which equals $ \varphi(x) $). Since we just showed the case for $ n = 0 $, we will now show the induction step: suppose that it holds for some $ n $. Take $ x \in X $. If $ (g^*)^n(g(x)) = (g^*)^{s(n)}(x) \in X $ and $ (g^*)^{s(n)}(g(x)) = (g^*)^{s(s(n))}(x) = \star $, we have $ \psi(g(x)) = n $. Then we have $ f(\psi(x)) = (\Id[1] + \psi)(g(x)) = n $. Therefore, $ \psi(x) = s(n) $, which proves the induction step.
 
-	Now, take $ x \in X $ and suppose that for all $ n \in \mathbb N $, $ (g^*)^n(x) \in X $. If $ \psi(x) = n $ for some $ n $, then (since the diagram commutes), we have $ \psi(g(x)) = f(\psi(x)) = f(n) = n - 1 $. Repeating this $ n $ times, we have $ (\Id[1] + \psi)((g^*)^n(x)) = 0 $. We take $ x^\prime = (g^*)^n(x) \in X $. We have $ \psi(x^\prime) = 0 $ and $ f(x^\prime) = \star $. However, $ g(x^\prime) \in X $, so $ (\Id[1] + \varphi)(g(x^\prime)) \not = \star $ and the diagram does not commute. Therefore, we cannot have $ \psi(x) \in \mathbb N $, so $ \psi(x) = \infty = \varphi(x) $.
+	Now, take $ x \in X $ and suppose that for all $ n \in \mathbb N $, $ (g^*)^n(x) \in X $. If $ \psi(x) = n $ for some $ n $, then (since the diagram commutes), we have $ \psi(g(x)) = f(\psi(x)) = f(n) = n - 1 $. Repeating this $ n $ times, we have $ (\Id[1] + \psi)((g^*)^n(x)) = 0 $. We take $ x^\prime = (g^*)^n(x) \in X $. We have $ \psi(x^\prime) = 0 $, hence $ f(\psi(x^\prime)) = \star $. However, $ g(x^\prime) \in X $, so $ (\Id[1] + \psi)(g(x^\prime)) \not = \star $, and the diagram does not commute at $x^\prime$. Therefore, we cannot have $ \psi(x) \in \mathbb N $, so $ \psi(x) = \infty = \varphi(x) $.
 
 	Therefore, $ \psi = \varphi $ and we conclude that $ \varphi $ is unique, so $ (\mathbb N^c, f) $ is a terminal $ F $-coalgebra.
 \end{solution}
@@ -5261,7 +5590,7 @@ which completes the proof.
 	\[
 	h = \Id[\NN], \quad t = \Succ.
 	\]
-	By construction, we have that \cref{eqn:streams_nats_eq1} and \cref{eqn:streams_nats_eq2} indeed holds for $h := \Id[\NN]$ and $t := \Succ$, which shows that the sought function $\nats : \NN \to \Stream(\NN)$ is the unique solution of the equation system
+	By construction, we have that \cref{eqn:streams_nats_eq1} and \cref{eqn:streams_nats_eq2} indeed hold for $h := \Id[\NN]$ and $t := \Succ$, which shows that the sought function $\nats : \NN \to \Stream(\NN)$ is the unique solution of the equation system
   \begin{align*}
     \co {\nats} \head  &= \Id
     \\
@@ -5311,7 +5640,7 @@ We wish to define $h : \Stream(A)\times\Stream(B)\to A\times B$ and $t: \Stream(
 	\[
 	h = \head\times\head, \quad t = \tail\times\tail.
 	\]
-	By construction, we have that \cref{eqn:streams_zip_eq1} and \cref{eqn:streams_zip_eq2} indeed holds for $h := \head\times\head$ and $t := \tail\times\tail$,
+	By construction, we have that \cref{eqn:streams_zip_eq1} and \cref{eqn:streams_zip_eq2} indeed hold for $h := \head\times\head$ and $t := \tail\times\tail$,
 
   which shows that the sought function $\zip : \Stream(A) \times \Stream(B) \to \Stream(A\times B)$ is the unique solution to the equation system
   \begin{align*}
@@ -5324,7 +5653,7 @@ We wish to define $h : \Stream(A)\times\Stream(B)\to A\times B$ and $t: \Stream(
 \end{solution}
 
 \begin{solution}[\cref{exer:forgetful-functor-is-representable}]\label{sol:forgetful-functor-is-representable}
-Observe that the representability of $U$ is a special case of the furthermore statement, indeed: every set $A$ is isomorphic to the set $\bullet \to A$ of functions from the singleton/unit set into $A$.
+Observe that the representability of $U$ is a special case of the furthermore statement, indeed: every set $A$ is isomorphic to the set $1 \to A$ of functions from the singleton/unit set into $A$.
 
 Fix a set $A$.
 We have to construct a monoid $N$ such that $\MON(N,-) \cong \SET(A,U-)$.
@@ -5338,7 +5667,7 @@ This function is given by precomposing with $\eta_A : A \to List(A)$ and forgett
 
 To show that $\phi_M$ is invertible, we can either construct an inverse $\psi_M : \SET(A, UM) \to \MON(\List(A), M)$, or we can show that $\phi_M$ is injective and surjective.
 
-\textbf{Injectivity}. Let $g, h \in \List(A)$ and assume $\phi_M(g) = \phi_M(h)$.
+\textbf{Injectivity}. Let $g, h \in \MON(\List(A), M)$ and assume $\phi_M(g) = \phi_M(h)$.
 That $g = h$ follows from the following:
 \begin{eqnarray*}
 \phi_M(g) = \phi_M(h) &\Leftrightarrow& g \circ \eta_A = h \circ \eta_A \\
@@ -5351,10 +5680,12 @@ That $g = h$ follows from the following:
 \textbf{Surjectivity}.
 The surjectivity follows from the universal property of $\List(A)$ as the free monoid (see \cref{ch:forgetful-free}).
 Let $g' \in \SET(A, UM)$.
-We have to construct a $g \in \MON(\List(A), M)$ such that $g' = \phi_M(g) := g \circ \eta_A$, i.e., $\forall a \in A, g'(a) = g([a])$.
-Hence, $g$ acts on singleton lists as $g'$ which uniquely determines a function from $\List(A)$ to $M$.
-Indeed, by case analysis (recursion), we can define $g'(\nil)$ as the unit element in $M$ and $g'([a::l])$ as $[g(a) :: g'(l)]$.
-Observe that $g'$ is indeed a monoid homomorphism.
+We have to construct a $g \in \MON(\List(A), M)$ such that
+$g' = \phi_M(g) := g \circ \eta_A$, i.e., $\forall a \in A, g'(a) = g([a])$.
+By recursion on lists, we define $g(\nil)$ to be the unit element of $M$ and
+$g(a :: l) := g'(a) \cdot g(l)$, where $\cdot$ denotes the multiplication of $M$.
+One checks that $g$ is indeed a monoid homomorphism, and by construction
+$g([a]) = g'(a) \cdot g(\nil) = g'(a)$.
 
 It remains to verify the naturality of $\phi_M$ in $M$, i.e., that for every $f \in \MON(M_0,M_1)$ the following diagram commutes:
 \begin{center}
@@ -5370,17 +5701,26 @@ That the diagram commutes follows because both morphisms unfold to $f \circ g \c
 
 \begin{solution}[\cref{exer:representables-on-posets}]
 \label{sol:representables-on-posets}
-Recall that a downward closed subset of $L$ is given by a subset $S$ of $L$ which is closed under the following property:
+Recall that a downward closed subset of $L$ is given by a subset $S$ of $L$ which is
+closed under the following property:
 \[
 \forall x \in S, \forall a \in L, a \leq x \Rightarrow a \in S.
 \]
-We claim that the representable functors correspond to the downward closed subsets of $\mathcal{L}$ with a maximal element.
+We claim that the representable functors on $\mathcal{L}$ correspond to the downward
+closed subsets of $L$ with a greatest element.
 
-Let $F : \op{\mathcal{L}} \to \SET$ be a representable functor.
-Then, $F \cong \mathcal{L}(-,x)$ for some $x \in L$.
-By definition of $\mathcal{L}$, we have that $F(x)$ is the (po)set of elements in $\mathcal{L}$ which are less then $x$, i.e., $F(x) \cong \{ a \in L \mid a \leq x \}$.
-Observe that $F(x)$ contains $x$ as a maximal element.
-Conversely, if $D$ is a downward closed subset with a maximal element $x$, we obtain a representable functor $F := \mathcal{L}(-,x)$.
+Let $F : \op{\mathcal{L}} \to \SET$ be a representable functor, say
+$F \cong \mathcal{L}(-,x)$ for some $x \in L$.
+For $a \in L$, the set $\mathcal{L}(a,x)$ is a singleton if $a \leq x$ and empty
+otherwise. Hence the subset
+\[
+D_F := \{ a \in L \mid F(a) \neq \emptyset \} = \{ a \in L \mid a \leq x \}
+\]
+is downward closed and has $x$ as its greatest element.
+
+Conversely, if $D$ is a downward closed subset with greatest element $x$, then
+$D = \{ a \in L \mid a \leq x \}$, and we obtain a representable functor
+$F := \mathcal{L}(-,x)$ with $D_F = D$.
 \end{solution}
 
 %%% Local Variables:
@@ -5388,300 +5728,6 @@ Conversely, if $D$ is a downward closed subset with a maximal element $x$, we ob
 %%% TeX-master: "CT4P"
 %%% End:
 
-
-\chapter{More on Special Morphisms}
-\label{ch:more-special-morphisms}
-
-\section{Sections and Retractions}
-\label{sec:sections}
-
-
-\begin{dfn}[Section, Retraction]
-  A pair $(s,r)$ of morphisms $s : a \to b$ and $r : b \to a$ in $\CC$ is called a \textbf{section-retraction pair} if $\co{s}{r} = \Id[a]$.
-
-  In such a case, we call $s$ a section and $r$ a retraction.
-\end{dfn}
-
-\begin{rem}
-  Note that a morphism can be a retraction in more than one way, that is, there can be more than one section $s$ such that $\co{s}{r} = \Id$.
-\end{rem}
-
-Intuitively, a section-retraction pair $(s,r)$ of morphisms $s : a \to b$ and $r : b \to a$ in a category $\CC$ provides a way for $a$ to ``live inside'' $b$.
-Note that for a given $a$ and $b$ there can be many ways for $a$ to live inside $b$.
-
-\begin{exer}[\cref{sol:section-retraction-bool-int}]\label{exer:section-retraction-bool-int}
-  Construct two different section-retraction pairs between the type |Bool| of booleans and the type |Int| of integers (e.g., in Haskell).
-\end{exer}
-
-
-
-\begin{exer}
- Show that the type |Maybe a| is a retract of the type |[a]|.
-
- Hint: The idea is that |Nothing| corresponds to the empty list |[]| and that |Just x| corresponds to the one-element list |[x]|. Make this idea precise by writing back and forth functions between these types so that they exhibit |Maybe a| as a retract of |[a]|.
-\end{exer}
-
-
-\section{Monomorphisms and Epimorphisms}
-\label{sec:mono-epi}
-
-\begin{reading*}
-See also \cite[p. 134]{leinster} and \cite[\S\S 2.8--2.9]{barr-wells}.
-Also, \cite[\S 2.2]{pierce} briefly discusses monomorphisms and epimorphisms.
-\end{reading*}
-
-From undergraduate mathematics courses you know what injective and surjective functions between sets are.
-The definitions of ``injective'' and ``surjective'' do not carry over to any category (though they do for categories that are, in some sense, ``similar'' to the category of sets).
-In this section, we study two properties of morphisms in a category that, in the category of sets, are equivalent to ``injective'' and ``surjective'', respectively.
-
-
-
-\begin{dfn}[Monomorphism]
-  Let $f : a \to b$ be a morphism in $\CC$. We say that $f$ is a \textbf{monomorphism} if, for any two morphisms $g_1, g_2 : z \to a$, like in the following diagram,
-  \begin{center}
-    \begin{tikzcd}
-    z \arrow[r, "g_2"', shift right] \arrow[r, "g_1", shift left] & a \arrow[r, "f"] & b
-    \end{tikzcd}
-  \end{center}
-  we have
-  \[ \co{g_1}{f} = \co{g_2}{f} \text{ implies } g_1 = g_2 .\]
-\end{dfn}
-
-\begin{exer}[\cref{sol:mono-inj}]\label{ex:mono-inj}
-  In the category of sets, show that a morphism $f : X \to Y$ is a monomorphism if and only if it is injective.
-\end{exer}
-
-\begin{dfn}[Epi]
-  Let $f : a \to b$ be a morphism in $\CC$. We say that $f$ is an \textbf{epimorphism} if, for any two morphisms $g_1, g_2 : b \to z$, like in the following diagram,
-  \begin{center}
-    \begin{tikzcd}
-    a \arrow[r, "f"] & b \arrow[r, "g_2"', shift right] \arrow[r, "g_1", shift left] & z
-    \end{tikzcd}
-  \end{center}
-  we have
-  \[ \co{f}{g_1} = \co{f}{g_2} \text{ implies } g_1 = g_2 .\]
-\end{dfn}
-
-\begin{exer}\label{ex:epi-surj}
-  In the category of sets, show that a morphism $f : X \to Y$ is an epimorphism if and only if it is surjective.
-\end{exer}
-
-
-\begin{exer}[\cref{sol:sections_in_set_injective}]\label{exer:sections_in_set_injective}
-  In the category of sets, show that if $(s,r)$ is a section-retraction pair, then the section $s$ is injective.
-  Hint: you can use \cref{ex:mono-inj}.
-\end{exer}
-\begin{exer}
-  In the category of sets, show that if $(s,r)$ is a section-retraction pair, then the retraction $r$ is surjective.
-    Hint: you can use \cref{ex:epi-surj}.
-\end{exer}
-
-\begin{exer}[\cref{sol:iso_to_monoepi}]\label{exer:iso_to_monoepi}
-  Show that any isomorphism $f : a\cong b$ (in some arbitrary category $\CC$) is both a monomorphism and an epimorphism.
-\end{exer}
-
-\begin{exer}[\cref{sol:counterexample_monoepi_not_iso}]\label{exer:counterexample_monoepi_not_iso}
-  Show that the converse of \cref{exer:iso_to_monoepi} does not hold in general, i.e. give an example of a category where there exists a morphism which is both an epi- and a monomorphism, but which is not an isomorphism.
-
-Hint: Consider a preordered set.
-\end{exer}
-
-\begin{exer} Let $\mathcal{G}_1$ (resp. $\mathcal{G}_2$ and $\mathcal{G}_3$) be the category generated by the following graph:
-\[
-\begin{tikzcd}
-& w & \\
-x & & z \arrow[lu] \\
-& y \arrow[lu] \arrow[ru] &
-\end{tikzcd}
-\]
-resp.
-\[
-\begin{tikzcd}
-& w & \\
-x & & z \arrow[lu, bend left] \arrow[lu,bend right] \\
-& y \arrow[lu] \arrow[ru] &
-\end{tikzcd}
-\]
-resp.
-\[
-\begin{tikzcd}
-& w \arrow[rd,bend left] & \\
-x & & z \arrow[lu, bend left] \\
-& y \arrow[lu] \arrow[ru] &
-\end{tikzcd}
-\]
-
-Describe the mono- and epimorphisms in these categories.
-\end{exer}
-
-\begin{exer} Describe the monomorphisms, epimorphisms and isomorphisms in the category generated by the following graph:
-\[
-\begin{tikzcd}
-x \arrow[r] & y
-\end{tikzcd}
-\]
-\end{exer}
-
-
-\chapter{Forgetful and Free Functors}
-\label{ch:forgetful-free}
-
-A lot of (mathematical) structures are defined as some other kind of mathematical structure, but where extra structure is added. An example of this is the following:\\
-Recall that a monoid is a set $M$ together with a binary operation $m:M\to M\to M$ which is associative and such that there is an identity element $e$ (see \cref{monoidcategory}). In particular, any monoid has an underlying set and any morphism of monoids has an underlying function (between those sets). So forgetting the binary operation and identity element defines a functor from $\MON$ to $\SET$ which is called a \textit{forgetful functor}:
-\begin{exa}\label{example:forgetful_montoset} The \textbf{forgetful functor from $\MON$ to $\SET$} is the functor specified by the following data:
-\begin{itemize}
-\item The function on objects is given by
-\[
-\Ob{\MON}\to \Ob{\SET}: (M,m,e)\mapsto M.
-\]
-\item The function on objects is given by
-\[
-\CHom{\MON}{(M_1,m_1,e_1)}{(M_2,m_2,e_2)} \to \CHom{\SET}{M_1}{M_2} : f\mapsto f.
-\]
-\end{itemize}
-\end{exa}
-Notice that if one defines a category whose objects are sets $M$ together with an associative binary operation $m:M\to M\to M$, then one could analogously also define a forgetful functor from $\MON$ to this category by only forgetting the neutral element.
-
-\begin{lemma} The forgetful functor from $\MON$ to $\SET$ satisfies the properties of a functor.
-\begin{proof}
-We clearly have that everything is well-defined since the codomain is $\SET$.\\
-That the identity morphism is preserved holds by definition because the identity morphism of $(M,m,e)$ (in $\MON$) is given by the identity function and the identity morphism of $M$ (in $\SET$) is also given by the identity function.\\
-That the composition of morphisms is preserved also holds by definition because the composition of morphisms (in $\MON$) is given by the composition of the underlying functions which is also the composition in $\SET$.
-\end{proof}
-\end{lemma}
-
-The forgetful functor $Forget$ from $\MON$ to $\SET$ forgets the \textit{algebraic} structure of a monoid and since there are multiple monoid structures on the same set (given an example of this), hence we do not have that there exists some functor $G: \SET\to \MON$ such that $Forget\Comp G$ is the identity on $\MON$. However, to each set, one can define a monoid which satisfies an important property (this is \cref{prop:UVP_forget_montoset}). The associated monoid is called the \textit{free monoid}:
-\begin{exa} Let $X$ be a set. The \textbf{free monoid generated by $X$}, denoted by $Free(X)$, is specified by the following data:
-\begin{itemize}
-\item The underlying set consists of all finite sequences/strings of elements in $X$ (including the empty sequence).
-\item The multiplication is defined by concatenating the sequences, i.e.
-\[
-m\left((x_1,\cdots,x_n),(y_1,\cdots,y_m)\right) := (x_1,\cdots,x_n,y_1,\cdots,y_m).
-\]
-\item The identity element is given by the empty sequence.
-\end{itemize}
-\end{exa}
-
-\begin{exa}\label{exa:freemonoids} The \textbf{free functor from $\SET$ to $\MON$} is specified by the following data:
-\begin{itemize}
-\item The function on objects is given by
-\[
-\Ob{\SET}\to \Ob{\MON}: X\mapsto Free(X).
-\]
-\item The function on morphisms is given as follows: A morphism $f \in \CHom{\SET}{X}{Y}$ (i.e. a function) is mapped to the monoidal morphism which is given by pointwise application of $f$, i.e.
-\[
-Free(f)(x_1,\cdots,x_n) := (f(x_1),\cdots, f(x_n)).
-\]
-\end{itemize}
-\end{exa}
-
-\begin{exer} Show that $Free$ satisfies the properties of a functor.
-\end{exer}
-
-For any set $X$, we have the \textit{canonical function}
-\[
-Free^{X}_{!}: X\to Free(X): x\mapsto (x).
-\]
-This function satisfies the property that any function from $X$ to an arbitrary monoid corresponds with a unique morphism (of monoids) from the free monoid generated by $X$ to that monoid:
-\begin{prop}\label{prop:UVP_forget_montoset} Let $(M,m,e)$ be a monoid and $X$ be a set. For any morphism $f \in \CHom{\SET}{X}{M}$ (i.e. a function), there exists a unique  morphism $\phi^{f} \in \CHom{\MON}{Free(X)}{(M,m,e)}$, such that $f = Free^{X}_{!}\Comp \phi^{f}$.
-\begin{proof}
-For elements $a,b\in M$, we denote their multiplication by $a\times b := m(a,b)$ (note that by associativity we have that $a_1\times a_2\times\cdots\times a_n)$ is well-defined). Let $f\in \CHom{\SET}{X}{M}$ be a function. Define
-\[
-\phi^{f}: Free(X)\to (M,m,e): (x_1\cdots,x_n)\mapsto f(x_1) \times\cdots \times f(x_n),
-\]
-We have to define separately what happens with the empty sequence. The empty sequence we map to the identity element $e$, so in particular we have that the identity element is preserved under $\phi^{f}$, so in order to conclude that $\phi^{f}$ is a morphism of monoids, it remains to show that it preserves the binary operation but this is clear by definition.\\
-That $f = Free^{X}_{!}\Comp \phi^{f}$ holds follows immediately by the definition of $Free^{X}_{!}$ and $\phi^{f}$, indeed:
-\[
-\left(Free^{X}_{!}\Comp \phi^{f}\right)(x) = \phi^{f}\left((x)\right) = f(x).
-\]
-So it only remains to show uniqueness. Assume that $\psi$ also satisfies $Free^{X}_{!}\Comp \psi = f$. The claim now follows because $\psi$ is a morphism of monoids, indeed: Since $\psi$ is morphism is monoids, we have that it preserves the multiplication, but the multiplication is given by concatenation, hence, we have that $\psi$ is uniquely determined by the images of the sequences of length $1$ (and length $0$, but this sequence of length $0$ should be mapped under $\psi$ to $e$). But a sequence of length $1$ is of the form $(x) = Free^{X}_{!}(x)$. So the claim indeed follows by the following computation:
-\[
-\psi((x)) = \psi(Free^{X}_{!}(x)) = f(x) = \phi^{f}(Free^{X}_{!}(x)) = \phi^{f}((x)).
-\]
-\end{proof}
-\end{prop}
-
-The following exercise shows that there is a special connection between the forgetful functor $\mathit{forget}: \MON\to\SET$ and the free functor $\mathit{free}: \SET\to\MON$. This connection expresses that these form a so-called \textit{adjoint pair} (see \cref{sec:adjunctions}).
-\begin{exer}\label{exer:preadjunction_monset}
-Show that for any set $X$ and monoid $(M,m,e)$, there exist bijections between the hom-sets:
-\[
-\alpha_{X}^{(M,m,e)} : \CHom{\MON}{Free(X)}{(M,m,e)} \to \CHom{\SET}{X}{forget(M,m,e)}.
-\]
-Hint: use \cref{prop:UVP_forget_montoset}.
-\end{exer}
-
-\begin{exer} Define a forgetful functor from the category $\POS$ of posets (defined in \cref{example:poset}) to $\SET$ analogous to the the forgetful functor from $\MON$ to $\SET$ (defined in \cref{example:forgetful_montoset}).
-\end{exer}
-\begin{rem} The story about free monoids can not be repeated for posets, i.e. there is no free poset structure on all sets. But in order to prove this one needs more machinery.
-\end{rem}
-
-
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-master: "CT4P"
-%%% End:
-
-\chapter{Contravariant Functors}
-
-A variation on functors are \textbf{contravariant functors}.
-A contravariant functor consists of a map on objects, just like a functor.
-However, the \textbf{map on morphisms turns the morphisms around}.
-We give the formal definition:
-
-\begin{dfn} Let $\CC$ and $\DD$ be categories. A \textbf{contravariant functor} $F$ from $\CC$ to $\DD$ consists of the following data:
-\begin{itemize}
-\item A function
-\[
-\Ob{\CC} \to \Ob{\DD},
-\]
-written as $X\mapsto F(X)$.
-\item For each $X,Y\in \Ob{\CC}$, a function
-\[
-\CHom{\CC}{X}{Y} \to \CHom{\DD}{F(Y)}{F(X)},
-\]
-written as $f\mapsto F(f)$.
-\end{itemize}
-Moreover, this data should satisfy the following properties:
-\begin{itemize}
-\item (\textbf{Preserves composition}) For $f\in \Hom[\CC]{X}{Y}$ and $g\in \Hom[\CC]{Y}{Z}$, we have $F(\co f g) =  \co {F(g)}{F(f)}$.
-\item (\textbf{Preserves identity}) For $X\in\CC$, we have $F(\Id[X]) = \Id[F(X)]$.
-\end{itemize}
-\end{dfn}
-
-\begin{exer} Notice that the preservation of composition has now changed; why is this the case?
-\end{exer}
-
-An example of a contravariant functor is given by the powerset-functor:
-\begin{exa} \label{example:powersetfunctor} Recall that the powerset of a set $X$, denoted by $\mathbb{P}(X)$, is the set of all subsets of $X$, i.e.
-\[
-\mathbb{P}(X) :=  \left\{A \mid A\subseteq X\right\}.
-\]
-The contravariant \textbf{powerset-functor}\footnote{Since a function is mapped to the inverse-image function, one also calls the powerset-functor, an inverse image-functor} (on sets), denoted by $\mathbb{P}$, is the functor from $\SET$ to $\SET$ defined by the following data:
-\begin{itemize}
-\item The function on objects is given by:
-\[
-\Ob{\SET}\to \Ob{\SET}: X\mapsto \mathbb{P}(X).
-\]
-\item For each $X,Y\in\SET$, the function on morphisms is given by
-\[
-\CHom{\SET}{X}{Y} \to \CHom{\SET}{\mathbb{P}(Y)}{\mathbb{P}(X)}: f\mapsto f^{-1},
-\]
-where $f^{-1}$ given by
-\[
-f^{-1}:\mathbb{P}(Y)\to \mathbb{P}(X): B\mapsto f^{-1}(B) := \left\{x\in X \mid f(x)\in B\right\}.
-\]
-\end{itemize}
-\end{exa}
-
-\begin{exer} Show that $\mathbb{P}$, defined in \cref{example:powersetfunctor} satisfies the properties of a contravariant functor.
-\end{exer}
-
-
-
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-master: "CT4P"
-%%% End:
 
 \printbibliography
 
