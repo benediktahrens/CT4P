@@ -3168,8 +3168,8 @@ move first and then transform.
   at every type |a|.
   It cannot look at the elements of the list, because it does not know what
   they are; all it can do is rearrange them.
-  So renaming the elements with some |f :: a -> b| and then reversing gives the
-  same list as reversing and then renaming:
+  So reversing and then renaming the elements with some |f :: a -> b| gives
+  the same list as renaming and then reversing:
   |map f . reverse == reverse . map f|.
   That is the naturality square for |reverse|, with $F = G = \List$
   (\cref{example:functor_list}) and $\alpha_X$ the function |reverse| at type
