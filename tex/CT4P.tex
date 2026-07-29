@@ -869,6 +869,12 @@ M ,\quad \text{ if } i=j,\\
   Define a category $\MON$ whose objects are monoids, i.e. define a suitable notion of morphism between monoids and moreover show that this indeed defines a category.
 \end{exer}
 
+Every category gives rise to a second one, obtained by leaving the objects alone
+and reading all the arrows backwards.
+This may look like a triviality, but it is one of the most economical devices in
+category theory: in \cref{sec:duality} we use it to obtain whole families of
+definitions, and of theorems, for free.
+
 \begin{exer}[\cref{sol:opposite}]\label{exer:opposite}
   Let $\CC$ be a category. Define a category $\op\CC$ such that
   \begin{itemize}
@@ -1214,7 +1220,14 @@ Identify an initial object in the category $\REL$ and show that it is initial.
 \section{Terminal Objects}
 \label{sec:terminal-objects}
 
-
+Reversing the direction of the arrows in the definition of an initial object
+yields a second universal property, just as fundamental as the first.
+Instead of asking for a unique morphism \emph{out of} an object, we ask for a
+unique morphism \emph{into} it.
+Everything in this section is a mirror image of the previous one --- including
+the exercises and their solutions.
+We make this precise in \cref{sec:duality}; for the moment it is worth solving
+the exercises by hand, and noticing the pattern as it emerges.
 
 \begin{dfn}
   Let $\CC$ be a category. An object $B \in \Ob{\CC}$ is \textbf{terminal} (or \textbf{final}) if there is exactly one morphism to $B$ from any object $A \in \Ob{\CC}$.
@@ -1305,6 +1318,74 @@ Identify an initial object in the category $\REL$ and show that it is initial.
   Show that the trivial monoid $(\{e\}, m, e)$ --- with the only possible
   multiplication --- is a zero object in the category $\MON$ of monoids.
 \end{exer}
+
+
+\section{Duality}
+\label{sec:duality}
+
+The definitions of initial and terminal object are suspiciously similar: one
+asks for a unique morphism out of an object, the other for a unique morphism
+into it.
+Every exercise in \cref{sec:terminal-objects} has a counterpart in
+\cref{sec:initial-objects}, and if you solved both, you will have found yourself
+writing the same argument twice, with all arrows reversed.
+This is not a coincidence, and the phenomenon is worth making precise, since it
+recurs throughout these notes.
+
+Recall the opposite category $\op\CC$ of \cref{exer:opposite}: it has the same
+objects as $\CC$, and a morphism from $X$ to $Y$ in $\op\CC$ is precisely a
+morphism from $Y$ to $X$ in $\CC$.
+Unwinding the definitions gives the observation you were asked to prove in
+\cref{exer:terminal_iff_initial_op}: an object $B$ is terminal in $\CC$ if and
+only if it is initial in $\op\CC$.
+We express this by saying that ``terminal'' is the \textbf{dual} notion of
+``initial''.
+
+More generally, suppose a notion is defined purely in terms of objects,
+morphisms, identities, and composition --- as every notion in these notes is.
+Then we obtain its \emph{dual} notion by interpreting the very same definition
+in $\op\CC$ instead of in $\CC$.
+Concretely, dualising a definition amounts to reversing every arrow and
+reversing the order of every composite, while leaving the objects untouched.
+The dual of a notion is traditionally named by prefixing ``co'': a coproduct
+(\cref{sec:coproducts}) is a product in the opposite category, and a coalgebra
+(\cref{sec:coinductive}) is an algebra in the opposite category.
+Since $\op{(\op\CC)} = \CC$, dualising twice returns us to where we started;
+so ``initial'' is equally well the dual of ``terminal'', and one could just as
+consistently have called initial objects ``coterminal''.
+A notion that is its own dual, such as that of a zero object
+(\cref{dfn:zero-object}), is called \textbf{self-dual}.
+
+\begin{intu}[The duality principle]
+  Duality gives us two theorems for the price of one.
+  Suppose we have proved a statement $P$ that holds in \emph{every} category.
+  Whenever $\CC$ is a category, so is $\op\CC$; hence $P$ holds of $\op\CC$ in
+  particular.
+  Spelling out what $P$ says about $\op\CC$ in terms of $\CC$ yields the dual
+  statement --- which therefore also holds in every category, with no further
+  work.
+
+  For instance, \cref{exer:initial-unique} asks you to show that any two initial
+  objects of a category are isomorphic.
+  Applying that result to $\op\CC$ yields \cref{exer:terminal-unique} at once:
+  any two terminal objects are isomorphic.
+  Whenever you meet a ``co''-notion in what follows, it is worth pausing to ask
+  which statement you already know it is the mirror image of.
+\end{intu}
+
+\begin{rem}
+  Duality is a statement about categories \emph{in general}, not about any
+  individual one.
+  It does \emph{not} say that a category has a terminal object whenever it has
+  an initial one, nor that the two coincide: in $\SET$ both exist but are very
+  different objects (\cref{exer:initial_set,exer:terminal_set}), and
+  \cref{exer:cat-without-terminal} asks for a category with no terminal object
+  at all.
+  What duality says is that the two \emph{definitions} are mirror images of one
+  another, so that every theorem about all categories yields a dual theorem
+  about all categories.
+\end{rem}
+
 
 \chapter{Datatypes as Initial Objects: First Examples}
 \label{sec:examples}
@@ -1929,6 +2010,27 @@ A & Q \arrow[l, "q_l"]  \arrow[r,swap, "q_r"] & B
 
 \section{(Binary) Coproducts}
 \label{sec:coproducts}
+
+The definition below is obtained from that of a product
+(\cref{def:binproduct}) by reversing all the arrows, in the sense of
+\cref{sec:duality}: a coproduct of $A$ and $B$ in $\CC$ is exactly a product of
+$A$ and $B$ in $\op\CC$.
+Where a product comes with two projections \emph{out of} it and is characterised
+by the morphisms \emph{into} it, a coproduct comes with two injections
+\emph{into} it and is characterised by the morphisms \emph{out of} it.
+
+The programming reading of the two is correspondingly opposite.
+A product is a type of pairs: to \emph{build} a value of $A \times B$ you must
+supply a value of $A$ and a value of $B$, which is exactly what the pairing
+$\intoproduct{q_1}{q_2}$ does.
+A coproduct is a sum type: to \emph{consume} a value of $A + B$ you must say
+what to do in each of the two cases, which is exactly what the case analysis
+$\outofcoproduct{i_l}{i_r}$ does.
+
+By duality, the results of this section can be read off from those of
+\cref{sec:products}, and so can their proofs.
+It is instructive to carry out the translation by hand for the first few
+exercises, and to trust the principle thereafter.
 
 \begin{dfn}
    Let $\CC$ be a category and let $A,B \in \Ob\CC$ be objects of $\CC$.
@@ -2650,9 +2752,29 @@ Y
   The paper \cite{DBLP:journals/scp/Malcolm90} by Malcolm contains further examples.
 \end{reading*}
 
-In \cref{sec:initial-algs}, we introduced (initial) algebras to model inductive types.
-In this section, we introduce the dual notion thereof.
-That is, we introduce (terminal) coalgebras, which allow us to define coinductive data types.
+In \cref{sec:initial-algs}, we introduced (initial) algebras to model inductive
+types.
+In this chapter, we study the dual notion, in the sense of \cref{sec:duality}:
+(terminal) coalgebras, which allow us to define coinductive data types.
+
+Dualising here amounts to reversing the structure map.
+An $F$-algebra is a morphism $F(X) \to X$: it says how to \emph{build} an
+element of $X$ out of $F$-shaped data, and initiality says that every element is
+built in exactly one way.
+An $F$-coalgebra is a morphism $X \to F(X)$: it says how to \emph{observe} one
+layer of $F$-shaped structure in an element of $X$, and terminality will say
+that an element is completely determined by what can be observed of it.
+
+This mirrors a distinction familiar from programming.
+An inductive type such as |[a]| is described by its constructors; it is
+generated from below, every value is finite, and we compute with it by
+structural recursion, which terminates because the arguments get smaller.
+A coinductive type such as the type of infinite streams admits no such
+generating description --- there is no base case to descend to --- but its
+values can still be told apart by observation: we may ask for the head, then for
+the head of the tail, and so on indefinitely.
+Terminal coalgebras make this precise, and explain why definitions by
+corecursion are legitimate even though the objects they produce are infinite.
 
 \begin{dfn} Let $F:\CC\to \CC$ be an endofunctor. An \textbf{$F$-coalgebra} consists of the following data:
 \begin{itemize}
