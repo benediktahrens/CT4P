@@ -216,7 +216,6 @@ literate={→ }{\ARROW}1
 \newcommand{\Hom}[3][]{\cfont{hom}_{#1}(#2,#3)}
 \newcommand{\CHom}[3]{{#1}(#2,#3)}
 \newcommand{\Id}[1][]{\cfont{id}_{#1}}
-\newcommand{\Comp}{\cdot}
 \newcommand{\NatTrans}[3]{#1 : #2 \Rightarrow #3}
 \newcommand{\op}[1]{\ensuremath{{#1}^\text{op}}}
 \newcommand{\inl}{\ensuremath{\iota_l}}
@@ -612,7 +611,7 @@ To show this, we fix an arbitrary $x \in X$, and compute
   \\
                                     &=& \left((h\circ g)\circ f\right)(x),
 \end{eqnarray*}
-where the first (resp. second, third, fourth) equality holds by definition of the composition of $h$ and $g\circ f$ (resp. composition of $g$ and $f$, composition of $h$ and $g$, composition of $h\circ g$ and $f$).
+where the first (resp. second, third, fourth) equality holds by definition of the composition of $g\circ f$ and $h$ (resp. composition of $f$ and $g$, composition of $g$ and $h$, composition of $f$ and $h\circ g$).
 \end{proof}
 
 
@@ -665,7 +664,7 @@ undef2 = \x -> undefined
   These two programs are different: evaluating |undef1| does not terminate,
   whereas |undef2| immediately returns a function (each of whose applications
   fails to terminate).
-  But we have $\Id \Comp$ |undef1| $=$ |undef2|, so in a category of types and
+  But we have |id . undef1| $=$ |undef2|, so in a category of types and
   functions, the unit law forces |undef1| $=$ |undef2|.
   Hence Haskell types and Haskell programs, with equality of programs, do
   \emph{not} form a category.
@@ -1059,7 +1058,7 @@ notes, for initial objects, for products, for adjoints, is uniqueness up to
 isomorphism rather than up to equality.
 
 \begin{dfn}[Isomorphism]
-  Given a category $\CC$, objects $a,b \in \Ob{\CC}$ and a morphism $f : a \to b$ in $\CC$, we say that $f$ is an \textbf{isomorphism} when there is a morphism $g : b \to a$ (in the other direction!) such that $f \Comp g = \Id$ and $g \Comp f = \Id$.
+  Given a category $\CC$, objects $a,b \in \Ob{\CC}$ and a morphism $f : a \to b$ in $\CC$, we say that $f$ is an \textbf{isomorphism} when there is a morphism $g : b \to a$ (in the other direction!) such that $\co{f}{g} = \Id$ and $\co{g}{f} = \Id$.
   We write $f : a \cong b$ for a morphism $f$ that is an isomorphism.
 
   In this case, we call $g$ the \textbf{inverse} of $f$ and $f$ the inverse of $g$. (The latter is justified by \cref{exer:inverse-iso}.)
@@ -1702,15 +1701,15 @@ $$\Id[\mathbf{List}(X)](A)(\{x_i\}_i) = \{x_i\}_i,$$
 by definition of the identity morphism in $\SET$. Hence, the left and right hand side are equal which shows that $\mathbf{List}$ indeed preserves the identity.\\
 We now show that $\mathbf{List}$ preserves composition. Let $f\in \CHom{\SET}{X}{Y}$ and $g\in \CHom{\SET}{Y}{Z}$ be functions. By definition of the composition in $\SET$ and by definition of $\mathbf{List}$ on morphisms, we have for each $X$-valued list $\{x_i\}_i$:
 \begin{eqnarray}\label{eqn:functor_list_comp1}
-\mathbf{List}(f\Comp g)(\{x_i\}_i) = \{(f\Comp g)(x_i)\}_i = \{g(f(x_i)\}_i.
+\mathbf{List}(\co{f}{g})(\{x_i\}_i) = \{(\co{f}{g})(x_i)\}_i = \{g(f(x_i)\}_i.
 \end{eqnarray}
 Again by definition of the composition in $\SET$ and by definition of $\mathbf{List}$ on morphisms, we have for each $X$-valued list $\{x_i\}_i$:
 \begin{eqnarray}\label{eqn:functor_list_comp2}
-\left(\mathbf{List}(f)\Comp \mathbf{List}(g)\right)(\{x_i\}_i) = \mathbf{List}(g)\left(\{f(x_i)\}_i\right) = \{g(f(x_i)\}_i.
+\left(\co{\mathbf{List}(f)}{\mathbf{List}(g)}\right)(\{x_i\}_i) = \mathbf{List}(g)\left(\{f(x_i)\}_i\right) = \{g(f(x_i)\}_i.
 \end{eqnarray}
 Hence, by combining \cref{eqn:functor_list_comp1, eqn:functor_list_comp2}, we conclude that for each $X$-valued list $\{x_i\}_i$ we have
 \[
-\mathbf{List}(f\Comp g)(\{x_i\}_i) = \left(\mathbf{List}(f)\Comp \mathbf{List}(g)\right)(\{x_i\}_i).
+\mathbf{List}(\co{f}{g})(\{x_i\}_i) = \left(\co{\mathbf{List}(f)}{\mathbf{List}(g)}\right)(\{x_i\}_i).
 \]
 Since this holds for every such list, we indeed have that the composition is preserved.
 \end{proof}
@@ -1731,8 +1730,8 @@ Since this holds for every such list, we indeed have that the composition is pre
 
 \begin{exer}[\cref{sol:functor_prod_on_left}]\label{exer:functor_prod_on_left}
   Let $A \in \Ob\SET$.
-  Construct a functor $(\times A) : \SET \to \SET$ that, on objects, is given by
-  \[ (\times A) X := X \times A. \]
+  Construct a functor $(A \times -) : \SET \to \SET$ that, on objects, is given by
+  \[ (A \times -) X := A \times X. \]
 \end{exer}
 
 
@@ -1799,7 +1798,7 @@ Notice that a functor is a function between categories which preserves the struc
 \begin{exer} Show that $\Id[\CC]$ (defined in \cref{example:functor_id}) satisfies the properties of a functor, i.e. $\Id[\CC]$ is indeed a functor.
 \end{exer}
 
-\begin{exa}\label{example:functor_comp} Let $\CC,\DD$ and $\EE$ be  categories and $F:\CC\to\DD$ and $G:\DD\to\EE$ functors. The \textbf{composition functor of $F$ with $G$}, denoted by $F\Comp G$, is the functor specified by the following data:
+\begin{exa}\label{example:functor_comp} Let $\CC,\DD$ and $\EE$ be  categories and $F:\CC\to\DD$ and $G:\DD\to\EE$ functors. The \textbf{composition functor of $F$ with $G$}, denoted by $\co{F}{G}$, is the functor specified by the following data:
 \begin{itemize}
 \item The function on objects is given by
 \[
@@ -1812,7 +1811,7 @@ Notice that a functor is a function between categories which preserves the struc
 \end{itemize}
 \end{exa}
 
-\begin{exer} Show that $F\Comp G$ (defined in \cref{example:functor_comp}) satisfies the properties of a functor, i.e. $F\Comp G$ is indeed a functor.
+\begin{exer} Show that $\co{F}{G}$ (defined in \cref{example:functor_comp}) satisfies the properties of a functor, i.e. $\co{F}{G}$ is indeed a functor.
 \end{exer}
 
 \begin{dfn} The \textbf{category of categories}, denoted by $\CAT$, is the category specified by the following data:
@@ -2718,8 +2717,8 @@ data Tree a = Leaf | Node (Tree a) a (Tree a)
   F_A : \SET \to \SET : X \mapsto A \times \List(X).
   \]
   Note that $F_A$ is a composition of functors we know: the list functor of
-  \cref{example:functor_list} followed by the functor $(A \times -)$ of
-  \cref{exer:functor_prod_on_left}.
+  \cref{example:functor_list} followed by the functor $X \mapsto A \times X$,
+  constructed as in \cref{exer:functor_prod_on_left}.
 
   Show that the initial $F_A$-algebra is given by the set $\mathsf{Rose}(A)$ of
   \emph{rose trees}: finitely branching trees with an element of $A$ at each
@@ -3681,7 +3680,7 @@ That $\alpha$ and $\alpha^{-1}$ are inverses of each other follows from the foll
 \alpha(\alpha^{-1}(f)) = \alpha(\co{F(f)}{\epsilon_Y}) =& \co{\eta_X}{G(\co{F(f)}{\epsilon_Y})} &\text{ by definition, }\\
 	=& \co{\eta_X}{(\co{GF(f)}{G\epsilon_Y})} &\text{ by functoriality of $G$},\\
 	=& \co{(\co{\eta_X}{GF(f)})}{G\epsilon_Y} &\text{ by associativity},\\
-	=& \co{(\co{f}{\eta_{GY})}}{G\epsilon_Y} &\text{ by naturality of $\eta$}\\
+	=& \co{(\co{f}{\eta_{GY}})}{G\epsilon_Y} &\text{ by naturality of $\eta$}\\
 	=& \co{f}{(\co{\eta_{GY}}{G\epsilon_Y})} &\text{ by associativity}\\
 	=& f &\text{by triangle identity}.
 \end{eqnarray*}
@@ -4084,7 +4083,7 @@ That the composition of morphisms is preserved also holds by definition because 
 \end{proof}
 \end{lemma}
 
-The forgetful functor $Forget$ from $\MON$ to $\SET$ forgets the \textit{algebraic} structure of a monoid and since there are multiple monoid structures on the same set (give an example!), we do not have that there exists some functor $G: \SET\to \MON$ such that $Forget\Comp G$ is the identity on $\MON$. However, to each set, one can define a monoid which satisfies an important property (this is \cref{prop:UVP_forget_montoset}). The associated monoid is called the \textit{free monoid}:
+The forgetful functor $Forget$ from $\MON$ to $\SET$ forgets the \textit{algebraic} structure of a monoid and since there are multiple monoid structures on the same set (give an example!), we do not have that there exists some functor $G: \SET\to \MON$ such that $\co{Forget}{G}$ is the identity on $\MON$. However, to each set, one can define a monoid which satisfies an important property (this is \cref{prop:UVP_forget_montoset}). The associated monoid is called the \textit{free monoid}:
 \begin{exa} Let $X$ be a set. The \textbf{free monoid generated by $X$}, denoted by $Free(X)$, is specified by the following data:
 \begin{itemize}
 \item The underlying set consists of all finite sequences/strings of elements in $X$ (including the empty sequence).
@@ -4117,18 +4116,18 @@ For any set $X$, we have the \textit{canonical function}
 Free^{X}_{!}: X\to Free(X): x\mapsto (x).
 \]
 This function satisfies the property that any function from $X$ to an arbitrary monoid corresponds with a unique morphism (of monoids) from the free monoid generated by $X$ to that monoid:
-\begin{prop}\label{prop:UVP_forget_montoset} Let $(M,m,e)$ be a monoid and $X$ be a set. For any morphism $f \in \CHom{\SET}{X}{M}$ (i.e. a function), there exists a unique  morphism $\phi^{f} \in \CHom{\MON}{Free(X)}{(M,m,e)}$, such that $f = Free^{X}_{!}\Comp \phi^{f}$.
+\begin{prop}\label{prop:UVP_forget_montoset} Let $(M,m,e)$ be a monoid and $X$ be a set. For any morphism $f \in \CHom{\SET}{X}{M}$ (i.e. a function), there exists a unique  morphism $\phi^{f} \in \CHom{\MON}{Free(X)}{(M,m,e)}$, such that $f = \co{Free^{X}_{!}}{\phi^{f}}$.
 \begin{proof}
 For elements $a,b\in M$, we denote their multiplication by $a\times b := m(a,b)$ (note that by associativity we have that $a_1\times a_2\times\cdots\times a_n$ is well-defined). Let $f\in \CHom{\SET}{X}{M}$ be a function. Define
 \[
 \phi^{f}: Free(X)\to (M,m,e): (x_1,\cdots,x_n)\mapsto f(x_1) \times\cdots \times f(x_n),
 \]
 We have to define separately what happens with the empty sequence. The empty sequence we map to the identity element $e$, so in particular we have that the identity element is preserved under $\phi^{f}$, so in order to conclude that $\phi^{f}$ is a morphism of monoids, it remains to show that it preserves the binary operation but this is clear by definition.\\
-That $f = Free^{X}_{!}\Comp \phi^{f}$ holds follows immediately by the definition of $Free^{X}_{!}$ and $\phi^{f}$, indeed:
+That $f = \co{Free^{X}_{!}}{\phi^{f}}$ holds follows immediately by the definition of $Free^{X}_{!}$ and $\phi^{f}$, indeed:
 \[
-\left(Free^{X}_{!}\Comp \phi^{f}\right)(x) = \phi^{f}\left((x)\right) = f(x).
+\left(\co{Free^{X}_{!}}{\phi^{f}}\right)(x) = \phi^{f}\left((x)\right) = f(x).
 \]
-So it only remains to show uniqueness. Assume that $\psi$ also satisfies $Free^{X}_{!}\Comp \psi = f$. The claim now follows because $\psi$ is a morphism of monoids, indeed: Since $\psi$ is a morphism of monoids, we have that it preserves the multiplication, but the multiplication is given by concatenation, hence, we have that $\psi$ is uniquely determined by the images of the sequences of length $1$ (and length $0$, but this sequence of length $0$ should be mapped under $\psi$ to $e$). But a sequence of length $1$ is of the form $(x) = Free^{X}_{!}(x)$. So the claim indeed follows by the following computation:
+So it only remains to show uniqueness. Assume that $\psi$ also satisfies $\co{Free^{X}_{!}}{\psi} = f$. The claim now follows because $\psi$ is a morphism of monoids, indeed: Since $\psi$ is a morphism of monoids, we have that it preserves the multiplication, but the multiplication is given by concatenation, hence, we have that $\psi$ is uniquely determined by the images of the sequences of length $1$ (and length $0$, but this sequence of length $0$ should be mapped under $\psi$ to $e$). But a sequence of length $1$ is of the form $(x) = Free^{X}_{!}(x)$. So the claim indeed follows by the following computation:
 \[
 \psi((x)) = \psi(Free^{X}_{!}(x)) = f(x) = \phi^{f}(Free^{X}_{!}(x)) = \phi^{f}((x)).
 \]
@@ -4559,14 +4558,14 @@ Since $f(x_1)=f(x_2)$, we have $\co{g_1}{f} = \co{g_2}{f}$. But $f$ is a monomor
 \end{solution}
 
 \begin{solution}[\cref{exer:sections_in_set_injective}]\label{sol:sections_in_set_injective}
-Let $f:X\to Y$ be a section with a retraction $h:Y\to X$, i.e. $\co{f}{h} = \Id[Y]$. By \cref{ex:mono-inj}, it suffices to show that $f$ is a monomorphism. Let  $g_1, g_2 : Z \to X$ be morphisms in $\SET$ such that $\co{g_1}{f} = \co{g_2}{f}$. We have to show $g_1=g_2$, which follows from the following computation:
+Let $f:X\to Y$ be a section with a retraction $h:Y\to X$, i.e. $\co{f}{h} = \Id[X]$. By \cref{ex:mono-inj}, it suffices to show that $f$ is a monomorphism. Let  $g_1, g_2 : Z \to X$ be morphisms in $\SET$ such that $\co{g_1}{f} = \co{g_2}{f}$. We have to show $g_1=g_2$, which follows from the following computation:
 \begin{eqnarray*}
-g_1 =& \co{g_1}{\Id[Y]} & \text{ by unit law},\\
+g_1 =& \co{g_1}{\Id[X]} & \text{ by unit law},\\
 	=& \co{g_1}{(\co{f}{h})} & \text{ since $f$ section},\\
 	=& \co{(\co{g_1}{f})}{h} & \text{ by associativity},\\
 	=&  \co{(\co{g_2}{f})}{h} & \text{ by assumption},\\
 	=& \co{g_2}{(\co{f}{h})} & \text{ by associativity},\\
-	=& \co{g_2}{\Id[Y]} & \text{ since $f$ section},\\
+	=& \co{g_2}{\Id[X]} & \text{ since $f$ section},\\
 	=& g_2 & \text{ by unit law}.
 \end{eqnarray*}
 Notice that this proof shows that in an arbitrary category, a section is always a monomorphism.
@@ -4877,7 +4876,7 @@ We will use these, along with an additional lemma (Lemma \ref{lemma}), to show t
 Starting from equation \ref{co_f1}, we derive
 \begin{align*}
  &\quad \co {\inl} {f} = \inr' \\
-\implies&\qquad \text{\{ By \ref{co_g1} \}} \\
+\implies&\qquad \text{\{ By \ref{co_g2} \}} \\
  &\quad \co {(\co {\inr'} {g})} {f} = \inr'  \\
 \implies&\qquad \text{\{ Associativity \}} \\
  &\quad \co {\inr'} {(\co {g} {f})} = \inr'
@@ -4886,7 +4885,7 @@ Starting from equation \ref{co_f1}, we derive
 And starting from equation \ref{co_f2}, we derive
 \begin{align*}
  &\quad \co {\inr} {f} = \inl' \\
-\implies&\qquad \text{\{ By \ref{co_g2} \}} \\
+\implies&\qquad \text{\{ By \ref{co_g1} \}} \\
  &\quad \co {(\co {\inl'} {g})} {f} = \inl'  \\
 \implies&\qquad \text{\{ Associativity \}} \\
  &\quad \co {\inl'} {(\co {g} {f})} = \inl'
@@ -5289,7 +5288,7 @@ For each function $f\in\CHom{\Ob \SET}{X}{Cont^R(Y)}$, we define:
 \begin{align*}
 f^{*} : Cont^R(X) \to Cont^R(Y) : i \mapsto \lambda (j:Y\to R), i(f(-)(j)).
 \end{align*}
-Notice that this is indeed well-defined: Let $i\in Cont^R(X)$, i.e. $i:(X\to R)\to R$. Then $f^{*}(i) : (Y\to R)\to R$. Let $j:Y\to R$. Then $f(-)(j) : X\to R$, hence we can apply it to $i$ and we have $i\left(f(-)(j)\right)\in R$.
+Notice that this is indeed well-defined: Let $i\in Cont^R(X)$, i.e. $i:(X\to R)\to R$. Then $f^{*}(i) : (Y\to R)\to R$. Let $j:Y\to R$. Then $f(-)(j) : X\to R$, hence we can apply $i$ to it and we have $i\left(f(-)(j)\right)\in R$.
 
 Let $i\in Cont^R(X)$. We now show that this data satisfies the properties of a Kleisli triple:
 \begin{enumerate}
@@ -5368,7 +5367,7 @@ We now show that this data satisfies the properties of a Kleisli triple:
 This indeed follows, yet again by functional extensionality. Let $r\in R$. We calculate both the left and right-hand side:
 \begin{align*}
 LHS =& (\co{f}{g^{*}})^{*}(\phi)(r)\\
-	=& \co{g^{*}}{f}(\phi(r))(r)\\
+	=& (\co{f}{g^{*}})(\phi(r))(r)\\
 	=& g^{*}\left(f(\phi(r))\right)(r)\\
 	=& g\left(f(\phi(r))(r)\right)(r).
 \end{align*}
@@ -5696,7 +5695,7 @@ which completes the proof.
 	\[ X + Y = \{ (x,0) \mid x \in X \} \cup  \{ (y,1) \mid y \in Y \}. \]
 	The left and right projections are defined as follows:
 	\[ \pi_l : \{ ((x,0),x) \mid x \in X \} \subseteq (X + Y) \times X, \]
-	\[ \pi_r : \{ ((y,1),y) \mid y \in Y \} \subseteq (X + Y) \times X. \]
+	\[ \pi_r : \{ ((y,1),y) \mid y \in Y \} \subseteq (X + Y) \times Y. \]
 	Now we need to show that for each set $Z$ and relations $q_l \subseteq Z \times X$ and $q_r \subseteq Z \times Y$, there exists a unique relation $f \subseteq Z \times (X + Y)$ such that $\pi_l \circ f = q_l$ and $\pi_r \circ f = q_r$.
 	We define $f$ as follows:
 	\begin{align*}
@@ -5708,7 +5707,7 @@ which completes the proof.
 	To show uniqueness, we need to show that for each relation $g \subseteq Z \times (X + Y)$ such that $\pi_l \circ g = q_l$ and $\pi_r \circ g = q_r$.
 	Using the definition of composition in $\REL$ we have:
 	\begin{align*}
-		\pi_1 \circ g & = \{ (z,x) \in Z \times X \mid
+		\pi_l \circ g & = \{ (z,x) \in Z \times X \mid
 		\begin{aligned}[t]
 			& (\exists x' \in X \text{ s.t. } (z, (x',0)) \in g \wedge ((x',0),x) \in \pi_l) \vee \\
 			& (\exists y \in Y \text{ s.t } (z,(y,1)) \in g \wedge ((y,1),x) \in \pi_l) \}
@@ -5716,7 +5715,7 @@ which completes the proof.
 		& = \{ (z,x) \in Z \times X \mid \exists x' \in X \text{ s.t. } (z, (x',0)) \in g \wedge ((x',0),x) \in \pi_l \} \\
 		& = \{ (z,x) \in Z \times X \mid (z, (x,0)) \in g \}.
 	\end{align*}
-	Since $\pi_1 \circ g = q_l$, $q_l = \{ (z,x) \in Z \times X \mid (z, (x,0)) \in g \}$. Similarly, from $\pi_2 \circ g = q_r$, we get $q_r = \{ (z,y) \in Z \times Y \mid (z, (y,1)) \in g \}$. By substituting these in the definition of $f$, we get $f = g$.
+	Since $\pi_l \circ g = q_l$, $q_l = \{ (z,x) \in Z \times X \mid (z, (x,0)) \in g \}$. Similarly, from $\pi_r \circ g = q_r$, we get $q_r = \{ (z,y) \in Z \times Y \mid (z, (y,1)) \in g \}$. By substituting these in the definition of $f$, we get $f = g$.
 \end{solution}
 
 \begin{solution}[\cref{exer:product_dcpo}]\label{sol:product_dcpo}
@@ -5803,7 +5802,7 @@ which completes the proof.
 
 	We have to prove that for all $ B \in \Ob\CC $ with morphisms $ l: B \to A $ and $ r: B \to T $, there exists a unique morphism $ f: B \to A $ such that $ \projl \circ f = l $ and $ \projr \circ f = r $. To that end, let $ B \in \Ob\CC $ be such an object with morphisms $ l $ and $ r $.
 
-	To prove existence, we take $ f = l $. Then we have $ \projl \circ f = \Id[A] \circ l = l $. Since $ T $ is a terminal object, the morphism $ B \to T $ is unique, so $ l = \projr \circ f $.
+	To prove existence, we take $ f = l $. Then we have $ \projl \circ f = \Id[A] \circ l = l $. Since $ T $ is a terminal object, the morphism $ B \to T $ is unique, so $ r = \projr \circ f $.
 
 	To prove uniqueness of $ f $, suppose that there exists also another morphism, $ f^\prime: B \to A $ such that $ \projl \circ f^\prime = l $. Then we have
 	\[ f^\prime = \Id[A] \circ f^\prime = \projl \circ f^\prime = l = f, \]
@@ -6102,7 +6101,7 @@ which completes the proof.
 				                          & = (l \circ (1_\NN \times f)) (n, ns) & \text{since $f$ is a morphism}  \\
 				                          & = l (n, f\ ns)                              & \text{by definition of $\circ$} \\
 				                          & = l (n, g\ ns)                              & \text{by induction hypothesis}  \\
-				                          & = (l \circ 1_\NN \times g) (n, ns)   & \text{by definition of $\circ$} \\
+				                          & = (l \circ (1_\NN \times g)) (n, ns)   & \text{by definition of $\circ$} \\
 				                          & = (g \circ \cons) (n, ns)           & \text{since $g$ is a morphism}  \\
 				                          & = g (\cons (n, ns))                 & \text{by definition of $\circ$}
 			\end{align*}
@@ -6147,7 +6146,7 @@ which completes the proof.
 		\item The first preservation property says that the composition of functions (morphisms in $\SET$), is preserved.
 		That is, for every triple of sets $X, Y, Z \in \Ob{\SET}$, and functions $f : \SET(X, Y)$ and $g : \SET(Y, Z)$, we have to show the following:
 		On the one hand, we can apply our functor (or the data at least) to the composite $g \circ f$.
-		On the other, we can first apply our functor to $f$ (that is $A \times f = (A \times -)(f)$), and then (pre)compose with $A \times g = (A \times -)(g)$.
+		On the other, we can first apply our functor to $f$ (that is $A \times f = (A \times -)(f)$), and then (post)compose with $A \times g = (A \times -)(g)$.
 		Diagrammatically, we have:
 		\[
 			\begin{tikzcd}
