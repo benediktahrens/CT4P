@@ -3151,6 +3151,34 @@ F(Y) \arrow[r,swap, "\alpha_Y"] & G(Y)
 \end{center}
 \end{nota}
 
+The square is worth reading out.
+A natural transformation gives us, for each object $X$, a morphism $\alpha_X$
+from $F(X)$ to $G(X)$.
+The naturality condition says that these morphisms fit together.
+Given $f : X \to Y$ there are two ways to get from $F(X)$ to $G(Y)$: apply
+$\alpha_X$ and then move along $f$ in $G$, or move along $f$ in $F$ and then
+apply $\alpha_Y$.
+Naturality says that the two agree.
+In short: it makes no difference whether we transform first and then move, or
+move first and then transform.
+
+\begin{intu}
+  This is where the claim about parametric polymorphism comes from.
+  A polymorphic function such as |reverse :: [a] -> [a]| is one program, used
+  at every type |a|.
+  It cannot look at the elements of the list, because it does not know what
+  they are; all it can do is rearrange them.
+  So renaming the elements with some |f :: a -> b| and then reversing gives the
+  same list as reversing and then renaming:
+  |map f . reverse == reverse . map f|.
+  That is the naturality square for |reverse|, with $F = G = \List$
+  (\cref{example:functor_list}) and $\alpha_X$ the function |reverse| at type
+  |[a]|.
+  The same holds for |concat|, |take n|, and the rest.
+  A function that could inspect its elements, and act differently on what it
+  found, would break the square.
+\end{intu}
+
 \begin{exer}
 Construct a natural transformation from the $\Maybe$ functor to the $\List$ functor, and conversely.
 \end{exer}
@@ -3272,15 +3300,32 @@ Hint: Write the equality as a (not-known commutative) square.
 \end{exer}
 
 \section{Equivalence of Categories}
-Recall that objects $X,Y\in\Ob{\CC}$ are isomorphic if there exist morphisms $f\in\CHom{\CC}{X}{Y}$ and $g\in\CHom{\CC}{Y}{X}$ such that $\co{f}{g} = \Id[X]$ and $\co{g}{f} = \Id[Y]$. So in particular we have the notion of an isomorphism in the category $\CAT$ of categories. Spelled out, this means categories $\CC$ and $\DD$ are isomorphic if there exist functors $F:\CC\to\DD$ and $G:\DD\to\CC$ such that $\co{F}{G}= \Id[\CC]$ and $\co{G}{F} = \Id[\DD]$.\\
-However, the following exercise shows that isomorphism of categories is not the correct notion of \textit{equivalence/sameness} between categories:\\
-Let $\FINSET$ be the category whose objects are given by finite sets and whose morphisms are given by functions\footnote{Notice that the objects of $\FINSET$ form a subset of the objects of $\SET$, but given any two finite sets $X,Y \in \Ob{\FINSET}$, we have $\CHom{\FINSET}{X}{Y}$ = $\CHom{\SET}{X}{Y}$. We say in this case that $\FINSET$ is a (full) subcategory of $\SET$.}. That this is a category follows since $\SET$ is a category.\\
-Let $\Catb{FinOrd}$ be the category whose objects are given by sets of the form
+
+Two categories can be built quite differently and still carry the same
+mathematics.
+Isomorphism is the obvious way to say that they are the same, but for
+categories it turns out to be too strict.
+This section shows why, and gives the notion that replaces it.
+
+Recall that objects $X,Y\in\Ob{\CC}$ are isomorphic if there exist morphisms $f\in\CHom{\CC}{X}{Y}$ and $g\in\CHom{\CC}{Y}{X}$ such that $\co{f}{g} = \Id[X]$ and $\co{g}{f} = \Id[Y]$.
+In particular this gives a notion of isomorphism in the category $\CAT$ of categories.
+Spelled out, categories $\CC$ and $\DD$ are isomorphic if there are functors $F:\CC\to\DD$ and $G:\DD\to\CC$ with $\co{F}{G}= \Id[\CC]$ and $\co{G}{F} = \Id[\DD]$.
+
+The following example shows that this is not the right notion of sameness for categories.
+
+Let $\FINSET$ be the category whose objects are the finite sets and whose morphisms are the functions between them\footnote{Notice that the objects of $\FINSET$ form a subset of the objects of $\SET$, but given any two finite sets $X,Y \in \Ob{\FINSET}$, we have $\CHom{\FINSET}{X}{Y}$ = $\CHom{\SET}{X}{Y}$. We say in this case that $\FINSET$ is a (full) subcategory of $\SET$.}.
+That this is a category follows since $\SET$ is one.
+
+Let $\Catb{FinOrd}$ be the category whose objects are the sets
 \[
 [n] := \left\{0,1,\cdots,n-1\right\},
 \]
-and whose morphisms are given by functions between these sets.\\
-Every finite set $X$ is always in bijection with a set of the form $[n]$ (where $n$ is the size $\vert X\vert$ of $X$). For each set $X$, we fix a bijection $\phi^X: X\to [\vert X\vert]$. Consequently, we have a functor:
+and whose morphisms are the functions between these sets.
+
+The two categories hold the same information.
+Every finite set $X$ is in bijection with some $[n]$, namely with $n$ the size $\vert X\vert$ of $X$.
+For each finite set $X$ we fix such a bijection $\phi^X: X\to [\vert X\vert]$.
+This gives us a functor:
 \begin{dfn} Let $U: \FINSET\to \Catb{FinOrd}$ be the functor specified by the following data:
 \begin{itemize}
 \item For $X\in \Ob{\FINSET}$, we define $U(X) := [\vert X\vert]$.
@@ -3331,6 +3376,12 @@ Motivated by the remark, we define:
 \]
 \end{dfn}
 
+The definition replaces the two equalities of functors by natural isomorphisms.
+This is the same move as in \cref{sec:isos}: equality of objects is the wrong
+question to ask, and isomorphism is the right one.
+Here the objects in question are functors, and the isomorphisms are the natural
+ones.
+
 So, although $U$ is not an isomorphism, it does induce an equivalence of categories:
 \begin{exer} Show that $U$ induces an equivalence of categories.
 \end{exer}
@@ -3358,10 +3409,36 @@ then we can fix some $x$ such that $P(x)$ holds.
 
 \section{Representable Functors}
 
-Representable functors are functors into $\SET$ which are isomorphic to the so-called hom-functors \cref{exer:covariant-hom,exer:contravariant-hom}.
-\cref{exer:coproducts-as-representable} illustrates that universal properties can be described in terms of representables.
-\cref{exer:forgetful-functor-is-representable} illustrates that free constructions can be described in terms of representables.
-\cref{exer:representables-on-posets} illustrates that objects in a category are completely determined by their representable functors.
+Fix an object $x$ of $\CC$.
+The hom-functor $\CC(x,-)$ records, for each object $y$, the set of morphisms
+from $x$ to $y$, and how these sets change as we move along the morphisms of
+$\CC$.
+It is the category as seen from $x$.
+
+A functor $F : \CC \to \SET$ is representable if it is isomorphic to such a
+view: there is an object $c$ with $F(y) \cong \CC(c,y)$ for every $y$,
+naturally in $y$.
+When this happens, all of $F$ is held by the single object $c$, and questions
+about $F$ turn into questions about $c$.
+The hom-functors themselves are defined in
+\cref{exer:covariant-hom,exer:contravariant-hom}.
+
+Being able to say this is useful for two reasons.
+First, universal properties are statements of exactly this kind.
+Saying that $x$ and $y$ have a coproduct is the same as saying that the functor
+$\CC(-,x)\times\CC(-,y)$ is representable
+(\cref{exer:coproducts-as-representable}), and the representing object is the
+coproduct.
+We met the same phenomenon for products in \cref{exer:product-represent}.
+Second, free constructions are of this kind too.
+The forgetful functor $U : \MON\to\SET$ is representable, and so is
+$\SET(A,U-)$, whose representing object is the free monoid on $A$
+(\cref{exer:forgetful-functor-is-representable}).
+
+Behind all of this is the idea that an object is determined by the morphisms
+into it, or out of it, that is, by how the rest of the category sees it.
+\Cref{exer:representables-on-posets} is a small case where this can be checked
+by hand.
 
 \begin{exer}
 \label{exer:covariant-hom}
