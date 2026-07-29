@@ -457,6 +457,25 @@ The definition of categories is also given in \cite[\S 2.1]{barr-wells}. Plenty 
   It also introduces the notion of ``diagram'', which we do not use in the present notes.
 \end{reading*}
 
+Category theory starts from a simple observation.
+In many parts of mathematics and computer science we study a collection of
+objects together with maps between them: sets and functions, posets and
+monotone maps, monoids and monoid homomorphisms, types and programs.
+In each of these settings maps can be composed, composition is associative, and
+every object has an identity map that does nothing.
+A category is what is left when we throw away everything else.
+
+We gain a lot by throwing away so much.
+Anything we prove from the definition alone holds in all these settings at
+once, and in many more.
+The price is that we can no longer look inside an object.
+A category does not know that a set has elements, or that a type has values.
+Its morphisms need not be functions, and there is no way to apply one to an
+argument.
+Everything has to be said in terms of morphisms and composition.
+Much of the work in the coming chapters is learning to say, in this restricted
+language, things we are used to saying with elements.
+Often the restricted version turns out to be the better one.
 
 \section{Definition}
 
@@ -488,15 +507,6 @@ Moreover, this data should satisfy the following properties:
 \]
 \end{enumerate}
 \end{dfn}
-
-% \begin{intu} So what does a category represent? There are (at least) $3$ possible ways how one can think about this definition:
-% \begin{enumerate}
-% \item A category represents a type system in the sense that the objects are the types and each hom-set is the type\footnote{In this case, each hom-set is a type, so isn't each hom-set an object again? Categories which satisfy such a property are called \textit{cartesian closed}.} of functions. See \cref{example:hask}.
-% \item A category represents a \textit{bag} of instances of a particular mathematical structure (e.g. sets with a notion of addition). The objects are then instances of such a mathematical theory (e.g. $(\mathbb{N},+)$) and the morphisms are structure preserving functions (e.g. functions $f$ which satisfy $f(x+y) = f(x) + f(y)$). See \cref{example:set,example:poset,monoidcategory}.
-% \item A category represents a directed graph in the sense that an object is a vertex and a morphism is an edge.
-% \item Anything (almost at least) can be seen as a category in some exotic way.
-% \end{enumerate}
-% \end{intu}
 
 \begin{nota} Let $\CC$ be a category.
 \begin{itemize}
@@ -530,6 +540,38 @@ We say that such a square \textbf{commutes} if $\co{f_1}{g_1} = \co{f_2}{g_2}$.
 \end{nota}
 
 \section{Examples of categories}
+
+Examples of categories come in three quite different flavours, and it helps to
+know this from the start.
+
+In the first flavour, an object is an instance of some mathematical structure,
+and a morphism is a map that preserves that structure: sets and functions
+(\cref{example:set}), posets and monotone maps (\cref{example:poset}), monoids
+and monoid homomorphisms (\cref{exer:category_of_monoids}), Haskell types and
+Haskell functions (\cref{example:hask}).
+These are the examples that motivate the definition.
+In them, a morphism really is something like a function.
+
+In the second flavour, a \emph{single} structure is itself seen as a category.
+A preorder $(X,\leq)$ becomes a category whose objects are the elements of $X$,
+with one morphism from $x$ to $y$ when $x \leq y$ and none otherwise
+(\cref{example:posetcategories}).
+A monoid becomes a category with one object, whose morphisms are the elements
+of the monoid (\cref{monoidcategory}).
+Here a morphism is not a function at all.
+It is a witness for an inequality, or an element of a monoid.
+These examples can feel like a trick at first, and they are worth spending time
+on.
+They are also where much of the power of the definition lies: one theorem about
+all categories says something about preorders and something about monoids at
+the same time.
+
+In the third flavour, a category is built from syntax.
+From a directed graph we form the category whose objects are the vertices and
+whose morphisms are the paths.
+Such categories are small and fully explicit.
+We use them again and again to test whether a general definition does what we
+expect, and to build counterexamples when it does not.
 
 \begin{exa}\label{example:set} The \textbf{category of sets}, denoted by $\SET$, is the category specified by the following data:
 \begin{itemize}
@@ -869,11 +911,12 @@ M ,\quad \text{ if } i=j,\\
   Define a category $\MON$ whose objects are monoids, i.e. define a suitable notion of morphism between monoids and moreover show that this indeed defines a category.
 \end{exer}
 
-Every category gives rise to a second one, obtained by leaving the objects alone
-and reading all the arrows backwards.
-This may look like a triviality, but it is one of the most economical devices in
-category theory: in \cref{sec:duality} we use it to obtain whole families of
-definitions, and of theorems, for free.
+Every category gives rise to a second one: keep the objects, and read all the
+arrows backwards.
+This looks like a triviality.
+It is in fact one of the most useful devices in category theory.
+In \cref{sec:duality} we use it to get whole families of definitions, and of
+theorems, for free.
 
 \begin{exer}[\cref{sol:opposite}]\label{exer:opposite}
   Let $\CC$ be a category. Define a category $\op\CC$ such that
@@ -1007,6 +1050,13 @@ Describe the connection between the categories generated by graphs and the categ
   Also, \cite[\S 2.2]{pierce} briefly discusses isomorphisms.
 \end{reading*}
 
+A category gives us no access to the elements of an object, so asking whether
+two objects are \emph{equal} is of little use.
+The best we can do is ask whether the category can tell them apart.
+The definition below makes this precise.
+It is the right notion throughout: almost every uniqueness statement in these
+notes, for initial objects, for products, for adjoints, is uniqueness up to
+isomorphism rather than up to equality.
 
 \begin{dfn}[Isomorphism]
   Given a category $\CC$, objects $a,b \in \Ob{\CC}$ and a morphism $f : a \to b$ in $\CC$, we say that $f$ is an \textbf{isomorphism} when there is a morphism $g : b \to a$ (in the other direction!) such that $f \Comp g = \Id$ and $g \Comp f = \Id$.
@@ -1220,14 +1270,15 @@ Identify an initial object in the category $\REL$ and show that it is initial.
 \section{Terminal Objects}
 \label{sec:terminal-objects}
 
-Reversing the direction of the arrows in the definition of an initial object
-yields a second universal property, just as fundamental as the first.
-Instead of asking for a unique morphism \emph{out of} an object, we ask for a
-unique morphism \emph{into} it.
-Everything in this section is a mirror image of the previous one --- including
-the exercises and their solutions.
-We make this precise in \cref{sec:duality}; for the moment it is worth solving
-the exercises by hand, and noticing the pattern as it emerges.
+Reverse the arrows in the definition of an initial object and you get a second
+universal property, just as basic as the first.
+Instead of a unique morphism \emph{out of} an object, we ask for a unique
+morphism \emph{into} it.
+Everything in this section mirrors the previous one, including the exercises
+and their solutions.
+We make this precise in \cref{sec:duality}.
+For now it is worth solving the exercises by hand and watching the pattern
+appear.
 
 \begin{dfn}
   Let $\CC$ be a category. An object $B \in \Ob{\CC}$ is \textbf{terminal} (or \textbf{final}) if there is exactly one morphism to $B$ from any object $A \in \Ob{\CC}$.
@@ -1323,67 +1374,67 @@ the exercises by hand, and noticing the pattern as it emerges.
 \section{Duality}
 \label{sec:duality}
 
-The definitions of initial and terminal object are suspiciously similar: one
-asks for a unique morphism out of an object, the other for a unique morphism
-into it.
+The definitions of initial and terminal object look very alike: one asks for a
+unique morphism out of an object, the other for a unique morphism into it.
 Every exercise in \cref{sec:terminal-objects} has a counterpart in
-\cref{sec:initial-objects}, and if you solved both, you will have found yourself
-writing the same argument twice, with all arrows reversed.
-This is not a coincidence, and the phenomenon is worth making precise, since it
-recurs throughout these notes.
+\cref{sec:initial-objects}.
+If you solved both, you will have written the same argument twice, with all
+arrows reversed.
+This is no coincidence, and it happens again and again in these notes, so it is
+worth making precise.
 
-Recall the opposite category $\op\CC$ of \cref{exer:opposite}: it has the same
-objects as $\CC$, and a morphism from $X$ to $Y$ in $\op\CC$ is precisely a
-morphism from $Y$ to $X$ in $\CC$.
-Unwinding the definitions gives the observation you were asked to prove in
-\cref{exer:terminal_iff_initial_op}: an object $B$ is terminal in $\CC$ if and
-only if it is initial in $\op\CC$.
-We express this by saying that ``terminal'' is the \textbf{dual} notion of
-``initial''.
+Recall the opposite category $\op\CC$ of \cref{exer:opposite}.
+It has the same objects as $\CC$, and a morphism from $X$ to $Y$ in $\op\CC$ is
+a morphism from $Y$ to $X$ in $\CC$.
+Unfolding the definitions gives what you proved in
+\cref{exer:terminal_iff_initial_op}: an object $B$ is terminal in $\CC$ exactly
+when it is initial in $\op\CC$.
+We say that ``terminal'' is the \textbf{dual} notion of ``initial''.
 
-More generally, suppose a notion is defined purely in terms of objects,
-morphisms, identities, and composition --- as every notion in these notes is.
-Then we obtain its \emph{dual} notion by interpreting the very same definition
-in $\op\CC$ instead of in $\CC$.
-Concretely, dualising a definition amounts to reversing every arrow and
-reversing the order of every composite, while leaving the objects untouched.
-The dual of a notion is traditionally named by prefixing ``co'': a coproduct
+More generally, take any notion defined only in terms of objects, morphisms,
+identities and composition.
+Every notion in these notes is of this kind.
+Its \emph{dual} is what we get by reading the same definition in $\op\CC$
+instead of $\CC$.
+In practice, dualising a definition means reversing every arrow and reversing
+the order of every composite, leaving the objects alone.
+The dual of a notion is usually named by putting ``co'' in front: a coproduct
 (\cref{sec:coproducts}) is a product in the opposite category, and a coalgebra
 (\cref{sec:coinductive}) is an algebra in the opposite category.
-Since $\op{(\op\CC)} = \CC$, dualising twice returns us to where we started;
-so ``initial'' is equally well the dual of ``terminal'', and one could just as
-consistently have called initial objects ``coterminal''.
-A notion that is its own dual, such as that of a zero object
+Since $\op{(\op\CC)} = \CC$, dualising twice brings us back to where we
+started.
+So ``initial'' is just as much the dual of ``terminal'', and we could have
+called initial objects ``coterminal''.
+A notion that is its own dual, such as a zero object
 (\cref{dfn:zero-object}), is called \textbf{self-dual}.
 
 \begin{intu}[The duality principle]
   Duality gives us two theorems for the price of one.
   Suppose we have proved a statement $P$ that holds in \emph{every} category.
-  Whenever $\CC$ is a category, so is $\op\CC$; hence $P$ holds of $\op\CC$ in
-  particular.
-  Spelling out what $P$ says about $\op\CC$ in terms of $\CC$ yields the dual
-  statement --- which therefore also holds in every category, with no further
-  work.
+  If $\CC$ is a category then so is $\op\CC$, so $P$ holds of $\op\CC$ as well.
+  Writing out what $P$ says about $\op\CC$ in terms of $\CC$ gives the dual
+  statement.
+  It therefore holds in every category too, and we did no extra work.
 
-  For instance, \cref{exer:initial-unique} asks you to show that any two initial
+  For example, \cref{exer:initial-unique} asks you to show that any two initial
   objects of a category are isomorphic.
-  Applying that result to $\op\CC$ yields \cref{exer:terminal-unique} at once:
-  any two terminal objects are isomorphic.
-  Whenever you meet a ``co''-notion in what follows, it is worth pausing to ask
-  which statement you already know it is the mirror image of.
+  Applying that result to $\op\CC$ gives \cref{exer:terminal-unique} straight
+  away: any two terminal objects are isomorphic.
+  When you meet a ``co''-notion later on, ask yourself which statement you
+  already know it mirrors.
 \end{intu}
 
 \begin{rem}
   Duality is a statement about categories \emph{in general}, not about any
-  individual one.
-  It does \emph{not} say that a category has a terminal object whenever it has
-  an initial one, nor that the two coincide: in $\SET$ both exist but are very
-  different objects (\cref{exer:initial_set,exer:terminal_set}), and
+  single one.
+  It does \emph{not} say that a category with an initial object also has a
+  terminal one, nor that the two agree.
+  In $\SET$ both exist, but they are very different objects
+  (\cref{exer:initial_set,exer:terminal_set}), and
   \cref{exer:cat-without-terminal} asks for a category with no terminal object
   at all.
-  What duality says is that the two \emph{definitions} are mirror images of one
-  another, so that every theorem about all categories yields a dual theorem
-  about all categories.
+  Duality says that the two \emph{definitions} are mirror images, so that every
+  theorem about all categories gives a dual theorem about all categories.
 \end{rem}
 
 
@@ -1817,7 +1868,22 @@ In this chapter, we study two further universal properties: that of a
 \section{(Binary) Products}
 \label{sec:products}
 
+In $\SET$ we know what the product of two sets $A$ and $B$ should be: the set
+$A \times B$ of pairs $(a,b)$.
+But that description will not do here.
+It talks about elements, so it makes no sense in an arbitrary category.
+It also does not say why the set of pairs is the right answer: many other sets
+are in bijection with $A \times B$, and nothing so far tells us to prefer one
+over another.
 
+So we ask instead what pairs are good for.
+They are good for two things: we can read off each component of a pair, and we
+can build a pair by giving both components.
+The first gives us two projections out of the product.
+The second says that a morphism into the product is the same thing as a pair of
+morphisms, one into each factor.
+The definition below turns this into a requirement: such a morphism exists, and
+there is only one.
 
 \begin{dfn}\label{def:binproduct}
   Let $\CC$ be a category and let $A,B \in \Ob\CC$ be objects of $\CC$.
@@ -1840,7 +1906,49 @@ In this chapter, we study two further universal properties: that of a
   The morphism $f : Q \to A \times B$ determined by $(Q, q_1, q_2)$ is denoted by $\intoproduct { q_1} {q_2}$.
 \end{dfn}
 
+It helps to read the definition operationally.
+A triple $(Q,q_1,q_2)$ is a way of mapping out of $Q$ into $A$ and into $B$ at
+the same time, and the definition says that every such way goes through $P$, in
+exactly one way.
 
+Existence of $f$ says that $P$ is not too small: every pair of morphisms is
+within its reach, so nothing is lost by going through it.
+Uniqueness says that $P$ is not too big: a morphism into $P$ is fixed by what
+the two projections do to it, so $P$ holds no information beyond the two
+components.
+Together they say that $P$ is exactly what is needed, no less and no more.
+As for initial and terminal objects, this fixes $P$ up to isomorphism and no
+further (\cref{exer:product-unique}).
+
+In short: morphisms $Q \to A \times B$ are the same as pairs of morphisms
+$Q \to A$ and $Q \to B$.
+\Cref{exer:product-represent} makes this precise.
+
+\begin{intu}
+  In a category of types and programs, a product is the type of pairs, and the
+  universal property is the specification of pairing.
+  The projections $\projl$ and $\projr$ are |fst| and |snd|.
+  Given $q_1 : Q \to A$ and $q_2 : Q \to B$, the morphism
+  $\intoproduct{q_1}{q_2}$ is the program |\x -> (q1 x, q2 x)|.
+  The two triangles are the equations |fst (a,b) == a| and |snd (a,b) == b|:
+  the projections do what their names say.
+  Uniqueness says that a value of the product type is nothing more than its two
+  components.
+\end{intu}
+
+\begin{rem}
+  The last sentence needs a caveat for readers thinking of $\HASK$
+  (\cref{example:hask}).
+  Uniqueness of the mediating morphism amounts to the equation
+  $p = (\projl(p), \projr(p))$, called \emph{surjective pairing}.
+  It holds in $\SET$, and in $\DCPO$, where the product is the cartesian
+  product with the componentwise order (\cref{exer:product_dcpo}).
+  It fails for Haskell's pair type, which is \emph{lifted}: the value
+  |undefined| of type |(a,b)| is not the same as the pair
+  |(undefined, undefined)|, even though |fst| and |snd| cannot tell them apart.
+  So Haskell's |(,)| is only a weak product, just as its |Either| is only a
+  weak coproduct (see the discussion after \cref{exer:coproduct_dcpo}).
+\end{rem}
 
 \begin{exer}
   Does the category $\bullet$ have products?
@@ -2011,26 +2119,26 @@ A & Q \arrow[l, "q_l"]  \arrow[r,swap, "q_r"] & B
 \section{(Binary) Coproducts}
 \label{sec:coproducts}
 
-The definition below is obtained from that of a product
-(\cref{def:binproduct}) by reversing all the arrows, in the sense of
-\cref{sec:duality}: a coproduct of $A$ and $B$ in $\CC$ is exactly a product of
-$A$ and $B$ in $\op\CC$.
-Where a product comes with two projections \emph{out of} it and is characterised
-by the morphisms \emph{into} it, a coproduct comes with two injections
-\emph{into} it and is characterised by the morphisms \emph{out of} it.
+The definition below comes from that of a product (\cref{def:binproduct}) by
+reversing all the arrows, in the sense of \cref{sec:duality}: a coproduct of
+$A$ and $B$ in $\CC$ is a product of $A$ and $B$ in $\op\CC$.
+A product comes with two projections \emph{out of} it and is characterised by
+the morphisms \emph{into} it.
+A coproduct comes with two injections \emph{into} it and is characterised by
+the morphisms \emph{out of} it.
 
-The programming reading of the two is correspondingly opposite.
+The programming reading is reversed in the same way.
 A product is a type of pairs: to \emph{build} a value of $A \times B$ you must
-supply a value of $A$ and a value of $B$, which is exactly what the pairing
+give a value of $A$ and a value of $B$, which is what the pairing
 $\intoproduct{q_1}{q_2}$ does.
-A coproduct is a sum type: to \emph{consume} a value of $A + B$ you must say
-what to do in each of the two cases, which is exactly what the case analysis
+A coproduct is a sum type: to \emph{use} a value of $A + B$ you must say what
+to do in each of the two cases, which is what the case analysis
 $\outofcoproduct{i_l}{i_r}$ does.
 
-By duality, the results of this section can be read off from those of
-\cref{sec:products}, and so can their proofs.
-It is instructive to carry out the translation by hand for the first few
-exercises, and to trust the principle thereafter.
+By duality, the results of this section follow from those of
+\cref{sec:products}, and so do their proofs.
+Do the translation by hand for the first few exercises, and trust the principle
+after that.
 
 \begin{dfn}
    Let $\CC$ be a category and let $A,B \in \Ob\CC$ be objects of $\CC$.
@@ -2650,6 +2758,21 @@ induces a functor.
 
 \section{Fusion Property}\label{sec:fusion}
 
+Programs written in a compositional style often build data structures that are
+consumed straight away and then thrown out.
+The pipeline |sum . map (*2)| builds a whole list only to fold it away again.
+Getting rid of such intermediate structures is a standard optimisation in
+compilers for functional languages, and a standard step when deriving an
+efficient program from an obviously correct one.
+In both cases the question is when the change is safe.
+
+The fusion property answers this.
+It says that a catamorphism followed by a morphism $f$ is again a catamorphism,
+as long as $f$ is compatible with the two algebras involved.
+The new program traverses the data once instead of twice.
+What has to be checked is a single equation, relating the two algebras and $f$;
+it says nothing about the datatype, so it needs no proof by induction.
+
 The fusion property of \cref{exer:fusion-property} can be used to ``fuse'' a composition of functions into one function, possibly leading to more efficient code.
 
 We are going to exemplify this using the datatypes of lists and of natural numbers.
@@ -2752,29 +2875,31 @@ Y
   The paper \cite{DBLP:journals/scp/Malcolm90} by Malcolm contains further examples.
 \end{reading*}
 
-In \cref{sec:initial-algs}, we introduced (initial) algebras to model inductive
+In \cref{sec:initial-algs} we introduced (initial) algebras to model inductive
 types.
-In this chapter, we study the dual notion, in the sense of \cref{sec:duality}:
-(terminal) coalgebras, which allow us to define coinductive data types.
+In this chapter we study the dual notion, in the sense of \cref{sec:duality}:
+(terminal) coalgebras, which let us define coinductive data types.
 
-Dualising here amounts to reversing the structure map.
-An $F$-algebra is a morphism $F(X) \to X$: it says how to \emph{build} an
-element of $X$ out of $F$-shaped data, and initiality says that every element is
-built in exactly one way.
-An $F$-coalgebra is a morphism $X \to F(X)$: it says how to \emph{observe} one
-layer of $F$-shaped structure in an element of $X$, and terminality will say
-that an element is completely determined by what can be observed of it.
+Dualising here means reversing the structure map.
+An $F$-algebra is a morphism $F(X) \to X$.
+It says how to \emph{build} an element of $X$ from $F$-shaped data, and
+initiality says that every element is built in exactly one way.
+An $F$-coalgebra is a morphism $X \to F(X)$.
+It says how to \emph{observe} one layer of $F$-shaped structure in an element
+of $X$, and terminality will say that an element is fixed by what we can
+observe of it.
 
 This mirrors a distinction familiar from programming.
-An inductive type such as |[a]| is described by its constructors; it is
-generated from below, every value is finite, and we compute with it by
+An inductive type such as |[a]| is described by its constructors.
+It is built from below, every value is finite, and we compute with it by
 structural recursion, which terminates because the arguments get smaller.
-A coinductive type such as the type of infinite streams admits no such
-generating description --- there is no base case to descend to --- but its
-values can still be told apart by observation: we may ask for the head, then for
-the head of the tail, and so on indefinitely.
+A coinductive type such as the type of infinite streams has no such
+description.
+There is no base case to descend to.
+But its values can still be told apart by observation: we can ask for the head,
+then for the head of the tail, and so on without end.
 Terminal coalgebras make this precise, and explain why definitions by
-corecursion are legitimate even though the objects they produce are infinite.
+corecursion are sound even though the objects they produce are infinite.
 
 \begin{dfn} Let $F:\CC\to \CC$ be an endofunctor. An \textbf{$F$-coalgebra} consists of the following data:
 \begin{itemize}
