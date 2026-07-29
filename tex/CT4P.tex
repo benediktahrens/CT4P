@@ -3436,6 +3436,31 @@ Describe the representable functors on $\mathcal{L}$.
 \chapter{Adjunctions}
 \label{sec:adjunctions}
 
+We have already met two constructions that follow the same pattern, without
+saying so.
+
+The first is the free monoid (\cref{ch:forgetful-free}).
+\Cref{prop:UVP_forget_montoset} says that a function from a set $X$ to the
+underlying set of a monoid $M$ is the same thing as a monoid homomorphism from
+the free monoid on $X$ to $M$.
+Building a monoid out of $X$ and then mapping it into $M$ gives us no more, and
+no less, than mapping $X$ into $M$ and forgetting that $M$ is a monoid.
+
+The second is currying.
+A function $X \times Y \to Z$ is the same thing as a function
+$X \to \CHom{\SET}{Y}{Z}$: instead of taking both arguments at once, take the
+first and return a function waiting for the second.
+The map that puts the two back together is the evaluation of
+\cref{exa:currying}.
+
+In both cases there are two functors going in opposite directions, and a
+bijection between two sets of morphisms: the morphisms out of $F(X)$ in one
+category correspond to the morphisms into $G(Y)$ in the other.
+This is the pattern of the present chapter.
+A pair of functors related in this way is called an \emph{adjunction}.
+It is one of the central notions of category theory, and both examples above
+appear below as exercises.
+
 \begin{dfn} A pair $(F,G)$ of functors $F : \CC\to\DD, G:\DD\to\CC$ is called an \textbf{adjoint pair} if for every objects $X\in\Ob{\CC}$ and $Y\in\Ob{\DD}$, there exists a bijection
 \[
 \alpha_{X,Y} : \CHom{\DD}{F(X)}{Y} \to \CHom{\CC}{X}{G(Y)},
@@ -3454,6 +3479,33 @@ which are moreover natural in both $X$ and $Y$, i.e. for each $f\in\CHom{\CC}{X_
 If $(F,G)$ is an adjoint pair, we call $F$ the \textbf{left adjoint} of $G$ and we call $G$ the \textbf{right adjoint} of $F$ and we denote $F \dashv G$.
 \end{dfn}
 
+The names come from where the functors sit.
+In $\CHom{\DD}{F(X)}{Y}$ the functor $F$ is applied on the left of the hom-set,
+so $F$ is the left adjoint; in $\CHom{\CC}{X}{G(Y)}$ the functor $G$ is applied
+on the right, so $G$ is the right adjoint.
+
+The bijection on its own would be far too weak, which is why we also ask for
+the two squares.
+The first says what happens when we change $X$.
+Take $f : X_1 \to X_2$ and a morphism $g : F(X_2) \to Y$.
+We can precompose $g$ with $F(f)$ and then transport the result across the
+bijection, or transport $g$ first and then precompose with $f$.
+The square says that the two agree.
+The second square says the same for a change of $Y$: transporting commutes with
+postcomposing by $g : Y_1 \to Y_2$ on one side and by $G(g)$ on the other.
+So $\alpha$ is not just a bijection for each pair of objects; it is one that
+respects composition in both categories.
+
+\begin{intu}
+  Naturality rules out bijections that are put together by arbitrary choices,
+  one pair of objects at a time.
+  It forces $\alpha$ to be given by a single uniform rule, the same for all $X$
+  and $Y$.
+  In programming terms, |curry| and |uncurry| are polymorphic: they are written
+  once, and they cannot inspect the types they are used at.
+  The naturality squares are what that uniformity looks like in a category.
+\end{intu}
+
 \begin{exer} Let $F:\CC\to\DD$ be a functor. Show that if $F$ has a left (resp. right) adjoint $G$, then $G$ must be unique up to isomorphism\footnote{Isomorphism w.r.t the functor category.}.
 \end{exer}
 
@@ -3471,6 +3523,11 @@ has a right adjoint, which is given by the functor (induced by the following map
 \]
 Is there an analogous statement in the category $\COQ$ instead of $\SET$?
 \end{exer}
+
+The definition above talks about hom-sets, and about a bijection between them.
+There is an equivalent description that stays inside the two categories and
+mentions only two morphisms and two equations.
+It is usually easier to check, and easier to compute with.
 
 \begin{thm} Let $(F,G)$ be a pair of functors $F : \CC\to\DD, G: \DD\to\CC$. The following statements are equivalent:
 \begin{enumerate}
@@ -3556,6 +3613,24 @@ The other equality is shown analogously by using functoriality of $F$, naturalit
 It remains to show the naturality of $\alpha$ in both $X$ and $Y$ which is left to the reader as a good exercise on diagram chasing. %\KW{TODO: Give the proof of the naturality}
 \end{proof}
 \end{thm}
+
+\begin{intu}
+  The unit and the counit are easy to recognise in the two examples.
+
+  For the free monoid, $\eta_X : X \to U(F(X))$ sends an element of $X$ to the
+  one-letter word on it: it puts the generators into the free monoid.
+  The counit $\epsilon_M : F(U(M)) \to M$ takes a formal word built from
+  elements of $M$ and multiplies it out in $M$.
+  The first triangle identity then says that multiplying out a word of
+  one-letter generators changes nothing.
+
+  For currying, $\eta_X : X \to \CHom{\SET}{Y}{X \times Y}$ sends $x$ to the
+  function |\y -> (x,y)|, and the counit
+  $\epsilon_Z : \CHom{\SET}{Y}{Z} \times Y \to Z$ sends a pair $(f,y)$ to
+  $f(y)$.
+  This is the evaluation map of \cref{exa:currying}, with $Y$ in the role of
+  the fixed set called $X$ there.
+\end{intu}
 
 
 \chapter{Monads and Effects}
