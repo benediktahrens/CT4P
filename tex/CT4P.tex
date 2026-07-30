@@ -662,9 +662,12 @@ Axiom functional_extensionality: forall {A B} (f g : A -> B),
 \begin{exa}[The category of Haskell types]\label{example:hask}
   Analogously to \cref{exa:coq-cat}, we would like to organize Haskell types and
   Haskell functions into a category.
-  However, in Haskell the situation is more complicated than in Coq.
-  Due to general recursion, every Haskell type contains the value |undefined|
-  (a non-terminating computation); consider the following two functions:
+  However, in Haskell, the situation is more complicated.
+  Specifically, unlike Coq, Haskell is a partial language, featuring both
+  errors and general recursion.
+  This means every type is inhabited, both with |undefined| values and
+  non-terminating computations.
+  Consider the following two functions:
 \begin{lstlisting}
 undef1 :: a -> a
 undef1 = undefined
@@ -672,9 +675,9 @@ undef1 = undefined
 undef2 :: a -> a
 undef2 = \x -> undefined
 \end{lstlisting}
-  These two programs are different: evaluating |undef1| does not terminate,
-  whereas |undef2| immediately returns a function (each of whose applications
-  fails to terminate).
+  These two programs are different: evaluating |undef1| crashes,
+  whereas |undef2| successfully returns a function (each of whose applications
+  crash).
   But we have |id . undef1| $=$ |undef2|, so in a category of types and
   functions, the unit law forces |undef1| $=$ |undef2|.
   Hence Haskell types and Haskell programs, with equality of programs, do
@@ -706,7 +709,8 @@ undef2 = \x -> undefined
   \item A Haskell type $T$ is interpreted as a pointed dcpo
     $\llbracket T \rrbracket$: the order $\sqsubseteq$ compares values by their
     \emph{information content}, and the least element $\bot$ represents a
-    non-terminating computation.
+    crashing or non-terminating computations (we do not need to distinguish
+    between kinds of failing computation).
     For instance, |Bool| is interpreted as the ``flat'' dcpo
     $\{\bot, \mathsf{True}, \mathsf{False}\}$ with
     $\bot \sqsubseteq \mathsf{True}$ and $\bot \sqsubseteq \mathsf{False}$,
