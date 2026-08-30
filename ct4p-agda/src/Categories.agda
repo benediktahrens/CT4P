@@ -199,23 +199,24 @@ module Example16 where
         pres-≤ : ∀ {x y} → x 𝒫₁.≤ y → act x 𝒫₂.≤ act y
   open MonotoneMap
 
-  Pos-Cat : Category _ _
-  Pos-Cat .Ob  = Poset lzero lzero
-  Pos-Cat .Hom = MonotoneMap
+  -- Category of partially ordered sets
+  POS : Category _ _
+  POS .Ob  = Poset lzero lzero
+  POS .Hom = MonotoneMap
 
-  Pos-Cat .id         .act    x   = x
-  Pos-Cat .id {x = 𝒫} .pres-≤ leq = leq
+  POS .id         .act    x   = x
+  POS .id {x = 𝒫} .pres-≤ leq = leq
     where module 𝒫 = Poset 𝒫
-  Pos-Cat ._∘_ f g .act    x   = f .act (g .act x)
-  Pos-Cat ._∘_ {x = 𝒫₁} {y = 𝒫₂} {z = 𝒫₃} f g .pres-≤ leq 
+  POS ._∘_ f g .act    x   = f .act (g .act x)
+  POS ._∘_ {x = 𝒫₁} {y = 𝒫₂} {z = 𝒫₃} f g .pres-≤ leq 
     = f .pres-≤ (g .pres-≤ leq)
     where module 𝒫₁ = Poset 𝒫₁
           module 𝒫₂ = Poset 𝒫₂
           module 𝒫₃ = Poset 𝒫₃
 
-  Pos-Cat .id∘ f     = refl
-  Pos-Cat .∘id f     = refl
-  Pos-Cat .∘∘  f g h = refl
+  POS .id∘ f     = refl
+  POS .∘id f     = refl
+  POS .∘∘  f g h = refl
 
 -- Lemma 17.
 module Lemma17 (𝒞 : Category ℓ₁ ℓ₂) (let module 𝒞 = Category 𝒞) where
@@ -315,14 +316,14 @@ module Exercise22 where
   open MonoidHom
 
   -- Category of monoids
-  Mon-Cat : Category _ _
-  Mon-Cat .Ob  = Monoid lzero
-  Mon-Cat .Hom = MonoidHom
-  Mon-Cat .id .act x   = x
-  Mon-Cat .id .pres-◆  = refl
-  Mon-Cat .id .pres-id = refl
-  Mon-Cat ._∘_ g f .act x   = g .act (f . act x)
-  Mon-Cat ._∘_ {x = M₁} {y = M₂} {z = M₃} g f .pres-◆ {x = x} {y = y} = 
+  MON : Category _ _
+  MON .Ob  = Monoid lzero
+  MON .Hom = MonoidHom
+  MON .id .act x   = x
+  MON .id .pres-◆  = refl
+  MON .id .pres-id = refl
+  MON ._∘_ g f .act x   = g .act (f . act x)
+  MON ._∘_ {x = M₁} {y = M₂} {z = M₃} g f .pres-◆ {x = x} {y = y} = 
     g .act (f .act (x M₁.◆ y))
     ＝⟨ ap (g .act) (f .pres-◆) ⟩
     g .act (f .act x M₂.◆ f .act y)
@@ -331,7 +332,7 @@ module Exercise22 where
       module M₁ = Monoid M₁
       module M₂ = Monoid M₂
       module M₃ = Monoid M₃
-  Mon-Cat ._∘_ {x = M₁} {y = M₂} {z = M₃} g f .pres-id =
+  MON ._∘_ {x = M₁} {y = M₂} {z = M₃} g f .pres-id =
     g .act (f .act M₁.id)
     ＝⟨ ap (g .act) (f .pres-id) ⟩
     g .act M₂.id
@@ -340,9 +341,9 @@ module Exercise22 where
       module M₁ = Monoid M₁
       module M₂ = Monoid M₂
       module M₃ = Monoid M₃
-  Mon-Cat .id∘ f     = monoidHom＝ λ _ → refl
-  Mon-Cat .∘id f     = monoidHom＝ λ _ → refl
-  Mon-Cat .∘∘  f g h = monoidHom＝ λ _ → refl
+  MON .id∘ f     = monoidHom＝ λ _ → refl
+  MON .∘id f     = monoidHom＝ λ _ → refl
+  MON .∘∘  f g h = monoidHom＝ λ _ → refl
 
 module Exercise23 (𝒞 : Category ℓ₁ ℓ₂) (let module 𝒞 = Category 𝒞) where
   -- Opposite categories
@@ -430,7 +431,7 @@ module Example8 where
       = D .nonempty
 
   -- Pointed direct complete partial orders
-  record DCPO (ℓ₁ ℓ₂ ℓ₃ : Level) : Set (lsuc (ℓ₁ lmax ℓ₂ lmax ℓ₃))  where
+  record Dcpo (ℓ₁ ℓ₂ ℓ₃ : Level) : Set (lsuc (ℓ₁ lmax ℓ₂ lmax ℓ₃))  where
     field
       Car : Set ℓ₁
       _≤_ : Car → Car → Set ℓ₂
@@ -453,15 +454,15 @@ module Example8 where
       ⊥≤   : ∀ {x} → ⊥ Pos.≤ x
 
   open Poset
-  open DCPO
+  open Dcpo
 
 -- Exercise 9.
 module Exercise9 where
   open Example8
   open Example16
 
-  module _ (𝒟₁ 𝒟₂ : DCPO ℓ₁ ℓ₂ ℓ₃) 
-           (let module 𝒟₁ = DCPO 𝒟₁) (let module 𝒟₂ = DCPO 𝒟₂) where
+  module _ (𝒟₁ 𝒟₂ : Dcpo ℓ₁ ℓ₂ ℓ₃) 
+           (let module 𝒟₁ = Dcpo 𝒟₁) (let module 𝒟₂ = Dcpo 𝒟₂) where
     open IsLUB∞
     open IsUB2
     open Fam
@@ -507,7 +508,7 @@ module Exercise9 where
       mono : MonotoneMap 𝒟₁.Pos 𝒟₂.Pos
       mono = record { act = act; pres-≤ = pres-≤ }
 
-  module _ {𝒟₁ 𝒟₂ : DCPO ℓ₁ ℓ₂ ℓ₃} {f g : ContMap 𝒟₁ 𝒟₂}
+  module _ {𝒟₁ 𝒟₂ : Dcpo ℓ₁ ℓ₂ ℓ₃} {f g : ContMap 𝒟₁ 𝒟₂}
            (let module f = ContMap f) (let module g = ContMap g) where
     -- TODO (depends on |funext|)
     contMap＝ : (∀ x → f.act x ＝ g.act x) → f ＝ g
@@ -515,21 +516,21 @@ module Exercise9 where
 
   open ContMap
 
-  DCPO-Cat : Category _ _
-  DCPO-Cat .Ob        = DCPO lzero lzero lzero
-  DCPO-Cat .Hom 𝒟₁ 𝒟₂ = ContMap 𝒟₁ 𝒟₂
-  DCPO-Cat .id          .act x        = x
-  DCPO-Cat .id {x = 𝒟₁} .pres-⨆ D lub = lub
-    where module 𝒟₁ = DCPO 𝒟₁
-  DCPO-Cat .id .pres-⊥ = refl
-  DCPO-Cat ._∘_ {x = 𝒟₁} {y = 𝒟₂} {z = 𝒟₃} f g .act x = f.act (g.act x)
+  DCPO : Category _ _
+  DCPO .Ob        = Dcpo lzero lzero lzero
+  DCPO .Hom 𝒟₁ 𝒟₂ = ContMap 𝒟₁ 𝒟₂
+  DCPO .id          .act x        = x
+  DCPO .id {x = 𝒟₁} .pres-⨆ D lub = lub
+    where module 𝒟₁ = Dcpo 𝒟₁
+  DCPO .id .pres-⊥ = refl
+  DCPO ._∘_ {x = 𝒟₁} {y = 𝒟₂} {z = 𝒟₃} f g .act x = f.act (g.act x)
     where module f = ContMap f
           module g = ContMap g
-  DCPO-Cat ._∘_ {x = 𝒟₁} {y = 𝒟₂} {z = 𝒟₃} f g .pres-⨆ D lub
+  DCPO ._∘_ {x = 𝒟₁} {y = 𝒟₂} {z = 𝒟₃} f g .pres-⨆ D lub
     = f.pres-⨆ (mapDirSubset g.mono D) (g.pres-⨆ D lub) 
     where module f = ContMap f
           module g = ContMap g
-  DCPO-Cat ._∘_ {x = 𝒟₁} {y = 𝒟₂} {z = 𝒟₃} f g .pres-⊥ = 
+  DCPO ._∘_ {x = 𝒟₁} {y = 𝒟₂} {z = 𝒟₃} f g .pres-⊥ = 
     f.act (g.act 𝒟₁.⊥)
     ＝⟨ ap f.act g.pres-⊥ ⟩
     f.act 𝒟₂.⊥
@@ -537,11 +538,11 @@ module Exercise9 where
     𝒟₃.⊥ ∎ where 
       module f = ContMap f
       module g = ContMap g
-      module 𝒟₁ = DCPO 𝒟₁
-      module 𝒟₂ = DCPO 𝒟₂
-      module 𝒟₃ = DCPO 𝒟₃
-  DCPO-Cat .id∘ f     = contMap＝ λ _ → refl
-  DCPO-Cat .∘id f     = contMap＝ λ _ → refl
-  DCPO-Cat .∘∘  f g h = contMap＝ λ _ → refl
+      module 𝒟₁ = Dcpo 𝒟₁
+      module 𝒟₂ = Dcpo 𝒟₂
+      module 𝒟₃ = Dcpo 𝒟₃
+  DCPO .id∘ f     = contMap＝ λ _ → refl
+  DCPO .∘id f     = contMap＝ λ _ → refl
+  DCPO .∘∘  f g h = contMap＝ λ _ → refl
 
-  Hask = DCPO-Cat
+  Hask = DCPO
