@@ -220,3 +220,43 @@ open import Agda.Builtin.Nat hiding (_<_) public
 infix 4 _＝[_]＝_
 _＝[_]＝_ : X → X ＝ Y → Y → Set _
 x ＝[ refl ]＝ y = x ＝ y
+
+-- Relies on UIP
+refl[] : ∀ {eq : X ＝ X} → x ＝[ eq ]＝ x
+refl[] {eq = refl} = refl
+
+data Fin : Nat → Set where
+  zero : ∀ {n} → Fin (suc n)
+  suc  : ∀ {n} → Fin n → Fin (suc n)
+
+-- From https://agda.readthedocs.io/en/latest/language/literal-overloading.html
+module Literals where
+  record Number {a} (A : Set a) : Set (lsuc a) where
+    field
+      Constraint : Nat → Set a
+      fromNat : (n : Nat) {{_ : Constraint n}} → A
+
+  open Number {{...}} public using (fromNat)
+
+  {-# BUILTIN FROMNAT fromNat #-}
+
+  instance
+    NumNat : Number Nat
+    NumNat .Number.Constraint _ = 𝟙
+    NumNat .Number.fromNat    m = m
+
+  _≤ℕ_ : (m n : Nat) → Set
+  zero  ≤ℕ n     = 𝟙
+  suc m ≤ℕ zero  = 𝟘
+  suc m ≤ℕ suc n = m ≤ℕ n
+
+  fromN≤ : ∀ m n → m ≤ℕ n → Fin (suc n)
+  fromN≤ zero    _       _  = zero
+  fromN≤ (suc _) zero    ()
+  fromN≤ (suc m) (suc n) p  = suc (fromN≤ m n p)
+
+  instance
+    NumFin : ∀ {n} → Number (Fin (suc n))
+    NumFin {n} .Number.Constraint m         = m ≤ℕ n
+    NumFin {n} .Number.fromNat    m {{m≤n}} = fromN≤ m n m≤n
+open Literals

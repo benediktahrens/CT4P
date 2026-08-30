@@ -295,6 +295,7 @@ module Exercise21 (𝒞 : Category lzero ℓ₂) (let module 𝒞 = Category �
   -- |Mon2Cat Mon2Cat⁻¹|, we need to have a proper characterisation of 
   -- equivalence of categories.
 
+-- Exercise 22.
 module Exercise22 where
   module _ (M₁ M₂ : Monoid ℓ)
            (let module M₁ = Monoid M₁) (let module M₂ = Monoid M₂)
@@ -310,6 +311,7 @@ module Exercise22 where
            {f g : MonoidHom M₁ M₂}
            (let module f = MonoidHom f) (let module g = MonoidHom g)
            where
+    -- Equality of monoid homomorphisms
     -- TODO (depends on |funext|)
     monoidHom＝ : (∀ x → f.act x ＝ g.act x) → f ＝ g
     monoidHom＝ = {!!}
@@ -345,6 +347,7 @@ module Exercise22 where
   MON .∘id f     = monoidHom＝ λ _ → refl
   MON .∘∘  f g h = monoidHom＝ λ _ → refl
 
+-- Exercise 23.
 module Exercise23 (𝒞 : Category ℓ₁ ℓ₂) (let module 𝒞 = Category 𝒞) where
   -- Opposite categories
   _ᴼᴾ : Category ℓ₁ ℓ₂
@@ -357,6 +360,183 @@ module Exercise23 (𝒞 : Category ℓ₁ ℓ₂) (let module 𝒞 = Category �
   _ᴼᴾ .id∘ f     = 𝒞.∘id f
   _ᴼᴾ .∘id f     = 𝒞.id∘ f
   _ᴼᴾ .∘∘  f g h = sym (𝒞.∘∘ h g f)
+
+-- Exercise 24.
+module Exercise24 where
+  -- Directed graphs
+  record Graph (ℓ₁ ℓ₂ : Level) : Set (lsuc (ℓ₁ lmax ℓ₂)) where
+    field
+      Node : Set ℓ₁
+      Edge : Node → Node → Set ℓ₂
+
+      -- Not multigraphs
+      Edge-prop : ∀ {x y} → IsProp (Edge x y)
+
+  module _ (𝒢 : Graph ℓ₁ ℓ₂) (let module 𝒢 = Graph 𝒢) where
+    data Path : 𝒢.Node → 𝒢.Node → Set (ℓ₁ lmax ℓ₂) where
+      ε   : ∀ {x} → Path x x
+      _,_ : ∀ {x y z} → Path x y → 𝒢.Edge y z → Path x z
+
+    _∘Path_ : ∀ {x y z} → Path x y → Path y z → Path x z
+    p₁ ∘Path ε         = p₁
+    p₁ ∘Path (p₂ , e₂) = (p₁ ∘Path p₂) , e₂
+
+    ε∘Path : ∀ {x y} (p : Path x y) → ε ∘Path p ＝ p
+    ε∘Path ε       = refl
+    ε∘Path (p , e) = ap (_, e) (ε∘Path p)
+
+    ∘∘Path : ∀ {x y z w} (p₁ : Path x y) (p₂ : Path y z) (p₃ : Path z w) 
+           → p₁ ∘Path (p₂ ∘Path p₃) ＝ (p₁ ∘Path p₂) ∘Path p₃
+    ∘∘Path p₁ p₂ ε         = refl
+    ∘∘Path p₁ p₂ (p₃ , e₃) = ap (_, e₃) (∘∘Path p₁ p₂ p₃)
+
+    Graph2Cat : Category ℓ₁ (ℓ₁ lmax ℓ₂) 
+    Graph2Cat .Ob  = 𝒢.Node
+    Graph2Cat .Hom = Path
+
+    Graph2Cat .id        = ε
+    Graph2Cat ._∘_ p₂ p₁ = p₁ ∘Path p₂
+
+    Graph2Cat .id∘ p        = refl
+    Graph2Cat .∘id p        = ε∘Path p
+    Graph2Cat .∘∘  p₁ p₂ p₃ = sym (∘∘Path p₁ p₂ p₃)
+
+-- Exercise 25.
+module Exercise25 where
+  open Exercise24
+  open Graph
+
+  -- Assume we could construct a category from a graph simply taking
+  -- edges as morphisms
+  module _ (𝒢 : Graph ℓ₁ ℓ₂) (let module 𝒢 = Graph 𝒢) where
+    postulate
+      EdgesCat    : Category ℓ₁ ℓ₂
+      EdgesCatOb  : EdgesCat .Ob ＝ 𝒢.Node
+      {-# REWRITE EdgesCatOb #-}
+      EdgesCatHom : EdgesCat .Hom ＝ 𝒢.Edge
+      {-# REWRITE EdgesCatHom #-}
+
+  -- Discrete graph with a single node
+  x : Graph _ _
+  x .Node     = 𝟙
+  x .Edge x y = 𝟘
+  x .Edge-prop .uniq ()
+
+  -- Discrete graphs have no edges, so the constructed edges category cannot 
+  -- satisfy identity!
+  contradiction : 𝟘
+  contradiction = EdgesCat x .id
+
+-- Example26.
+module Example26 where
+  open Exercise24 
+  open Graph
+
+  -- Discrete graph with a single node
+  x : Graph _ _
+  x .Node     = 𝟙
+  x .Edge x y = 𝟘
+  x .Edge-prop .uniq ()
+
+  • : Category _ _
+  • = Graph2Cat x
+
+-- Example 27.
+module Example27 where
+  open Exercise24 
+  open Graph
+
+  data Node2 : Set where
+    x y : Node2
+
+  data IntervalEdge : Node2 → Node2 → Set where
+    segᴱ : IntervalEdge x y
+
+  x→y : Graph _ _
+  x→y .Node = Node2
+  x→y .Edge = IntervalEdge
+  x→y .Edge-prop .uniq segᴱ segᴱ = refl
+
+  Interval : Category _ _
+  Interval = Graph2Cat x→y
+
+-- Example 28.
+module Example28 where
+  open Exercise24 
+  open Graph
+
+  data Node2 : Set where
+    x y : Node2
+  
+  data Cycle2Edge : Node2 → Node2 → Set where
+    fᴱ : Cycle2Edge x y
+    gᴱ : Cycle2Edge y x
+
+  x↔y : Graph _ _
+  x↔y .Node = Node2
+  x↔y .Edge = Cycle2Edge
+  x↔y .Edge-prop .uniq fᴱ fᴱ = refl
+  x↔y .Edge-prop .uniq gᴱ gᴱ = refl
+
+  x↔yCat : Category _ _
+  x↔yCat = Graph2Cat x↔y
+
+  private
+    module x↔y = Category x↔yCat
+  
+  f : x↔y.Hom x y
+  g : x↔y.Hom y x
+  
+  f = ε , fᴱ
+  g = ε , gᴱ
+
+  g∘f^ : Nat → x↔y.Hom x x
+  g∘f^ zero    = x↔y.id
+  g∘f^ (suc n) = (g x↔y.∘ f) x↔y.∘ g∘f^ n
+
+  all-g∘f^ : (h : x↔y.Hom x x) → Preimage g∘f^ h
+  all-g∘f^ ε               = zero , refl
+  all-g∘f^ ((h , fᴱ) , gᴱ) 
+    with n , refl ← all-g∘f^ h
+    = suc n , refl
+  
+  -- etc...
+
+-- Example 29.
+module Example29 where
+  open Exercise24 
+  open Graph
+
+  data Node4 : Set where
+    x y z w : Node4 
+
+  data Edge⟨x←y→z→w⟩ : Node4 → Node4 → Set where
+    x→yᴱ : Edge⟨x←y→z→w⟩ x y
+    y→zᴱ : Edge⟨x←y→z→w⟩ y z
+    z→wᴱ : Edge⟨x←y→z→w⟩ z w
+  
+  x←y→z→w : Graph _ _
+  x←y→z→w .Node = Node4
+  x←y→z→w .Edge = Edge⟨x←y→z→w⟩
+
+  x←y→z→w .Edge-prop .uniq x→yᴱ x→yᴱ = refl
+  x←y→z→w .Edge-prop .uniq y→zᴱ y→zᴱ = refl
+  x←y→z→w .Edge-prop .uniq z→wᴱ z→wᴱ = refl
+
+-- Exercise 30.
+module Exercise30 where
+  open Example10
+  open Exercise24
+  open Preorder
+  open Graph
+
+  module _ (𝒫 : Preorder ℓ₁ ℓ₂) (let module 𝒫 = Preorder 𝒫) where
+    Pre2Graph : Graph _ _
+    Pre2Graph .Node     = 𝒫.Car
+    Pre2Graph .Edge x y = x 𝒫.≤ y
+    Pre2Graph .Edge-prop = 𝒫.≤-prop
+
+    -- TODO: Show that |Graph2Cat (Pre2Graph 𝒫)| is different to |Pre2Cat 𝒫|
 
 -- Example 8.
 module Example8 where
@@ -510,6 +690,7 @@ module Exercise9 where
 
   module _ {𝒟₁ 𝒟₂ : Dcpo ℓ₁ ℓ₂ ℓ₃} {f g : ContMap 𝒟₁ 𝒟₂}
            (let module f = ContMap f) (let module g = ContMap g) where
+    -- Equality of continuous maps
     -- TODO (depends on |funext|)
     contMap＝ : (∀ x → f.act x ＝ g.act x) → f ＝ g
     contMap＝ = {!!}
