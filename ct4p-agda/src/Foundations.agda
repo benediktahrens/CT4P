@@ -121,10 +121,10 @@ module Equality where
       ＝⟨ ap f eq₂ ⟩
       f z ∎
 
-  -- We assume function extensionality where necessary.
-  Funext : (X : Set ℓ₁) → (X → Set ℓ₂) → Set _
-  Funext X Y = {f g : (x : X) → Y x} → ((x : X) → f x ＝ g x) → f ＝ g
-
+  -- We sometimes rely on function extensionality
+  postulate
+    funext : {Y : X → Set ℓ} {f g : (x : X) → Y x} → (∀ x → f x ＝ g x) → f ＝ g
+  
 open Equality public
 
 -- Propositions and existence
@@ -138,7 +138,7 @@ module Prop where
   open IsProp public
 
   -- For example, the unit and empty types
-  open import Agda.Builtin.Unit renaming (⊤ to 𝟙; tt to ⟨⟩) public
+  open import Agda.Builtin.Unit renaming (⊤ to 𝟙; tt to ⋆) public
   
   data 𝟘 : Set where
   
@@ -216,3 +216,7 @@ uip .uniq refl refl = refl
 
 open import Agda.Builtin.Bool public
 open import Agda.Builtin.Nat hiding (_<_) public
+
+infix 4 _＝[_]＝_
+_＝[_]＝_ : X → X ＝ Y → Y → Set _
+x ＝[ refl ]＝ y = x ＝ y

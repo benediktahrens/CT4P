@@ -21,7 +21,6 @@ module Definition1 where
       ∘∘  : ∀ {x y z w} (f : Hom x y) (g : Hom y z) (h : Hom z w)
           → h ∘ (g ∘ f) ＝ (h ∘ g) ∘ f
   open Category public
-
 open Definition1 public
 
 -- Example 4.
@@ -52,10 +51,7 @@ module Example10 where
       refl≤  : ∀ {x : Car} → x ≤ x
       trans≤ : ∀ {x y z : Car} → x ≤ y → y ≤ z → x ≤ z
 
-  module _ (X : Preorder ℓ₁ ℓ₂) where
-    private
-      module X = Preorder X
-
+  module _ (X : Preorder ℓ₁ ℓ₂) (let module X = Preorder X) where
     -- Every preordered set can be turned into a category
     Pre2Cat : Category _ _
     Pre2Cat .Ob        = X.Car
@@ -66,6 +62,7 @@ module Example10 where
     Pre2Cat .∘id f     = X.≤-prop .uniq _ _
     Pre2Cat .∘∘  f g h = X.≤-prop .uniq _ _
 
+-- Exercise 12.
 module Exercise12 where
   open Example10 
 
@@ -86,15 +83,11 @@ module Exercise12 where
     Pre = record { Car = Car; _≤_ = _≤_; ≤-prop = ≤-prop 
                  ; refl≤ = refl≤ ; trans≤ = trans≤ }
 
-  module _ (𝒫 : Poset ℓ₁ ℓ₂) where
-    private
-      module 𝒫 = Poset 𝒫
-
+  module _ (𝒫 : Poset ℓ₁ ℓ₂) (let module 𝒫 = Poset 𝒫) where
     Pos2Cat : Category ℓ₁ ℓ₂
     Pos2Cat = Pre2Cat 𝒫.Pre
 
-    private
-      module Pos2Cat = Category Pos2Cat
+    private module Pos2Cat = Category Pos2Cat
 
     -- Given a loop containing |x| and |y|, we can show |x| and |y| are
     -- actually the same object.
@@ -102,7 +95,7 @@ module Exercise12 where
                   → x ＝ y
     trivial-loops f g = 𝒫.antisym≤ f g
 
--- Example 14
+-- Example 14.
 module Example14 where
   open Exercise12
   open Poset
@@ -196,11 +189,8 @@ module Example15 where
 module Example16 where
   open Exercise12
 
-  module _ (𝒫₁ 𝒫₂ : Poset ℓ₁ ℓ₂) where
-    private
-      module 𝒫₁ = Poset 𝒫₁
-      module 𝒫₂ = Poset 𝒫₂
-
+  module _ (𝒫₁ 𝒫₂ : Poset ℓ₁ ℓ₂) 
+           (let module 𝒫₁ = Poset 𝒫₁) (let module 𝒫₂ = Poset 𝒫₂) where
     -- Monotone maps between partially ordered sets
     -- (Poset morphisms)
     record MonotoneMap : Set (ℓ₁ lmax ℓ₂) where
@@ -228,9 +218,7 @@ module Example16 where
   Pos-Cat .∘∘  f g h = refl
 
 -- Lemma 17.
-module Lemma17 (𝒞 : Category ℓ₁ ℓ₂) where
-  module 𝒞 = Category 𝒞
-  
+module Lemma17 (𝒞 : Category ℓ₁ ℓ₂) (let module 𝒞 = Category 𝒞) where
   -- Property of being an identity morphism
   IsId : ∀ {x} (id' : 𝒞.Hom x x) → Set (ℓ₁ lmax ℓ₂)
   IsId {x = x} id' = ∀ {y} (f : 𝒞.Hom x y) → f 𝒞.∘ id' ＝ f
@@ -243,6 +231,132 @@ module Lemma17 (𝒞 : Category ℓ₁ ℓ₂) where
     ＝⟨ id'-id 𝒞.id ⟩
     𝒞.id ∎
 
+-- Example 18. TODO
+
+-- Definition 19.
+module Definition19 where
+  -- Monoids
+  record Monoid (ℓ : Level) : Set (lsuc ℓ) where
+    field
+      Car  : Set ℓ
+      _◆_  : Car → Car → Car
+      id   : Car
+
+      id◆ : ∀ x → id ◆ x ＝ x
+      ◆id : ∀ x → x ◆ id ＝ x
+      ◆◆  : ∀ x y z → (x ◆ y) ◆ z ＝ x ◆ (y ◆ z)
+
+  module _ (M : Monoid ℓ) (let module M = Monoid M) where    
+    Mon2Cat : Category lzero ℓ
+    Mon2Cat .Ob      = 𝟙
+    Mon2Cat .Hom ⋆ ⋆ = M.Car
+    
+    Mon2Cat .id      = M.id
+    Mon2Cat ._∘_ y x = x M.◆ y
+
+    Mon2Cat .id∘      = M.◆id
+    Mon2Cat .∘id      = M.id◆
+    Mon2Cat .∘∘ x y z = M.◆◆ x y z
+open Definition19 public
+
+-- Remark 20.
+module Remark20 (I : Set ℓ₁) (M : Monoid ℓ₂) (let module M = Monoid M) where
+  Mon2Cat' : Category ℓ₁ (ℓ₁ lmax ℓ₂)
+  Mon2Cat' .Ob      = I
+  Mon2Cat' .Hom i j = (i ＝ j) × M.Car
+  
+  Mon2Cat' .id  = refl , M.id
+  Mon2Cat' ._∘_ (refl , y) (refl , x) = refl ,  x M.◆ y
+  
+  Mon2Cat' .id∘ (refl , x) 
+    = ap (_ ,_) (M.◆id x)
+  Mon2Cat' .∘id (refl , x) 
+    = ap (_ ,_) (M.id◆ x)
+  Mon2Cat' .∘∘  (refl , x) (refl , y) (refl , z) 
+    = ap (_ ,_) (M.◆◆ x y z)
+
+-- Exercise 21.
+module Exercise21 (𝒞 : Category lzero ℓ₂) (let module 𝒞 = Category 𝒞) where
+  open Monoid 
+
+  module _ (x : 𝒞.Ob) (x-uniq : ∀ {y} → x ＝ y) where
+    Mon2Cat⁻¹ : Monoid ℓ₂
+    Mon2Cat⁻¹ .Car = 𝒞.Hom x x
+
+    Mon2Cat⁻¹ ._◆_ f g = g 𝒞.∘ f
+    Mon2Cat⁻¹ .id      = 𝒞.id
+
+    Mon2Cat⁻¹ .id◆ f     = 𝒞.∘id f
+    Mon2Cat⁻¹ .◆id f     = 𝒞.id∘ f
+    Mon2Cat⁻¹ .◆◆  f g h = 𝒞.∘∘ f g h
+
+  -- To prove 𝒞 is actually "of the form" (i.e. equivalent to) 
+  -- |Mon2Cat Mon2Cat⁻¹|, we need to have a proper characterisation of 
+  -- equivalence of categories.
+
+module Exercise22 where
+  module _ (M₁ M₂ : Monoid ℓ)
+           (let module M₁ = Monoid M₁) (let module M₂ = Monoid M₂)
+           where
+    -- Monoid homomorphisms
+    record MonoidHom : Set ℓ where
+      field
+        act     : M₁.Car → M₂.Car
+        pres-◆  : ∀ {x y} → act (x M₁.◆ y) ＝ act x M₂.◆ act y
+        pres-id : act M₁.id ＝ M₂.id
+    
+  module _ {M₁ M₂ : Monoid ℓ}
+           {f g : MonoidHom M₁ M₂}
+           (let module f = MonoidHom f) (let module g = MonoidHom g)
+           where
+    -- TODO (depends on |funext|)
+    monoidHom＝ : (∀ x → f.act x ＝ g.act x) → f ＝ g
+    monoidHom＝ = {!!}
+  open MonoidHom
+
+  -- Category of monoids
+  Mon-Cat : Category _ _
+  Mon-Cat .Ob  = Monoid lzero
+  Mon-Cat .Hom = MonoidHom
+  Mon-Cat .id .act x   = x
+  Mon-Cat .id .pres-◆  = refl
+  Mon-Cat .id .pres-id = refl
+  Mon-Cat ._∘_ g f .act x   = g .act (f . act x)
+  Mon-Cat ._∘_ {x = M₁} {y = M₂} {z = M₃} g f .pres-◆ {x = x} {y = y} = 
+    g .act (f .act (x M₁.◆ y))
+    ＝⟨ ap (g .act) (f .pres-◆) ⟩
+    g .act (f .act x M₂.◆ f .act y)
+    ＝⟨ g .pres-◆ ⟩
+    g .act (f .act x) M₃.◆ g .act (f .act y) ∎ where
+      module M₁ = Monoid M₁
+      module M₂ = Monoid M₂
+      module M₃ = Monoid M₃
+  Mon-Cat ._∘_ {x = M₁} {y = M₂} {z = M₃} g f .pres-id =
+    g .act (f .act M₁.id)
+    ＝⟨ ap (g .act) (f .pres-id) ⟩
+    g .act M₂.id
+    ＝⟨ g .pres-id ⟩
+    M₃.id ∎ where
+      module M₁ = Monoid M₁
+      module M₂ = Monoid M₂
+      module M₃ = Monoid M₃
+  Mon-Cat .id∘ f     = monoidHom＝ λ _ → refl
+  Mon-Cat .∘id f     = monoidHom＝ λ _ → refl
+  Mon-Cat .∘∘  f g h = monoidHom＝ λ _ → refl
+
+module Exercise23 (𝒞 : Category ℓ₁ ℓ₂) (let module 𝒞 = Category 𝒞) where
+  -- Opposite categories
+  _ᴼᴾ : Category ℓ₁ ℓ₂
+  _ᴼᴾ .Ob      = 𝒞.Ob
+  _ᴼᴾ .Hom x y = 𝒞.Hom y x
+
+  _ᴼᴾ .id      = 𝒞.id
+  _ᴼᴾ ._∘_ g f = f 𝒞.∘ g
+
+  _ᴼᴾ .id∘ f     = 𝒞.∘id f
+  _ᴼᴾ .∘id f     = 𝒞.id∘ f
+  _ᴼᴾ .∘∘  f g h = sym (𝒞.∘∘ h g f)
+
 -- Example 8.
 module Example8 where
   open Exercise12
@@ -252,7 +366,7 @@ module Example8 where
   -- (|X → Set ℓ|) or families (|Σ (Set ℓ) (λ I → X)|).
   -- The family approach works out much more nicely when defining
   -- continuous maps between DCPOs (where we need to map the subset
-  -- over the action - see how simple 'mapFam' is!)
+  -- over the action - see 'mapFam')
   record Fam (X : Set ℓ₁) (ℓ₂ : Level) : Set (ℓ₁ lmax lsuc ℓ₂) where
     field
       Idx : Set ℓ₂
@@ -264,10 +378,7 @@ module Example8 where
     mapFam f ℱ .Idx   = ℱ .Idx
     mapFam f ℱ .fam i = f (ℱ .fam i)
 
-  module _ (𝒫 : Poset ℓ₁ ℓ₂) where
-    private
-      module 𝒫 = Poset 𝒫
-
+  module _ (𝒫 : Poset ℓ₁ ℓ₂) (let module 𝒫 = Poset 𝒫) where
     -- Binary upper bounds
     record IsUB2 (x y z : 𝒫.Car) : Set ℓ₂ where
       field
@@ -290,9 +401,7 @@ module Example8 where
         nonempty : NonEmpty Idx
     open DirSubset public
 
-    module _ (ℱ : Fam 𝒫.Car ℓ₃) where
-      private module ℱ = Fam ℱ
-
+    module _ (ℱ : Fam 𝒫.Car ℓ₃) (let module ℱ = Fam ℱ) where
       -- Family upper bounds
       IsUB∞ : 𝒫.Car → Set (ℓ₂ lmax ℓ₃)
       IsUB∞ x = (i : ℱ.Idx) → ℱ.fam i 𝒫.≤ x
@@ -334,9 +443,8 @@ module Example8 where
 
     Pos : Poset ℓ₁ ℓ₂
     Pos = record { Car = Car ; _≤_ = _≤_ ; ≤-prop = ≤-prop 
-                ; refl≤ = refl≤ ; trans≤ = trans≤ ; antisym≤ = antisym≤ }
-    private
-      module Pos = Poset Pos
+                 ; refl≤ = refl≤ ; trans≤ = trans≤ ; antisym≤ = antisym≤ }
+    private module Pos = Poset Pos
     
     field
       ⨆    : DirSubset Pos ℓ₃ → Pos.Car
@@ -352,21 +460,19 @@ module Exercise9 where
   open Example8
   open Example16
 
-  module _ (𝒟₁ 𝒟₂ : DCPO ℓ₁ ℓ₂ ℓ₃) where
+  module _ (𝒟₁ 𝒟₂ : DCPO ℓ₁ ℓ₂ ℓ₃) 
+           (let module 𝒟₁ = DCPO 𝒟₁) (let module 𝒟₂ = DCPO 𝒟₂) where
     open IsLUB∞
     open IsUB2
     open Fam
-    private
-      module 𝒟₁ = DCPO 𝒟₁
-      module 𝒟₂ = DCPO 𝒟₂
 
     -- Strictly continuous maps between DCPOs
     record ContMap : Set (ℓ₁ lmax ℓ₂ lmax lsuc ℓ₃) where
       field
         act    : 𝒟₁.Car → 𝒟₂.Car
         pres-⨆ : (D : DirSubset 𝒟₁.Pos ℓ₃) {x : 𝒟₁.Car}
-              → IsLUB∞ 𝒟₁.Pos (Family D) x
-              → IsLUB∞ 𝒟₂.Pos (mapFam act (Family D)) (act x) 
+               → IsLUB∞ 𝒟₁.Pos (Family D) x
+               → IsLUB∞ 𝒟₂.Pos (mapFam act (Family D)) (act x) 
         pres-⊥ : act 𝒟₁.⊥ ＝ 𝒟₂.⊥
 
       -- Every strictly continuous map is monotone
@@ -401,15 +507,11 @@ module Exercise9 where
       mono : MonotoneMap 𝒟₁.Pos 𝒟₂.Pos
       mono = record { act = act; pres-≤ = pres-≤ }
 
-  module _ {𝒟₁ 𝒟₂ : DCPO ℓ₁ ℓ₂ ℓ₃} {f g : ContMap 𝒟₁ 𝒟₂} where
-    private
-      module f = ContMap f
-      module g = ContMap g
-    
-    -- TODO: These sorts of congruence lemmas are quite tedious to prove
-    -- manually
-    postulate
-      contMap＝ : f.act ＝ g.act → f ＝ g
+  module _ {𝒟₁ 𝒟₂ : DCPO ℓ₁ ℓ₂ ℓ₃} {f g : ContMap 𝒟₁ 𝒟₂}
+           (let module f = ContMap f) (let module g = ContMap g) where
+    -- TODO (depends on |funext|)
+    contMap＝ : (∀ x → f.act x ＝ g.act x) → f ＝ g
+    contMap＝ = {!!}
 
   open ContMap
 
@@ -438,8 +540,8 @@ module Exercise9 where
       module 𝒟₁ = DCPO 𝒟₁
       module 𝒟₂ = DCPO 𝒟₂
       module 𝒟₃ = DCPO 𝒟₃
-  DCPO-Cat .id∘ f     = contMap＝ refl
-  DCPO-Cat .∘id f     = contMap＝ refl
-  DCPO-Cat .∘∘  f g h = contMap＝ refl
+  DCPO-Cat .id∘ f     = contMap＝ λ _ → refl
+  DCPO-Cat .∘id f     = contMap＝ λ _ → refl
+  DCPO-Cat .∘∘  f g h = contMap＝ λ _ → refl
 
   Hask = DCPO-Cat
