@@ -206,7 +206,8 @@ literate={→ }{\ARROW}1
 \newcommand{\HASK}{\Catb{Hask}}
 \newcommand{\DCPO}{\Catb{DCPO}}
 \newcommand{\LEAN}{\Catb{LEAN}}
-\newcommand{\COQ}{\Catb{Coq}}
+\newcommand{\ROCQ}{\Catb{Rocq}}
+\newcommand{\MLTT}{\Catb{MLTT}}
 \newcommand{\MAT}{\Catb{Mat}}
 \newcommand{\SKELFINSET}{\Catb{Fin}}
 \newcommand{\REL}{\Catb{Rel}}
@@ -625,14 +626,27 @@ To show this, we fix an arbitrary $x \in X$, and compute
 where the first (resp. second, third, fourth) equality holds by definition of the composition of $g\circ f$ and $h$ (resp. composition of $f$ and $g$, composition of $g$ and $h$, composition of $f$ and $h\circ g$).
 \end{proof}
 
+We are now going to describe the category whose collection of objects is given 
+by the collection of types in Martin-Löf type theory (MLTT). 
+Proof assistants such as Agda, Rocq (formally Coq) and Lean implement MLTT 
+(with some extensions). 
 
-We are now going to describe the category whose collection of objects is given by collection of Coq types:
-\begin{exa}\label{exa:coq-cat}
+\begin{reading*}
+  Angiuli and Gratzer give a modern formal presentation of MLTT in their
+  work-in-progress book \cite{principles}. For this course, an intuitive
+  understanding of type theory from experience with Rocq, Agda, Lean etc.
+  is more than sufficent.
+\end{reading*}
+
+\begin{exa}\label{exa:mltt-cat}
   Consider the following data:
 \begin{itemize}
-\item An object is a Coq type (of some fixed universe).
-\item If $X$ and $Y$ are Coq types, then $\CHom \COQ X Y$ is the function type $X\to Y$.
-\item The identity morphism $\Id[X]$ (on $X\in \Ob{\COQ}$) is the identity function on $X$, i.e.
+\item An object is an MLTT type (of some fixed universe, in some 
+  fixed context).
+\item If $X$ and $Y$ are MLTT types, then $\CHom \MLTT X Y$ is the function 
+  type $X\to Y$ (technically, the collection of terms with type $X\to Y$).
+\item The identity morphism $\Id[X]$ (on $X\in \Ob{\MLTT}$) is the identity 
+  function on $X$, i.e.
 \begin{lstlisting}
 Definition idfun {X} : X -> X := fun x => x.
 \end{lstlisting}
@@ -650,9 +664,11 @@ Eval compute in (compfun (fun x => x + 1) (fun x => x * 3) 5).
 \end{exa}
 
 \begin{exer}
-  Prove (on paper) that the data defined in \cref{exa:coq-cat} defines a category.
+  Prove (on paper) that the data defined in \cref{exa:mltt-cat} defines a 
+  category.
   That is, show that it satisfies the axioms of a category.
-  You might need to use the \textbf{axiom of functional extensionality}:
+  In this exercise, and future exercises involving $\MLTT$,
+  you might need to use the \textbf{axiom of functional extensionality}:
 \begin{lstlisting}
 Axiom functional_extensionality: forall {A B} (f g : A -> B),
   (forall x, f x = g x) -> f = g.
@@ -660,10 +676,10 @@ Axiom functional_extensionality: forall {A B} (f g : A -> B),
 \end{exer}
 
 \begin{exa}[The category of Haskell types]\label{example:hask}
-  Analogously to \cref{exa:coq-cat}, we would like to organize Haskell types and
-  Haskell functions into a category.
+  Analogously to \cref{exa:mltt-cat}, we would like to organize Haskell types 
+  and Haskell functions into a category.
   However, in Haskell, the situation is more complicated.
-  Specifically, unlike Coq, Haskell is a partial language, featuring both
+  Specifically, unlike MLTT, Haskell is a partial language, featuring both
   errors and general recursion.
   This means every type is inhabited, both with |undefined| values and
   non-terminating computations.
@@ -1221,7 +1237,7 @@ However, in more complicated categories---that is, in categories where the objec
 \end{exer}
 
 \begin{exer}
-  Identify an initial object in the category $\COQ$ of Coq types.
+  Identify an initial object in the category $\MLTT$ of MLTT types.
   Prove that it is indeed initial.
 \end{exer}
 
@@ -1323,7 +1339,7 @@ appear.
 \end{exer}
 
 \begin{exer}
-  Identify a terminal object in the category $\COQ$ of Coq types.
+  Identify a terminal object in the category $\MLTT$ of MLTT types.
   Prove that it is indeed terminal.
 \end{exer}
 
@@ -1990,7 +2006,7 @@ $Q \to A$ and $Q \to B$.
 \end{exer}
 
 \begin{exer}
-  Identify a product of types $A$ and $B$ in the category $\COQ$ of Coq types.
+  Identify a product of types $A$ and $B$ in the category $\MLTT$ of MLTT types.
   Prove that it is indeed a product.
 \end{exer}
 
@@ -2213,8 +2229,8 @@ Let $\CC$ be a category, let $A,B\in\Ob{\CC}$ and let $(A+B,\inl,\inr)$ be a cop
 \end{exer}
 
 \begin{exer}
-  Identify a coproduct of types $A$ and $B$ in the category $\COQ$ of Coq types.
-  Prove that it is indeed a coproduct.
+  Identify a coproduct of types $A$ and $B$ in the category $\MLTT$ of MLTT 
+  types. Prove that it is indeed a coproduct.
 \end{exer}
 
 \begin{exer}\label{exer:coproduct_posetcat}
@@ -3612,7 +3628,7 @@ has a right adjoint, which is given by the functor (induced by the following map
 \[
 \CHom{\SET}{Y}{-} : \SET\to\SET : X\mapsto \CHom{\SET}{Y}{X}.
 \]
-Is there an analogous statement in the category $\COQ$ instead of $\SET$?
+Is there an analogous statement in the category $\MLTT$ instead of $\SET$?
 \end{exer}
 
 The definition above talks about hom-sets, and about a bijection between them.
