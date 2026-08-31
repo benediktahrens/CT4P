@@ -627,15 +627,15 @@ where the first (resp. second, third, fourth) equality holds by definition of th
 \end{proof}
 
 We are now going to describe the category whose collection of objects is given 
-by the collection of types in Martin-Löf type theory (MLTT). 
-Proof assistants such as Agda, Rocq (formally Coq) and Lean implement MLTT 
-(with some extensions). 
+by the collection of types (of a fixed universe) in Martin-Löf type theory 
+(MLTT). Proof assistants such as Agda, Rocq (formerly Coq) and Lean implement 
+MLTT (with some extensions). 
 
 \begin{reading*}
   Angiuli and Gratzer give a modern formal presentation of MLTT in their
   work-in-progress book \cite{principles}. For this course, an intuitive
   understanding of type theory from experience with Rocq, Agda, Lean etc.
-  is more than sufficent.
+  is more than sufficient.
 \end{reading*}
 
 \begin{exa}\label{exa:mltt-cat}
@@ -650,7 +650,7 @@ Proof assistants such as Agda, Rocq (formally Coq) and Lean implement MLTT
 \begin{lstlisting}
 Definition idfun {X} : X -> X := fun x => x.
 \end{lstlisting}
-\item The composition of functions is given by the composition of functions:
+\item Composition is given by composition of functions:
 \begin{lstlisting}
 Definition compfun {X Y Z} (f : X -> Y) (g : Y -> Z) : X -> Z
 := fun x => g (f x).
