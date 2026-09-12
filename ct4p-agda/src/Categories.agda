@@ -234,6 +234,158 @@ module Lemma17 (𝒞 : Category ℓ₁ ℓ₂) (let module 𝒞 = Category 𝒞)
 
 -- Example 18. TODO
 
+module Example18 where 
+  open import Agda.Builtin.Int public
+
+  open Example14
+
+  pred : Nat → Nat
+  pred 0 = 0 
+  pred (suc n) = n
+
+  1ℤ : Int
+  1ℤ = pos 1
+
+  _*ℤ_ : Int → Int → Int
+  (pos n) *ℤ (pos m) = (pos (n * m))
+  (pos 0) *ℤ (negsuc m) = pos 0
+  (pos (suc n)) *ℤ (negsuc m) = negsuc (pred ((suc n) * (suc m)))
+  (negsuc n) *ℤ (pos 0) = pos 0 
+  (negsuc n) *ℤ (pos (suc m)) = negsuc (pred ((suc n) * (suc m)))
+  (negsuc n) *ℤ (negsuc m) = pos ((suc n) * (suc m))
+
+  +zero : (n : Nat) → n + 0 ＝ n
+  +zero 0 = refl
+  +zero (suc n) = ap suc (+zero n)
+
+  one* : (n : Nat) → 1 * n ＝ n
+  one* n = +zero n
+
+  1ℤ* : (x : Int) → 1ℤ *ℤ x ＝ x
+  1ℤ* (pos n) = ap pos (one* n)
+  1ℤ* (negsuc n) = 
+    negsuc (pred (1 * (suc n))) ＝⟨ ap (λ x → negsuc (pred x)) (one* (suc n)) ⟩
+    negsuc (pred (suc n)) ＝⟨⟩
+    refl
+
+  *1ℤ : (x : Int) → x *ℤ 1ℤ ＝ x
+  *1ℤ (pos n) = ap pos *one
+  *1ℤ (negsuc n) = 
+    negsuc (pred ((suc n) * 1)) ＝⟨ ap (λ x → negsuc (pred x)) (*one {suc n}) ⟩
+    negsuc (pred (suc n)) ＝⟨⟩
+    refl
+
+  *0 : (n : Nat) → n * 0 ＝ 0
+  *0 0 = refl
+  *0 (suc n) = *0 n  
+
+  *0ℤ : (x : Int) → x *ℤ (pos 0) ＝ (pos 0)
+  *0ℤ (pos x) = ap pos (*0 x)
+  *0ℤ (negsuc x) = refl
+
+  0*ℤ : (x : Int) → (pos 0) *ℤ x ＝ (pos 0)
+  0*ℤ (pos x) = ap pos refl
+  0*ℤ (negsuc x) = refl
+
+  -- TODO: Prove associativity
+  *ℤ-assoc : (x y z : Int) → (x *ℤ y) *ℤ z ＝ x *ℤ (y *ℤ z)
+  *ℤ-assoc (pos x) (pos y) (pos z) = ap pos (*-ass {x} {y} {z})
+  *ℤ-assoc (negsuc x) (negsuc y) (negsuc z) = 
+    ap (λ x → negsuc (pred x)) (*-ass {suc x} {suc y} {suc z})
+  *ℤ-assoc (pos 0) y z = 
+      ((pos 0) *ℤ y) *ℤ z 
+    ＝⟨ ap (λ x → x *ℤ z) (0*ℤ y) ⟩
+      (pos 0) *ℤ z
+    ＝⟨ 0*ℤ z ⟩
+      (pos 0) 
+    ＝⟨ sym (0*ℤ (y *ℤ z)) ⟩
+      refl
+  *ℤ-assoc x (pos 0) z = 
+      (x *ℤ (pos 0)) *ℤ z 
+    ＝⟨ ap (λ x → x *ℤ z) (*0ℤ x) ⟩
+      (pos 0) *ℤ z
+    ＝⟨ 0*ℤ z ⟩
+      (pos 0) 
+    ＝⟨ sym (*0ℤ x) ⟩
+      x *ℤ (pos 0)
+    ＝⟨ ap (λ y → x *ℤ y) (sym (0*ℤ z))⟩
+      refl
+  *ℤ-assoc x y (pos 0) = 
+      (x *ℤ y) *ℤ (pos 0) 
+    ＝⟨ *0ℤ (x *ℤ y) ⟩
+      (pos 0)
+    ＝⟨ sym (*0ℤ x) ⟩
+      ap (λ y → x *ℤ y) (sym (*0ℤ y))
+  *ℤ-assoc (negsuc x) (pos (suc y)) (pos (suc z)) = 
+    ap (λ x → (negsuc (pred x))) (*-ass {suc x} {suc y} {suc z})
+  *ℤ-assoc (pos (suc x)) (negsuc y) (pos (suc z)) = 
+    ap (λ x → (negsuc (pred x))) (*-ass {suc x} {suc y} {suc z})
+  *ℤ-assoc (pos (suc x)) (pos (suc y)) (negsuc z) = 
+    ap (λ x → (negsuc (pred x))) (*-ass {suc x} {suc y} {suc z})
+  *ℤ-assoc (negsuc x) (negsuc y) (pos (suc z)) = 
+    ap pos (*-ass {suc x} {suc y} {suc z})
+  *ℤ-assoc (negsuc x) (pos (suc y)) (negsuc z) = 
+    ap pos (*-ass {suc x} {suc y} {suc z})
+  *ℤ-assoc (pos (suc x)) (negsuc y) (negsuc z) = 
+    ap pos (*-ass {suc x} {suc y} {suc z})
+
+  -- With this definition of rational numbers, you have multiple (unequal) terms
+  -- that are equal because we do not have the constraint that rational numbers 
+  -- should be coprime. However, this definition seems sufficient to define the 
+  -- category. 
+
+  record Rational : Set where 
+    no-eta-equality; pattern
+
+    constructor mkRational 
+    field 
+      numerator : Int
+      denominator-1 : Nat
+    
+  open Rational
+
+  _*ℚ_ : Rational → Rational → Rational
+  x *ℚ y = mkRational ((x .numerator) *ℤ (y .numerator)) (pred ((suc (x .denominator-1)) * (suc (y .denominator-1))))
+
+
+  1ℚ : Rational 
+  1ℚ = mkRational 1ℤ 0
+
+  1ℚ* : (x : Rational) → 1ℚ *ℚ x ＝ x
+  1ℚ* (mkRational a b) = 
+    mkRational 1ℤ 0 *ℚ mkRational a b ＝⟨⟩
+    mkRational (1ℤ *ℤ a) (pred (1 * (suc b))) ＝⟨ ap (λ x → mkRational x (pred (1 * suc b))) (1ℤ* a) ⟩
+    mkRational a (pred (1 * suc b)) ＝⟨ ap (λ x → mkRational a (pred x)) (one* (suc b)) ⟩
+    refl
+
+  *1ℚ : (x : Rational) → x *ℚ 1ℚ ＝ x
+  *1ℚ (mkRational a b) = 
+      mkRational (a *ℤ 1ℤ) (pred ((suc b) * 1)) ＝⟨ ap (λ x → mkRational x (pred ((suc b) * 1))) (*1ℤ a) ⟩
+      mkRational a (pred ((suc b) * 1)) ＝⟨ ap (λ x → mkRational a (pred x)) (*one {suc b}) ⟩
+      refl
+
+  *ℚ-assoc : (x y z : Rational) → (x *ℚ y) *ℚ z ＝ x *ℚ (y *ℚ z)
+  *ℚ-assoc (mkRational x1 x2) (mkRational y1 y2) (mkRational z1 z2) = 
+        ((mkRational x1 x2) *ℚ (mkRational y1 y2)) *ℚ (mkRational z1 z2) 
+      ＝⟨⟩
+        mkRational ((x1 *ℤ y1) *ℤ z1) (pred (suc (pred ((suc x2) * (suc y2))) * (suc z2))) 
+      ＝⟨ ap (λ x → mkRational x _) (*ℤ-assoc x1 y1 z1) ⟩
+        mkRational (x1 *ℤ (y1 *ℤ z1)) (pred (suc (pred ((suc x2) * (suc y2))) * (suc z2)))
+      ＝⟨⟩
+        mkRational (x1 *ℤ (y1 *ℤ z1)) (pred (((suc x2) * (suc y2)) * (suc z2)))
+      ＝⟨ ap (λ x → mkRational (x1 *ℤ (y1 *ℤ z1)) (pred x)) (*-ass {suc x2} {suc y2} {suc z2}) ⟩
+        refl
+
+  module _ where 
+    𝒞 : Category lzero _ 
+    𝒞 .Ob       = 𝟙
+    𝒞 .Hom ⋆ ⋆  = Rational
+    𝒞 .id       = 1ℚ
+    𝒞 ._∘_ x y  = y *ℚ x
+    𝒞 .id∘ x    = *1ℚ x
+    𝒞 .∘id x    = 1ℚ* x
+    𝒞 .∘∘ x y z = *ℚ-assoc x y z
+
 -- Definition 19.
 module Definition19 where
   -- Monoids
@@ -727,3 +879,4 @@ module Exercise9 where
   DCPO .∘∘  f g h = contMap＝ λ _ → refl
 
   Hask = DCPO
+  
