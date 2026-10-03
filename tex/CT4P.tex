@@ -2831,6 +2831,40 @@ induces a functor.
 
 
 
+\begin{exer}[\cref{sol:node_btree_functions}]\label{exer:node_btree_functions}
+  Let $A$ be a set, and consider the datatype $\mathsf{Tree}(A)$ of binary trees with labels at the internal nodes from \cref{exer:initialalg_node_btree}:
+\begin{lstlisting}
+data Tree a = Leaf | Node (Tree a) a (Tree a)
+\end{lstlisting}
+  Recall that $(\mathsf{Tree}(A), \In_A)$, with $\In_A := [\mathsf{leaf}, \mathsf{node}]$, is the initial algebra of the functor
+  \[ F_A : \SET \to \SET : X \mapsto 1 + (X \times A \times X). \]
+  \begin{enumerate}
+  \item \label{enum:tree-alg}
+    Define $F_A$ on morphisms.
+    Describe an $F_A$-algebra as a tuple consisting of a set and some functions (or elements), and spell out, as equations and as diagrams, what it means for a function to be an $F_A$-algebra homomorphism.
+  \item \label{enum:tree-catas}
+    Define each of the following functions using a catamorphism, by giving a suitable $F_A$-algebra:
+    \begin{enumerate}
+    \item $\mathsf{size} : \mathsf{Tree}(A) \to \NN$, computing the number of internal nodes of a tree;
+    \item $\mathsf{flatten} : \mathsf{Tree}(A) \to \List(A)$, listing the labels of a tree \emph{in order}, that is, first those of the left subtree, then the label of the node, then those of the right subtree;
+    \item $\mathsf{depths} : \mathsf{Tree}(A) \to \mathsf{Tree}(\NN \times A)$, which pairs every label with the depth of its node, where the root has depth $0$.
+      For instance,
+      \begin{multline*}
+        \mathsf{depths}\big(\mathsf{node}(\mathsf{node}(\mathsf{leaf}, a, \mathsf{leaf}), b, \mathsf{leaf})\big) \\
+        = \mathsf{node}(\mathsf{node}(\mathsf{leaf}, (1,a), \mathsf{leaf}), (0,b), \mathsf{leaf}).
+      \end{multline*}
+    \end{enumerate}
+  \item \label{enum:tree-map}
+    Given a function $f : A \to B$, define a function $\mathsf{map}_f : \mathsf{Tree}(A) \to \mathsf{Tree}(B)$, applying $f$ to every label, as a catamorphism.
+    Then show, \emph{without} using structural induction, that
+    \begin{enumerate}
+    \item $\mathsf{map}_{\Id[A]} = \Id[\mathsf{Tree}(A)]$; and
+    \item $\co{\mathsf{map}_f}{\mathsf{map}_g} = \mathsf{map}_{\co{f}{g}}$ for all $f : A \to B$ and $g : B \to C$.
+    \end{enumerate}
+    Hint: for the second equation, show that $\co{\mathsf{map}_f}{\mathsf{map}_g}$ is an algebra homomorphism, and use the uniqueness part of initiality.
+  \end{enumerate}
+\end{exer}
+
 \section{Fusion Property}\label{sec:fusion}
 
 Programs written in a compositional style often build data structures that are
@@ -6438,6 +6472,99 @@ which completes the proof.
   algebras satisfies the same equation, so uniqueness follows by structural
   induction on rose trees (using that a rose tree is strictly larger than each
   of its subtrees).
+\end{solution}
+
+\begin{solution}[\cref{exer:node_btree_functions}]\label{sol:node_btree_functions}
+  \begin{enumerate}
+  \item On a function $h : X \to Y$, we define $F_A(h) := \Id[1] + (h \times \Id[A] \times h)$, that is,
+    $F_A(h)(\star) = \star$ and $F_A(h)(x, a, x') = (h(x), a, h(x'))$.
+    By the universal property of the coproduct, an $F_A$-algebra $(C, \phi)$ is the same as a triple $(C, c, n)$
+    of a set $C$, an element $c \in C$ (equivalently, a function $c : 1 \to C$), and a function $n : C \times A \times C \to C$,
+    where $\phi = [c, n]$.
+    A function $h : C \to D$ is an $F_A$-algebra homomorphism from $(C, [c, n])$ to $(D, [c', n'])$ if and only if
+    \[ h \circ c = c' \qquad \text{and} \qquad h \circ n = n' \circ (h \times \Id[A] \times h), \]
+    that is, if and only if the following diagrams commute:
+    \[
+      \begin{tikzcd}
+        1 \ar[r, "c"] \ar[rd, "c'"'] & C \ar[d, "h"] \\ & D
+      \end{tikzcd}
+      \qquad
+      \begin{tikzcd}[column sep=large]
+        C \times A \times C \ar[r, "n"] \ar[d, "{h \times \Id[A] \times h}"'] & C \ar[d, "h"] \\ D \times A \times D \ar[r, "n'"] & D
+      \end{tikzcd}
+    \]
+    In terms of elements: $h(c) = c'$ and $h(n(x, a, x')) = n'(h(x), a, h(x'))$.
+
+  \item In each case we give the algebra $(C, [c, n])$.
+    \begin{enumerate}
+    \item $\mathsf{size} := \catam{[c, n]}$ with $C := \NN$, $c := 0$ and $n(s, a, t) := s + 1 + t$.
+    \item $\mathsf{flatten} := \catam{[c, n]}$ with $C := \List(A)$, $c := \nil$ and
+      $n(\ell, a, r) := \ell \mathbin{+\!\!+} \cons(a, \nil) \mathbin{+\!\!+} r$,
+      where $\mathbin{+\!\!+}$ denotes list concatenation.
+    \item The depth of a node is information that flows \emph{down} the tree, from the root to the leaves, whereas a catamorphism computes the result for a tree from the results for its subtrees.
+      We therefore compute, for every tree, a \emph{function} that, given the depth $d$ at which the tree sits, returns the relabelled tree.
+      That is, we take the carrier $C := \NN \to \mathsf{Tree}(\NN \times A)$ with
+      \[
+        c := \lambda d.\, \mathsf{leaf},
+        \qquad
+        n(\ell, a, r) := \lambda d.\, \mathsf{node}\big(\ell(d+1),\ (d, a),\ r(d+1)\big),
+      \]
+      and define $\mathsf{depths}(t) := \catam{[c,n]}(t)(0)$.
+      The resulting computation rules are
+      \begin{align*}
+        \catam{[c,n]}(\mathsf{leaf})(d) &= \mathsf{leaf}, \\
+        \catam{[c,n]}(\mathsf{node}(t_1, a, t_2))(d) &= \mathsf{node}\big(\catam{[c,n]}(t_1)(d+1), \\
+          &\phantom{{}= \mathsf{node}\big(} (d, a),\ \catam{[c,n]}(t_2)(d+1)\big).
+      \end{align*}
+      By currying (\cref{exer:adjunction_homtensor_currying}), $\catam{[c,n]}$ corresponds to a function $\mathsf{Tree}(A) \times \NN \to \mathsf{Tree}(\NN \times A)$, taking a tree and a starting depth.
+
+      Alternatively, $\mathsf{depths}$ is itself a catamorphism: take $C := \mathsf{Tree}(\NN \times A)$, $c := \mathsf{leaf}$ and
+      \[ n(\ell, a, r) := \mathsf{node}\big(\mathsf{map}_{s}(\ell),\ (0, a),\ \mathsf{map}_{s}(r)\big), \]
+      where $s := \Succ \times \Id[A] : \NN \times A \to \NN \times A$ and $\mathsf{map}$ is as in \cref{enum:tree-map}: the results for the subtrees are computed with the subtrees at depth $0$, and all their depths are then increased by one.
+      This solution traverses each subtree again at every level above it, so it takes quadratic time on a degenerate tree; the solution using the function space as the carrier traverses the tree only once.
+    \end{enumerate}
+
+  \item For a function $f : A \to B$ and a set $X$, let
+    \[ \tau^X_f := \Id[1] + (\Id[X] \times f \times \Id[X]) : F_A(X) \to F_B(X), \]
+    so that $\tau^X_f(\star) = \star$ and $\tau^X_f(x, a, x') = (x, f(a), x')$.
+    We write $\tau_f$ for $\tau^X_f$ when $X$ is clear.
+    We define $\mathsf{map}_f := \catam{\In_B \circ \tau_f}$, the catamorphism of the $F_A$-algebra $(\mathsf{Tree}(B), [\mathsf{leaf}, (\ell, a, r) \mapsto \mathsf{node}(\ell, f(a), r)])$.
+    By definition, it satisfies
+    \begin{equation}\label{eq:tree-map}
+      \mathsf{map}_f \circ \In_A = \In_B \circ \tau_f \circ F_A(\mathsf{map}_f),
+    \end{equation}
+    that is, $\mathsf{map}_f(\mathsf{leaf}) = \mathsf{leaf}$ and $\mathsf{map}_f(\mathsf{node}(\ell, a, r)) = \mathsf{node}(\mathsf{map}_f(\ell), f(a), \mathsf{map}_f(r))$.
+
+    We use the following facts about $\tau$, each easily checked pointwise:
+    \begin{itemize}
+    \item $\tau^X_{\Id[A]} = \Id[F_A(X)]$, and $\tau^X_g \circ \tau^X_f = \tau^X_{g \circ f}$ for $f : A \to B$ and $g : B \to C$;
+    \item $F_B(k) \circ \tau^X_f = \tau^Y_f \circ F_A(k)$ for every $k : X \to Y$, since both sides map $(x, a, x')$ to $(k(x), f(a), k(x'))$ (and $\star$ to $\star$).
+    \end{itemize}
+    \begin{enumerate}
+    \item We have $\mathsf{map}_{\Id[A]} = \catam{\In_A \circ \tau_{\Id[A]}} = \catam{\In_A} = \Id[\mathsf{Tree}(A)]$, by \cref{exer:in_catamorphism_id}.
+    \item We compute
+      \begin{align*}
+        (\mathsf{map}_g \circ \mathsf{map}_f) \circ \In_A
+        &= \mathsf{map}_g \circ \In_B \circ \tau_f \circ F_A(\mathsf{map}_f) \\
+        &= \In_C \circ \tau_g \circ F_B(\mathsf{map}_g) \circ \tau_f \circ F_A(\mathsf{map}_f) \\
+        &= \In_C \circ \tau_g \circ \tau_f \circ F_A(\mathsf{map}_g) \circ F_A(\mathsf{map}_f) \\
+        &= (\In_C \circ \tau_{g \circ f}) \circ F_A(\mathsf{map}_g \circ \mathsf{map}_f),
+      \end{align*}
+      using, in turn, \eqref{eq:tree-map} for $f$; \eqref{eq:tree-map} for $g$;
+      the equation $F_B(k) \circ \tau_f = \tau_f \circ F_A(k)$ for $k := \mathsf{map}_g$;
+      and $\tau_g \circ \tau_f = \tau_{g \circ f}$ together with functoriality of $F_A$.
+      Hence $\mathsf{map}_g \circ \mathsf{map}_f$ is an $F_A$-algebra homomorphism from $(\mathsf{Tree}(A), \In_A)$ to $(\mathsf{Tree}(C), \In_C \circ \tau_{g \circ f})$.
+      By initiality, there is exactly one such homomorphism, namely $\catam{\In_C \circ \tau_{g \circ f}} = \mathsf{map}_{g \circ f}$.
+      Therefore $\mathsf{map}_g \circ \mathsf{map}_f = \mathsf{map}_{g \circ f}$.
+    \end{enumerate}
+  \end{enumerate}
+
+  \begin{rem}
+    \Cref{enum:tree-map} shows that $A \mapsto \mathsf{Tree}(A)$, with $f \mapsto \mathsf{map}_f$, is a functor.
+    This is a special case of \cref{exer:initialalg_for_bifunctor_functor}, for the bifunctor $F(A, X) := 1 + (X \times A \times X)$;
+    the morphism $\In_B \circ \tau_f$ is the morphism $\In_B \circ F(\_, \Initalg{F_B})(f)$ used in the solution of that exercise.
+    The computation in the second part is also an instance of the fusion property (\cref{exer:fusion-property}).
+  \end{rem}
 \end{solution}
 
 \begin{solution}[\cref{exer:sum_plus_one_as_fold}]\label{sol:sum_plus_one_as_fold}
