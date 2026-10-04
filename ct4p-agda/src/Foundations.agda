@@ -1,4 +1,4 @@
-{-# OPTIONS --rewriting #-}
+{-# OPTIONS --with-K --rewriting #-}
 
 -- Chapter 2: Brief Summary of Logical Foundations
 module Foundations where
@@ -27,6 +27,7 @@ module Collections where
     variable
       X Y Z      : Set _
       x x₁ x₂ x₃ : X
+      y y₁ y₂ y₃ : Y
 
       P : X → Set _
 open Collections public
@@ -93,6 +94,9 @@ module Equality where
   
   ap : (f : X → Y) → x₁ ＝ x₂ → f x₁ ＝ f x₂
   ap f refl = refl
+
+  ap₂ : (f : X → Y → Z) → x₁ ＝ x₂ → y₁ ＝ y₂ → f x₁ y₁ ＝ f x₂ y₂
+  ap₂ f refl refl = refl
 
   -- The raw combinators are not very readable, so sometimes we use equational
   -- reasoning syntax
