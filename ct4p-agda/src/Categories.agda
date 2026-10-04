@@ -1,4 +1,4 @@
-{-# OPTIONS --rewriting #-}
+{-# OPTIONS --with-K --rewriting #-}
 
 open import Foundations
 open ExtraVars using (X; Y; Z)
@@ -124,13 +124,13 @@ module Example14 where
     ＝⟨ sym (+-ass {n = l}) ⟩
     l + n * l + m * l ∎
 
-  *-ass : (n * m) * l ＝ n * (m * l)
-  *-ass {n = zero}  = refl
-  *-ass {n = suc n} {m = m} {l = l} = 
+  *-assoc : (n * m) * l ＝ n * (m * l)
+  *-assoc {n = zero}  = refl
+  *-assoc {n = suc n} {m = m} {l = l} = 
     (m + n * m) * l
     ＝⟨ +*-distr {n = m} ⟩
     m * l + (n * m) * l
-    ＝⟨ ap ((m * l) +_) (*-ass {n = n}) ⟩
+    ＝⟨ ap ((m * l) +_) (*-assoc {n = n}) ⟩
     m * l + n * (m * l) ∎
 
   refl-∣ : n ∣ n
@@ -138,7 +138,7 @@ module Example14 where
 
   trans-∣ : n ∣ m → m ∣ l → n ∣ l
   trans-∣ {l = l} 
-    = ∥-∥map₂ λ where (k , refl) (o , refl) → o * k , sym (*-ass {n = l})
+    = ∥-∥map₂ λ where (k , refl) (o , refl) → o * k , sym (*-assoc {n = l})
 
   -- TODO
   -- Probably easiest to go via antisymmetry of numerical ordering
@@ -232,7 +232,180 @@ module Lemma17 (𝒞 : Category ℓ₁ ℓ₂) (let module 𝒞 = Category 𝒞)
     ＝⟨ id'-id 𝒞.id ⟩
     𝒞.id ∎
 
--- Example 18. TODO
+-- Example 18.
+module Example18 where 
+  open Example14 hiding (k)
+
+  data Sign : Set where
+    pos neg : Sign
+  
+  data Int : Set where
+    zero : Int
+    suc  : Sign → Nat → Int
+
+  pattern possuc n = suc pos n
+  pattern negsuc n = suc neg n
+
+  variable
+    s s₁ s₂ s₃ : Sign
+    i j k : Int
+
+  pred : Nat → Nat
+  pred zero    = zero
+  pred (suc n) = n
+
+  sign : Int → Sign
+  sign zero      = pos
+  sign (suc s n) = s
+
+  signed : Sign → Nat → Int
+  signed s zero    = zero
+  signed s (suc n) = suc s n
+
+  ∣_∣ : Int → Nat
+  ∣ zero    ∣ = zero
+  ∣ suc s n ∣ = suc n
+
+  signed-uniq : signed (sign i) ∣ i ∣ ＝ i
+  signed-uniq {i = zero}    = refl
+  signed-uniq {i = suc s n} = refl
+
+  ∣signed∣ : ∣ signed s n ∣ ＝ n
+  ∣signed∣ {n = zero}  = refl
+  ∣signed∣ {n = suc n} = refl
+
+  extℤ : sign i ＝ sign j → ∣ i ∣ ＝ ∣ j ∣ → i ＝ j
+  extℤ {i = zero} {j = zero}         _    _    = refl
+  extℤ {i = suc s₁ n} {j = suc s₂ m} refl refl = refl
+
+  inv : Sign → Sign
+  inv pos = neg
+  inv neg = pos
+
+  _*S_ : Sign → Sign → Sign
+  pos *S s = s
+  neg *S s = inv s
+
+  inv-inv : inv (inv s) ＝ s
+  inv-inv {s = pos} = refl
+  inv-inv {s = neg} = refl
+
+  inv*S : inv s₁ *S s₂ ＝ inv (s₁ *S s₂)
+  inv*S {s₁ = pos} = refl
+  inv*S {s₁ = neg} = sym inv-inv
+
+  *S-assoc : (s₁ *S s₂) *S s₃ ＝ s₁ *S (s₂ *S s₃)
+  *S-assoc {s₁ = pos}           = refl
+  *S-assoc {s₁ = neg} {s₂ = s₂} = inv*S {s₁ = s₂}
+
+  *posS : s *S pos ＝ s
+  *posS {s = pos} = refl
+  *posS {s = neg} = refl
+
+  oneℤ : Int
+  oneℤ = suc pos zero
+
+  _*ℤ_ : Int → Int → Int
+  x *ℤ y = signed (sign x *S sign y) (∣ x ∣ * ∣ y ∣)
+
+  +zero : n + zero ＝ n
+  +zero {n = zero}    = refl
+  +zero {n = (suc n)} = ap suc +zero
+  
+  one* : 1 * n ＝ n
+  one* = +zero
+  
+  one*ℤ : oneℤ *ℤ i ＝ i
+  one*ℤ {i = i} = 
+    signed (sign i) (∣ i ∣ + 0)
+    ＝⟨ ap (signed (sign i)) +zero ⟩
+    signed (sign i) ∣ i ∣
+    ＝⟨ signed-uniq ⟩
+    i ∎
+
+  *oneℤ : i *ℤ oneℤ ＝ i
+  *oneℤ {i = i} = 
+    signed (sign i *S pos) (∣ i ∣ * 1)
+    ＝⟨ ap₂ signed *posS *one ⟩
+    signed (sign i) ∣ i ∣
+    ＝⟨ signed-uniq ⟩
+    i ∎
+
+  *zero : n * 0 ＝ 0
+  *zero {n = zero}  = refl
+  *zero {n = suc n} = *zero {n = n} 
+
+  *zeroℤ : i *ℤ zero ＝ zero
+  *zeroℤ {i = i} = 
+    signed (sign i *S pos) (∣ i ∣ * 0)
+    ＝⟨ ap (signed _) (*zero {n = ∣ i ∣}) ⟩
+    zero ∎
+
+  *ℤ-assoc : (i *ℤ j) *ℤ k ＝ i *ℤ (j *ℤ k)
+  *ℤ-assoc {i = zero}    {j = j}    {k = k} = refl
+  *ℤ-assoc {i = suc s n} {j = zero} {k = k} = 
+    (suc s n *ℤ zero) *ℤ k
+    ＝⟨ ap (_*ℤ k) (*zeroℤ {i = suc s n}) ⟩  
+    zero
+    ＝⟨ sym (*zeroℤ {i = suc s n}) ⟩  
+    suc s n *ℤ zero ∎
+  *ℤ-assoc {i = suc s₁ n} {j = suc s₂ m} {k = zero} = 
+    (suc s₁ n *ℤ suc s₂ m) *ℤ zero
+    ＝⟨ *zeroℤ {i = suc s₁ n *ℤ suc s₂ m} ⟩
+    zero
+    ＝⟨ sym (*zeroℤ {i = suc s₁ n}) ⟩
+    suc s₁ n *ℤ zero
+    ＝⟨ ap (suc s₁ n *ℤ_) (sym (*zeroℤ {i = suc s₂ m})) ⟩
+    suc s₁ n *ℤ (suc s₂ m *ℤ zero) ∎
+  *ℤ-assoc {i = suc s₁ n} {j = suc s₂ m} {k = suc s₃ l} = 
+    ap₂ suc (*S-assoc {s₁ = s₁}) 
+            (ap pred (*-assoc {n = suc n} {m = suc m} {l = suc l}))
+
+  -- This definition of rational numbers does not have quite the right
+  -- notion of equality. E.g. 1/2 is distinct from 2/4.
+  -- We could require the numerator and denominator to be coprime (or
+  -- quotient), but it turns out this definition is sufficient to define the 
+  -- category.
+
+  record Rat : Set where 
+    constructor div_suc_
+    field 
+      num      : Int
+      pred-den : Nat
+    den : Nat
+    den = suc (pred-den)
+  open Rat public
+
+  variable
+    x y z : Rat
+
+  _*ℚ_ : Rat → Rat → Rat
+  ((div i suc n) *ℚ (div j suc m)) .num      = i *ℤ j
+  ((div i suc n) *ℚ (div j suc m)) .pred-den = m + n * suc m
+
+  oneℚ : Rat 
+  oneℚ = div oneℤ suc zero
+
+  one*ℚ : oneℚ *ℚ x ＝ x
+  one*ℚ = ap₂ div_suc_ one*ℤ +zero
+
+  *oneℚ : x *ℚ oneℚ ＝ x
+  *oneℚ = ap₂ div_suc_ *oneℤ *one
+
+  *ℚ-assoc : (x *ℚ y) *ℚ z ＝ x *ℚ (y *ℚ z)
+  *ℚ-assoc {x = div i suc n} {y = div j suc m} {z = div k suc l} = 
+    ap₂ div_suc_ (*ℤ-assoc {i = i}) 
+                 (ap pred (*-assoc {n = suc n} {m = suc m} {l = suc l}))
+
+  module _ where 
+    RAT : Category lzero _ 
+    RAT .Ob       = 𝟙
+    RAT .Hom ⋆ ⋆  = Rat
+    RAT .id       = oneℚ
+    RAT ._∘_ x y  = y *ℚ x
+    RAT .id∘ x    = *oneℚ
+    RAT .∘id x    = one*ℚ
+    RAT .∘∘ x y z = *ℚ-assoc {x = x} {y = y} {z = z}
 
 -- Definition 19.
 module Definition19 where
@@ -727,3 +900,4 @@ module Exercise9 where
   DCPO .∘∘  f g h = contMap＝ λ _ → refl
 
   Hask = DCPO
+  
