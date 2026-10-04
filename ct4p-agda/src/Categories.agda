@@ -305,20 +305,6 @@ module Example18 where
   oneℤ : Int
   oneℤ = suc pos zero
 
-  _-ℕ_ : Nat → Nat → Int
-  zero  -ℕ zero  = zero
-  zero  -ℕ suc m = suc neg m
-  suc n -ℕ zero  = suc pos n
-  suc n -ℕ suc m = n -ℕ m
-
-  _+ℤ_ : Int → Int → Int
-  zero     +ℤ m        = m
-  suc s n  +ℤ zero     = suc s n
-  possuc n +ℤ possuc m = suc pos (suc (n + m))
-  possuc n +ℤ negsuc m = n -ℕ m
-  negsuc n +ℤ possuc m = n -ℕ m
-  negsuc n +ℤ negsuc m = suc neg (suc (n + m))
-
   _*ℤ_ : Int → Int → Int
   x *ℤ y = signed (sign x *S sign y) (∣ x ∣ * ∣ y ∣)
 
