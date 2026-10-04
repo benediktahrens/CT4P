@@ -15,7 +15,7 @@ module Collections where
   --
   -- Finally, |Set| is an alias for |Set₀|.
   --
-  -- For more info, see 
+  -- For more info, see
   -- https://agda.readthedocs.io/en/stable/language/universe-levels.html
   open import Agda.Primitive using (Level; lzero; lsuc)
     renaming (_⊔_ to _lmax_) public
@@ -36,7 +36,7 @@ open Collections public
 module Functions where
   -- In Agda, we introduce functions with lambda abstractions (|λ x → ...|).
   --
-  -- For more info, see 
+  -- For more info, see
   -- https://agda.readthedocs.io/en/stable/language/lambda-abstraction.html
   private module Example (ℕ ℚ : Set) (three : ℕ) (_/_ : ℕ → ℕ → ℚ) where
     _/3 : ℕ → ℚ
@@ -68,7 +68,7 @@ open DisjointUnion public
 
 -- Definitions
 module Definitions where
-  -- For more info, see 
+  -- For more info, see
   -- https://agda.readthedocs.io/en/stable/language/function-definitions.html
   private module Example (ℕ : Set) (_+_ : ℕ → ℕ → ℕ) where
     double : ℕ → ℕ
@@ -84,14 +84,14 @@ module Equality where
   open ExtraVars
 
   -- In a proof assistant, we often need to be more more explicit with equality
-  -- than on paper. For example, manually applying symmetry (|sym|), 
+  -- than on paper. For example, manually applying symmetry (|sym|),
   -- transitivity (|_∙_|) and congruence (|ap|).
   sym : x₁ ＝ x₂ → x₂ ＝ x₁
   sym refl = refl
 
   _∙_ : x₁ ＝ x₂ → x₂ ＝ x₃ → x₁ ＝ x₃
   refl ∙ q = q
-  
+
   ap : (f : X → Y) → x₁ ＝ x₂ → f x₁ ＝ f x₂
   ap f refl = refl
 
@@ -118,7 +118,7 @@ module Equality where
   -- Example:
   private
     example : ∀ {x y z} (f : X → Y) → x ＝ f y → y ＝ z → x ＝ f z
-    example {x = x} {y = y} {z = z} f eq₁ eq₂ = 
+    example {x = x} {y = y} {z = z} f eq₁ eq₂ =
       x
       ＝⟨ eq₁ ⟩
       f y
@@ -128,13 +128,13 @@ module Equality where
   -- We sometimes rely on function extensionality
   postulate
     funext : {Y : X → Set ℓ} {f g : (x : X) → Y x} → (∀ x → f x ＝ g x) → f ＝ g
-  
+
 open Equality public
 
 -- Propositions and existence
 module Prop where
   open ExtraVars
-  
+
   -- In type theory, propositions are types with at most one element
   record IsProp (X : Set ℓ) : Set ℓ where
     field
@@ -143,20 +143,20 @@ module Prop where
 
   -- For example, the unit and empty types
   open import Agda.Builtin.Unit renaming (⊤ to 𝟙; tt to ⋆) public
-  
+
   data 𝟘 : Set where
-  
+
   -- Properties/predicates are families of propositions
   IsPred : {X : Set ℓ₁} (P : X → Set ℓ₂) → Set (ℓ₁ lmax ℓ₂)
   IsPred P = ∀ x → IsProp (P x)
 
   import Agda.Builtin.Equality.Rewrite
 
-  -- In order to define existence as a proposition, we postulate "propositional 
-  -- truncation" which squashes a type into the proposition of whether it is 
+  -- In order to define existence as a proposition, we postulate "propositional
+  -- truncation" which squashes a type into the proposition of whether it is
   -- inhabited
   postulate
-    ∥_∥ : Set ℓ → Set ℓ 
+    ∥_∥ : Set ℓ → Set ℓ
 
     inh     : X → ∥ X ∥
     squash  : ∀ (x₁ x₂ : ∥ X ∥) → x₁ ＝ x₂
@@ -170,14 +170,14 @@ module Prop where
   ∥-∥prop .uniq = squash
 
   ∥-∥rec₂ : IsProp Z → (X → Y → Z) → ∥ X ∥ → ∥ Y ∥ → Z
-  ∥-∥rec₂ Z-prop f x y 
+  ∥-∥rec₂ Z-prop f x y
     = ∥-∥rec Z-prop (λ x' → ∥-∥rec Z-prop (λ y' → f x' y') y) x
 
   ∥-∥map : (X → Y) → ∥ X ∥ → ∥ Y ∥
   ∥-∥map f x = ∥-∥rec ∥-∥prop (λ x' → inh (f x')) x
 
   ∥-∥map₂ : (X → Y → Z) → ∥ X ∥ → ∥ Y ∥ → ∥ Z ∥
-  ∥-∥map₂ f x y 
+  ∥-∥map₂ f x y
     = ∥-∥rec₂ ∥-∥prop (λ x' y' → inh (f x' y')) x y
 
   -- Mere existence
@@ -185,7 +185,7 @@ module Prop where
   ∃ X P = ∥ Σ X P ∥
 
   ∃-prop : IsProp (∃ X P)
-  ∃-prop = ∥-∥prop 
+  ∃-prop = ∥-∥prop
 
   -- Unique existence
   record ∃! (X : Set ℓ₁) (P : X → Set ℓ₂) : Set (ℓ₁ lmax ℓ₂) where

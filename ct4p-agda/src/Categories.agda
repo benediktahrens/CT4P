@@ -15,7 +15,7 @@ module Definition1 where
 
       id  : ∀ {x} → Hom x x
       _∘_ : ∀ {x y z} → Hom y z → Hom x y → Hom x z
-      
+
       id∘ : ∀ {x y} (f : Hom x y) → id ∘ f ＝ f
       ∘id : ∀ {x y} (f : Hom x y) → f ∘ id ＝ f
       ∘∘  : ∀ {x y z w} (f : Hom x y) (g : Hom y z) (h : Hom z w)
@@ -64,7 +64,7 @@ module Example10 where
 
 -- Exercise 12.
 module Exercise12 where
-  open Example10 
+  open Example10
 
   -- Partially ordered sets
   record Poset (ℓ₁ ℓ₂ : Level) : Set (lsuc (ℓ₁ lmax ℓ₂))  where
@@ -80,7 +80,7 @@ module Exercise12 where
 
     -- Every partially ordered set is a preorder
     Pre : Preorder ℓ₁ ℓ₂
-    Pre = record { Car = Car; _≤_ = _≤_; ≤-prop = ≤-prop 
+    Pre = record { Car = Car; _≤_ = _≤_; ≤-prop = ≤-prop
                  ; refl≤ = refl≤ ; trans≤ = trans≤ }
 
   module _ (𝒫 : Poset ℓ₁ ℓ₂) (let module 𝒫 = Poset 𝒫) where
@@ -117,7 +117,7 @@ module Example14 where
 
   +*-distr : (n + m) * l ＝ n * l + m * l
   +*-distr {n = zero}  = refl
-  +*-distr {n = suc n} {m = m} {l = l} = 
+  +*-distr {n = suc n} {m = m} {l = l} =
     l + (n + m) * l
     ＝⟨ ap (l +_) (+*-distr {n = n}) ⟩
     l + (n * l + m * l)
@@ -126,7 +126,7 @@ module Example14 where
 
   *-assoc : (n * m) * l ＝ n * (m * l)
   *-assoc {n = zero}  = refl
-  *-assoc {n = suc n} {m = m} {l = l} = 
+  *-assoc {n = suc n} {m = m} {l = l} =
     (m + n * m) * l
     ＝⟨ +*-distr {n = m} ⟩
     m * l + (n * m) * l
@@ -137,7 +137,7 @@ module Example14 where
   refl-∣ = inh (1 , *one)
 
   trans-∣ : n ∣ m → m ∣ l → n ∣ l
-  trans-∣ {l = l} 
+  trans-∣ {l = l}
     = ∥-∥map₂ λ where (k , refl) (o , refl) → o * k , sym (*-assoc {n = l})
 
   -- TODO
@@ -151,9 +151,9 @@ module Example14 where
 
   ∣-Pos .≤-prop = ∥-∥prop
   ∣-Pos .refl≤  = refl-∣
-  ∣-Pos .trans≤ {z = z} div₁ div₂ 
+  ∣-Pos .trans≤ {z = z} div₁ div₂
     = trans-∣ {l = z} div₁ div₂
-  ∣-Pos .antisym≤ div₁ div₂ 
+  ∣-Pos .antisym≤ div₁ div₂
     = antisym-∣ div₁ div₂
 
   ∣-Cat : Category _ _
@@ -181,7 +181,7 @@ module Example15 where
   𝔹-Pos .refl≤    = refl≤𝔹
   𝔹-Pos .trans≤ f≤t    refl≤𝔹 = f≤t
   𝔹-Pos .trans≤ refl≤𝔹 leq₂   = leq₂
-  
+
   𝔹-Pos .antisym≤ f≤t ()
   𝔹-Pos .antisym≤ refl≤𝔹 refl≤𝔹 = refl
 
@@ -189,7 +189,7 @@ module Example15 where
 module Example16 where
   open Exercise12
 
-  module _ (𝒫₁ 𝒫₂ : Poset ℓ₁ ℓ₂) 
+  module _ (𝒫₁ 𝒫₂ : Poset ℓ₁ ℓ₂)
            (let module 𝒫₁ = Poset 𝒫₁) (let module 𝒫₂ = Poset 𝒫₂) where
     -- Monotone maps between partially ordered sets
     -- (Poset morphisms)
@@ -208,7 +208,7 @@ module Example16 where
   POS .id {x = 𝒫} .pres-≤ leq = leq
     where module 𝒫 = Poset 𝒫
   POS ._∘_ f g .act    x   = f .act (g .act x)
-  POS ._∘_ {x = 𝒫₁} {y = 𝒫₂} {z = 𝒫₃} f g .pres-≤ leq 
+  POS ._∘_ {x = 𝒫₁} {y = 𝒫₂} {z = 𝒫₃} f g .pres-≤ leq
     = f .pres-≤ (g .pres-≤ leq)
     where module 𝒫₁ = Poset 𝒫₁
           module 𝒫₂ = Poset 𝒫₂
@@ -225,7 +225,7 @@ module Lemma17 (𝒞 : Category ℓ₁ ℓ₂) (let module 𝒞 = Category 𝒞)
   IsId {x = x} id' = ∀ {y} (f : 𝒞.Hom x y) → f 𝒞.∘ id' ＝ f
 
   id-uniq : ∀ {x} (id' : 𝒞.Hom x x) → IsId id' → id' ＝ 𝒞.id
-  id-uniq id' id'-id = 
+  id-uniq id' id'-id =
     id'
     ＝⟨ sym (𝒞.id∘ id') ⟩
     𝒞.id 𝒞.∘ id'
@@ -233,12 +233,12 @@ module Lemma17 (𝒞 : Category ℓ₁ ℓ₂) (let module 𝒞 = Category 𝒞)
     𝒞.id ∎
 
 -- Example 18.
-module Example18 where 
+module Example18 where
   open Example14 hiding (k)
 
   data Sign : Set where
     pos neg : Sign
-  
+
   data Int : Set where
     zero : Int
     suc  : Sign → Nat → Int
@@ -311,12 +311,12 @@ module Example18 where
   +zero : n + zero ＝ n
   +zero {n = zero}    = refl
   +zero {n = (suc n)} = ap suc +zero
-  
+
   one* : 1 * n ＝ n
   one* = +zero
-  
+
   one*ℤ : oneℤ *ℤ i ＝ i
-  one*ℤ {i = i} = 
+  one*ℤ {i = i} =
     signed (sign i) (∣ i ∣ + 0)
     ＝⟨ ap (signed (sign i)) +zero ⟩
     signed (sign i) ∣ i ∣
@@ -324,7 +324,7 @@ module Example18 where
     i ∎
 
   *oneℤ : i *ℤ oneℤ ＝ i
-  *oneℤ {i = i} = 
+  *oneℤ {i = i} =
     signed (sign i *S pos) (∣ i ∣ * 1)
     ＝⟨ ap₂ signed *posS *one ⟩
     signed (sign i) ∣ i ∣
@@ -333,23 +333,23 @@ module Example18 where
 
   *zero : n * 0 ＝ 0
   *zero {n = zero}  = refl
-  *zero {n = suc n} = *zero {n = n} 
+  *zero {n = suc n} = *zero {n = n}
 
   *zeroℤ : i *ℤ zero ＝ zero
-  *zeroℤ {i = i} = 
+  *zeroℤ {i = i} =
     signed (sign i *S pos) (∣ i ∣ * 0)
     ＝⟨ ap (signed _) (*zero {n = ∣ i ∣}) ⟩
     zero ∎
 
   *ℤ-assoc : (i *ℤ j) *ℤ k ＝ i *ℤ (j *ℤ k)
   *ℤ-assoc {i = zero}    {j = j}    {k = k} = refl
-  *ℤ-assoc {i = suc s n} {j = zero} {k = k} = 
+  *ℤ-assoc {i = suc s n} {j = zero} {k = k} =
     (suc s n *ℤ zero) *ℤ k
-    ＝⟨ ap (_*ℤ k) (*zeroℤ {i = suc s n}) ⟩  
+    ＝⟨ ap (_*ℤ k) (*zeroℤ {i = suc s n}) ⟩
     zero
-    ＝⟨ sym (*zeroℤ {i = suc s n}) ⟩  
+    ＝⟨ sym (*zeroℤ {i = suc s n}) ⟩
     suc s n *ℤ zero ∎
-  *ℤ-assoc {i = suc s₁ n} {j = suc s₂ m} {k = zero} = 
+  *ℤ-assoc {i = suc s₁ n} {j = suc s₂ m} {k = zero} =
     (suc s₁ n *ℤ suc s₂ m) *ℤ zero
     ＝⟨ *zeroℤ {i = suc s₁ n *ℤ suc s₂ m} ⟩
     zero
@@ -357,19 +357,19 @@ module Example18 where
     suc s₁ n *ℤ zero
     ＝⟨ ap (suc s₁ n *ℤ_) (sym (*zeroℤ {i = suc s₂ m})) ⟩
     suc s₁ n *ℤ (suc s₂ m *ℤ zero) ∎
-  *ℤ-assoc {i = suc s₁ n} {j = suc s₂ m} {k = suc s₃ l} = 
-    ap₂ suc (*S-assoc {s₁ = s₁}) 
+  *ℤ-assoc {i = suc s₁ n} {j = suc s₂ m} {k = suc s₃ l} =
+    ap₂ suc (*S-assoc {s₁ = s₁})
             (ap pred (*-assoc {n = suc n} {m = suc m} {l = suc l}))
 
   -- This definition of rational numbers does not have quite the right
   -- notion of equality. E.g. 1/2 is distinct from 2/4.
   -- We could require the numerator and denominator to be coprime (or
-  -- quotient), but it turns out this definition is sufficient to define the 
+  -- quotient), but it turns out this definition is sufficient to define the
   -- category.
 
-  record Rat : Set where 
+  record Rat : Set where
     constructor div_suc_
-    field 
+    field
       num      : Int
       pred-den : Nat
     den : Nat
@@ -383,7 +383,7 @@ module Example18 where
   ((div i suc n) *ℚ (div j suc m)) .num      = i *ℤ j
   ((div i suc n) *ℚ (div j suc m)) .pred-den = m + n * suc m
 
-  oneℚ : Rat 
+  oneℚ : Rat
   oneℚ = div oneℤ suc zero
 
   one*ℚ : oneℚ *ℚ x ＝ x
@@ -393,12 +393,12 @@ module Example18 where
   *oneℚ = ap₂ div_suc_ *oneℤ *one
 
   *ℚ-assoc : (x *ℚ y) *ℚ z ＝ x *ℚ (y *ℚ z)
-  *ℚ-assoc {x = div i suc n} {y = div j suc m} {z = div k suc l} = 
-    ap₂ div_suc_ (*ℤ-assoc {i = i}) 
+  *ℚ-assoc {x = div i suc n} {y = div j suc m} {z = div k suc l} =
+    ap₂ div_suc_ (*ℤ-assoc {i = i})
                  (ap pred (*-assoc {n = suc n} {m = suc m} {l = suc l}))
 
-  module _ where 
-    RAT : Category lzero _ 
+  module _ where
+    RAT : Category lzero _
     RAT .Ob       = 𝟙
     RAT .Hom ⋆ ⋆  = Rat
     RAT .id       = oneℚ
@@ -420,11 +420,11 @@ module Definition19 where
       ◆id : ∀ x → x ◆ id ＝ x
       ◆◆  : ∀ x y z → (x ◆ y) ◆ z ＝ x ◆ (y ◆ z)
 
-  module _ (M : Monoid ℓ) (let module M = Monoid M) where    
+  module _ (M : Monoid ℓ) (let module M = Monoid M) where
     Mon2Cat : Category lzero ℓ
     Mon2Cat .Ob      = 𝟙
     Mon2Cat .Hom ⋆ ⋆ = M.Car
-    
+
     Mon2Cat .id      = M.id
     Mon2Cat ._∘_ y x = x M.◆ y
 
@@ -438,20 +438,20 @@ module Remark20 (I : Set ℓ₁) (M : Monoid ℓ₂) (let module M = Monoid M) w
   Mon2Cat' : Category ℓ₁ (ℓ₁ lmax ℓ₂)
   Mon2Cat' .Ob      = I
   Mon2Cat' .Hom i j = (i ＝ j) × M.Car
-  
+
   Mon2Cat' .id  = refl , M.id
   Mon2Cat' ._∘_ (refl , y) (refl , x) = refl ,  x M.◆ y
-  
-  Mon2Cat' .id∘ (refl , x) 
+
+  Mon2Cat' .id∘ (refl , x)
     = ap (_ ,_) (M.◆id x)
-  Mon2Cat' .∘id (refl , x) 
+  Mon2Cat' .∘id (refl , x)
     = ap (_ ,_) (M.id◆ x)
-  Mon2Cat' .∘∘  (refl , x) (refl , y) (refl , z) 
+  Mon2Cat' .∘∘  (refl , x) (refl , y) (refl , z)
     = ap (_ ,_) (M.◆◆ x y z)
 
 -- Exercise 21.
 module Exercise21 (𝒞 : Category lzero ℓ₂) (let module 𝒞 = Category 𝒞) where
-  open Monoid 
+  open Monoid
 
   module _ (x : 𝒞.Ob) (x-uniq : ∀ {y} → x ＝ y) where
     Mon2Cat⁻¹ : Monoid ℓ₂
@@ -464,8 +464,8 @@ module Exercise21 (𝒞 : Category lzero ℓ₂) (let module 𝒞 = Category �
     Mon2Cat⁻¹ .◆id f     = 𝒞.id∘ f
     Mon2Cat⁻¹ .◆◆  f g h = 𝒞.∘∘ f g h
 
-  -- To prove 𝒞 is actually "of the form" (i.e. equivalent to) 
-  -- |Mon2Cat Mon2Cat⁻¹|, we need to have a proper characterisation of 
+  -- To prove 𝒞 is actually "of the form" (i.e. equivalent to)
+  -- |Mon2Cat Mon2Cat⁻¹|, we need to have a proper characterisation of
   -- equivalence of categories.
 
 -- Exercise 22.
@@ -479,7 +479,7 @@ module Exercise22 where
         act     : M₁.Car → M₂.Car
         pres-◆  : ∀ {x y} → act (x M₁.◆ y) ＝ act x M₂.◆ act y
         pres-id : act M₁.id ＝ M₂.id
-    
+
   module _ {M₁ M₂ : Monoid ℓ}
            {f g : MonoidHom M₁ M₂}
            (let module f = MonoidHom f) (let module g = MonoidHom g)
@@ -498,7 +498,7 @@ module Exercise22 where
   MON .id .pres-◆  = refl
   MON .id .pres-id = refl
   MON ._∘_ g f .act x   = g .act (f . act x)
-  MON ._∘_ {x = M₁} {y = M₂} {z = M₃} g f .pres-◆ {x = x} {y = y} = 
+  MON ._∘_ {x = M₁} {y = M₂} {z = M₃} g f .pres-◆ {x = x} {y = y} =
     g .act (f .act (x M₁.◆ y))
     ＝⟨ ap (g .act) (f .pres-◆) ⟩
     g .act (f .act x M₂.◆ f .act y)
@@ -558,12 +558,12 @@ module Exercise24 where
     ε∘Path ε       = refl
     ε∘Path (p , e) = ap (_, e) (ε∘Path p)
 
-    ∘∘Path : ∀ {x y z w} (p₁ : Path x y) (p₂ : Path y z) (p₃ : Path z w) 
+    ∘∘Path : ∀ {x y z w} (p₁ : Path x y) (p₂ : Path y z) (p₃ : Path z w)
            → p₁ ∘Path (p₂ ∘Path p₃) ＝ (p₁ ∘Path p₂) ∘Path p₃
     ∘∘Path p₁ p₂ ε         = refl
     ∘∘Path p₁ p₂ (p₃ , e₃) = ap (_, e₃) (∘∘Path p₁ p₂ p₃)
 
-    Graph2Cat : Category ℓ₁ (ℓ₁ lmax ℓ₂) 
+    Graph2Cat : Category ℓ₁ (ℓ₁ lmax ℓ₂)
     Graph2Cat .Ob  = 𝒢.Node
     Graph2Cat .Hom = Path
 
@@ -595,14 +595,14 @@ module Exercise25 where
   x .Edge x y = 𝟘
   x .Edge-prop .uniq ()
 
-  -- Discrete graphs have no edges, so the constructed edges category cannot 
+  -- Discrete graphs have no edges, so the constructed edges category cannot
   -- satisfy identity!
   contradiction : 𝟘
   contradiction = EdgesCat x .id
 
 -- Example26.
 module Example26 where
-  open Exercise24 
+  open Exercise24
   open Graph
 
   -- Discrete graph with a single node
@@ -616,7 +616,7 @@ module Example26 where
 
 -- Example 27.
 module Example27 where
-  open Exercise24 
+  open Exercise24
   open Graph
 
   data Node2 : Set where
@@ -635,12 +635,12 @@ module Example27 where
 
 -- Example 28.
 module Example28 where
-  open Exercise24 
+  open Exercise24
   open Graph
 
   data Node2 : Set where
     x y : Node2
-  
+
   data Cycle2Edge : Node2 → Node2 → Set where
     fᴱ : Cycle2Edge x y
     gᴱ : Cycle2Edge y x
@@ -656,10 +656,10 @@ module Example28 where
 
   private
     module x↔y = Category x↔yCat
-  
+
   f : x↔y.Hom x y
   g : x↔y.Hom y x
-  
+
   f = ε , fᴱ
   g = ε , gᴱ
 
@@ -669,25 +669,25 @@ module Example28 where
 
   all-g∘f^ : (h : x↔y.Hom x x) → Preimage g∘f^ h
   all-g∘f^ ε               = zero , refl
-  all-g∘f^ ((h , fᴱ) , gᴱ) 
+  all-g∘f^ ((h , fᴱ) , gᴱ)
     with n , refl ← all-g∘f^ h
     = suc n , refl
-  
+
   -- etc...
 
 -- Example 29.
 module Example29 where
-  open Exercise24 
+  open Exercise24
   open Graph
 
   data Node4 : Set where
-    x y z w : Node4 
+    x y z w : Node4
 
   data Edge⟨x←y→z→w⟩ : Node4 → Node4 → Set where
     x→yᴱ : Edge⟨x←y→z→w⟩ x y
     y→zᴱ : Edge⟨x←y→z→w⟩ y z
     z→wᴱ : Edge⟨x←y→z→w⟩ z w
-  
+
   x←y→z→w : Graph _ _
   x←y→z→w .Node = Node4
   x←y→z→w .Edge = Edge⟨x←y→z→w⟩
@@ -716,7 +716,7 @@ module Example8 where
   open Exercise12
   open Example16
 
-  -- In type theory, we can encode subsets (of |X|) via power sets 
+  -- In type theory, we can encode subsets (of |X|) via power sets
   -- (|X → Set ℓ|) or families (|Σ (Set ℓ) (λ I → X)|).
   -- The family approach works out much more nicely when defining
   -- continuous maps between DCPOs (where we need to map the subset
@@ -744,12 +744,12 @@ module Example8 where
       field
         Idx : Set ℓ₃
         fam : Idx → 𝒫.Car
-      
+
       Family : Fam 𝒫.Car _
       Family = record {Idx = Idx; fam = fam}
 
       field
-        has-upper : (i j : Idx) 
+        has-upper : (i j : Idx)
                   → ∃ Idx λ k → IsUB2 (fam i) (fam j) (fam k)
 
         nonempty : NonEmpty Idx
@@ -770,7 +770,7 @@ module Example8 where
     open MonotoneMap
     open IsUB2
 
-    mapIsUB2 : ∀ {x y z} 
+    mapIsUB2 : ∀ {x y z}
             → IsUB2 𝒫₁ x y z → IsUB2 𝒫₂ (f .act x) (f .act y) (f .act z)
     mapIsUB2 ub .left≤  = f .pres-≤ (ub .left≤)
     mapIsUB2 ub .right≤ = f .pres-≤ (ub .right≤)
@@ -778,9 +778,9 @@ module Example8 where
     mapDirSubset : DirSubset 𝒫₁ ℓ₃ → DirSubset 𝒫₂ ℓ₃
     mapDirSubset D .Idx   = D .Idx
     mapDirSubset D .fam i = f .act (D .fam i)
-    mapDirSubset D .has-upper i j 
+    mapDirSubset D .has-upper i j
       = ∥-∥map (λ (i , ub) → i , mapIsUB2 ub) (D .has-upper i j)
-    mapDirSubset D .nonempty      
+    mapDirSubset D .nonempty
       = D .nonempty
 
   -- Pointed direct complete partial orders
@@ -796,13 +796,13 @@ module Example8 where
       antisym≤ : ∀ {x y} → x ≤ y → y ≤ x → x ＝ y
 
     Pos : Poset ℓ₁ ℓ₂
-    Pos = record { Car = Car ; _≤_ = _≤_ ; ≤-prop = ≤-prop 
+    Pos = record { Car = Car ; _≤_ = _≤_ ; ≤-prop = ≤-prop
                  ; refl≤ = refl≤ ; trans≤ = trans≤ ; antisym≤ = antisym≤ }
     private module Pos = Poset Pos
-    
+
     field
       ⨆    : DirSubset Pos ℓ₃ → Pos.Car
-      ⨆ᴸᵁᴮ : (D : DirSubset Pos ℓ₃) → IsLUB∞ Pos (Family D) (⨆ D) 
+      ⨆ᴸᵁᴮ : (D : DirSubset Pos ℓ₃) → IsLUB∞ Pos (Family D) (⨆ D)
       ⊥    : Pos.Car
       ⊥≤   : ∀ {x} → ⊥ Pos.≤ x
 
@@ -814,7 +814,7 @@ module Exercise9 where
   open Example8
   open Example16
 
-  module _ (𝒟₁ 𝒟₂ : Dcpo ℓ₁ ℓ₂ ℓ₃) 
+  module _ (𝒟₁ 𝒟₂ : Dcpo ℓ₁ ℓ₂ ℓ₃)
            (let module 𝒟₁ = Dcpo 𝒟₁) (let module 𝒟₂ = Dcpo 𝒟₂) where
     open IsLUB∞
     open IsUB2
@@ -826,18 +826,18 @@ module Exercise9 where
         act    : 𝒟₁.Car → 𝒟₂.Car
         pres-⨆ : (D : DirSubset 𝒟₁.Pos ℓ₃) {x : 𝒟₁.Car}
                → IsLUB∞ 𝒟₁.Pos (Family D) x
-               → IsLUB∞ 𝒟₂.Pos (mapFam act (Family D)) (act x) 
+               → IsLUB∞ 𝒟₂.Pos (mapFam act (Family D)) (act x)
         pres-⊥ : act 𝒟₁.⊥ ＝ 𝒟₂.⊥
 
       -- Every strictly continuous map is monotone
       pres-≤ : ∀ {x y} → x 𝒟₁.≤ y → act x 𝒟₂.≤ act y
-      pres-≤ {x = x} {y = y} leq = go .upper (lift true) where 
+      pres-≤ {x = x} {y = y} leq = go .upper (lift true) where
         xy : Fam 𝒟₁.Car _
         xy .Idx = Lift Bool
         xy .fam (lift true)  = x
         xy .fam (lift false) = y
 
-        y-ub : (i j : Bool) 
+        y-ub : (i j : Bool)
              → IsUB2 𝒟₁.Pos (fam xy (lift i)) (fam xy (lift j)) y
         y-ub false j .left≤  = 𝒟₁.refl≤
         y-ub true  j .left≤  = leq
@@ -881,15 +881,15 @@ module Exercise9 where
     where module f = ContMap f
           module g = ContMap g
   DCPO ._∘_ {x = 𝒟₁} {y = 𝒟₂} {z = 𝒟₃} f g .pres-⨆ D lub
-    = f.pres-⨆ (mapDirSubset g.mono D) (g.pres-⨆ D lub) 
+    = f.pres-⨆ (mapDirSubset g.mono D) (g.pres-⨆ D lub)
     where module f = ContMap f
           module g = ContMap g
-  DCPO ._∘_ {x = 𝒟₁} {y = 𝒟₂} {z = 𝒟₃} f g .pres-⊥ = 
+  DCPO ._∘_ {x = 𝒟₁} {y = 𝒟₂} {z = 𝒟₃} f g .pres-⊥ =
     f.act (g.act 𝒟₁.⊥)
     ＝⟨ ap f.act g.pres-⊥ ⟩
     f.act 𝒟₂.⊥
     ＝⟨ f.pres-⊥ ⟩
-    𝒟₃.⊥ ∎ where 
+    𝒟₃.⊥ ∎ where
       module f = ContMap f
       module g = ContMap g
       module 𝒟₁ = Dcpo 𝒟₁
@@ -900,4 +900,3 @@ module Exercise9 where
   DCPO .∘∘  f g h = contMap＝ λ _ → refl
 
   Hask = DCPO
-  
