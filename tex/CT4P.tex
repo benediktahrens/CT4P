@@ -2927,6 +2927,244 @@ Y
   Prove Lambek's theorem.
 \end{exer}
 
+\subsection{Worked examples}\label{sec:fusion-examples}
+
+\paragraph{Warm-up: natural numbers.}
+Recall that $(\NN, [\Zero, \Succ])$ is the initial $\Maybe$-algebra, where $\Maybe(X) = 1 + X$.
+A $\Maybe$-algebra with carrier $X$ is given by an element $z \in X$ and a function $s : X \to X$; we write it as $[z, s]$.
+The catamorphism $\catam{[z,s]} : \NN \to X$ is the unique function $h$ with $h(0) = z$ and $h(n + 1) = s(h(n))$, that is, $h(n) = s^n(z)$.
+For $\Maybe$-algebras $[z, s]$ on $X$ and $[z', s']$ on $Y$ and a function $f : X \to Y$, the fusion property says:
+\begin{equation}\label{eq:nat-fusion}
+  f(z) = z' \quad\text{and}\quad f \circ s = s' \circ f
+  \qquad\implies\qquad
+  f \circ \catam{[z,s]} = \catam{[z', s']}.
+\end{equation}
+Note that $f$ itself does not have to be a catamorphism.
+
+\begin{exa}[Doubling gives even numbers]\label{exa:fusion-double-even}
+  Let $\mathsf{double} := \catam{[0, (+2)]} : \NN \to \NN$, so that $\mathsf{double}(n) = 2n$, and let $\mathsf{isEven} : \NN \to \Bool$ be the function that tests whether a number is even.
+  We check the conditions \eqref{eq:nat-fusion} for $f := \mathsf{isEven}$:
+  \[ \mathsf{isEven}(0) = \mathsf{true} \qquad\text{and}\qquad \mathsf{isEven}(x + 2) = \mathsf{isEven}(x) = \Id[\Bool](\mathsf{isEven}(x)). \]
+  By fusion, $\mathsf{isEven} \circ \mathsf{double} = \catam{[\mathsf{true}, \Id[\Bool]]}$.
+  The constant function with value $\mathsf{true}$ satisfies $h(0) = \mathsf{true}$ and $h(n+1) = \Id[\Bool](h(n))$, so, by uniqueness, $\catam{[\mathsf{true}, \Id[\Bool]]}$ is that constant function.
+  Hence the double of every natural number is even.
+\end{exa}
+
+\begin{exa}[Associativity of multiplication]\label{exa:fusion-mult-assoc}
+  For $k \in \NN$, let $\mathsf{mult}_k := \catam{[0, (+k)]} : \NN \to \NN$, so that $\mathsf{mult}_k(n) = k \cdot n$.
+  Fix $j \in \NN$, and check the conditions \eqref{eq:nat-fusion} for $f := (j\cdot)$:
+  \[ j \cdot 0 = 0 \qquad\text{and}\qquad j \cdot (x + k) = j x + j k = s'(j x) \quad\text{for } s' := (+ jk). \]
+  By fusion, $(j\cdot) \circ \mathsf{mult}_k = \catam{[0, (+jk)]} = \mathsf{mult}_{jk}$, that is,
+  \[ j \cdot (k \cdot n) = (j k) \cdot n \qquad\text{for all } n \in \NN. \]
+  Fusion has reduced associativity of multiplication, a statement about all $n$, to distributivity of multiplication over a single sum $x + k$.
+\end{exa}
+
+\paragraph{Lists.}
+The remaining examples concern lists.
+Recall from \cref{exer:initialalg_for_list} that, for a set $A$, the pair $(\List(A), [\nil, \cons])$ is the initial algebra of the functor
+\[ F_A(X) := 1 + (A \times X), \qquad F_A(h) := \Id[1] + (\Id[A] \times h). \]
+An $F_A$-algebra with carrier $X$ is given by an element $e \in X$ and a function $c : A \times X \to X$; we write it as $[e, c]$.
+The catamorphism $\catam{[e,c]} : \List(A) \to X$ is the function |fold c e| (with $c$ curried), that is, the unique function $h$ with
+$h(\nil) = e$ and $h(\cons(a, \ell)) = c(a, h(\ell))$.
+
+For lists, the fusion property (\cref{exer:fusion-property}) unfolds as follows.
+Let $[e, c]$ be an $F_A$-algebra on $X$, let $[e', c']$ be an $F_A$-algebra on $Y$, and let $f : X \to Y$.
+The condition $\co{[e,c]}{f} = \co{F_A(f)}{[e',c']}$ amounts to the two equations
+\begin{equation}\label{eq:list-fusion}
+  f(e) = e'
+  \qquad\text{and}\qquad
+  f(c(a, x)) = c'(a, f(x)) \quad \text{for all } a \in A,\ x \in X,
+\end{equation}
+and the conclusion is $f \circ \catam{[e,c]} = \catam{[e', c']}$.
+
+\begin{rem}[How to use fusion]\label{rem:how-to-fuse}
+  The first equation in \eqref{eq:list-fusion} only tells us what $e'$ has to be.
+  The real work is in the second equation: we have to compute $f(c(a,x))$ from $a$ and $f(x)$ alone, without knowing $x$ itself.
+  Finding $c'$ means finding such a formula.
+  If we succeed, fusion turns the program $f \circ \catam{[e,c]}$, which traverses the list and then post-processes the result, into the program $\catam{[e',c']}$, which does everything in one traversal.
+\end{rem}
+
+\paragraph{Simple examples.}
+In the first two examples we post-compose $\mathsf{map}$ with another catamorphism.
+For a function $g : A \to B$, the function $\mathsf{map}_g : \List(A) \to \List(B)$, which applies $g$ to every element of a list, is the catamorphism
+\[ \mathsf{map}_g := \catam{[\nil,\ (a, \ell) \mapsto \cons(g(a), \ell)]}. \]
+
+\begin{exa}[Length after map]\label{exa:fusion-length-map}
+  Let $\mathsf{length}_B := \catam{[0,\ (b, n) \mapsto 1 + n]} : \List(B) \to \NN$, and similarly for $\mathsf{length}_A$.
+  Applying $g$ to every element does not change the length of a list, that is,
+  \[ \mathsf{length}_B \circ \mathsf{map}_g = \mathsf{length}_A. \]
+  We check the conditions \eqref{eq:list-fusion} for $f := \mathsf{length}_B$:
+  \begin{align*}
+    \mathsf{length}_B(\nil) &= 0, \\
+    \mathsf{length}_B(\cons(g(a), \ell)) &= 1 + \mathsf{length}_B(\ell).
+  \end{align*}
+  The right-hand side of the second equation is of the form $c'(a, \mathsf{length}_B(\ell))$ for $c'(a, n) := 1 + n$.
+  By fusion, $\mathsf{length}_B \circ \mathsf{map}_g = \catam{[0,\ (a,n) \mapsto 1 + n]}$, and the right-hand side is $\mathsf{length}_A$.
+  Intuitively: $\mathsf{map}_g$ does not change the shape of a list, and $\mathsf{length}$ only looks at the shape.
+\end{exa}
+
+\begin{exa}[Sum after map]\label{exa:fusion-sum-map}
+  Let $\mathsf{sum} := \catam{[0, +]} : \List(\NN) \to \NN$, and let $g : A \to \NN$.
+  We check the conditions \eqref{eq:list-fusion} for $f := \mathsf{sum}$:
+  \begin{align*}
+    \mathsf{sum}(\nil) &= 0, \\
+    \mathsf{sum}(\cons(g(a), \ell)) &= g(a) + \mathsf{sum}(\ell).
+  \end{align*}
+  The right-hand side of the second equation is $c'(a, \mathsf{sum}(\ell))$ for $c'(a, n) := g(a) + n$.
+  By fusion,
+  \[ \mathsf{sum} \circ \mathsf{map}_g = \catam{[0,\ (a, n) \mapsto g(a) + n]}, \]
+  or, in Haskell, |sum . map g = fold (\a n -> g a + n) 0|.
+  For $g := (2\cdot)$, this is the pipeline from the beginning of this section:
+  the fused program doubles and adds each element as it walks along the list, and never builds the intermediate list of doubled elements.
+\end{exa}
+
+\Cref{exa:fusion-length-map,exa:fusion-sum-map} are instances of a general law, see \cref{exer:fold-map-fusion}.
+
+The next example post-composes with a catamorphism that is not of the form $\mathsf{map}_g$.
+
+\begin{exa}[Counting with a filter]\label{exa:fusion-length-filter}
+  For a predicate $p : A \to \Bool$, the function $\mathsf{filter}_p : \List(A) \to \List(A)$, which keeps the elements satisfying $p$, is the catamorphism
+  \[ \mathsf{filter}_p := \catam{[\nil,\ (a, \ell) \mapsto \text{if } p(a) \text{ then } \cons(a, \ell) \text{ else } \ell]}. \]
+  We check the conditions \eqref{eq:list-fusion} for $f := \mathsf{length}_A$:
+  \begin{align*}
+    \mathsf{length}_A(\nil) &= 0, \\
+    \mathsf{length}_A(\text{if } p(a) \text{ then } \cons(a, \ell) \text{ else } \ell)
+      &= \text{if } p(a) \text{ then } 1 + \mathsf{length}_A(\ell) \text{ else } \mathsf{length}_A(\ell).
+  \end{align*}
+  The right-hand side is $c'(a, \mathsf{length}_A(\ell))$ for
+  \[ c'(a, n) := \text{if } p(a) \text{ then } 1 + n \text{ else } n. \]
+  By fusion, $\mathsf{length}_A \circ \mathsf{filter}_p = \catam{[0, c']}$, the function that counts the elements satisfying $p$ without building the filtered list.
+  In Haskell:
+\begin{lstlisting}
+length . filter p = fold (\a n -> if p a then 1 + n else n) 0
+\end{lstlisting}
+  Unlike in \cref{exa:fusion-length-map}, the function $c'$ here has to look at the element $a$.
+\end{exa}
+
+To show that two composites are equal, it often suffices to fuse each of them into a single catamorphism, and to compare the resulting algebras.
+
+\begin{exa}[De Morgan's law for lists]\label{exa:fusion-demorgan}
+  Let $\mathsf{and} := \catam{[\mathsf{true}, \wedge]}$ and $\mathsf{or} := \catam{[\mathsf{false}, \vee]}$, both of type $\List(\Bool) \to \Bool$, and let $\mathsf{not} : \Bool \to \Bool$ be negation.
+  We show that
+  \[ \mathsf{not} \circ \mathsf{and} = \mathsf{or} \circ \mathsf{map}_{\mathsf{not}}, \]
+  by showing that both sides are equal to $\catam{[\mathsf{false},\ (a, y) \mapsto \neg a \vee y]}$.
+  \begin{itemize}
+  \item For the left-hand side, we fuse $f := \mathsf{not}$ with $\mathsf{and}$:
+    $\neg \mathsf{true} = \mathsf{false}$, and $\neg(a \wedge b) = \neg a \vee \neg b = c'(a, \neg b)$ for $c'(a, y) := \neg a \vee y$.
+  \item For the right-hand side, we fuse $f := \mathsf{or}$ with $\mathsf{map}_{\mathsf{not}}$:
+    $\mathsf{or}(\nil) = \mathsf{false}$, and
+    \[ \mathsf{or}(\cons(\neg a, \ell)) = \neg a \vee \mathsf{or}(\ell) = c'(a, \mathsf{or}(\ell)) \]
+    for the same $c'$.
+  \end{itemize}
+  Fusion has reduced De Morgan's law for lists of arbitrary length to De Morgan's law for two truth values.
+\end{exa}
+
+Comparing algebras can also show where two programs \emph{differ}.
+
+\begin{exa}[Watch the base case]\label{exa:fusion-maximum}
+  Let $\mathsf{maximum} := \catam{[0, \max]} : \List(\NN) \to \NN$, so that the maximum of the empty list is $0$.
+  Is $\mathsf{maximum} \circ \mathsf{map}_{(+1)}$ equal to $(+1) \circ \mathsf{maximum}$?
+  We fuse both sides.
+  \begin{itemize}
+  \item Fusing $f := \mathsf{maximum}$ with $\mathsf{map}_{(+1)}$:
+    $\mathsf{maximum}(\nil) = 0$, and $\mathsf{maximum}(\cons(a+1, \ell)) = \max(a + 1, \mathsf{maximum}(\ell))$.
+    Hence $\mathsf{maximum} \circ \mathsf{map}_{(+1)} = \catam{[0,\ (a, m) \mapsto \max(a+1, m)]}$.
+  \item Fusing $f := (+1)$ with $\mathsf{maximum}$:
+    $0 + 1 = 1$, and $\max(a, m) + 1 = \max(a + 1, m + 1)$.
+    Hence $(+1) \circ \mathsf{maximum} = \catam{[1,\ (a, m) \mapsto \max(a+1, m)]}$.
+  \end{itemize}
+  The two algebras differ only in the case of the empty list, and indeed
+  \[ \mathsf{maximum}(\mathsf{map}_{(+1)}(\nil)) = 0 \qquad\text{whereas}\qquad \mathsf{maximum}(\nil) + 1 = 1. \]
+  So the two functions are \emph{not} equal.
+  (On non-empty lists they do agree: there, both compute one more than the largest element.)
+\end{exa}
+
+\begin{exa}[A non-example]\label{exa:fusion-nonexample}
+  Fusion does not always apply.
+  Consider $f : \NN \to \Bool$ with $f(n) := (n > 10)$, post-composed with $\mathsf{sum}$.
+  To apply fusion, we would need a function $c' : \NN \times \Bool \to \Bool$ with
+  \[ (a + s > 10) = c'(a,\ s > 10) \qquad \text{for all } a, s \in \NN. \]
+  No such $c'$ exists: for $a = 6$ and $s \in \{0, 5\}$, the second argument of $c'$ is $\mathsf{false}$ in both cases, but $6 + 0 > 10$ is false whereas $6 + 5 > 10$ is true.
+  The function $f$ forgets too much information about $s$.
+
+  The same argument shows that $f \circ \mathsf{sum}$ is not a catamorphism at all:
+  if $f \circ \mathsf{sum} = \catam{[e', c']}$, then $f \circ \mathsf{sum}$ would take the same value on the lists $[6, 0]$ and $[6, 5]$, namely $c'(6, \mathsf{false})$.
+  When a function forgets too much, the remedy is often to keep more information in the carrier; see \cref{exa:banana-split}.
+\end{exa}
+
+\paragraph{More interesting examples.}
+The next example derives an efficient algorithm from an obviously correct but inefficient specification, using fusion twice and nothing else.
+
+\begin{exa}[Horner's rule]\label{exa:fusion-horner}
+  Fix $x \in \NN$.
+  We represent a polynomial $a_0 + a_1 x + a_2 x^2 + \dots + a_n x^n$ by its list of coefficients $[a_0, a_1, \dots, a_n]$, lowest degree first.
+  A direct specification of its value at $x$ is
+  \[
+    \mathsf{value} := \mathsf{sum} \circ \mathsf{scale},
+    \qquad\text{where}\qquad
+    \mathsf{scale} := \catam{[\nil,\ (a, \ell) \mapsto \cons(a, \mathsf{map}_{(x\cdot)}(\ell))]},
+  \]
+  so that $\mathsf{scale}([a_0, a_1, \dots, a_n]) = [a_0,\ x a_1,\ x^2 a_2,\ \dots,\ x^n a_n]$.
+  This program is clearly correct, but inefficient:
+  every step of $\mathsf{scale}$ maps over the entire rest of the list, so it performs a quadratic number of multiplications, and it builds intermediate lists.
+
+  \emph{Step 1: $\mathsf{sum} \circ \mathsf{map}_{(x\cdot)} = (x\cdot) \circ \mathsf{sum}$.}
+  We show that both sides are equal to $\catam{[0,\ (a, n) \mapsto x a + n]}$.
+  For the left-hand side, this is \cref{exa:fusion-sum-map} with $g := (x\cdot)$.
+  For the right-hand side, we apply fusion to $f := (x\cdot)$ and $\mathsf{sum} = \catam{[0,+]}$:
+  \[ x \cdot 0 = 0 \qquad\text{and}\qquad x \cdot (a + n) = x a + x n = c'(a, x n) \quad\text{for } c'(a, m) := x a + m. \]
+  (This step proves that multiplication distributes over the sum of a list, using only distributivity over binary sums, and no induction.)
+
+  \emph{Step 2: fusing $\mathsf{sum}$ with $\mathsf{scale}$.}
+  We check the conditions \eqref{eq:list-fusion} for $f := \mathsf{sum}$:
+  \begin{align*}
+    \mathsf{sum}(\nil) &= 0, \\
+    \mathsf{sum}(\cons(a, \mathsf{map}_{(x\cdot)}(\ell))) &= a + \mathsf{sum}(\mathsf{map}_{(x\cdot)}(\ell)) = a + x \cdot \mathsf{sum}(\ell),
+  \end{align*}
+  where the last equality is Step 1.
+  With $c'(a, s) := a + x s$, fusion gives
+  \[ \mathsf{value} = \catam{[0,\ (a, s) \mapsto a + x s]}, \]
+  that is, $\mathsf{value}([a_0, \dots, a_n]) = a_0 + x(a_1 + x(a_2 + \dots + x(a_n + x \cdot 0)\dots))$.
+  This is \emph{Horner's rule}: it uses one multiplication per coefficient and builds no intermediate lists.
+  In Haskell, we have derived the second program from the first:
+\begin{lstlisting}
+value  x = sum . fold (\a l -> a : map (x *) l) []
+horner x = fold (\a s -> a + x * s) 0
+\end{lstlisting}
+\end{exa}
+
+The last example shows how to compute two catamorphisms in a single traversal.
+It assumes that $\CC$ has binary products.
+
+\begin{exa}[Banana split]\label{exa:banana-split}
+  Computing the average of a list of numbers requires both its sum and its length.
+  Computing $\mathsf{sum}$ and $\mathsf{length}$ separately traverses the list twice.
+
+  More generally, let $F : \CC \to \CC$ be an endofunctor with initial algebra $(\Initalg{F}, \In)$, and let $(X, \phi)$ and $(Y, \psi)$ be $F$-algebras.
+  Define the $F$-algebra $(X \times Y, \chi)$ by
+  \[ \chi := \intoproduct{\phi \circ F(\projl)}{\psi \circ F(\projr)} : F(X \times Y) \to X \times Y. \]
+  Then
+  \[ \intoproduct{\catam{\phi}}{\catam{\psi}} = \catam{\chi}. \]
+  Indeed, the equation $\projl \circ \chi = \phi \circ F(\projl)$ holds by definition of $\chi$, and it is precisely the fusion condition for the morphism $\projl$ from $(X \times Y, \chi)$ to $(X, \phi)$.
+  Hence $\projl \circ \catam{\chi} = \catam{\phi}$, and likewise $\projr \circ \catam{\chi} = \catam{\psi}$.
+  By the universal property of the product, $\catam{\chi} = \intoproduct{\catam{\phi}}{\catam{\psi}}$.
+
+  For lists, this gives
+  \[ \intoproduct{\mathsf{sum}}{\mathsf{length}} = \catam{[(0,0),\ (a, (s, n)) \mapsto (a + s, 1 + n)]}, \]
+  which computes sum and length in a single traversal; the average of a non-empty list is then obtained by dividing the two components.
+  This is how averages are computed in practice: one accumulates the pair of a running sum and a running count.
+
+  This law is known as the \emph{banana split} law: catamorphisms are written with ``banana brackets'' $\catam{-}$ in the paper by Meijer et al.~\cite{DBLP:conf/fpca/MeijerFP91}, and $\intoproduct{f}{g}$ is sometimes called the \emph{split} of $f$ and $g$.
+\end{exa}
+
+\begin{rem}[Fusion in Haskell]
+  In this section we work in $\SET$.
+  For Haskell programs, where lists may be partial or infinite (see \cref{example:hask}), the fusion law needs an additional hypothesis: the function $f$ has to be \emph{strict}, that is, $f(\bot) = \bot$; see~\cite{DBLP:conf/fpca/MeijerFP91}.
+\end{rem}
+
+\subsection{Exercises}
+
+
 \begin{exer}[\cref{sol:list-concat-nil}, see also \cite{DBLP:journals/scp/Malcolm90}]
   \label{exer:list-concat-nil}
   Consider the function |(++) :: [a] →  [a] →  [a]| defined in \cref{exer:list-functions-as-fold},
@@ -2959,10 +3197,56 @@ Y
   Redo \cref{exer:sum_plus_one_via_diagram}, that is, show that |(+1) . sum = fold (+) 1|, this time by using the fusion property of \cref{exer:fusion-property}.
 \end{exer}
 
+\begin{exer}[Fold--map fusion]\label{exer:fold-map-fusion}
+  Let $g : A \to B$, and let $[e, c]$ be an $F_B$-algebra on a set $X$.
+  Show that
+  \[ \catam{[e, c]} \circ \mathsf{map}_g = \catam{[e,\ c \circ (g \times \Id[X])]}. \]
+  Deduce \cref{exa:fusion-length-map,exa:fusion-sum-map} from this law, and use it to solve the exercise on $\mathsf{map}$ below.
+\end{exer}
+
 \begin{exer}
   Prove that |map g . map f = map (g . f)| using the fusion property.
 \end{exer}
 
+
+\subsection{Fusion in practice}\label{sec:fusion-practice}
+
+Fusion is not only a reasoning principle; it is also used by compilers and libraries.
+
+\paragraph{Deforestation.}
+Wadler~\cite{wadler-deforestation-1990} coined the term \emph{deforestation} for program transformations that eliminate intermediate data structures (the ``trees'' of the title), such as the intermediate list in the pipeline |sum . map (*2)|.
+
+\paragraph{Short-cut fusion in GHC.}
+The Glasgow Haskell Compiler fuses list pipelines using \emph{short-cut fusion}, introduced by Gill, Launchbury and Peyton Jones~\cite{gill-launchbury-peytonjones-1993}.
+List producers such as |map|, |filter| and enumerations |[1..n]| are written in terms of a function
+\begin{lstlisting}
+build :: (forall b. (a -> b -> b) -> b -> b) -> [a]
+build g = g (:) []
+\end{lstlisting}
+and list consumers such as |and|, |any| and |concat| are written in terms of |foldr|.
+The compiler then applies the rewrite rule
+\begin{lstlisting}
+foldr k z (build g) = g k z
+\end{lstlisting}
+which replaces the constructors |(:)| and |[]| of the intermediate list by the operations |k| and |z| of the consumer, so that the list is never built.
+Such rules are stated in the source code of the libraries using GHC's |RULES| pragmas and are applied when optimisation is switched on (|-O|)~\cite{peytonjones-tolmach-hoare-2001}.
+The correctness of the rule follows from the polymorphic type of |g|, via a ``free theorem''.
+
+\paragraph{Stream fusion.}
+Short-cut fusion works well for consumers written with |foldr|, but it cannot fuse functions that consume two lists at once, such as |zip|, in both arguments.
+\emph{Stream fusion}, due to Coutts, Leshchinskiy and Stewart~\cite{coutts-leshchinskiy-stewart-2007}, represents sequences as coalgebras (``streams'' with a stepper function), and fuses pipelines of such coalgebras instead.
+It is the basis of the optimisation framework of Haskell's |vector| library of arrays.\footnote{The \texttt{vector} package describes it as ``stream fusion, a powerful optimisation framework that can help eliminate intermediate data structures'', see \url{https://github.com/haskell/vector}.}
+Hinze, Harper and James~\cite{hinze-harper-james-2010} give a unified account, based on (recursive) coalgebras, of the fusion law of this section, short-cut fusion and stream fusion; Harper's thesis~\cite{DBLP:phd/ethos/Harper13} gives a detailed account of short-cut fusion.
+
+\paragraph{Beyond Haskell.}
+The same idea appears wherever data is processed in pipelines.
+In Java, the documentation of the \texttt{java.util.stream} package explains that, in a pipeline consisting of a filter, a map and a sum, ``filtering, mapping, and summing can be fused into a single pass on the data, with minimal intermediate state''.\footnote{\url{https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/stream/package-summary.html}}
+In the cluster-computing framework Apache Spark, transformations such as |map| are evaluated lazily; the programming guide illustrates this with a program that maps each line of a file to its length and then adds up the lengths with |reduce|, and notes that Spark can return only the result of the |reduce| ``rather than the larger mapped dataset''.\footnote{\url{https://spark.apache.org/docs/latest/rdd-programming-guide.html}}
+That program is $\mathsf{sum} \circ \mathsf{map}_{\mathsf{length}}$, an instance of \cref{exa:fusion-sum-map}.
+
+\paragraph{Program calculation.}
+In the ``algebra of programming'' tradition, efficient programs are \emph{calculated} from clear specifications by equational reasoning, as in \cref{exa:fusion-horner}.
+Fusion is the workhorse of such calculations; see the book by Bird and de Moor~\cite{bird-demoor-1997} for many examples.
 
 \begin{reading*}
   In \cref{sec:initial-algs,sec:fusion}, we have only looked at functions defined via \emph{iteration}, that is, functions defined as \emph{catamorphisms} of some $F$-algebra.
